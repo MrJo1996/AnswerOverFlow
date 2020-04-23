@@ -24,3 +24,169 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+
+/* ion-item {
+    --ion-item-background: transparent;
+} */
+
+// BACKGROUNDS //
+//Scuro
+.backgrounds {
+  background-color: #1e1e1e;
+}
+
+//Più chiaro
+.backgroundsSecondaryItem {
+    background-color: #2a2a2a;
+  }
+
+  
+  // TEXT //
+  //TextHighLight -> Testi che contengono link (cambiare pagina, collegamenti)
+  .textHighlight {
+    font-size: 1.5rem;
+    color: #08377c
+  }
+  .textHighlightBIG {
+    font-size: 2.5rem;
+    color: #08377c
+  }
+  .textHighlightSMALL {
+    font-size: 1rem;
+    color: #08377c
+  }
+
+  //TextTitle -> Testi per il titolo delle pagine e per il titolo delle varie sezioni interne alla page
+  .textTitle {
+    font-size: 1rem;
+    color: #97a9c5
+  }
+  
+  .textTitleBIG {
+    font-size: 2rem;
+    color: #97a9c5
+  }
+  
+  .textTitleSMALL {
+    font-size: 0.7rem;
+    color: #97a9c5
+  }
+  
+  //TextSimple -> Testi generici
+  .textSimple {
+      font-size: 1rem;
+      color: #fff;
+  }
+  
+/* 
+  //Per ora non serve //
+  // MENU //
+  // Menu user profile
+  ion-toolbar.user-profile {
+  
+    .user-avatar {
+      width: 98px;
+      height: 98px;
+    }
+    .item-inner {
+      border-width: 0;
+    }
+  }
+  
+  // Custom toolbar (overriding Shadow DOM)
+  ion-toolbar {
+    &.ion-color-primary {
+      --ion-color-base: linear-gradient(135deg, var(--ion-color-dark), var(--ion-color-primary)) !important;
+    }
+  }
+  
+  // Android card shadow
+  ion-card {
+    &.sc-ion-card-md-h {
+      box-shadow: 0 2px 4px rgba(var(--ion-color-dark-rgb),.24);
+    }
+  }
+  
+  // style for auth pages
+  .auth-page {
+    background-image: linear-gradient(135deg, var(--ion-color-dark), var(--ion-color-primary));
+  
+    .grid {
+      padding: 0;
+      .col {
+        padding: 0;
+      }
+    }
+  
+    .btn-group {
+      .button-ios,
+      .button-md {
+        border-radius: 0;
+        &:first-of-type {
+          border-radius: 2px 0 0 2px;
+        }
+        &:last-of-type {
+          border-radius: 0 2px 2px 0;
+        }
+      }
+    }
+  
+    .auth-content {
+      margin: 0 5%;
+  
+      .logo {
+        width: 120px;
+        height: 120px;
+        margin: 20px auto 8px;
+        border-radius: 10%;
+        background: url("/assets/img/ionic4start-ico.png") no-repeat;
+        background-size: 100%;
+      }
+  
+      .list-form {
+        padding: 0;
+        margin-bottom: 0;
+  
+        ion-item {
+          background: none;
+          padding: 0;
+  
+          &:first-child {
+            border-top: none;
+          }
+  
+          &:after {
+            display: none;
+          }
+  
+          ion-label {
+            font-size: 1em;
+            color: var(--ion-color-light);
+          }
+  
+          input {
+            color: var(--ion-color-light);
+          }
+        }
+      }
+    }
+  
+  }
+  
+  // Custom Menu styles (overriding Shadow DOM)
+  ion-menu {
+    ion-header {
+      ion-toolbar {
+        &.ion-color-dark {
+          --ion-color-base: linear-gradient(135deg, var(--ion-color-dark), var(--ion-color-primary)) !important;
+        }
+      }
+    }
+  }
+  
+  .mto {
+    margin-top: 12px;
+    ion-icon {
+      margin-bottom: -2px;
+    }
+  } */
