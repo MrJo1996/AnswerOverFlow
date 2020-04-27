@@ -14,6 +14,14 @@ const routes: Routes = [
   {
     path: 'prova',
     loadChildren: () => import('./prova/prova.module').then( m => m.PROVAPageModule)
+  },
+  {
+    path: 'modifica-sondaggio',
+    loadChildren: () => import('./modifica-sondaggio/modifica-sondaggio.module').then( m => m.ModificaSondaggioPageModule)
+  },
+  {
+    path: 'modifica-risposta',
+    loadChildren: () => import('./modifica-risposta/modifica-risposta.module').then( m => m.ModificaRispostaPageModule)
   }
 ];
 
