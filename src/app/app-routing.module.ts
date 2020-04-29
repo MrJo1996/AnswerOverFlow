@@ -25,6 +25,10 @@ const routes: Routes = [
   },  {
     path: 'segnala-utente',
     loadChildren: () => import('./segnala-utente/segnala-utente.module').then( m => m.SegnalaUtentePageModule)
+  },
+  {
+    path: 'inserisci-domanda',
+    loadChildren: () => import('./inserisci-domanda/inserisci-domanda.module').then( m => m.InserisciDomandaPageModule)
   }
 
 ];
