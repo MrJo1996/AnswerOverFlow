@@ -29,6 +29,10 @@ const routes: Routes = [
   {
     path: 'inserisci-domanda',
     loadChildren: () => import('./inserisci-domanda/inserisci-domanda.module').then( m => m.InserisciDomandaPageModule)
+  },
+  {
+    path: 'recupera-password',
+    loadChildren: () => import('./recupera-password/recupera-password.module').then( m => m.RecuperaPasswordPageModule)
   }
 
 ];
