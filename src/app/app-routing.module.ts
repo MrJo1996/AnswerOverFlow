@@ -22,13 +22,24 @@ const routes: Routes = [
   {
     path: 'modifica-risposta',
     loadChildren: () => import('./modifica-risposta/modifica-risposta.module').then( m => m.ModificaRispostaPageModule)
-  },  {
+  },
+  {
     path: 'modifica-profilo',
     loadChildren: () => import('./modifica-profilo/modifica-profilo.module').then( m => m.ModificaProfiloPageModule)
   },
   {
     path: 'modifica-domanda',
     loadChildren: () => import('./modifica-domanda/modifica-domanda.module').then( m => m.ModificaDomandaPageModule)
+    path: 'segnala-utente',
+    loadChildren: () => import('./segnala-utente/segnala-utente.module').then( m => m.SegnalaUtentePageModule)
+  },
+  {
+    path: 'inserisci-domanda',
+    loadChildren: () => import('./inserisci-domanda/inserisci-domanda.module').then( m => m.InserisciDomandaPageModule)
+  },
+  {
+    path: 'recupera-password',
+    loadChildren: () => import('./recupera-password/recupera-password.module').then( m => m.RecuperaPasswordPageModule)
   }
 
 ];
