@@ -22,7 +22,15 @@ const routes: Routes = [
   {
     path: 'modifica-risposta',
     loadChildren: () => import('./modifica-risposta/modifica-risposta.module').then( m => m.ModificaRispostaPageModule)
+  },  {
+    path: 'modifica-profilo',
+    loadChildren: () => import('./modifica-profilo/modifica-profilo.module').then( m => m.ModificaProfiloPageModule)
+  },
+  {
+    path: 'modifica-domanda',
+    loadChildren: () => import('./modifica-domanda/modifica-domanda.module').then( m => m.ModificaDomandaPageModule)
   }
+
 ];
 
 @NgModule({
