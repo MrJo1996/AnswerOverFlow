@@ -22,7 +22,11 @@ const routes: Routes = [
   {
     path: 'modifica-risposta',
     loadChildren: () => import('./modifica-risposta/modifica-risposta.module').then( m => m.ModificaRispostaPageModule)
+  },  {
+    path: 'segnala-utente',
+    loadChildren: () => import('./segnala-utente/segnala-utente.module').then( m => m.SegnalaUtentePageModule)
   }
+
 ];
 
 @NgModule({
