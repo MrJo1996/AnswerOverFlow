@@ -30,6 +30,8 @@ const routes: Routes = [
   {
     path: 'modifica-domanda',
     loadChildren: () => import('./modifica-domanda/modifica-domanda.module').then( m => m.ModificaDomandaPageModule)
+  },
+  {
     path: 'segnala-utente',
     loadChildren: () => import('./segnala-utente/segnala-utente.module').then( m => m.SegnalaUtentePageModule)
   },
