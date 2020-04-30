@@ -44,18 +44,17 @@ const routes: Routes = [
     loadChildren: () => import('./recupera-password/recupera-password.module').then( m => m.RecuperaPasswordPageModule)
   },
   {
-    path: 'login',
-    loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
-  },
-  {
     path: 'proponi-categoria',
     loadChildren: () => import('./proponi-categoria/proponi-categoria.module').then( m => m.ProponiCategoriaPageModule)
+  },
+  {
+    path: 'login',
+    loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
   },
   {
     path: 'visualizza-profilo',
     loadChildren: () => import('./visualizza-profilo/visualizza-profilo.module').then( m => m.VisualizzaProfiloPageModule)
   }
-
 
 ];
 
