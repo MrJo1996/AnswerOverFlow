@@ -42,7 +42,11 @@ const routes: Routes = [
   {
     path: 'recupera-password',
     loadChildren: () => import('./recupera-password/recupera-password.module').then( m => m.RecuperaPasswordPageModule)
+  },  {
+    path: 'login',
+    loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
   }
+
 
 ];
 
