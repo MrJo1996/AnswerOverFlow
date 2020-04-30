@@ -42,6 +42,10 @@ const routes: Routes = [
   {
     path: 'recupera-password',
     loadChildren: () => import('./recupera-password/recupera-password.module').then( m => m.RecuperaPasswordPageModule)
+  },
+  {
+    path: 'proponi-categoria',
+    loadChildren: () => import('./proponi-categoria/proponi-categoria.module').then( m => m.ProponiCategoriaPageModule)
   }
 
 ];
