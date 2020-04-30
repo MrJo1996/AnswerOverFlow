@@ -65,6 +65,10 @@ const routes: Routes = [
   {
     path: 'visualizza-domanda',
     loadChildren: () => import('./visualizza-domanda/visualizza-domanda.module').then( m => m.VisualizzaDomandaPageModule)
+  },
+  {
+    path: 'visualizza-sondaggio',
+    loadChildren: () => import('./visualizza-sondaggio/visualizza-sondaggio.module').then( m => m.VisualizzaSondaggioPageModule)
   }
 
 
