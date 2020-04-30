@@ -54,7 +54,15 @@ const routes: Routes = [
   {
     path: 'visualizza-profilo',
     loadChildren: () => import('./visualizza-profilo/visualizza-profilo.module').then( m => m.VisualizzaProfiloPageModule)
+  },  {
+    path: 'home',
+    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
+  },
+  {
+    path: 'registrazione',
+    loadChildren: () => import('./registrazione/registrazione.module').then( m => m.RegistrazionePageModule)
   }
+
 
 ];
 
