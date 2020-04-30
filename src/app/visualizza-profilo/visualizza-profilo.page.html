@@ -1,0 +1,58 @@
+<ion-header>
+  <ion-toolbar class="backgroundsSecondaryItem">
+    <ion-button slot="start" color="light">
+      <ion-icon name="chevron-back-outline" color="primary" slot="start"></ion-icon>
+      <ion-text color="primary">Indietro</ion-text>
+    </ion-button>
+    <ion-title class="textTitle">Visualizza profilo</ion-title>
+    <ion-button slot="end" color="light">
+      <ion-text color="danger">Elimina</ion-text>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="backgrounds">
+
+
+  <IonContent>
+    <IonList>
+      {items.map((image, i) => (
+        <IonItem key={i}>
+          <IonThumbnail slot="start">
+            <IonImg src={https://www.google.com/url?sa=i&url=https%3A%2F%2Fit.cleanpng.com%2Fkisspng-2b10to%2Fpreview.html&psig=AOvVaw1WL9ZI3mq7xYKkZXKTtQQv&ust=1588321443916000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCJCGkt7cj-kCFQAAAAAdAAAAABAD} />
+          </IonThumbnail>
+          <IonLabel>{image.text}</IonLabel>
+        </IonItem>
+      ))}
+    </IonList>
+  </IonContent>
+
+
+  <ion-card>
+    <ion-item>
+      <ion-icon name="person-circle-outline" slot="start"></ion-icon>
+      <ion-label>Nome</ion-label>
+    </ion-item>
+  
+    <ion-item>
+      <ion-icon name="person-circle-outline" slot="start"></ion-icon>
+      <ion-label>Cognome</ion-label>
+    </ion-item>
+  
+    <ion-item>
+      <ion-icon name="key-outline" slot="start"></ion-icon>
+      <ion-label>Password</ion-label>
+    </ion-item>
+  
+    <ion-item>
+      <ion-icon name="book-outline" slot="start"></ion-icon>
+      <ion-label>Bio</ion-label>
+    </ion-item>
+
+    <ion-item> 
+      <ion-icon name="stats-chart-outline"></ion-icon>
+      <ion-label>Statistiche</ion-label>
+    </ion-item>
+
+  </ion-card>
+</ion-content>
