@@ -73,6 +73,10 @@ const routes: Routes = [
   {
     path: 'visualizza-chat',
     loadChildren: () => import('./visualizza-chat/visualizza-chat.module').then( m => m.VisualizzaChatPageModule)
+  },
+  {
+    path: 'modifica-password',
+    loadChildren: () => import('./modifica-password/modifica-password.module').then( m => m.ModificaPasswordPageModule)
   }
 
 
