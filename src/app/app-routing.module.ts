@@ -77,6 +77,10 @@ const routes: Routes = [
   {
     path: 'modifica-password',
     loadChildren: () => import('./modifica-password/modifica-password.module').then( m => m.ModificaPasswordPageModule)
+  },
+  {
+    path: 'info',
+    loadChildren: () => import('./info/info.module').then( m => m.InfoPageModule)
   }
 
 
