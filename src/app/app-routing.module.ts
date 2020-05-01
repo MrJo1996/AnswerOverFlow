@@ -69,6 +69,10 @@ const routes: Routes = [
   {
     path: 'visualizza-sondaggio',
     loadChildren: () => import('./visualizza-sondaggio/visualizza-sondaggio.module').then( m => m.VisualizzaSondaggioPageModule)
+  },
+  {
+    path: 'visualizza-chat',
+    loadChildren: () => import('./visualizza-chat/visualizza-chat.module').then( m => m.VisualizzaChatPageModule)
   }
 
 
