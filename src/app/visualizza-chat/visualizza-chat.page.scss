@@ -1,9 +1,3 @@
-
-
-
-
-
-
 .message{
 
     padding: 10px;
@@ -16,9 +10,7 @@
     background: gray;
     color:white;
     border-bottom-left-radius: 0px;;
-
 }
-
 
 .my-message{
     background: var(--ion-color-primary);
@@ -44,4 +36,13 @@ font-size: small;
     //background-color: var(--ion-color-light); 
     border-bottom: solid 0.5px var(--ion-color-medium-shade);
     
+}
+
+.icon-avatar{
+    max-width: 50px; 
+    max-height: 50px;
+    margin-right: 7px;
+    padding: 3px;
+
+
 }
