@@ -1,9 +1,59 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>inserisci_domanda</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-toolbar class="backgroundsSecondaryItem">
 
-<ion-content>
+    <ion-button slot="start" color="light">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+    </ion-button>
+
+    <ion-title>NUOVA DOMANDA</ion-title>
+
+    <ion-button slot="end" color="light">
+        <ion-icon name="checkmark-sharp"></ion-icon>
+    </ion-button>
+
+</ion-toolbar>
+
+<br>
+
+<ion-content class="backgrounds" >
+
+    <ion-item lines = "none">
+        <ion-label class="textClass" position="stacked">Titolo*:</ion-label>
+        <ion-textarea placeholder = "Titolo.." class = "areaClass"  class = "backgroundsSecondaryItem" style="border-radius: 5px;" ></ion-textarea>
+    </ion-item>
+
+<br>
+
+    <ion-item lines = "none" style="border-bottom: black;"> 
+        <ion-label class="textClass" position="stacked">Descrizione:</ion-label>
+        <ion-textarea rows = "10" class = "backgroundsSecondaryItem areaClass"></ion-textarea>
+    </ion-item>  
+
+<br>
+
+    <ion-grid>
+        <ion-row>
+            <ion-col>
+                <div>
+                    <ion-item lines = "none" class = "itemClass">
+                         <ion-label></ion-label> 
+                        <ion-select placeholder ="Categoria" interface="popover">
+                            <ion-select-option value="Scienza">Scienza</ion-select-option>
+                            <ion-select-option value="Matematica">Matematica</ion-select-option>
+                            <ion-select-option value="Storia">Storia</ion-select-option>
+                            <ion-select-option value="Italiano">Italiano</ion-select-option>
+                        </ion-select>
+                    </ion-item>
+                </div>
+            </ion-col>
+            <ion-col>
+                <div>
+                    <ion-item lines = "none" class = "itemClass">
+                        <ion-label><ion-icon name="time-outline"></ion-icon></ion-label>
+                        <ion-datetime placeholder ="Timer" displayFormat="HH:mm" pickerFormat="HH mm" [(ngModel)]="myTime"></ion-datetime>
+                    </ion-item>
+                </div>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
 
 </ion-content>

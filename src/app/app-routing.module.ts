@@ -54,7 +54,35 @@ const routes: Routes = [
   {
     path: 'visualizza-profilo',
     loadChildren: () => import('./visualizza-profilo/visualizza-profilo.module').then( m => m.VisualizzaProfiloPageModule)
+  },  {
+    path: 'home',
+    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
+  },
+  {
+    path: 'registrazione',
+    loadChildren: () => import('./registrazione/registrazione.module').then( m => m.RegistrazionePageModule)
+  },
+  {
+    path: 'visualizza-domanda',
+    loadChildren: () => import('./visualizza-domanda/visualizza-domanda.module').then( m => m.VisualizzaDomandaPageModule)
+  },
+  {
+    path: 'visualizza-sondaggio',
+    loadChildren: () => import('./visualizza-sondaggio/visualizza-sondaggio.module').then( m => m.VisualizzaSondaggioPageModule)
+  },
+  {
+    path: 'visualizza-chat',
+    loadChildren: () => import('./visualizza-chat/visualizza-chat.module').then( m => m.VisualizzaChatPageModule)
+  },
+  {
+    path: 'modifica-password',
+    loadChildren: () => import('./modifica-password/modifica-password.module').then( m => m.ModificaPasswordPageModule)
+  },
+  {
+    path: 'info',
+    loadChildren: () => import('./info/info.module').then( m => m.InfoPageModule)
   }
+
 
 ];
 
