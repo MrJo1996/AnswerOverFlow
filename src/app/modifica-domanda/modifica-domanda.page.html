@@ -1,15 +1,18 @@
 <ion-header>
   <ion-toolbar class="backgroundsSecondaryItem">
-    <ion-button slot="start" color="light">
-      <ion-icon name="chevron-back-outline" color="primary" slot="start"></ion-icon>
-      <ion-text color="primary">Indietro</ion-text>
-    </ion-button>
-    <ion-title class="textTitleMockUp">Modifica domanda</ion-title>
-    <ion-button slot="end" color="light">
-      <ion-text color="danger">Elimina</ion-text>
-    </ion-button>
-  </ion-toolbar>
-</ion-header>
+   
+      <ion-button  slot="start" expand="block" fill="clear" (click)="goBack()" class="msg-btn">
+        <ion-icon color="primary" slot="start" slot="icon-only" name="arrow-back-outline"></ion-icon>
+        </ion-button>
+     
+      <ion-title style="font-size: x-large; text-align: center;"><b>Modifica domanda</b></ion-title>
+      
+      <ion-button  slot="end" expand="block" fill="clear" (click)="popupConfermaModificheDomanda()" class="msg-btn">
+        <ion-icon color="primary" slot="end" slot="icon-only" name="checkmark-sharp"></ion-icon>
+        </ion-button>
+     
+    </ion-toolbar>
+  </ion-header>
 
 <ion-content class="backgrounds">
   <ion-card>
@@ -34,4 +37,9 @@
     </ion-item>
 
   </ion-card>
+  
+  <ion-button expand="block" color="light" class="ion-margin" (click)="popupConfermaEliminaDomanda()">
+    <ion-text color="danger">Elimina</ion-text>
+  </ion-button>
+
 </ion-content>
