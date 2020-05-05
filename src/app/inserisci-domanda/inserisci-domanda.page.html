@@ -1,59 +1,68 @@
-<ion-toolbar class="backgroundsSecondaryItem">
+<ion-header>
+    <ion-toolbar class="backgroundsSecondaryItem">
 
-    <ion-button slot="start" color="light">
-        <ion-icon name="arrow-back-outline"></ion-icon>
-    </ion-button>
+        <ion-button slot="start" expand="block" fill="clear" (click)="goBack()" class="msg-btn">
+            <ion-icon color="primary" slot="start" slot="icon-only" name="arrow-back-outline"></ion-icon>
+        </ion-button>
 
-    <ion-title>NUOVA DOMANDA</ion-title>
+        <ion-title class="textTitle">NUOVA DOMANDA</ion-title>
 
-    <ion-button slot="end" color="light">
-        <ion-icon name="checkmark-sharp"></ion-icon>
-    </ion-button>
+        <ion-button slot="end" expand="block" fill="clear" (click)="insert()" class="msg-btn">
+            <ion-icon color="primary" slot="end" slot="icon-only" name="checkmark-sharp"></ion-icon>
+        </ion-button>
 
-</ion-toolbar>
+    </ion-toolbar>
+</ion-header>
 
-<br>
+<ion-content>
 
-<ion-content class="backgrounds" >
+    <ion-card class="backgrounds">
+        <ion-card-content>
 
-    <ion-item lines = "none">
-        <ion-label class="textClass" position="stacked">Titolo*:</ion-label>
-        <ion-textarea placeholder = "Titolo.." class = "areaClass"  class = "backgroundsSecondaryItem" style="border-radius: 5px;" ></ion-textarea>
-    </ion-item>
+            <ion-card-title class="textTitleBIG">Titolo:</ion-card-title>
+            <ion-textarea style="border-radius: 7px;" placeholder="  Scrivi il titolo della domanda.." rows="3" class="backgroundsSecondaryItem textSimple">
+            </ion-textarea>
 
-<br>
+            <br>
 
-    <ion-item lines = "none" style="border-bottom: black;"> 
-        <ion-label class="textClass" position="stacked">Descrizione:</ion-label>
-        <ion-textarea rows = "10" class = "backgroundsSecondaryItem areaClass"></ion-textarea>
-    </ion-item>  
+            <ion-card-title class="textTitleBIG" >Descrizione:</ion-card-title>
+            <ion-textarea style="border-radius: 7px;" placeholder="  Aggiungi una descrizione.." rows="10" class="backgroundsSecondaryItem textSimple">
+            </ion-textarea>
 
-<br>
+            <br>
 
-    <ion-grid>
-        <ion-row>
-            <ion-col>
-                <div>
-                    <ion-item lines = "none" class = "itemClass">
-                         <ion-label></ion-label> 
-                        <ion-select placeholder ="Categoria" interface="popover">
-                            <ion-select-option value="Scienza">Scienza</ion-select-option>
-                            <ion-select-option value="Matematica">Matematica</ion-select-option>
-                            <ion-select-option value="Storia">Storia</ion-select-option>
-                            <ion-select-option value="Italiano">Italiano</ion-select-option>
-                        </ion-select>
-                    </ion-item>
-                </div>
-            </ion-col>
-            <ion-col>
-                <div>
-                    <ion-item lines = "none" class = "itemClass">
-                        <ion-label><ion-icon name="time-outline"></ion-icon></ion-label>
-                        <ion-datetime placeholder ="Timer" displayFormat="HH:mm" pickerFormat="HH mm" [(ngModel)]="myTime"></ion-datetime>
-                    </ion-item>
-                </div>
-            </ion-col>
-        </ion-row>
-    </ion-grid>
+            <ion-grid>
+                <ion-row>
+
+                    <ion-col>
+                        <ion-item lines="none" class="itemClass">
+                            <ion-icon name="bookmark-outline"></ion-icon>
+                            <ion-select  style="color: white;" placeholder="Categoria" interface="popover">
+                                <ion-select-option value="Scienze">Scienze</ion-select-option>
+                                <ion-select-option value="Matematica">Matematica</ion-select-option>
+                                <ion-select-option value="Storia">Storia</ion-select-option>
+                                <ion-select-option value="Italiano">Italiano</ion-select-option>
+                            </ion-select>
+                        </ion-item>
+                    </ion-col>
+
+                    <ion-col>
+                        <div>
+                            <ion-item lines="none" class="itemClass">
+
+                                <ion-icon name="time-outline"></ion-icon>
+
+                                <ion-datetime placeholder="Timer" displayFormat="HH:mm" pickerFormat="HH mm"
+                                    [(ngModel)]="myTime"></ion-datetime>
+
+                            </ion-item>
+                        </div>
+                    </ion-col>
+
+                </ion-row>
+            </ion-grid>
+
+        </ion-card-content>
+    </ion-card>
 
 </ion-content>
