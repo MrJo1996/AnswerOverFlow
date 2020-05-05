@@ -1,119 +1,89 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>AnswerOverFlow</ion-title>
+      <ion-button  slot="start" expand="block" fill="clear" (click)="goBack()" class="msg-btn">
+        <ion-icon color="primary" slot="start" slot="icon-only" name="arrow-back-outline"></ion-icon>
+      </ion-button>
+
+      <ion-title>Dettagli del tuo sondaggio</ion-title>
   </ion-toolbar>
 </ion-header>
 
+
+
 <ion-content class = "backgrounds">
-    <ion-card class = "backgrounds">
-      <ion-card-header>
-        <ion-row center ><ion-icon   class = "textTitle" name="alarm-outline"></ion-icon><ion-label class = "textTitle"> 50:50</ion-label></ion-row>
-        <ion-card-title class = "textTitleBIG">titolo sondaggio</ion-card-title>
-      </ion-card-header>
 
-      <ion-card-content>
-       <p class= "textSimple">descrizione sondaggio</p>
-         <ion-row>
-           <ion-col>
-              <div>
+  <ion-card class = "backgrounds">    
+    <ion-card-header>
+      <ion-toolbar class="backgrounds">
+            <ion-icon   class = "thumb_up_style" name="alarm-outline" slot= "start"></ion-icon>
+            <ion-label class = "textTitle"> 50:50</ion-label>
+
+            <!-- <ion-label slot = "end" class = "textTitleSMALL">11</ion-label>
+            <ion-icon name="thumbs-up-sharp" class="thumb_up_style" slot= "end" ></ion-icon>
+
+            <ion-label slot = "end" class = "textTitleSMALL">0</ion-label>
+            <ion-icon name="thumbs-down-sharp" class="textTitle" slot="end"></ion-icon> -->
+            
+      </ion-toolbar>
+      <ion-card-title class = "textTitleBIG">titolo sondaggio</ion-card-title>
+    </ion-card-header>
+
+
+
+    <ion-card-content>
+        <p class= "textSimple">descrizione sondaggio</p>
+        <ion-label class= "textTitleSMALL">Postato in: categoria il 12/12/99</ion-label>
+   
+        <ion-list class = "backgrounds">
+          <ion-list-header>Voti totali: <ion-label>10</ion-label></ion-list-header>
+          
+            <div class = "backgrounds">
+          
+            <ion-item>    
+              <ion-label slot = "start" class = "textTitleSMALL">2
+                <ion-label slot = "start" class = "textTitleSMALL">voti</ion-label>
+              </ion-label>
+              <ion-label>Scelta1</ion-label>
+            </ion-item>
   
-              </div>
-            </ion-col>
-
-
-            <ion-col>
-              <div>
-                    <ion-label class= "textTitleSMALL">Postato in: categoria il 12/12/99</ion-label>
-               </div>
-            </ion-col>
-
-          </ion-row>
-
-
-      <ion-list class = "backgrounds">
-        <ion-list-header>Scelte</ion-list-header>
-
-          <div class = "backgrounds">
-        
-          <ion-item >    
-            <ion-checkbox color="primary"  slot="start"></ion-checkbox>
-            <ion-label>Scelta1</ion-label>
-          </ion-item>
-
-          <ion-item>
-            <ion-checkbox color="primary"  slot="start"></ion-checkbox>
-            <ion-label>Scelta2</ion-label>
-          </ion-item>
-
-          <ion-item >
-            <ion-checkbox color="primary" slot="start"></ion-checkbox>
-            <ion-label>Scelta3</ion-label>
-          </ion-item>
-
-          <ion-item >
-            <ion-checkbox color="primary" slot="start"></ion-checkbox>
-            <ion-label>Scelta4</ion-label>
-          </ion-item>
-
-        </div>
+            <ion-item>
+              <ion-label slot = "start" class = "textTitleSMALL">2
+                <ion-label slot = "start" class = "textTitleSMALL">voti</ion-label>
+              </ion-label>
+              <ion-label>Scelta2</ion-label>
+            </ion-item>
+  
+            <ion-item >
+              <ion-label slot = "start" class = "textTitleSMALL">3
+                <ion-label slot = "start" class = "textTitleSMALL">voti</ion-label>
+              </ion-label>
+              <ion-label>Scelta3</ion-label>
+            </ion-item>
+  
+            <ion-item >
+              <ion-label slot = "start" class = "textTitleSMALL">3
+                <ion-label slot = "start" class = "textTitleSMALL">voti</ion-label>
+              </ion-label>
+              <ion-label>Scelta4</ion-label>
+            </ion-item>
+  
+          </div>
         </ion-list>
+    
+
+
+          <ion-toolbar>
+
+            <ion-button slot="start"  color="light" >
+              <ion-icon name="trash-sharp"  class = "textTitle"></ion-icon>
+            </ion-button>
+
+            <ion-button slot="start"  color="light" >
+              <ion-icon name="hammer-sharp" class = "textTitle"></ion-icon>
+            </ion-button>
+
+          </ion-toolbar>
     </ion-card-content>
-
-    <ion-row>
-
-      <ion-col>
-        <div>
-          <ion-button slot="end" color="light">
-            <ion-icon name="trash-outline"></ion-icon>
-          </ion-button>
-        </div>
-      </ion-col>
-
-
-      <ion-col>
-        <div>    
-           <ion-button slot="end" color="light">
-          <ion-icon name="hammer-outline"></ion-icon>
-        </ion-button>
-         
-        </div>
-      </ion-col>
-
-      <ion-col>
-        <div>
- 
-        </div>
-      </ion-col>
-
-      <ion-col>
-        <div>
- 
-        </div>
-      </ion-col>
-
-      <ion-col>
-        <div>
- 
-        </div>
-      </ion-col>
-
-
-      <ion-col>
-      <div >
-        <ion-button slot="end" color="light">
-          <ion-icon  name = "chevron-forward" slot="icon-only" class = "textTitleBIG">
-            <ion-label ></ion-label>
-          </ion-icon>
-        </ion-button>
-
-  
-      </div>
-      </ion-col>
-  
-  </ion-row>
-
-    </ion-card>
-
-
+  </ion-card>
 </ion-content>    
 
