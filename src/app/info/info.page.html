@@ -1,20 +1,75 @@
+
 <ion-header>
   <ion-toolbar class="backgroundsSecondaryItem">
-    <ion-button slot="start" color="light">
-      <ion-icon name="chevron-back-outline" color="primary" slot="start"></ion-icon>
-      <ion-text color="primary">Indietro</ion-text>
-   </ion-button>
-   <ion-title class="textTitleMockUp">Informazioni applicazione</ion-title>
+    <ion-button slot="start" expand="block" fill="clear" color="light" class="backBtn">
+      <ion-icon color="primary" slot="start" slot="icon-only" name="arrow-back-outline"></ion-icon>
+    </ion-button>
+   <ion-title class="textTitleMockUp">Informazioni</ion-title>
    </ion-toolbar>
 </ion-header>
 
-<ion-content class="backgroundSecondaryItem" >
-<ion-text class="normalText">
-  <p>
-      -inserire informazioni app-  
+<p></p>
 
+<ion-content class="background">
+  
+  <ion-label >
+  <img src="assets/icon/logo.png" class="centro">
+</ion-label>
+
+ <ion-col style="font-size:32px"></ion-col>
+
+
+ <ion-item class="background">
+  
+  AnswerOverflow si tratta di un'applicazione che semplifica lo scambio di cultura e opinioni
+  tra gli utenti, permettendo loro di pubblicare domande o sondaggi di qualsiasi categoria 
+  con un timer che garantisce una immediata risposta da parte della community.<br>
+  All'utente sarà data la possibilità di scegliere la miglior risposta e di inviare un feedback
+  per ogni risposta che risulti utile, in modo da garantire l'affidabilità delle risposta e di
+  chi la scrive.<br>
+  Inoltre  sarà anche possibile instaurare un canale di comunicazione privato tra utenti.<br> 
+  Per ulteriori informazioni vi invitiamo a vedere il video prosentazione cliccando sul 
+  link in basso
+ </ion-item>
+
+
+
+
+
+ <ion-grid>
+
+  <ion-col style>
+    <a href="https://biteable.com/watch/answeroverflow-2470585">Video presentazione</a>.
+  </ion-col>
+
+ </ion-grid>
+
+ <ion-col style="font-size:128px"> </ion-col>
+
+
+<ion-card class= "teamTitle" >TEAM DI SVILUPPO
+<h1>
+<a href="https://github.com/MrJo1996/AnswerOverFlow.git" style="font-size: medium;">Repository progetto</a>.</h1>
+
+</ion-card>
  
-  </p>
-</ion-text>
+
+
+
+<ion-card color='light' *ngFor="let profilo of profili">
+  
+  <ion-card-header>
+    
+  
+      <h1>{{profilo.titolo}}<a href={{profilo.facebook}}>
+          <ion-icon class=' icone' color='medium'></ion-icon>
+      </a>
+          <a href={{profilo.instagram}}>
+              <ion-icon class=' icone' color='medium' name="logo-instagram"></ion-icon></a></h1>
+
+  </ion-card-header>
+</ion-card>
+
+
 
 </ion-content> 
