@@ -1,21 +1,10 @@
-.buttonClass {
-    font-size: 15px;
-    text-align: center;
-}
-
-.textClass{
-    font-size: 22px;
-}
-
-.areaClass{
-border-radius: 5px;
-width: 100%;
-padding: 15;
+.msg-btn{
+    --padding-start: 0.5em;
+    --padding-end: 0.5em
 }
 
 .itemClass{
-
 border-radius: 10px;
-background-color: var(--ion-color-primary);
-
+--background: #3171e0;
 }
+
