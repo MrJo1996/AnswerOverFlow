@@ -91,8 +91,6 @@ const routes: Routes = [
     path: 'inserimento-sondaggio',
     loadChildren: () => import('./inserimento-sondaggio/inserimento-sondaggio.module').then( m => m.InserimentoSondaggioPageModule)
   }
-
-
 ];
 
 @NgModule({
