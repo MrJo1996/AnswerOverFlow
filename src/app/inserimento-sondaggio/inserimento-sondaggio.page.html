@@ -1,0 +1,87 @@
+<ion-header>
+  <ion-toolbar>
+
+    <ion-button slot="start" fill="clear" ion-button icon-only>
+      <ion-icon name="chevron-back-outline"></ion-icon>
+    </ion-button>
+
+    <ion-title>Nuovo sondaggio</ion-title>
+
+    <ion-button slot="end" fill="clear" ion-button icon-only>
+      <ion-icon color="success" name="checkmark-outline"></ion-icon>
+    </ion-button>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+<ion-card>
+  <ion-item>
+    <ion-label position="floating">Titolo</ion-label>
+    <ion-input type="text"></ion-input>
+  </ion-item>
+
+<ion-list>
+
+  <ion-item *ngFor="let scelta of scelte; let idx = index">
+    
+    <ion-label>{{idx + 1}}°</ion-label>
+    <ion-input type="text" 
+              [(ngModel)]="scelte[idx].value" 
+              placeholder="Scelta">
+    </ion-input>
+      
+    <ion-button *ngIf="idx > 1"
+                slot="end" 
+                fill="clear"
+                ion-button (click)="Remove(idx)">
+      <ion-icon color="danger" name="close-circle-outline"></ion-icon>
+    </ion-button>
+      
+  </ion-item>
+  
+</ion-list>
+
+<ion-item lines="none">
+  
+<ion-button fill="clear" 
+            class="plus"
+            ion-button (click)="Add()">
+  <ion-icon name="add"></ion-icon>
+</ion-button>
+  
+</ion-item>
+
+ <ion-item lines="none" >
+  <ion-label>
+    <ion-icon name="time-outline"></ion-icon>
+  </ion-label>
+  <ion-datetime placeholder ="Timer" displayFormat="HH:mm" pickerFormat="HH mm" [(ngModel)]="myTime"></ion-datetime>
+</ion-item>
+
+
+<ion-item lines="none">
+<ion-label>
+  <ion-icon name = "bookmark-outline"></ion-icon>
+</ion-label> 
+<ion-select interface="popover">
+   <ion-select-option *ngFor="let categoria of ['Scienza', 'Matematica', 'Informatica', 'Biologia', 'Chimica', 'Design']">{{categoria}}</ion-select-option>
+</ion-select>
+</ion-item>
+</ion-card>
+    
+ 
+
+
+
+<!--
+<button ion-button full  (click)="goTo()" >let's go</button>
+<ion-card *ngIf="data">
+  <ion-item *ngFor="let att of anArray;">
+    <div class="card-title">{{att.value}}</div>
+  </ion-item>
+ </ion-card> -->
+
+ 
+
+</ion-content>

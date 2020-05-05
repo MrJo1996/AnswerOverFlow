@@ -54,7 +54,8 @@ const routes: Routes = [
   {
     path: 'visualizza-profilo',
     loadChildren: () => import('./visualizza-profilo/visualizza-profilo.module').then( m => m.VisualizzaProfiloPageModule)
-  },  {
+  },
+  {
     path: 'home',
     loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
   },
@@ -81,6 +82,14 @@ const routes: Routes = [
   {
     path: 'info',
     loadChildren: () => import('./info/info.module').then( m => m.InfoPageModule)
+  },
+  {
+    path: 'visualizza-chats',
+    loadChildren: () => import('./visualizza-chats/visualizza-chat.module').then( m => m.VisualizzaChatPageModule)
+  },
+  {
+    path: 'inserimento-sondaggio',
+    loadChildren: () => import('./inserimento-sondaggio/inserimento-sondaggio.module').then( m => m.InserimentoSondaggioPageModule)
   }
 
 
