@@ -1,11 +1,11 @@
 <ion-content padding class="background">
   <ion-menu-button color="medium"></ion-menu-button>
-
-  <ion-grid class="grid">
+ <ion-grid class="grid">
       <ion-row>
           <ion-col>
               <div>
-                  <ion-title class="titolo">Log in</ion-title>
+                
+                  <ion-title class="titolo">Login</ion-title>
                   <ion-item color="none" lines="none" class="email">
                       <ion-input [(ngModel)]="username" placeholder="Email"></ion-input>
                   </ion-item>
@@ -18,11 +18,16 @@
                                 (click)="isActive=!isActive;"
                                 isActive=true>
                       </ion-icon>
+                
                   </ion-item>
 
 
               </div>
               <ion-button color="light" (click)="postLogin()">login</ion-button>
+
+                <p><ion-col><a href="./pswrddmnti">Password dimenticata? clicca qui</a></ion-col></p>
+
+                <ion-col><a href="./registration">Non sei ancora registrato? clicca qui</a></ion-col>
 
           </ion-col>
       </ion-row>
