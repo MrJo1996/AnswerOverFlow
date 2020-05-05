@@ -86,6 +86,18 @@ export class ModificaSondaggioPage implements OnInit {
     console.log(result);
   }
 
+  async popupConfermaModificheSondaggio() {
+    const alert = await this.alertController.create({
+      header: 'Conferma modifiche',
+      message: 'Vuoi confermare le modifiche effettuate?',
+      buttons: ['Conferma']
+    });
+
+    await alert.present();
+    let result = await alert.onDidDismiss();
+    console.log(result);
+  }
+
   ngOnInit() {
   }
 
