@@ -1,41 +1,81 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>registrazione</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-toolbar class="backgroundsSecondaryItem">
+  <ion-title>REGISTRAZIONE</ion-title>
+  <ion-button slot="start" color="light">
+    <ion-icon name="arrow-back-outline"></ion-icon>
+  </ion-button>
+</ion-toolbar>
 
 <ion-content class="backgrounds">
-  <ion-item>
-    <ion-label fixed ></ion-label>
-    <ion-input placeholder="Nome*" type="text" value=""></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label fixed></ion-label>
-    <ion-input placeholder="Cognome*" type="text" value=""></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label fixed></ion-label>
-    <ion-input placeholder="E-mail*" type="text" value=""></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label fixed></ion-label>
-    <ion-input placeholder="Username*" type="text" value=""></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label fixed></ion-label>
-    <ion-input placeholder="Password*" type="text" value=""></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label fixed></ion-label>
-    <ion-input placeholder="Conferma Password*" type="text" value=""></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-text>*Accetto i termini.....</ion-text>
-    <ion-checkbox color="dark" checked="false"></ion-checkbox>
-  </ion-item>
-  <div>
-    <ion-button expand="block" slot="start" color="light" size="large">
-      <ion-text color="primary">Conferma</ion-text>
-    </ion-button> 
-  </div>
+
+  <ion-card>
+    <div>
+      <div class="logo"></div>
+      <div align="center">
+        <ion-text class="textTitleBIG">
+          Answer OverFlow
+        </ion-text>
+      </div>
+    </div>
+    <ion-item>
+      <ion-label fixed>
+        <ion-icon name="person">
+        </ion-icon>
+      </ion-label>
+      <ion-input [(ngModel)]="Nome" placeholder="Nome*"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label fixed>
+        <ion-icon name="person">
+        </ion-icon>
+      </ion-label>
+      <ion-input [(ngModel)]="Cognome" placeholder="Cognome*"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label fixed>
+        <ion-icon name="mail"></ion-icon>
+      </ion-label>
+      <ion-input [(ngModel)]="e_mail" placeholder="E-mail*"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label fixed>
+        <ion-icon name="happy"></ion-icon>
+      </ion-label>
+      <ion-input [(ngModel)]="Username" placeholder="Username*"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label fixed>
+        <ion-icon name="key"></ion-icon>
+      </ion-label>
+      <ion-input type="{{ !isActive? 'password' : 'text' }}" [(ngModel)]="password" placeholder="Password*">
+      </ion-input>
+      <ion-icon color="grey" slot="end" [name]="isActive?'eye':'eye-off'" item-right (click)="isActive=!isActive;"
+        isActive=true>
+      </ion-icon>
+    </ion-item>
+    <ion-item>
+      <ion-label fixed>
+        <ion-icon name="key"></ion-icon>
+      </ion-label>
+      <ion-input type="{{ !isActive? 'password' : 'text' }}" [(ngModel)]="conferma_password"
+        placeholder="Conferma Password*">
+      </ion-input>
+      <ion-icon color="grey" slot="end" [name]="isActive?'eye':'eye-off'" item-right (click)="isActive=!isActive;"
+        isActive=true>
+      </ion-icon>
+    </ion-item>
+    <ion-item>
+      <ion-text>*Accetto i termini.....</ion-text>
+      <ion-checkbox color="dark" checked="false"></ion-checkbox>
+    </ion-item>
+    <div>
+      <ion-button expand="block" slot="start" color="light" size="large">
+        <ion-text color="primary">Conferma</ion-text>
+      </ion-button>
+    </div>
+    <div>
+      <ion-button expand="block" slot="start" color="light" size="large">
+        <ion-text class="textTitleSmall">Sono già registrato</ion-text>
+      </ion-button>
+    </div>
+  </ion-card>
 </ion-content>
