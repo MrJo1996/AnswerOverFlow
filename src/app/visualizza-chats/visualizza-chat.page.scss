@@ -1,0 +1,48 @@
+ion-title{
+    font-size: 2rem;
+}
+
+ion-button{
+    color: var(--ion-toolbar-color);
+    ion-icon{
+        font-size: 1.5rem;
+    }
+}
+
+ion-searchbar {
+    height: 50px !important;
+    // --height: 40px;
+    // max-width: 400px;
+    font-size: 1.25em !important;
+    // border: 3px solid white;
+    background: var(--ion-toolbar-color) !important;
+    --background: var(--ion-color-step-300) !important;
+    // --placeholder-opacity: 0.2;
+    // border-radius: 20px !important;
+    // --border-radius: 10px !important;
+    // --box-shadow: none ;
+    // background: #FFF !important;
+    // border-radius: 30px !important;
+    // height: 40px !important;
+    // max-width: 400px;
+    // font-size: 1.25em !important;
+    // border: 1px solid transparent;  
+        --icon-color: var (--ion-color-primary);
+        --box-shadow: 0 0 3px rgba(255, 255, 255, 1);
+        ::ng-deep{
+            .searchbar-input-container{            
+                .searchbar-input{ 
+                    border-radius: 30px;
+                    //any style that you want to implement on your searchbar
+                }
+            }
+        }   
+}
+
+ion-avatar{
+    background-color: var(--ion-text-color);
+}
+
+ion-label{
+    margin-left: 5%;
+}

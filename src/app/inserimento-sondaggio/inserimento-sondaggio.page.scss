@@ -1,0 +1,33 @@
+ion-button{
+    color: var(--ion-toolbar-color);
+    ion-icon{
+        font-size: 1.5rem;
+    }
+}
+
+ion-title{
+    font-size: 99%;
+}
+
+.plus{
+    margin-left: auto;
+    margin-right: auto;
+    ion-icon{
+        font-size: 1.5rem;
+        color: var(--ion-color-primary);
+    }
+}
+
+// .timer{
+//     margin-left: 10%;
+//     margin-right: 10%;
+// }
+// .scelta{
+//     margin-left: 20%;
+//     margin-right: 20%;
+
+//     ion-label{
+//         color: var(--ion-color-primary);
+//     }
+// }
+
