@@ -1,9 +1,8 @@
 <ion-header>
   <ion-toolbar>
-      <ion-button  slot="start" expand="block" fill="clear" (click)="goBack()" class="msg-btn">
-        <ion-icon color="primary" slot="start" slot="icon-only" name="arrow-back-outline"></ion-icon>
-      </ion-button>
-
+    <ion-button  slot="start" expand="block" fill="clear" (click)="goBack()" class="msg-btn">
+      <ion-icon color="primary" slot="start" slot="icon-only" name="arrow-back-outline"></ion-icon>
+    </ion-button>
       <ion-title>Dettagli della tua domanda</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -15,11 +14,18 @@
   <ion-card class = "backgrounds">    
     <ion-card-header>
       <ion-toolbar class="backgrounds">
-            <ion-icon   class = "thumb_up_style" name="alarm-outline" slot= "start"></ion-icon>
+       
+            <ion-icon   class = "alarm_style" name="alarm-outline" slot= "start"></ion-icon>
             <ion-label class = "textTitle"> 50:50</ion-label>
-            <ion-label slot="end" class="textTitleSMALL">  Risposte totali: 
+            <ion-button slot="end" expand="block" fill="clear">
+              <ion-icon name="trash-sharp" color="primary" class = "icons_generic_style"></ion-icon>
+            </ion-button>
+           <ion-button slot="end" expand="block" fill="clear">
+              <ion-icon name="hammer-sharp" color="primary" class = "icons_generic_style"></ion-icon>
+           </ion-button>
+         <!--    <ion-label slot="end" class="textTitleSMALL">  Risposte totali: 
               <ion-label slot="end" class="textTitleSMALL">2</ion-label>
-            </ion-label>
+            </ion-label> -->
             
       </ion-toolbar>
       <ion-card-title class = "textTitleBIG">titolo domanda</ion-card-title>
@@ -29,24 +35,21 @@
 
     <ion-card-content>
         <p class= "textSimple">descrizione domanda</p>
-        <ion-label class= "textTitleSMALL">Postato in: categoria il 12/12/99</ion-label>
+     
+          
+      
+        
    
         
           
 
           <ion-toolbar>
+              <ion-icon name="calendar-outline" slot = start class = "calendar_icon_style"></ion-icon>
+              <ion-label class= "description_text" slot = "start" >12/12/99</ion-label>
+              <ion-icon name="list" slot = "start"  class = "icon_list_style"></ion-icon>
+              <ion-label class= "description_text" slot = "start" >categoria</ion-label>
+               
 
-            <ion-button slot="start" expand="block" fill="clear">
-              <ion-icon name="trash-sharp"  class = "textTitle"></ion-icon>
-            </ion-button>
-
-            <ion-button slot="start" expand="block" fill="clear">
-              <ion-icon name="hammer-sharp" class = "textTitle"></ion-icon>
-            </ion-button>
-
-            <ion-button slot="end" expand="block" fill="clear">
-              <ion-icon name="arrow-down-outline" class = "textTitle"></ion-icon>
-            </ion-button>
           </ion-toolbar>
     </ion-card-content>
   </ion-card>
@@ -55,26 +58,38 @@
         <ion-card class = "backgrounds">    
           <ion-card-header>
             <ion-toolbar class="backgrounds">
-              <ion-label class = "textTitleSMALL">Mario Rossi</ion-label>
+              <ion-avatar  slot="start" class="icon-avatar" >
+                <img src="https://s3.amazonaws.com/liberty-uploads/wp-content/uploads/sites/1218/2015/09/avatarsucks.jpg">
+              </ion-avatar>
+              <ion-label class = "username_text_style">Mario Rossi</ion-label>
+
+
+              <ion-icon name="ribbon" class="ribbon_style" slot="end"></ion-icon>
               <ion-label slot = "end" class = "textTitleSMALL">11</ion-label>
-            <ion-icon name="thumbs-up-sharp" class="thumb_up_style" slot= "end" ></ion-icon>
+            <ion-icon name="trending-up-outline" class="thumb_up_style" slot= "end" ></ion-icon>
 
             <ion-label slot = "end" class = "textTitleSMALL">0</ion-label>
-            <ion-icon name="thumbs-down-sharp" class="textTitle" slot="end"></ion-icon>
+            <ion-icon name="trending-down-outline" class="thumb_down_style" slot="end"></ion-icon>
 
             </ion-toolbar>
           </ion-card-header>
           <ion-card-content>
-              <p class= "textSimple">descrizione risposta</p>
-              <ion-label class= "textTitleSMALL">il 12/12/99</ion-label>
+              <p class= "textSimple">Questa è la tua risposta preferita</p>
+              <ion-toolbar class="backgrounds">
+    
+                <ion-icon name="calendar-outline" slot="start" class = "calendar_icon_style" ></ion-icon>
+                <ion-label class= "description_text"  slot="start" >12/12/99</ion-label>
+            
+              
+              <ion-button  slot="end" expand="block" fill="clear">
+                <ion-icon color="white" class="icons_generic_style" name="heart-outline" ></ion-icon>
+              </ion-button>
+  
+            </ion-toolbar>
+              
           </ion-card-content>
 
-          <ion-toolbar class="backgrounds">
-            <ion-button  slot="end" expand="block" fill="clear">
-              <ion-icon color="white" name="heart-outline" ></ion-icon>
-            </ion-button>
-
-          </ion-toolbar>
+          
         </ion-card>
 
     
@@ -85,26 +100,35 @@
         <ion-card class = "backgrounds">    
           <ion-card-header>
             <ion-toolbar class="backgrounds">
-              <ion-label class = "textTitleSMALL">Mario Rossi</ion-label>
+              <ion-avatar  slot="start" class="icon-avatar" >
+                <img src="https://s3.amazonaws.com/liberty-uploads/wp-content/uploads/sites/1218/2015/09/avatarsucks.jpg">
+              </ion-avatar>
+              <ion-label class = "username_text_style">Mario Rossi</ion-label>
               <ion-label slot = "end" class = "textTitleSMALL">11</ion-label>
-            <ion-icon name="thumbs-up-sharp" class="thumb_up_style" slot= "end" ></ion-icon>
+            <ion-icon name="trending-up-outline" class="thumb_up_style" slot= "end" ></ion-icon>
 
             <ion-label slot = "end" class = "textTitleSMALL">0</ion-label>
-            <ion-icon name="thumbs-down-sharp" class="textTitle" slot="end"></ion-icon>
+            <ion-icon name="trending-down-outline" class="thumb_down_style" slot="end"></ion-icon>
 
             </ion-toolbar>
           </ion-card-header>
           <ion-card-content>
               <p class= "textSimple">descrizione risposta</p>
-              <ion-label class= "textTitleSMALL">il 12/12/99</ion-label>
+              
+              <ion-toolbar class="backgrounds">
+           
+                <ion-icon name="calendar-outline" slot="start" class = "calendar_icon_style"></ion-icon>
+                <ion-label class= "description_text" slot="start">12/12/99</ion-label>
+           
+  
+              <ion-button  slot="end" expand="block" fill="clear">
+                <ion-icon color="white" class="icons_generic_style" name="heart-outline" ></ion-icon>
+              </ion-button>
+  
+            </ion-toolbar>
           </ion-card-content>
 
-          <ion-toolbar class="backgrounds">
-            <ion-button  slot="end" expand="block" fill="clear">
-              <ion-icon color="white" name="heart-outline" ></ion-icon>
-            </ion-button>
-
-          </ion-toolbar>
+          
         </ion-card>
 
 </ion-content>    
