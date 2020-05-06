@@ -1,44 +1,45 @@
 <ion-header>
   <ion-toolbar class="backgroundsSecondaryItem">
 
-    <ion-button slot="start" expand="block" fill="clear" color="light" class="backBtn">
+    <ion-button slot="start" expand="block" fill="clear" (click)="goback()" class="backBtn">
       <ion-icon color="primary" slot="start" slot="icon-only" name="arrow-back-outline"></ion-icon>
     </ion-button>
 
-    <ion-title class="textTitle">Proponi categoria</ion-title>
+    <ion-title class="textTitle">PROPONI CATEGORIA</ion-title>
   </ion-toolbar> 
 </ion-header>
 
-<ion-content class="backgrounds">
-  <ion-item>
-    <ion-label class="titleSize">Hai una nuova categoria o sottocategoria da proporre?<br>
-      <ion-text class="normalText">Seleziona dalla lista la categoria per la quale proporre una nuova sottocategoria.<br></ion-text>
-      <ion-text class="normalText">Per proporre una nuova categoria selezionare l'opzione "Altro".<br></ion-text>
-      <ion-text class="normalText">I nostri sviluppatori valuteranno la proposta al più presto!</ion-text>
-    </ion-label>
-  </ion-item>
+<ion-content>
+  <ion-card class="backgrounds">
+    <ion-card-content>
+      <ion-card-title class="titleSize">Hai una nuova categoria o sottocategoria da proporre?</ion-card-title>
+      <ion-card-subtitle class="normalText">Seleziona dalla lista la categoria per la quale proporre una nuova sottocategoria.<br>
+        Per proporre una nuova categoria selezionare l'opzione "Nuova Categoria".<br>
+        Scrivi nel box di testo il nome della nuova categoria o sottocategoria.<br>
+        I nostri sviluppatori valuteranno la proposta al più presto!
+      </ion-card-subtitle>
+    </ion-card-content>
+  </ion-card>
 
-    <ion-item>
-      <ion-label position="stacked">Seleziona categoria
-        <ion-text color="danger">*</ion-text>
-      </ion-label>
-      <ion-select interface="popover">
+  <ion-card class="backgrounds">
+    <ion-card-content>
+      <ion-text class="boxText">Seleziona categoria</ion-text>
+      <ion-text class="rboxText">*</ion-text>      
+      <ion-select placeholder="- - - - -" interface="popover" class="select">
         <ion-select-option value="Scienza">Scienza</ion-select-option>
         <ion-select-option value="Informatica">Informatica</ion-select-option>
         <ion-select-option value="Arte">Arte</ion-select-option>
         <ion-select-option value="Letteratura">Letteratura</ion-select-option>
-        <ion-select-option value="Altro">Altro</ion-select-option>
+        <ion-select-option value="Nuova Categoria">Nuova Categoria</ion-select-option>
       </ion-select>
-    </ion-item>
+      
+      <ion-text class="boxText">Inserisci nome</ion-text>
+      <ion-text class="rboxText">*</ion-text>
+      <ion-input placeholder="es. Musica (Rock, Pop...), Letteratura (Fantasy, Thriller...), ecc..." class="select"></ion-input>
+    </ion-card-content>
+  </ion-card>
 
-    <ion-item>
-      <ion-label position="stacked">Nuova categoria o sottocategoria
-        <ion-text color="danger">*</ion-text>
-      </ion-label>
-      <ion-input placeholder="es. Musica (Rock, Pop...), Letteratura (Fantasy, Thriller...), ecc..."></ion-input>
-    </ion-item>
-
-    <ion-button class="btn-invio" color="light">
-      <ion-text color="primary"> Invio </ion-text>
-    </ion-button>
+  <ion-button class="btnInvio" expand="block">
+    <ion-text> INVIO </ion-text>
+  </ion-button>
 </ion-content>
