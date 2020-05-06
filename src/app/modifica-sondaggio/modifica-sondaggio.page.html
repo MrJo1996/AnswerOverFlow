@@ -1,13 +1,13 @@
 <ion-toolbar class="backgroundsSecondaryItem">
   
-  <ion-button slot="start" color="light">
-    <ion-icon name="arrow-back-outline" color="primary"></ion-icon>
+  <ion-button slot="start" expand="block" fill="clear" class="msg-btn">
+    <ion-icon slot="icon-only" name="arrow-back-outline" color="primary"></ion-icon>
   </ion-button>
 
   <ion-title class="textTitle" slot="start">Modifica Sondaggio</ion-title>
 
-  <ion-button slot="end" color="light" (click)="popupConfermaModificheSondaggio()">
-    <ion-icon name="checkmark-sharp" color="primary"></ion-icon>
+  <ion-button slot="end" expand="block" fill="clear" class="msg-btn" (click)="popupConfermaModificheSondaggio()">
+    <ion-icon slot="icon-only" name="checkmark-sharp" color="success"></ion-icon>
   </ion-button>
 </ion-toolbar>
 
@@ -20,9 +20,11 @@
     </ion-item>
   
     <ion-item color="light">
-      <ion-icon name="alarm-outline" slot="start"></ion-icon>
+      <ion-icon name="time-outline" slot="start"></ion-icon>
       <ion-label position="stacked">Timer</ion-label>
-      <ion-input readonly placeholder="30:00" color="medium" (click)="popupModificaTimer()"></ion-input>
+      <ion-datetime placeholder="Timer" displayFormat="HH:mm" pickerFormat="HH mm"
+          [(ngModel)]="myTime"></ion-datetime>
+
     </ion-item>
   </ion-card>
 

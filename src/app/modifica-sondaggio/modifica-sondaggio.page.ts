@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController} from '@ionic/angular';
+import { AlertController } from '@ionic/angular';
+
+import { Promise } from 'q';
+
+import { PostServiceService } from '../services/post-service.service';
 
 @Component({
   selector: 'app-modifica-sondaggio',
@@ -8,7 +12,14 @@ import { AlertController} from '@ionic/angular';
 })
 export class ModificaSondaggioPage implements OnInit {
 
-  constructor(public alertController: AlertController) { }
+  codice_sondaggio = 0;
+  titolo = '';
+  timer = '';
+  request: Promise<any>;
+  result: Promise<any>;
+  url = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/modificaSondaggio';
+
+  constructor(public alertController: AlertController, public service: PostServiceService) { }
 
   async popupModificaTitolo() {
     const alert = await this.alertController.create({
@@ -99,6 +110,22 @@ export class ModificaSondaggioPage implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  public postModificaSondaggio() {
+
+    let postData = {
+      'titolo': this.titolo,
+      'timer': this.timer,
+      'codice_sondaggio': this.codice_sondaggio
+    };
+
+    this.result = this.service.postService(postData, this.url).then((data) => {
+      this.result = data;
+      console.log(data);
+    }, err => {
+      console.log(err.message);
+    });
   }
 
 }
