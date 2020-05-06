@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AlertController} from '@ionic/angular';
 
 @Component({
   selector: 'app-modifica-domanda',
@@ -7,8 +8,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ModificaDomandaPage implements OnInit {
 
-  constructor() { }
+  constructor(public alertController: AlertController) { }
 
+  async popupConfermaModificheDomanda() {
+    const alert = await this.alertController.create({
+      header: 'Conferma modifiche',
+      message: 'Vuoi confermare le modifiche effettuate?',
+      buttons: ['Conferma']
+    });
+
+    await alert.present();
+    let result = await alert.onDidDismiss();
+    console.log(result);
+  }
   ngOnInit() {
   }
 
