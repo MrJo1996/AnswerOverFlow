@@ -1,3 +1,5 @@
+
+
 ion-item {
 
 
@@ -5,7 +7,7 @@ ion-item {
     align-content: center;
     border-bottom: solid 1px grey;
   
-    color: black;
+    color:  #97a9c5;
   
   }
   .titolo{
@@ -20,11 +22,7 @@ ion-item {
   
   }
   
-  ion-button {
-  
-    width: 100%;
-    margin-top: 3%;
-  }
+
   
   a {
   
@@ -36,3 +34,28 @@ ion-item {
   
     color: #2a2a2a
   }
+
+  .logo {
+    width: 180px;
+    height: 180px;
+    margin: 20px auto 8px;
+    border-radius: 10%;
+    background: url("src/assets/img/AOF Logo TRASP.png") no-repeat;
+    background-size: 100%;
+  }
+
+  .btn-group {
+    .button-ios,
+    .button-md {
+      border-radius: 0;
+      &:first-of-type {
+        border-radius: 2px 0 0 2px;
+      }
+      &:last-of-type {
+        border-radius: 0 2px 2px 0;
+      }
+    }
+  }
+
+
+

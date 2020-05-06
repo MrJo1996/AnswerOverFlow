@@ -1,41 +1,47 @@
+
 <ion-content padding class="background">
-  <ion-menu-button color="medium"></ion-menu-button>
- <ion-grid class="grid">
-      <ion-row>
-          <ion-col>
-              <div>
-                  
-                  <ion-title class="titolo">Login</ion-title>
-                  <ion-item color="none" lines="none" class="email">
-                      <ion-input [(ngModel)]="username" placeholder="Email"></ion-input>
-                  </ion-item>
-                  <ion-item color="none" lines="none">  
-                 <ion-input type="{{ !isActive ? 'password' : 'text' }}" [(ngModel)]="password"
-                                 placeholder="Password"></ion-input>
-                      <ion-icon color="grey" slot="end"
-                                [name]="isActive?'eye':'eye-off'"
-                                item-right
-                                (click)="isActive=!isActive;"
-                                isActive=true>
-                      </ion-icon>
 
+    <ion-grid class="grid">
+         <ion-row>
+             <ion-col>
+                 <div>
+                    <div>
+                        <div class="logo"></div>
+                        <div align="center">
+                         <p><ion-text class="textTitleBIG">
+                            Answer OverFlow
+                          </ion-text></p>
+                        </div>
+                      </div>
+                     
                     
-                  </ion-item>
-
-
-              </div>
-              <ion-button color="light" (click)="postLogin()">login</ion-button>
-
-                <p><ion-col><a href="./pswrddmnti">Password dimenticata? clicca qui</a></ion-col></p>
-
-                <ion-col><a href="./registration">Non sei ancora registrato? clicca qui</a></ion-col>
-
-          </ion-col>
-      </ion-row>
-      
-
-  </ion-grid>
-
-
-</ion-content>
-  
+                     <ion-item color="none" lines="none" class="email">
+                         <ion-input [(ngModel)]="username" placeholder="Email"></ion-input>
+                     </ion-item>
+                     <ion-item color="none" lines="none">  
+                    <ion-input type="{{ !isActive ? 'password' : 'text' }}" [(ngModel)]="password"
+                                    placeholder="Password"></ion-input>
+                         <ion-icon color="grey" slot="end"
+                                   [name]="isActive?'eye':'eye-off'"
+                                   item-right
+                                   (click)="isActive=!isActive;"
+                                   isActive=true>
+                         </ion-icon>
+   
+                       
+                     </ion-item>
+   
+   
+                 </div>
+                 <p><ion-button color="light" (click)="postLogin()">Accedi</ion-button></p>
+                 <ion-button color="primary" (click)="postLogin()">Registrati</ion-button>
+   
+               <p><ion-col><a href="./pswrddmnti">Password dimenticata? clicca qui</a></ion-col></p>
+   
+                  
+             </ion-col>
+         </ion-row>
+         
+   
+     </ion-grid>
+   </ion-content>

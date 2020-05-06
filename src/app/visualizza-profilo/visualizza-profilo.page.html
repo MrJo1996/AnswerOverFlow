@@ -1,15 +1,18 @@
 <ion-header>
   <ion-toolbar class="backgroundsSecondaryItem">
-    <ion-button slot="start" color="light">
-      <ion-icon name="chevron-back-outline" color="primary" slot="start"></ion-icon>
-      <ion-text color="primary"></ion-text>
-    </ion-button>
-    <ion-title class="textTitle">Visualizza profilo</ion-title>
-    <ion-button slot="end" color="light">
-      <ion-text color="danger">Elimina</ion-text>
-    </ion-button>
-  </ion-toolbar>
-</ion-header>
+   
+      <ion-button  slot="start" expand="block" fill="clear" (click)="goBack()" class="msg-btn">
+        <ion-icon color="primary" slot="start" slot="icon-only" name="arrow-back-outline"></ion-icon>
+        </ion-button>
+     
+      <ion-title style="font-size: x-large; text-align: center;"><b>Visualizza profilo</b></ion-title>
+      
+      <ion-button  slot="end" expand="block" fill="clear" (click)="popupConfermaModificaProfilo()" class="msg-btn">
+        <ion-icon color="primary" slot="end" slot="icon-only" name="checkmark-sharp"></ion-icon>
+        </ion-button>
+     
+    </ion-toolbar>
+  </ion-header>
 
 <ion-content class="backgrounds">
 
@@ -43,7 +46,8 @@
     </ion-item>
 </ion-card>
 
-    <ion-button color="light" class="ion-button">Invia messaggio</ion-button>
+    <p><ion-button color="light" class="ion-button">Invia messaggio</ion-button></p>
+    <ion-button color="danger" class="ion-button">Segnala Utente</ion-button>
 
 
   
