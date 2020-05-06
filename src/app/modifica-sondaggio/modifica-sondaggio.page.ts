@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 
-import { Promise } from 'q';
+//import { PostServiceService } from '../services/post-service.service';
+import { ApiService } from 'src/app/providers/api.service';
 
-import { PostServiceService } from '../services/post-service.service';
 
 @Component({
   selector: 'app-modifica-sondaggio',
@@ -12,21 +12,50 @@ import { PostServiceService } from '../services/post-service.service';
 })
 export class ModificaSondaggioPage implements OnInit {
 
-  codice_sondaggio = 0;
-  titolo = '';
-  timer = '';
-  request: Promise<any>;
-  result: Promise<any>;
-  url = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/modificaSondaggio';
+  codice_sondaggio: number;
+  titolo: string;
+  timer: string;
 
-  constructor(public alertController: AlertController, public service: PostServiceService) { }
+  /* request: Promise<any>;
+  result: Promise<any>; 
 
+  url = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/modificaSondaggio'; */
+
+  constructor(private alertController: AlertController, public apiService: ApiService) { }
+
+
+  ngOnInit() {
+    this.titolo = 'spero che funzioniiiii';
+    this.timer = '03:20:30';
+    this.codice_sondaggio = 4;
+
+
+  }
+
+  async modify() {
+
+    this.apiService.modificaSondaggio(this.titolo, this.timer, this.codice_sondaggio).then(
+      (result) => { // nel caso in cui va a buon fine la chiamata
+        /*  this.presentAlert();
+         this.goToHome(); */
+        console.log('Modifica avvenuta con successo: ',this.titolo,this.timer,this.codice_sondaggio);
+      },
+      (rej) => {// nel caso non vada a buon fine la chiamata
+        console.log('Modifica non effetutata');
+        /* this.goToHome();
+        this.presentAlertNegativo(); */
+      }
+    );
+
+  }
+
+  //Pop-up Titolo
   async popupModificaTitolo() {
     const alert = await this.alertController.create({
       header: 'Modifica',
       inputs: [
         {
-          name: 'name1',
+          name: 'titolo',
           type: 'text',
           placeholder: 'Titolo'
         }
@@ -42,6 +71,7 @@ export class ModificaSondaggioPage implements OnInit {
         }, {
           text: 'Ok',
           handler: () => {
+            //prendi titolo this.titolo=titolo scritto
             console.log('Confirm Ok');
           }
         }
@@ -53,6 +83,7 @@ export class ModificaSondaggioPage implements OnInit {
     console.log(result);
   }
 
+  //Pop-up Timer
   async popupModificaTimer() {
     const alert = await this.alertController.create({
       header: 'Modifica',
@@ -85,6 +116,7 @@ export class ModificaSondaggioPage implements OnInit {
     console.log(result);
   }
 
+  //Pop-up Conferma Eliminazione
   async popupConfermaEliminaSondaggio() {
     const alert = await this.alertController.create({
       header: 'Elimina sondaggio',
@@ -97,6 +129,7 @@ export class ModificaSondaggioPage implements OnInit {
     console.log(result);
   }
 
+  //Pop-up Conferma Modifiche
   async popupConfermaModificheSondaggio() {
     const alert = await this.alertController.create({
       header: 'Conferma modifiche',
@@ -107,13 +140,19 @@ export class ModificaSondaggioPage implements OnInit {
     await alert.present();
     let result = await alert.onDidDismiss();
     console.log(result);
+    console.log("CIAOOOOO");
+    
+    //LANCIO SERVIZIO MODIFICA UNA VOLTA CLICCATO "CONFERMA"
+    this.modify();
+  
+  
   }
 
-  ngOnInit() {
-  }
 
-  public postModificaSondaggio() {
 
+
+   /* public postModificaSondaggio() {
+    //param da passare
     let postData = {
       'titolo': this.titolo,
       'timer': this.timer,
@@ -121,11 +160,13 @@ export class ModificaSondaggioPage implements OnInit {
     };
 
     this.result = this.service.postService(postData, this.url).then((data) => {
+      //buon fine
       this.result = data;
       console.log(data);
     }, err => {
+      //ombo
       console.log(err.message);
     });
-  }
+  }  */
 
 }
