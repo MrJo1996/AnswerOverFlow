@@ -67,17 +67,17 @@ export class ApiService {
       this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/modificaSondaggio', body).subscribe(
         data => {
           let esito = data['message'];
-          console.log('esito: ', esito);
           resolve(esito);
         },
         (err) => {
+          
           reject();
         }
       );
     });
   }
 
-  visualizzaSondaggio(codice_sondaggio: Number) {
+  getSondaggio(codice_sondaggio: Number) {
     const body = {
       codice_sondaggio: codice_sondaggio
     };
@@ -85,10 +85,10 @@ export class ApiService {
     return new Promise((resolve, reject) => {
       this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaSondaggio', body).subscribe(
         data => {
-          let esito = data['message'];
-          console.log('esito: ', esito);
-          resolve(esito);
-          console.log(data);
+          let sondaggio = data['Sondaggio']; 
+          resolve(sondaggio); //restituirò al ts un oggetto di nome "sondaggio" con accesso già alla posizione "Sondaggio" avendo visto il json di data
+         // console.log('ciao' ,sondaggio);
+         
         },
         (err) => {
           reject();
@@ -115,4 +115,5 @@ export class ApiService {
       );
     });
   }
+
 }
