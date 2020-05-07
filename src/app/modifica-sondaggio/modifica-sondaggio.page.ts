@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 
-//import { PostServiceService } from '../services/post-service.service';
 import { ApiService } from 'src/app/providers/api.service';
 
 
@@ -20,11 +19,6 @@ export class ModificaSondaggioPage implements OnInit {
   titolo: string;
   timer: string;
 
-  /* request: Promise<any>;
-  result: Promise<any>; 
-
-  url = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/modificaSondaggio'; */
-
   constructor(private alertController: AlertController, public apiService: ApiService) { }
 
 
@@ -33,7 +27,7 @@ export class ModificaSondaggioPage implements OnInit {
     this.showSurvey();
 
     this.timer = '03:20:30';
-    this.codice_sondaggio = 4;
+    this.codice_sondaggio = 13;
   }
 
   async modify() {
@@ -74,7 +68,7 @@ export class ModificaSondaggioPage implements OnInit {
         {
           name: 'titolo',
           type: 'text',
-          placeholder: 'Titolo'
+          placeholder: this.titolo
         }
       ],
       buttons: [
@@ -164,24 +158,5 @@ export class ModificaSondaggioPage implements OnInit {
   
   
   }
-
-
-/* public postModificaSondaggio() {
-    //param da passare
-    let postData = {
-      'titolo': this.titolo,
-      'timer': this.timer,
-      'codice_sondaggio': this.codice_sondaggio
-    };
-
-    this.result = this.service.postService(postData, this.url).then((data) => {
-      //buon fine
-      this.result = data;
-      console.log(data);
-    }, err => {
-      //ombo
-      console.log(err.message);
-    });
-  } */
 
 }
