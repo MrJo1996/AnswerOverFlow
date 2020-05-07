@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { Promise } from "q";
 
-import { PostServiceService } from "../Services/post-service.service";
+import { PostServiceService } from "../services/post-service.service";
 import { Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
 
