@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController} from '@ionic/angular';
 
+import { ApiService } from 'src/app/providers/api.service';
+
 @Component({
   selector: 'app-modifica-risposta',
   templateUrl: './modifica-risposta.page.html',
@@ -8,7 +10,10 @@ import { AlertController} from '@ionic/angular';
 })
 export class ModificaRispostaPage implements OnInit {
 
-  constructor(public alertController: AlertController) { }
+  codice_risposta: Number;
+  descrizione: string;
+
+  constructor(public alertController: AlertController,public apiService: ApiService ) { }
 
   async popupModificaDescrizione() {
     const alert = await this.alertController.create({
@@ -64,9 +69,32 @@ export class ModificaRispostaPage implements OnInit {
     await alert.present();
     let result = await alert.onDidDismiss();
     console.log(result);
+
+    this.modify();
   }
 
   ngOnInit() {
+
+  this.codice_risposta = 6;
+  this.descrizione = 'descrzione di prova';
+  }
+
+
+  async modify() {
+
+    this.apiService.modificaRisposta(this.codice_risposta, this.descrizione).then(
+      (result) => { // nel caso in cui va a buon fine la chiamata
+        /*  this.presentAlert();
+         this.goToHome(); */
+        console.log('Modifica avvenuta con successo: ',this.codice_risposta, this.descrizione);
+      },
+      (rej) => {// nel caso non vada a buon fine la chiamata
+        console.log('Modifica non effetutata');
+        /* this.goToHome();
+        this.presentAlertNegativo(); */
+      }
+    );
+
   }
 
 }
