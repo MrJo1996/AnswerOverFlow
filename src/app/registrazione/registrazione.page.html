@@ -1,12 +1,4 @@
-<ion-toolbar class="backgroundsSecondaryItem">
-  <ion-title>REGISTRAZIONE</ion-title>
-  <ion-button slot="start" color="light">
-    <ion-icon name="arrow-back-outline"></ion-icon>
-  </ion-button>
-</ion-toolbar>
-
 <ion-content class="backgrounds">
-
   <ion-card>
     <div>
       <div class="logo"></div>
@@ -21,26 +13,26 @@
         <ion-icon name="person">
         </ion-icon>
       </ion-label>
-      <ion-input [(ngModel)]="Nome" placeholder="Nome*"></ion-input>
+      <ion-input [(ngModel)]="nome" placeholder="Nome*"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label fixed>
         <ion-icon name="person">
         </ion-icon>
       </ion-label>
-      <ion-input [(ngModel)]="Cognome" placeholder="Cognome*"></ion-input>
+      <ion-input [(ngModel)]="cognome" placeholder="Cognome*"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label fixed>
         <ion-icon name="mail"></ion-icon>
       </ion-label>
-      <ion-input [(ngModel)]="e_mail" placeholder="E-mail*"></ion-input>
+      <ion-input [(ngModel)]="email" placeholder="E-mail*"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label fixed>
         <ion-icon name="happy"></ion-icon>
       </ion-label>
-      <ion-input [(ngModel)]="Username" placeholder="Username*"></ion-input>
+      <ion-input [(ngModel)]="username" placeholder="Username*"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label fixed>
@@ -56,7 +48,7 @@
       <ion-label fixed>
         <ion-icon name="key"></ion-icon>
       </ion-label>
-      <ion-input type="{{ !isActive? 'password' : 'text' }}" [(ngModel)]="conferma_password"
+      <ion-input type="{{ !isActive? 'password' : 'text' }}" [(ngModel)]="confermapassword"
         placeholder="Conferma Password*">
       </ion-input>
       <ion-icon color="grey" slot="end" [name]="isActive?'eye':'eye-off'" item-right (click)="isActive=!isActive;"
@@ -64,12 +56,14 @@
       </ion-icon>
     </ion-item>
     <ion-item>
-      <ion-text>*Accetto i termini.....</ion-text>
+      <ion-label>
+      <ion-text>*Accetto i termini e le condizioni di utilizzo</ion-text>
       <ion-checkbox color="dark" checked="false"></ion-checkbox>
+    </ion-label>
     </ion-item>
     <div>
-      <ion-button expand="block" slot="start" color="light" size="large">
-        <ion-text color="primary">Conferma</ion-text>
+      <ion-button expand="block" slot="start" color="light" size="large" (click)="postRegistrazione()">
+        <ion-text color="primary">REGISTRATI</ion-text>
       </ion-button>
     </div>
     <div>
