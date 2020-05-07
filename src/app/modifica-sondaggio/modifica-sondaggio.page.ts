@@ -25,11 +25,12 @@ export class ModificaSondaggioPage implements OnInit {
 
 
   ngOnInit() {
-    this.titolo = 'spero che funzioniiiii';
+
+    this.showSurvey;
+
+    this.titolo = 'spero che funzioniiiii by mariano';
     this.timer = '03:20:30';
     this.codice_sondaggio = 4;
-
-
   }
 
   async modify() {
@@ -47,6 +48,17 @@ export class ModificaSondaggioPage implements OnInit {
       }
     );
 
+  }
+
+  async showSurvey() {
+    this.apiService.visualizzaSondaggio(this.codice_sondaggio).then(
+      (result) => {
+        console.log('Visualizzato con successo', this.codice_sondaggio);
+      },
+      (rej) => {
+        console.log("C'è stato un errore durante la visualizzazione");
+      }
+    );
   }
 
   //Pop-up Titolo
@@ -149,9 +161,7 @@ export class ModificaSondaggioPage implements OnInit {
   }
 
 
-
-
-   /* public postModificaSondaggio() {
+/* public postModificaSondaggio() {
     //param da passare
     let postData = {
       'titolo': this.titolo,
@@ -167,6 +177,6 @@ export class ModificaSondaggioPage implements OnInit {
       //ombo
       console.log(err.message);
     });
-  }  */
+  } */
 
 }
