@@ -26,7 +26,7 @@ export class ModificaDomandaPage implements OnInit {
   ngOnInit() {
     this.cod_categoria = 2;
     this.dataeora = '10:20:20';
-    this.codice_domanda = 5;
+    this.codice_domanda = 9;
     this.timer = '00:20:00';
     this.descrizione = "Io non ho un cane";
     this.titolo = "PROVA MODIFICA";

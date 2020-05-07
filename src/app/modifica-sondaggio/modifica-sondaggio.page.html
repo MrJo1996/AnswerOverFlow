@@ -16,14 +16,14 @@
     <ion-item color="light">
       <ion-icon name="pencil-outline" slot="start"></ion-icon>
       <ion-label position="stacked">Titolo</ion-label>
-      <ion-input readonly placeholder="Outfit per stasera?" color="medium" (click)="popupModificaTitolo()"></ion-input>
+      <ion-input readonly placeholder={{sondaggio}} [(ngModel)]="titolo"  color="medium" (click)="popupModificaTitolo()"></ion-input>
     </ion-item>
   
     <ion-item color="light">
       <ion-icon name="time-outline" slot="start"></ion-icon>
       <ion-label position="stacked">Timer</ion-label>
       <ion-datetime placeholder="Timer" displayFormat="HH:mm" pickerFormat="HH mm"
-          [(ngModel)]="myTime"></ion-datetime>
+          [(ngModel)]="timer"></ion-datetime>
 
     </ion-item>
   </ion-card>

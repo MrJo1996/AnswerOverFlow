@@ -12,6 +12,10 @@ import { ApiService } from 'src/app/providers/api.service';
 })
 export class ModificaSondaggioPage implements OnInit {
 
+  sondaggio = {
+    
+  };
+
   codice_sondaggio: number;
   titolo: string;
   timer: string;
@@ -26,9 +30,8 @@ export class ModificaSondaggioPage implements OnInit {
 
   ngOnInit() {
 
-    this.showSurvey;
+    this.showSurvey();
 
-    this.titolo = 'spero che funzioniiiii by mariano';
     this.timer = '03:20:30';
     this.codice_sondaggio = 4;
   }
@@ -53,7 +56,9 @@ export class ModificaSondaggioPage implements OnInit {
   async showSurvey() {
     this.apiService.visualizzaSondaggio(this.codice_sondaggio).then(
       (result) => {
-        console.log('Visualizzato con successo', this.codice_sondaggio);
+        this.sondaggio = result;
+        console.log(this.codice_sondaggio);
+        console.log(result);
       },
       (rej) => {
         console.log("C'è stato un errore durante la visualizzazione");

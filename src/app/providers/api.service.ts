@@ -56,7 +56,7 @@ export class ApiService {
 
   visualizzaSondaggio(codice_sondaggio: Number) {
     const body = {
-      codice_sondaggio
+      'codice_sondaggio': codice_sondaggio
     };
 
     return new Promise((resolve, reject) => {
@@ -65,6 +65,7 @@ export class ApiService {
           let esito = data['message'];
           console.log('esito: ', esito);
           resolve(esito);
+          console.log(data);
         },
         (err) => {
           reject();
