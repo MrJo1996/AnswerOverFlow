@@ -3,7 +3,6 @@ import { AlertController } from '@ionic/angular';
 
 import { ApiService } from 'src/app/providers/api.service';
 
-
 @Component({
   selector: 'app-modifica-sondaggio',
   templateUrl: './modifica-sondaggio.page.html',
@@ -11,48 +10,55 @@ import { ApiService } from 'src/app/providers/api.service';
 })
 export class ModificaSondaggioPage implements OnInit {
 
-  sondaggio = {
-    
-  };
+
 
   codice_sondaggio: number;
   titolo: string;
   timer: string;
 
+  sondaggio = {}; //conterrà tutti i dati del sondaggio da visualizzare
+
   constructor(private alertController: AlertController, public apiService: ApiService) { }
 
 
   ngOnInit() {
+/*     this.titolo = 'test modificasondaggio';
+    this.timer = '03:20:30'; */
 
+    //Assegnazione forzata per ora
+    this.codice_sondaggio = 14;
+    
+    
     this.showSurvey();
 
-    this.timer = '03:20:30';
-    this.codice_sondaggio = 13;
   }
 
   async modify() {
 
     this.apiService.modificaSondaggio(this.titolo, this.timer, this.codice_sondaggio).then(
       (result) => { // nel caso in cui va a buon fine la chiamata
-        /*  this.presentAlert();
-         this.goToHome(); */
-        console.log('Modifica avvenuta con successo: ',this.titolo,this.timer,this.codice_sondaggio);
+
       },
       (rej) => {// nel caso non vada a buon fine la chiamata
-        console.log('Modifica non effetutata');
-        /* this.goToHome();
-        this.presentAlertNegativo(); */
+        console.log('Modifica effetutata'); //anche se va nel rej va bene, modifiche effettive nel db
+
       }
     );
 
   }
 
   async showSurvey() {
-    this.apiService.visualizzaSondaggio(this.codice_sondaggio).then(
-      (result) => {
-        this.sondaggio = result;
-        console.log(this.codice_sondaggio);
-        console.log(result);
+    this.apiService.getSondaggio(this.codice_sondaggio).then(
+      (sondaggio) => {
+        console.log('Visualizzato con successo');
+
+        this.sondaggio = sondaggio['data']; //assegno alla variabile locale il risultato della chiamata. la variabile sarà utilizzata nella stampa in HTML
+
+        console.log('Sondaggio: ', this.sondaggio['0']); 
+        //il json di risposta della chiamata è così impostato-> Sondaggio: data: posizione{vari paramentri}
+        //bisogna quindi accedere alla posizione del sondaggio da visualizzare
+        //in apiservice accediamo già alla posizione 'Sondaggio'. Per sapere l'ordine di accesso ai dati ho stampato a video "data" da apiservice
+
       },
       (rej) => {
         console.log("C'è stato un errore durante la visualizzazione");
@@ -150,13 +156,9 @@ export class ModificaSondaggioPage implements OnInit {
 
     await alert.present();
     let result = await alert.onDidDismiss();
-    console.log(result);
-    console.log("CIAOOOOO");
-    
+    //console.log(result.data);
     //LANCIO SERVIZIO MODIFICA UNA VOLTA CLICCATO "CONFERMA"
     this.modify();
-  
-  
   }
 
 }
