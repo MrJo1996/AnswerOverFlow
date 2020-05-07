@@ -33,9 +33,10 @@ export class ApiService {
     });
   }
 
-  modificaProfilo(username: string, nome: string, cognome: string, bio: string, email: string) {
+  modificaProfilo(username: string, password: string, nome: string, cognome: string, bio: string, email: string) {
     const body = {
       username,
+      password,
       nome,
       cognome,
       bio,

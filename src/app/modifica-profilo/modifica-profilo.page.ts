@@ -12,6 +12,7 @@ import { ApiService } from 'src/app/providers/api.service';
 export class ModificaProfiloPage implements OnInit {
   email: string;
   username: string;
+  password: string;
   nome: string;
   cognome: string;
   bio: string;
@@ -24,8 +25,9 @@ export class ModificaProfiloPage implements OnInit {
   constructor(public alertController: AlertController,public apiService: ApiService) { }
  
   ngOnInit() {
-    this.email = 'gmaillverificata';
+    this.email = 'gmailverificata';
     this.username = 'prova modifica';
+    this.password = 'prova modifica'
     this.nome = 'prova modifica';
     this.cognome = 'prova modifica';
     this.bio = 'prova modifica';
@@ -33,11 +35,11 @@ export class ModificaProfiloPage implements OnInit {
 
   async modify() {
 
-    this.apiService.modificaProfilo(this.username, this.nome, this.cognome, this.bio, this.email).then(
+    this.apiService.modificaProfilo(this.username, this.password, this.nome, this.cognome, this.bio, this.email).then(
       (result) => { // nel caso in cui va a buon fine la chiamata
          // this.presentAlert();
          //this.goToHome(); 
-        console.log('Modifica avvenuta con successo: ',this.username, this.nome, this.cognome, this.bio, this.email);
+        console.log('Modifica avvenuta con successo: ',this.username, this.password, this.nome, this.cognome, this.bio, this.email);
       },
       (rej) => {// nel caso non vada a buon fine la chiamata
         console.log('Modifica non effetutata');
