@@ -32,6 +32,28 @@ export class ApiService {
       );
     });
   }
+
+  modificaProfilo(username: string, nome: string, cognome: string, bio: string, email: string) {
+    const body = {
+      username,
+      nome,
+      cognome,
+      bio,
+      email
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/modificaProfilo', body).subscribe(
+        data => {
+          let esito = data['message'];
+          console.log('esito: ', esito);
+          resolve(esito);
+        },
+        (err) => {
+          reject();
+        }
+      );
+    });
+  }
   
 
   modificaSondaggio(titolo: string, timer: string, codice_sondaggio: Number) {
