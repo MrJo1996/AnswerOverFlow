@@ -108,29 +108,6 @@ export class ModificaSondaggioPage implements OnInit {
     //this.titoloView = await (await alert.onDidDismiss()).data.values.titolo;
   }
 
-  //Pop-up Conferma Eliminazione
-  async popupConfermaEliminaSondaggio() {
-    const alert = await this.alertController.create({
-      header: 'Elimina sondaggio',
-      message: 'Sicuro di voler eliminare questo sondaggio?',
-      buttons: [
-        {
-          text: 'Elimina',
-          role: 'cancel',
-          cssClass: 'secondary',
-          handler: () => {
-            //TODO - Mettere qui funzione rimozione sondaggio passandogli il codice del sondaggio da rimuovere
-            /* this.apiService.rimuoviSondaggio(this.codice_sondaggio); */
-          }
-        }
-      ]
-    });
-
-    await alert.present();
-    let result = await alert.onDidDismiss();
-    console.log(result);
-  }
-
   //Pop-up Conferma Modifiche
   async popupConfermaModificheSondaggio() {
     const alert = await this.alertController.create({
