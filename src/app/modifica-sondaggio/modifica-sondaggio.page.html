@@ -16,13 +16,13 @@
     <ion-item color="light">
       <ion-icon name="pencil-outline" slot="start"></ion-icon>
       <ion-label position="stacked">Titolo</ion-label>
-      <ion-input readonly placeholder={{sondaggio[0].titolo}}  color="medium" (click)="popupModificaTitolo()"></ion-input>
+      <ion-input readonly color="medium" (click)="popupModificaTitolo()"></ion-input>
     </ion-item>
   
     <ion-item color="light">
       <ion-icon name="time-outline" slot="start"></ion-icon>
       <ion-label position="stacked">Timer</ion-label>
-      <ion-datetime placeholder={{sondaggio[0].timer}} displayFormat="HH:mm:ss" pickerFormat="HH mm ss"
+      <ion-datetime displayFormat="HH:mm:ss" pickerFormat="HH mm ss"
           ></ion-datetime>
 
     </ion-item>

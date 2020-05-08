@@ -37,10 +37,10 @@ export class ModificaSondaggioPage implements OnInit {
 
     this.apiService.modificaSondaggio(this.titolo, this.timer, this.codice_sondaggio).then(
       (result) => { // nel caso in cui va a buon fine la chiamata
-
+        console.log('Modifica effetutata')
       },
       (rej) => {// nel caso non vada a buon fine la chiamata
-        console.log('Modifica effetutata'); //anche se va nel rej va bene, modifiche effettive nel db
+        console.log('Modifica non effetutata'); //anche se va nel rej va bene, modifiche effettive nel db
 
       }
     );
