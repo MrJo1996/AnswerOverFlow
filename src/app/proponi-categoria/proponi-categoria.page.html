@@ -24,7 +24,7 @@
     <ion-card-content>
       <ion-text class="boxText">Seleziona categoria</ion-text>
       <ion-text class="rboxText">*</ion-text>      
-      <ion-select placeholder="- - - - -" interface="popover" class="select">
+      <ion-select placeholder="- - - - -" interface="popover" class="select" [(ngModel)]="selezione">
         <ion-select-option value="Scienza">Scienza</ion-select-option>
         <ion-select-option value="Informatica">Informatica</ion-select-option>
         <ion-select-option value="Arte">Arte</ion-select-option>
@@ -34,11 +34,11 @@
       
       <ion-text class="boxText">Inserisci nome</ion-text>
       <ion-text class="rboxText">*</ion-text>
-      <ion-input placeholder="es. Musica (Rock, Pop...), Letteratura (Fantasy, Thriller...), ecc..." class="select"></ion-input>
+      <ion-input [disabled]="selezione === ''" placeholder="es. Musica (Rock, Pop...), Letteratura (Fantasy, Thriller...), ecc..." class="select" [(ngModel)]="proposta"></ion-input>
     </ion-card-content>
   </ion-card>
 
-  <ion-button class="btnInvio" expand="block">
+  <ion-button class="btnInvio" expand="block" [disabled]="proposta === ''" (click)="postInvio()">
     <ion-text> INVIO </ion-text>
   </ion-button>
 </ion-content>
