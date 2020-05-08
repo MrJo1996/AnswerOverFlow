@@ -27,16 +27,16 @@ export class ProponiCategoriaPage implements OnInit {
     if(this.proposta.length > 15){
       alert("Il nome proposto per la nuova categoria/sottocategoria è troppo lungo ")
     } else{
-    let postData={
-      "selezione": this.selezione,
-      "proposta": this.proposta
-    };
-    this.result = this.service.postService(postData, this.url).then((data) =>{
-      this.request = data;
-      console.log(data);
-    }, err =>{
-      console.log(err.message);
-    });
+      let postData={
+        "selezione": this.selezione,
+        "proposta": this.proposta
+      };
+      this.result = this.service.postService(postData, this.url).then((data) =>{
+        this.request = data;
+        console.log(data);
+      }, err =>{
+        console.log(err.message)
+      });
+    }
   }
-}
 }
