@@ -24,6 +24,9 @@ export class ProponiCategoriaPage implements OnInit {
   }
 
   postInvio(){
+    if(this.proposta.length > 15){
+      alert("Il nome proposto per la nuova categoria/sottocategoria è troppo lungo ")
+    } else{
     let postData={
       "selezione": this.selezione,
       "proposta": this.proposta
@@ -35,5 +38,5 @@ export class ProponiCategoriaPage implements OnInit {
       console.log(err.message);
     });
   }
-
+}
 }
