@@ -36,7 +36,6 @@ export class ModificaSondaggioPage implements OnInit {
 
 
     this.showSurvey();
-
   }
 
   async modify() {

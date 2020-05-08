@@ -97,18 +97,20 @@ export class ApiService {
     });
   }
 
+ 
   getRisposta(codice_risposta: Number) {
     const body = {
       codice_risposta: codice_risposta
+
     };
 
     return new Promise((resolve, reject) => {
       this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzarisposta', body).subscribe(
         data => {
-          let risposta = data['Risposte']; 
-          resolve(risposta); //restituirò al ts un oggetto di nome "risposte" con accesso già alla posizione "Risposta" avendo visto il json di data
-          console.log(data['Risposta']);
-         
+          let risposta = data['Risposte'];
+          resolve(risposta); //restituirò al ts un oggetto di nome "sondaggio" con accesso già alla posizione "Sondaggio" avendo visto il json di data
+          // console.log('ciao' ,sondaggio);
+
         },
         (err) => {
           reject();
@@ -123,8 +125,8 @@ export class ApiService {
 
   modificaRisposta(codice_risposta: Number, descrizione: string) {
     const body = {
-      codice_risposta,
-      descrizione
+      descrizione,
+      codice_risposta
     };
     return new Promise((resolve, reject) => {
       this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/modificaRisposta', body).subscribe(

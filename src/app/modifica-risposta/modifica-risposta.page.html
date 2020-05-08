@@ -16,11 +16,7 @@
     <ion-item color="light">
       <ion-icon name="pencil-outline" slot="start"></ion-icon>
       <ion-label position="stacked">Descrizione</ion-label>
-      <ion-input readonly placeholder={{descrizioneView}} color="medium" (click)="popupModificaDescrizione()"></ion-input>
+      <ion-input readonly [(ngModel)]="descrizioneView" color="medium" (click)="popupModificaDescrizione()"></ion-input>
     </ion-item>
   </ion-card>
-
-  <ion-button expand="block" color="light" class="ion-margin" (click)="popupConfermaEliminaRisposta()">
-    <ion-text color="danger">Elimina</ion-text>
-  </ion-button>
 </ion-content>
