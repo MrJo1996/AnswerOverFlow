@@ -3,6 +3,10 @@ import { AlertController } from '@ionic/angular';
 
 import { ApiService } from 'src/app/providers/api.service';
 
+//Picker - import e poi definire nel constructor
+import { PickerController } from "@ionic/angular";
+import { PickerOptions } from "@ionic/core";
+
 @Component({
   selector: 'app-modifica-sondaggio',
   templateUrl: './modifica-sondaggio.page.html',
@@ -21,7 +25,9 @@ export class ModificaSondaggioPage implements OnInit {
 
   sondaggio = {}; //conterrà tutti i dati del sondaggio da visualizzare
 
-  constructor(private alertController: AlertController, public apiService: ApiService) { }
+  timerSettings: string[] = ["5 min", "15 min", "30 min", "1 ora", "3 ore", "6 ore", "12 ore", "1 giorno", "3 giorni"]; //scelte nel picker
+
+  constructor(private alertController: AlertController, public apiService: ApiService, private pickerController: PickerController) { }
 
 
   ngOnInit() {
@@ -102,51 +108,12 @@ export class ModificaSondaggioPage implements OnInit {
     //this.titoloView = await (await alert.onDidDismiss()).data.values.titolo;
   }
 
-  //Pop-up Timer
-  async popupModificaTimer() {
-    const alert = await this.alertController.create({
-      header: 'Modifica',
-      inputs: [
-        {
-          name: 'timerPopUp',
-          type: 'time',
-          placeholder: this.timerView
-        }
-      ],
-      buttons: [
-        {
-          text: 'Annulla',
-          role: 'cancel',
-          cssClass: 'secondary',
-          handler: () => {
-            this.timerView = this.sondaggio['0'].timer; //annullo modifiche
-            console.log('Annullato');
-          }
-        }, {
-          text: 'Ok',
-          handler: insertedData => {
-            //TODO - FIXARE - Prendere dati dal picker, al momento funziona così
-            console.log("CACCA");
-            console.log("ORE: ", JSON.stringify(insertedData)); //per vedere l'oggetto dell'handler
-            this.timerView = insertedData.timerPopUp; //setto timerPopUp al valore inserito nel popUp una volta premuto ok così viene visualizzato
-            this.timerToPass = insertedData.timerPopUp; //setto timerPopUp al valore inserito nel popUp una volta premuto ok 
-            console.log('Ok');
-          }
-        }
-      ]
-    });
-
-    await alert.present();
-    let result = await alert.onDidDismiss();
-    console.log(result);
-  }
-
   //Pop-up Conferma Eliminazione
   async popupConfermaEliminaSondaggio() {
     const alert = await this.alertController.create({
       header: 'Elimina sondaggio',
       message: 'Sicuro di voler eliminare questo sondaggio?',
-       buttons: [
+      buttons: [
         {
           text: 'Elimina',
           role: 'cancel',
@@ -156,7 +123,8 @@ export class ModificaSondaggioPage implements OnInit {
             /* this.apiService.rimuoviSondaggio(this.codice_sondaggio); */
           }
         }
-       ]});
+      ]
+    });
 
     await alert.present();
     let result = await alert.onDidDismiss();
@@ -178,4 +146,77 @@ export class ModificaSondaggioPage implements OnInit {
     this.modify();
   }
 
+  //PICKER PROVA
+  async showTimerPicker() {
+    let options: PickerOptions = {
+      buttons: [
+        {
+          text: "Cancel",
+          role: 'cancel'
+        },
+        {
+          text: 'Ok',
+          handler: (value: any) => {
+            console.log(value);
+
+            this.timerView = value['ValoreTimerSettato'].value; //setto timerPopUp al valore inserito nel popUp una volta premuto ok così viene visualizzato
+            //this.timerToPass = value['ValoreTimerSettato'].value; //setto timerPopUp al valore inserito nel popUp una volta premuto ok 
+            /* this.timerToPass = this.timerToPass.split(" ")[0]; //taglio la stringa dopo lo spazio e prendo a partira da carattere zero */
+            this.mappingTimerValueToPass(value['ValoreTimerSettato'].value);
+            console.log('timer to pass: ', this.timerToPass);
+          }
+        }
+      ],
+      columns: [{
+        name: 'ValoreTimerSettato', //nome intestazione json dato 
+        options: this.getColumnOptions()
+      }]
+    };
+
+    let picker = await this.pickerController.create(options);
+    picker.present()
+  }
+
+  getColumnOptions() {
+    let options = [];
+    this.timerSettings.forEach(x => {
+      options.push({ text: x, value: x });
+    });
+    return options;
+  }
+
+  mappingTimerValueToPass(valueToMapp) {
+    //converto valore timer da passare nel formato giusto per il db
+    switch (valueToMapp) {
+      case (this.timerSettings['0']):
+        this.timerToPass = "00:05";
+        break;
+      case (this.timerSettings['1']):
+        this.timerToPass = "00:15";
+        break;
+      case (this.timerSettings['2']):
+        this.timerToPass = "00:30";
+        break;
+      case (this.timerSettings['3']):
+        this.timerToPass = "01:00";
+        break;
+      case (this.timerSettings['4']):
+        this.timerToPass = "03:00";
+        break;
+      case (this.timerSettings['5']):
+        this.timerToPass = "06:00";
+        break;
+      case (this.timerSettings['6']):
+        this.timerToPass = "12:00";
+        break;
+      case (this.timerSettings['7']):
+        this.timerToPass = "24:00";
+        break;
+      case (this.timerSettings['8']):
+        this.timerToPass = "72:00";
+        break;
+    }
+
+
+  }
 }
