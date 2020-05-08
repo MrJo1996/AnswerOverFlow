@@ -16,18 +16,15 @@
     <ion-item color="light">
       <ion-icon name="pencil-outline" slot="start"></ion-icon>
       <ion-label position="stacked">Titolo</ion-label>
-      <ion-input  readonly placeholder={{titoloView}} color="medium" (click)="popupModificaTitolo()"></ion-input>
+      <ion-input readonly placeholder={{titoloView}} color="medium" (click)="popupModificaTitolo()"></ion-input>
     </ion-item>
 
     <ion-item color="light">
       <ion-icon name="time-outline" slot="start"></ion-icon>
       <ion-label position="stacked">Timer</ion-label>
-      <ion-input  readonly placeholder={{timerView}} color="medium" (click)="popupModificaTimer()"></ion-input>
+      <ion-input readonly placeholder={{timerView}} color="medium" (click)="showTimerPicker()"></ion-input>
       <!-- <ion-datetime placeholder={{timerView}} displayFormat="HH:mm" pickerFormat="HH mm" (click)="popupModificaTimer()"></ion-datetime> -->
     </ion-item>
   </ion-card>
 
-  <ion-button expand="block" color="light" class="ion-margin" (click)="popupConfermaEliminaSondaggio()">
-    <ion-text color="danger">Elimina</ion-text>
-  </ion-button>
 </ion-content>
