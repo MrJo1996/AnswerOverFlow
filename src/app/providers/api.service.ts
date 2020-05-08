@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { resolve } from 'url';
 
 
@@ -7,7 +7,7 @@ import { resolve } from 'url';
   providedIn: 'root'
 })
 export class ApiService {
-  
+
   constructor(public http: HttpClient) { }
 
   modificaDomanda(codice_domanda: number, dataeora: string, timer: string, titolo: string, descrizione: string, cod_categoria: number) {
@@ -55,7 +55,7 @@ export class ApiService {
       );
     });
   }
-  
+
 
   modificaSondaggio(titolo: string, timer: string, codice_sondaggio: Number) {
     const body = {
@@ -70,7 +70,7 @@ export class ApiService {
           resolve(esito);
         },
         (err) => {
-          
+
           reject();
         }
       );
@@ -85,10 +85,10 @@ export class ApiService {
     return new Promise((resolve, reject) => {
       this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaSondaggio', body).subscribe(
         data => {
-          let sondaggio = data['Sondaggio']; 
+          let sondaggio = data['Sondaggio'];
           resolve(sondaggio); //restituirò al ts un oggetto di nome "sondaggio" con accesso già alla posizione "Sondaggio" avendo visto il json di data
-         // console.log('ciao' ,sondaggio);
-         
+          // console.log('ciao' ,sondaggio);
+
         },
         (err) => {
           reject();
@@ -96,9 +96,7 @@ export class ApiService {
       );
     });
   }
-  rimuoviSondaggio(codice_sondaggio: Number) {
-    //TODO code lancio endPoint
-  }
+
   modificaRisposta(codice_risposta: Number, descrizione: string) {
     const body = {
       codice_risposta,
