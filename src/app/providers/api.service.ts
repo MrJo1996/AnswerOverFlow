@@ -96,7 +96,9 @@ export class ApiService {
       );
     });
   }
-
+  rimuoviSondaggio(codice_sondaggio: Number) {
+    //TODO code lancio endPoint
+  }
   modificaRisposta(codice_risposta: Number, descrizione: string) {
     const body = {
       codice_risposta,

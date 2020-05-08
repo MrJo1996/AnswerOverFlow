@@ -1,7 +1,7 @@
 <ion-toolbar class="backgroundsSecondaryItem">
-  
+
   <ion-button slot="start" expand="block" fill="clear" class="msg-btn">
-    <ion-icon slot="icon-only" name="arrow-back-outline" color="primary" ></ion-icon>
+    <ion-icon slot="icon-only" name="arrow-back-outline" color="primary"></ion-icon>
   </ion-button>
 
   <ion-title class="textTitle" slot="start">Modifica Sondaggio</ion-title>
@@ -12,19 +12,28 @@
 </ion-toolbar>
 
 <ion-content class="backgrounds">
-  <ion-card>  
+  <ion-card>
     <ion-item color="light">
       <ion-icon name="pencil-outline" slot="start"></ion-icon>
       <ion-label position="stacked">Titolo</ion-label>
+<<<<<<< HEAD
       <ion-input readonly color="medium" (click)="popupModificaTitolo()"></ion-input>
+=======
+      <ion-input  readonly placeholder={{titoloView}} color="medium" (click)="popupModificaTitolo()"></ion-input>
+>>>>>>> 5abc406098816c04d17f8a4ccf93bd53d45904d0
     </ion-item>
-  
+
     <ion-item color="light">
       <ion-icon name="time-outline" slot="start"></ion-icon>
       <ion-label position="stacked">Timer</ion-label>
+<<<<<<< HEAD
       <ion-datetime displayFormat="HH:mm:ss" pickerFormat="HH mm ss"
           ></ion-datetime>
 
+=======
+      <ion-input  readonly placeholder={{timerView}} color="medium" (click)="popupModificaTimer()"></ion-input>
+      <!-- <ion-datetime placeholder={{timerView}} displayFormat="HH:mm" pickerFormat="HH mm" (click)="popupModificaTimer()"></ion-datetime> -->
+>>>>>>> 5abc406098816c04d17f8a4ccf93bd53d45904d0
     </ion-item>
   </ion-card>
 
