@@ -96,9 +96,31 @@ export class ApiService {
       );
     });
   }
+
+  getRisposta(codice_risposta: Number) {
+    const body = {
+      codice_risposta: codice_risposta
+    };
+
+    return new Promise((resolve, reject) => {
+      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzarisposta', body).subscribe(
+        data => {
+          let risposta = data['Risposte']; 
+          resolve(risposta); //restituirò al ts un oggetto di nome "risposte" con accesso già alla posizione "Risposta" avendo visto il json di data
+          console.log(data['Risposta']);
+         
+        },
+        (err) => {
+          reject();
+        }
+      );
+    });
+  }
+
   rimuoviSondaggio(codice_sondaggio: Number) {
     //TODO code lancio endPoint
   }
+
   modificaRisposta(codice_risposta: Number, descrizione: string) {
     const body = {
       codice_risposta,
