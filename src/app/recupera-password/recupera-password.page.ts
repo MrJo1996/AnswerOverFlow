@@ -13,7 +13,7 @@ import { NavController } from '@ionic/angular';
 })
 export class RecuperaPasswordPage implements OnInit {
   
-  email: '';
+  email= '';
   request: Promise<any>;
   result: Promise<any>;
   url = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/recupero'
