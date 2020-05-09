@@ -105,10 +105,11 @@ export class ApiService {
     };
 
     return new Promise((resolve, reject) => {
-      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzarisposta', body).subscribe(
+      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaRisposta', body).subscribe(
         data => {
-          let risposta = data['Risposte'];
-          resolve(risposta); //restituirò al ts un oggetto di nome "sondaggio" con accesso già alla posizione "Sondaggio" avendo visto il json di data
+          let risposta = data['Risposta'];
+          resolve(risposta); 
+          console.log(risposta)//restituirò al ts un oggetto di nome "sondaggio" con accesso già alla posizione "Sondaggio" avendo visto il json di data
           // console.log('ciao' ,sondaggio);
 
         },
