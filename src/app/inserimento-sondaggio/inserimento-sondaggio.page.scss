@@ -1,5 +1,4 @@
 ion-button{
-    color: var(--ion-toolbar-color);
     ion-icon{
         font-size: 1.5rem;
     }
@@ -16,6 +15,26 @@ ion-title{
         font-size: 1.5rem;
         color: var(--ion-color-primary);
     }
+}
+.inner{
+    opacity: 0.6; 
+    font-size: 0.9rem;
+    margin-right: 2px;
+    // left: 5px;
+    // top: 50%;
+    // margin-top: -3px;
+    // position: absolute;
+    // width: 0px;
+    // height: 0px;
+    // color: currentcolor;
+    // pointer-events: none;
+    // border-right: 5px solid transparent;
+    // border-left: 5px solid transparent;
+    // position: relative;
+    // opacity: 0.33;
+    // width: 12px;
+    // height: 18px;
+    // visibility: inherit;
 }
 
 // .timer{

@@ -52,11 +52,14 @@
   
 </ion-item>
 
- <ion-item lines="none" >
+ <ion-item lines="none" (click)="showTimerPicker()">
   <ion-label>
-    <ion-icon name="time-outline"></ion-icon>
+    <ion-icon name="time-outline" slot="start"></ion-icon>
   </ion-label>
-  <ion-datetime placeholder ="Timer" displayFormat="HH:mm" pickerFormat="HH mm" [(ngModel)]="myTime"></ion-datetime>
+      {{timerView}}
+    <ion-icon class="inner" name="caret-down-outline" slot="end"></ion-icon>
+
+  <!-- <ion-datetime placeholder ="Timer" displayFormat="HH:mm" [(ngModel)]="myTime"(ionChange)="showTimer()"></ion-datetime> -->
 </ion-item>
 
 
@@ -64,24 +67,12 @@
 <ion-label>
   <ion-icon name = "bookmark-outline"></ion-icon>
 </ion-label> 
-<ion-select interface="popover">
-   <ion-select-option *ngFor="let categoria of ['Scienza', 'Matematica', 'Informatica', 'Biologia', 'Chimica', 'Design']">{{categoria}}</ion-select-option>
+<ion-select interface="action-sheet" 
+            [(ngModel)]="categoriaScelta"
+            (ionChange)="showScelta($event)">
+   <ion-select-option *ngFor="let categoria of categorie; let idx = index" >{{categoria.titolo}}</ion-select-option>
 </ion-select>
 </ion-item>
 </ion-card>
     
- 
-
-
-
-<!--
-<button ion-button full  (click)="goTo()" >let's go</button>
-<ion-card *ngIf="data">
-  <ion-item *ngFor="let att of anArray;">
-    <div class="card-title">{{att.value}}</div>
-  </ion-item>
- </ion-card> -->
-
- 
-
 </ion-content>

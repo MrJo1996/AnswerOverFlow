@@ -161,7 +161,7 @@ export class ApiService {
       );
     });
   }
-
+  
   prendiChats(codice_utente: string, url: string) {
     const body = {
       codice_utente
@@ -172,7 +172,24 @@ export class ApiService {
         data => {
           console.log('Obj Chats', data);
           let chats = data['Chats']['data'];
-          resolve(chats); //restituirò al ts un oggetto di nome "sondaggio" con accesso già alla posizione "Sondaggio" avendo visto il json di data
+          resolve(chats); 
+
+        },
+        (err) => {
+          reject();
+        }
+      );
+    });
+  }
+
+  prendiCategorie(url: string) {
+    const URL = url;
+    return new Promise((resolve, reject) => {
+      this.http.post(URL, "").subscribe(
+        data => {
+          console.log('Obj Categorie', data);
+          let categorie = data['Categorie']['data'];
+          resolve(categorie);
 
         },
         (err) => {
