@@ -8,7 +8,7 @@ export class FiltroPipe implements PipeTransform {
   transform(array: any[],
            text: string,
            colonna: string): any[] {
-
+             
     if (text === '') {
       return array;
     }

@@ -1,0 +1,45 @@
+<ion-content class="backgrounds">
+  <ion-card>
+    <div>
+      <div class="logo"></div>
+      <div align="center">
+        <h1 class="textTitleBIG">
+          Benvenuto nella community di AnswerOverFLow!
+        </h1>
+        <h2 class="textTitle">
+          La registrazione è avvenuta con successo.
+        </h2>
+        <p class="textSimple">
+          Inizia subito ad interagire con la community!
+        </p>
+      </div>
+      <ion-card-content>
+        <ion-row>
+          <ion-col>
+      <div>
+        <ion-button expand="block" slot="start" color="light" size="large" (click)="home()">
+          <ion-icon name="home" color="primary"></ion-icon>
+          <ion-text color="primary">Vai alla Home</ion-text>
+        </ion-button>
+      </div>
+    </ion-col>
+    <ion-col>
+      <div>
+        <ion-button expand="block" slot="start" color="light" size="large" (click)="domanda()">
+          <ion-icon name="add" color="primary"></ion-icon>
+          <ion-text color="primary">Inserisci una domanda</ion-text>
+        </ion-button>
+      </div>
+    </ion-col>
+  </ion-row>
+  </ion-card-content>
+    </div>
+    <div align="center">
+    <h3 class="textTitle" (click)="modificaProfilo()">
+      <u>
+      Vuoi modificare il tuo profilo?
+    </u>
+    </h3>
+  </div>
+  </ion-card>
+</ion-content>

@@ -90,7 +90,16 @@ const routes: Routes = [
   {
     path: 'inserimento-sondaggio',
     loadChildren: () => import('./inserimento-sondaggio/inserimento-sondaggio.module').then( m => m.InserimentoSondaggioPageModule)
+  },  {
+    path: 'termini',
+    loadChildren: () => import('./termini/termini.module').then( m => m.TerminiPageModule)
+  },
+  {
+    path: 'benvenuto',
+    loadChildren: () => import('./benvenuto/benvenuto.module').then( m => m.BenvenutoPageModule)
   }
+
+
 ];
 
 @NgModule({
