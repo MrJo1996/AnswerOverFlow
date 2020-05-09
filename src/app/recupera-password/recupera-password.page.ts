@@ -38,4 +38,8 @@ export class RecuperaPasswordPage implements OnInit {
       });
     }
   }
+  
+  goback(){
+    this.router.navigate(['login']);
+  }
 }
