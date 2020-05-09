@@ -22,25 +22,25 @@
       <ion-item color="light">
         <ion-icon name="happy-outline" slot="start"></ion-icon>
         <ion-label position="stacked">Username</ion-label>
-        <ion-input readonly placeholder="andreatosto__" color="medium"></ion-input>
+        <ion-input readonly placeholder={{usernameView}} color="medium" (click)="popupModificaUsername()"></ion-input>
       </ion-item>
     
       <ion-item color="light">
         <ion-icon name="create-outline" slot="start"></ion-icon>
         <ion-label position="stacked">Nome</ion-label>
-        <ion-input placeholder="Michele" color="medium"></ion-input>
+        <ion-input placeholder={{nomeView}} color="medium" (click)="popupModificaNome()" ></ion-input>
       </ion-item>
 
       <ion-item color="light">
         <ion-icon name="create-outline" slot="start"></ion-icon>
         <ion-label position="stacked">Cognome</ion-label>
-        <ion-input placeholder="Vitantonio" color="medium"></ion-input>
+        <ion-input placeholder={{cognomeView}} color="medium" (click)="popupModificaCognome()" ></ion-input>
       </ion-item>
 
       <ion-item color="light">
         <ion-icon name="chatbox-outline" slot="start"></ion-icon>
         <ion-label position="stacked">Bio</ion-label>
-        <ion-input placeholder="Professore presso l'isti. ." color="medium"></ion-input>
+        <ion-input placeholder={{bioView}} color="medium" (click)="popupModificaBio()" ></ion-input>
       </ion-item>
   
     </ion-card>

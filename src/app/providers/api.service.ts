@@ -46,7 +46,7 @@ export class ApiService {
       this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/modificaProfilo', body).subscribe(
         data => {
           let esito = data['message'];
-          console.log('esito: ', esito);
+          //console.log('esito: ', esito);
           resolve(esito);
         },
         (err) => {
@@ -56,6 +56,25 @@ export class ApiService {
     });
   }
 
+  getProfilo(email: string){
+    const body = {
+      email: email
+    };
+
+    return new Promise((resolve, reject) => {
+      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaProfilo', body).subscribe(
+        data => {
+          let profilo = data['Profilo'];
+          resolve(profilo); //restituirò al ts un oggetto di nome "profilo" con accesso già alla posizione "Profilo" avendo visto il json di data
+          console.log('ciao' ,profilo);
+
+        },
+        (err) => {
+          reject();
+        }
+      );
+    });
+  }
 
   modificaSondaggio(titolo: string, timer: string, codice_sondaggio: Number) {
     const body = {
@@ -87,7 +106,7 @@ export class ApiService {
         data => {
           let sondaggio = data['Sondaggio'];
           resolve(sondaggio); //restituirò al ts un oggetto di nome "sondaggio" con accesso già alla posizione "Sondaggio" avendo visto il json di data
-          // console.log('ciao' ,sondaggio);
+          console.log('ciao' ,sondaggio);
 
         },
         (err) => {
@@ -97,13 +116,82 @@ export class ApiService {
     });
   }
 
+ 
+  getRisposta(codice_risposta: Number) {
+    const body = {
+      codice_risposta: codice_risposta
+
+    };
+
+    return new Promise((resolve, reject) => {
+      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzarisposta', body).subscribe(
+        data => {
+          let risposta = data['Risposte'];
+          resolve(risposta); 
+          console.log(risposta)//restituirò al ts un oggetto di nome "risposta" con accesso già alla posizione "Risposta" avendo visto il json di data
+          // console.log('ciao' ,);
+
+        },
+        (err) => {
+          reject();
+        }
+      );
+    });
+  }
+
+  rimuoviSondaggio(codice_sondaggio: Number) {
+    //TODO code lancio endPoint
+  }
+
   modificaRisposta(codice_risposta: Number, descrizione: string) {
     const body = {
-      codice_risposta,
-      descrizione
+      descrizione,
+      codice_risposta
     };
     return new Promise((resolve, reject) => {
       this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/modificaRisposta', body).subscribe(
+        data => {
+          let esito = data['message'];
+          console.log('esito: ', esito);
+          resolve(esito);
+        },
+        (err) => {
+          reject();
+        }
+      );
+    });
+  }
+
+  prendiChats(codice_utente: string, url: string) {
+    const body = {
+      codice_utente
+    };
+    const URL = url;
+    return new Promise((resolve, reject) => {
+      this.http.post(URL, body).subscribe(
+        data => {
+          console.log('Obj Chats', data);
+          let chats = data['Chats']['data'];
+          resolve(chats); //restituirò al ts un oggetto di nome "sondaggio" con accesso già alla posizione "Sondaggio" avendo visto il json di data
+
+        },
+        (err) => {
+          reject();
+        }
+      );
+    });
+  }
+
+  inserisciDomanda(timer: string, titolo: string, descrizione: string, cod_utente: string, cod_categoria: number) {
+    const body = {
+      timer,
+      titolo,
+      descrizione,
+      cod_utente,
+      cod_categoria
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/inserisciDomanda', body).subscribe(
         data => {
           let esito = data['message'];
           console.log('esito: ', esito);

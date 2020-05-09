@@ -36,7 +36,6 @@ export class ModificaSondaggioPage implements OnInit {
 
 
     this.showSurvey();
-
   }
 
   async modify() {
@@ -45,7 +44,7 @@ export class ModificaSondaggioPage implements OnInit {
       (result) => { // nel caso in cui va a buon fine la chiamata
       },
       (rej) => {// nel caso non vada a buon fine la chiamata
-        console.log('Modifica effetutata'); //anche se va nel rej va bene, modifiche effettive nel db
+        console.log('Modifica non effetutata'); //anche se va nel rej va bene, modifiche effettive nel db
 
       }
     );

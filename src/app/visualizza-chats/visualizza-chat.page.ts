@@ -1,5 +1,6 @@
+import { PostServiceService } from './../services/post-service.service';
 import { Component, OnInit } from '@angular/core';
-import { DataService } from '../services/data.service';
+import { ApiService } from './../providers/api.service';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -9,29 +10,32 @@ import { Observable } from 'rxjs';
 })
 export class VisualizzaChatPage implements OnInit {
 
-  utenti: any [] = [];
+  chatUtenti: any;
   testoRicercato = '' ;
-  i = 0;
+  url = "http://localhost/AnswerOverFlow-BackEnd/public/visualizzaChats";
+  user = "gmailverificata";
 
-  constructor(private dataService: DataService) { }
+  constructor(private service: ApiService) { }
 
   ngOnInit() {
-    this.dataService.getUsers()
-    .subscribe(utenti => {
-      console.log( utenti );
-      this.utenti = utenti;
-    });
+    this.service.prendiChats(this.user, this.url).then(
+      (chats) => {
+        console.log('Visualizzato con successo', chats);
+        this.chatUtenti = chats;
+        for (let utenti of this.chatUtenti){
+          if(utenti['cod_utente0']==this.user)
+            utenti['cod_utente0'] = utenti['cod_utente1']
+        }
+      },
+      (rej) => {
+        console.log("C'è stato un errore durante la visualizzazione");
+      }
+    );
   }
 
   ricerca( event ) {
     // console.log(event);
     this.testoRicercato = event.detail.value;
-  }
-
-  scorriAvatar() {
-      this.i++;
-      if(this.i = 4) this.i = 1;
-      return "../../assets/img/avatar"+ this.i + ".png";
   }
 
 }

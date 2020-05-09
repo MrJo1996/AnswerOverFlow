@@ -7,10 +7,6 @@
 
     <ion-title>Chat</ion-title>
 
-    <ion-button  slot="end" fill="clear"  ion-button icon-only>
-      <ion-icon name="add-circle-outline"></ion-icon>
-    </ion-button>
-
   </ion-toolbar>
 
 
@@ -29,14 +25,14 @@
 
   <ion-list>
   <ion-item-divider color="light">Oggi</ion-item-divider>
-    <ion-item *ngFor="let utente of utenti | filtro: testoRicercato: 'name' ">
+    <ion-item *ngFor="let utente of chatUtenti | filtro: testoRicercato: 'cod_utente0' ">
       <ion-avatar item-start>
         <img src="../../assets/img/avatar2.png">
       </ion-avatar>
       
       <ion-label>
-        <h3>{{utente.name}}</h3>
-        <p>{{utente.email}}</p>
+        <h3>{{utente.cod_utente0}}</h3>
+        <!-- <p>{{utente.email}}</p> -->
       </ion-label>
     </ion-item>
   </ion-list>

@@ -13,7 +13,7 @@ import { NavController } from '@ionic/angular';
 })
 export class RecuperaPasswordPage implements OnInit {
   
-  email: '';
+  email= '';
   request: Promise<any>;
   result: Promise<any>;
   url = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/recupero'
@@ -24,14 +24,18 @@ export class RecuperaPasswordPage implements OnInit {
   }
 
   postInvio(){
-    let postData ={
-      "email": this.email 
-    };
-    this.result = this.service.postService(postData, this.url).then((data) => {
-      this.request = data;
-      console.log(data);
-    }, err => {
-      console.log(err.message);
-    });
+    if(this.email.search('@') < 0){
+      alert("Indirizzo e-mail non valido!")
+    } else{
+      let postData ={
+        "email": this.email 
+      };
+      this.result = this.service.postService(postData, this.url).then((data) => {
+        this.request = data;
+        console.log(data);
+      }, err => {
+        console.log(err.message);
+      });
+    }
   }
 }
