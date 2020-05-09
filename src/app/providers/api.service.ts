@@ -142,4 +142,24 @@ export class ApiService {
     });
   }
 
+  prendiChats(codice_utente: string, url: string) {
+    const body = {
+      codice_utente
+    };
+    const URL = url;
+    return new Promise((resolve, reject) => {
+      this.http.post(URL, body).subscribe(
+        data => {
+          console.log('Obj Chats', data);
+          let chats = data['Chats']['data'];
+          resolve(chats); //restituirò al ts un oggetto di nome "sondaggio" con accesso già alla posizione "Sondaggio" avendo visto il json di data
+
+        },
+        (err) => {
+          reject();
+        }
+      );
+    });
+  }
+
 }

@@ -10,7 +10,7 @@ ion-button{
 }
 
 ion-searchbar {
-    height: 50px !important;
+    height: 45px !important;
     // --height: 40px;
     // max-width: 400px;
     font-size: 1.25em !important;
@@ -28,9 +28,9 @@ ion-searchbar {
     // font-size: 1.25em !important;
     // border: 1px solid transparent;  
         --icon-color: var (--ion-color-primary);
-        --box-shadow: 0 0 3px rgba(255, 255, 255, 1);
+        --box-shadow: 0 0 2px rgba(255, 255, 255, 1);
         ::ng-deep{
-            .searchbar-input-container{            
+            .searchbar-input-container{          
                 .searchbar-input{ 
                     border-radius: 30px;
                     //any style that you want to implement on your searchbar
