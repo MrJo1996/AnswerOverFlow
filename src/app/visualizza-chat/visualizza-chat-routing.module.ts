@@ -7,6 +7,10 @@ const routes: Routes = [
   {
     path: '',
     component: VisualizzaChatPage
+  },
+  {
+    path: 'chat',
+    loadChildren: () => import('./visualizza-chat.module').then( m => m.VisualizzaChatPageModule)
   }
 ];
 
