@@ -182,4 +182,26 @@ export class ApiService {
     });
   }
 
+  inserisciDomanda(timer: string, titolo: string, descrizione: string, cod_utente: string, cod_categoria: number) {
+    const body = {
+      timer,
+      titolo,
+      descrizione,
+      cod_utente,
+      cod_categoria
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/inserisciDomanda', body).subscribe(
+        data => {
+          let esito = data['message'];
+          console.log('esito: ', esito);
+          resolve(esito);
+        },
+        (err) => {
+          reject();
+        }
+      );
+    });
+  }
+
 }
