@@ -47,9 +47,10 @@ export class ModificaRispostaPage implements OnInit {
       (risposta) => {
         console.log('Visualizzato con successo');
 
-        this.risposta = risposta['data']; //assegno alla variabile locale il risultato della chiamata. la variabile sarà utilizzata nella stampa in HTML
-        this.descrizioneView = this.risposta['0'].descrizione; //setto var da visualizzare a video per risolvere il problema del crop schermo durante il serve dell'app ( problema stava nell'utilizzo di: ['0'] per accedere alla var da visualizzare)
-        console.log('Sondaggio: ', this.risposta['0']);
+        this.risposta = risposta['data'];
+        console.log(risposta['data']) //assegno alla variabile locale il risultato della chiamata. la variabile sarà utilizzata nella stampa in HTML
+        this.descrizioneView = this.risposta['0'].descrizione;;//setto var da visualizzare a video per risolvere il problema del crop schermo durante il serve dell'app ( problema stava nell'utilizzo di: ['0'] per accedere alla var da visualizzare)
+        
         //il json di risposta della chiamata è così impostato-> Sondaggio: data: posizione{vari paramentri}
         //bisogna quindi accedere alla posizione del sondaggio da visualizzare
         //in apiservice accediamo già alla posizione 'Sondaggio'. Per sapere l'ordine di accesso ai dati ho stampato a video "data" da apiservice
