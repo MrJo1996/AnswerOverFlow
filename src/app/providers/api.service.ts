@@ -46,7 +46,7 @@ export class ApiService {
       this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/modificaProfilo', body).subscribe(
         data => {
           let esito = data['message'];
-          console.log('esito: ', esito);
+          //console.log('esito: ', esito);
           resolve(esito);
         },
         (err) => {
@@ -56,6 +56,25 @@ export class ApiService {
     });
   }
 
+  getProfilo(email: string){
+    const body = {
+      email: email
+    };
+
+    return new Promise((resolve, reject) => {
+      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaProfilo', body).subscribe(
+        data => {
+          let profilo = data['Profilo'];
+          resolve(profilo); //restituirò al ts un oggetto di nome "profilo" con accesso già alla posizione "Profilo" avendo visto il json di data
+          console.log('ciao' ,profilo);
+
+        },
+        (err) => {
+          reject();
+        }
+      );
+    });
+  }
 
   modificaSondaggio(titolo: string, timer: string, codice_sondaggio: Number) {
     const body = {
