@@ -3,61 +3,57 @@
 ion-item {
 
 
-    margin-top: 1%;
-    align-content: center;
-    border-bottom: solid 1px grey;
-  
-    color:  #97a9c5;
-  
-  }
-  .titolo{
-    font-size: 2rem;
-    color: #97a9c5;
-  }
-  .grid{
-    height: 70%;
-    width: 70%;
-  
-    text-align: center;
-  
-  }
-  
+  margin-top: 1%;
+  align-content: center;
+  border-bottom: solid 1px grey;
 
-  
-  a {
-  
-    color: grey;
-  
-  }
-  
-  ion-content.background {
+  color:  #97a9c5;
 
-      --background: url('https://thumbs.gfycat.com/IgnorantDimpledHyrax-size_restricted.gif') 0 0/100% 100% repeat;
-   
-  }
+}
+.titolo{
+  font-size: 2rem;
+  color: #97a9c5;
+}
+.grid{
+  height: 70%;
+  width: 70%;
 
-  .logo {
-    width: 180px;
-    height: 180px;
-    margin: 20px auto 8px;
-    border-radius: 10%;
-    background: url("src/assets/img/AOF Logo TRASP.png") no-repeat;
-    background-size: 100%;
-  }
+  text-align: center;
 
-  .btn-group {
-    .button-ios,
-    .button-md {
-      border-radius: 0;
-      &:first-of-type {
-        border-radius: 2px 0 0 2px;
-      }
-      &:last-of-type {
-        border-radius: 0 2px 2px 0;
-      }
+}
+
+
+
+a {
+
+  color: grey;
+
+}
+
+ion-content.background {
+
+    --background: url('https://wallpapers.party/media/2018/05/dark-14.jpg') 0 0/100% 100% repeat;
+ 
+}
+
+.logo {
+  width: 180px;
+  height: 180px;
+  margin: 20px auto 8px;
+  border-radius: 10%;
+  background: url("src/assets/img/AOF Logo TRASP.png") no-repeat;
+  background-size: 100%;
+}
+
+.btn-group {
+  .button-ios,
+  .button-md {
+    border-radius: 0;
+    &:first-of-type {
+      border-radius: 2px 0 0 2px;
+    }
+    &:last-of-type {
+      border-radius: 0 2px 2px 0;
     }
   }
-
-  
-
-
+}

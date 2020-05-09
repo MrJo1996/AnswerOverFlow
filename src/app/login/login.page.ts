@@ -4,7 +4,7 @@ import {Router} from "@angular/router";
 
 import {Promise} from "q";
 
-import {PostServiceService} from "../services/post-service.service";
+import {PostServiceService} from "../Services/post-service.service";
 import {NavController} from "@ionic/angular";
 
 @Component({
@@ -19,7 +19,7 @@ export class LoginPage implements OnInit {
   password = "";
   request: Promise<any>;
   result:  Promise<any>;
-  url= 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/nomeEndPoint'
+  url= 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/login'
 
   constructor(private service: PostServiceService, private router : Router, private navctrl: NavController) {
     
@@ -28,12 +28,16 @@ export class LoginPage implements OnInit {
   ngOnInit() {
   }
 
+  public reg(){
+    this.router.navigate(['registrazione']);
+  }
+
   postLogin(){
     if(this.password.length < 8){
       alert('password troppo corta');
     }else{
       let postData = {
-        "email":this.username,
+        "username":this.username,
         "password": this.password
       };
       
@@ -50,3 +54,13 @@ export class LoginPage implements OnInit {
   }
 
 }
+
+
+
+
+
+
+
+
+
+
