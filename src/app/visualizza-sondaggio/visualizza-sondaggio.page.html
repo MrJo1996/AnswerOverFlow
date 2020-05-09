@@ -19,9 +19,9 @@
         <ion-icon   class = "alarm_style" name="alarm-outline" slot= "start"></ion-icon>
         <ion-label class = "textTitle"> 50:50</ion-label>
         <ion-button slot="end" expand="block" (click) = "elimina()" fill="clear">
-            <ion-icon *ngIf="false" name="trash-sharp" color="primary"  class = "icons_generic_style"></ion-icon>
+            <ion-icon  name="trash-sharp" color="primary"  class = "icons_generic_style"></ion-icon>
         </ion-button>
-       <ion-button slot="end" expand="block" fill="clear">
+       <ion-button slot="end" (click) = "visualizzaSondaggioSelezionato()" expand="block" fill="clear">
           <ion-icon name="hammer-sharp" color="primary" class = "icons_generic_style"></ion-icon>
        </ion-button>
      <!--    <ion-label slot="end" class="textTitleSMALL">  Risposte totali: 
@@ -29,7 +29,7 @@
         </ion-label> -->
         
     </ion-toolbar>
-      <ion-card-title class = "textTitleBIG">{{titolo}}</ion-card-title>
+      <ion-card-title class = "textTitleBIG">{{sondaggio.titolo}}</ion-card-title>
     </ion-card-header>
 
 
