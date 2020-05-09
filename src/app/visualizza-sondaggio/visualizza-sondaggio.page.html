@@ -17,11 +17,11 @@
       <ion-toolbar class="backgrounds">
        
         <ion-icon   class = "alarm_style" name="alarm-outline" slot= "start"></ion-icon>
-        <ion-label class = "textTitle"> 50:50</ion-label>
-        <ion-button slot="end" expand="block" (click) = "elimina()" fill="clear">
+        <ion-label class = "textTitle">{{sondaggio.timer}}</ion-label>
+        <ion-button slot="end" *ngIf="currentUser===sondaggioUser" expand="block" (click) = "elimina()" fill="clear">
             <ion-icon  name="trash-sharp" color="primary"  class = "icons_generic_style"></ion-icon>
         </ion-button>
-       <ion-button slot="end" (click) = "visualizzaSondaggioSelezionato()" expand="block" fill="clear">
+       <ion-button slot="end" *ngIf="currentUser===sondaggioUser" (click) = "visualizzaSondaggioSelezionato()" expand="block" fill="clear">
           <ion-icon name="hammer-sharp" color="primary" class = "icons_generic_style"></ion-icon>
        </ion-button>
      <!--    <ion-label slot="end" class="textTitleSMALL">  Risposte totali: 
@@ -38,36 +38,36 @@
         <p class= "textSimple">{{descrizione}}</p>
    
         <ion-list class = "backgrounds">
-          <ion-list-header>Voti totali: <ion-label>{{voti_totali}}</ion-label></ion-list-header>
+          <ion-list-header> <ion-label *ngIf="currentUser===sondaggioUser">Voti totali: {{voti_totali}}</ion-label></ion-list-header>
           
             <div class = "backgrounds">
           
             <ion-item>    
-              <ion-label slot = "start" class = "textTitleSMALL">{{scelte[0].num_favorevoli}}
+              <ion-label slot = "start" class = "textTitleSMALL">
                 <ion-label slot = "start" class = "textTitleSMALL">voti</ion-label>
               </ion-label>
-              <ion-label>{{scelte[0].descrizione}}</ion-label>
+              <ion-label></ion-label>
             </ion-item>
   
             <ion-item>
-              <ion-label slot = "start" class = "textTitleSMALL">{{scelte[0].num_favorevoli}}
+              <ion-label slot = "start" class = "textTitleSMALL">
                 <ion-label slot = "start" class = "textTitleSMALL">voti</ion-label>
               </ion-label>
-              <ion-label>{{scelte[1].descrizione}}</ion-label>
+              <ion-label></ion-label>
             </ion-item>
   
             <ion-item >
-              <ion-label slot = "start" class = "textTitleSMALL">{{scelte[0].num_favorevoli}}
+              <ion-label slot = "start" class = "textTitleSMALL">
                 <ion-label slot = "start" class = "textTitleSMALL">voti</ion-label>
               </ion-label>
-              <ion-label>{{scelte[2].descrizione}}</ion-label>
+              <ion-label></ion-label>
             </ion-item>
   
             <ion-item >
-              <ion-label slot = "start" class = "textTitleSMALL">{{scelte[0].num_favorevoli}}
+              <ion-label slot = "start" class = "textTitleSMALL">
                 <ion-label slot = "start" class = "textTitleSMALL">voti</ion-label>
               </ion-label>
-              <ion-label>{{scelte[3].descrizione}}</ion-label>
+              <ion-label></ion-label>
             </ion-item>
   
           </div>
@@ -77,9 +77,9 @@
 
         <ion-toolbar>
           <ion-icon name="calendar-outline" slot = start class = "calendar_icon_style"></ion-icon>
-          <ion-label class= "description_text" slot = "start" >{{data_e_ora}}</ion-label>
+          <ion-label class= "description_text" slot = "start" >{{sondaggio.dataeora}}</ion-label>
           <ion-icon name="list" slot = "start"  class = "icon_list_style"></ion-icon>
-          <ion-label class= "description_text" slot = "start" >{{categoria}}</ion-label>
+          <ion-label class= "description_text" slot = "start" ></ion-label>
            
 
       </ion-toolbar>

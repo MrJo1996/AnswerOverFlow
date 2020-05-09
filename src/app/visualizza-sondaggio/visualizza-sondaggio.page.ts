@@ -13,55 +13,34 @@ import { TransitiveCompileNgModuleMetadata } from '@angular/compiler';
 })
 export class VisualizzaSondaggioPage implements OnInit {
   
-//titolo: string = ' ';
-/*
-  data_e_ora = "18-09-2019"
-  categoria = "curiosita"
-  descrizione = "voglio sapere il tuo nome"
-  */
-
-  codice_sondaggio = 14 
+  codice_sondaggio = 15
   sondaggio = {};
-
-
-  scelte = [{
-                  num_favorevoli: 1,
-                  descrizione: 'michele'
-                },
-                {
-                  num_favorevoli: 1,
-                  descrizione: 'giovanni'
-                },
-                {
-                  num_favorevoli: 1,
-                  descrizione: 'giuseppe'
-                },
-                {
-                  num_favorevoli: 1,
-                  descrizione: 'fausto'
-                }] 
-
-  voti_totali = this.scelte[0].num_favorevoli + 
-                this.scelte[1].num_favorevoli + 
-                this.scelte[2].num_favorevoli + 
-                this.scelte[3].num_favorevoli 
+  scelte={};
+  currentUser = "giotto"
+  sondaggioUser;
 
 
   requestPost: Promise<any>;
   resultPost: Promise<any>;
 
+  requestPostScelte: Promise<any>;
+  resultPostScelte: Promise<any>;
+
   requestDelete: Promise<any>;
   resultDelete: Promise<any>;
 
+  thrashActive;
 
-  url = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/cancellaSondaggio/4'
+  url = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/cancellaSondaggio/14'
   url2 = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaSondaggio'
+  url3= 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaScelteDelSondaggio'
   
   constructor(private service: PostServiceService) { }
 
   ngOnInit() {
     this.visualizzaSondaggioSelezionato();  
-  
+    this.visualizzaScelte();
+
   }
   
   @ViewChild('content', {read:IonContent,static: false}) myContent: IonContent;
@@ -94,6 +73,7 @@ visualizzaSondaggioSelezionato(){
 this.resultPost = this.service.postService(postData, this.url2  ).then((data) =>{
 this.requestPost = data;
 this.sondaggio = data['Sondaggio']['data']['0'];
+this.sondaggioUser = data['Sondaggio']['data']['0'].cod_utente;
 
 console.log(this.sondaggio);
 }, err => {
@@ -101,7 +81,28 @@ console.log(err.message);
 });
 
 }
+
+visualizzaScelte(){
+
+  let postDataScelta ={
+    "codice_sondaggio" : this.codice_sondaggio
+
 }
+
+this.resultPostScelte = this.service.postService(postDataScelta, this.url3 ).then((data) =>{
+this.requestPostScelte = data;
+
+
+console.log(data);
+}, err => {
+console.log(err.message);
+});
+
+}
+
+
+}
+
 
 
 
