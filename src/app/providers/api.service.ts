@@ -87,7 +87,7 @@ export class ApiService {
         data => {
           let sondaggio = data['Sondaggio'];
           resolve(sondaggio); //restituirò al ts un oggetto di nome "sondaggio" con accesso già alla posizione "Sondaggio" avendo visto il json di data
-          // console.log('ciao' ,sondaggio);
+          console.log('ciao' ,sondaggio);
 
         },
         (err) => {
@@ -105,12 +105,12 @@ export class ApiService {
     };
 
     return new Promise((resolve, reject) => {
-      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaRisposta', body).subscribe(
+      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzarisposta', body).subscribe(
         data => {
-          let risposta = data['Risposta'];
+          let risposta = data['Risposte'];
           resolve(risposta); 
-          console.log(risposta)//restituirò al ts un oggetto di nome "sondaggio" con accesso già alla posizione "Sondaggio" avendo visto il json di data
-          // console.log('ciao' ,sondaggio);
+          console.log(risposta)//restituirò al ts un oggetto di nome "risposta" con accesso già alla posizione "Risposta" avendo visto il json di data
+          // console.log('ciao' ,);
 
         },
         (err) => {

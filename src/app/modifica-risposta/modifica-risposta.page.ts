@@ -47,7 +47,8 @@ export class ModificaRispostaPage implements OnInit {
       (risposta) => {
         console.log('Visualizzato con successo');
 
-        this.risposta = risposta['Data']; //assegno alla variabile locale il risultato della chiamata. la variabile sarà utilizzata nella stampa in HTML
+        this.risposta = risposta['data'];
+        console.log(risposta['data']) //assegno alla variabile locale il risultato della chiamata. la variabile sarà utilizzata nella stampa in HTML
         this.descrizioneView = this.risposta['0'].descrizione;;//setto var da visualizzare a video per risolvere il problema del crop schermo durante il serve dell'app ( problema stava nell'utilizzo di: ['0'] per accedere alla var da visualizzare)
         
         //il json di risposta della chiamata è così impostato-> Sondaggio: data: posizione{vari paramentri}
@@ -57,7 +58,6 @@ export class ModificaRispostaPage implements OnInit {
       },
       (rej) => {
         console.log("C'è stato un errore durante la visualizzazione");
-        console.log('Risposta: ', this.risposta['Data']);
       }
     );
   }
