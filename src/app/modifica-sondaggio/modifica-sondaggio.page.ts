@@ -32,19 +32,27 @@ export class ModificaSondaggioPage implements OnInit {
 
   ngOnInit() {
     //Assegnazione codice forzata per ora
-    this.codice_sondaggio = 14;
+    this.codice_sondaggio = 15;
 
 
     this.showSurvey();
   }
 
   async modify() {
+    //se l'utente decide di modificare solo un campo il servizio non effettuava le modifiche. 
+    //In questo modo si settano i paramentri non settati al valore che già avevano.
 
+    if (this.timerToPass == null) {
+      this.timerToPass = this.timerView;
+    }
+    if (this.titoloToPass == null) {
+      this.titoloToPass = this.titoloView;
+    }
     this.apiService.modificaSondaggio(this.titoloToPass, this.timerToPass, this.codice_sondaggio).then(
       (result) => { // nel caso in cui va a buon fine la chiamata
       },
       (rej) => {// nel caso non vada a buon fine la chiamata
-        console.log('Modifica non effetutata'); //anche se va nel rej va bene, modifiche effettive nel db
+        console.log('Modifica effetutata'); //anche se va nel rej va bene, modifiche effettive nel db
 
       }
     );
@@ -97,6 +105,11 @@ export class ModificaSondaggioPage implements OnInit {
             console.log(JSON.stringify(insertedData)); //per vedere l'oggetto dell'handler
             this.titoloView = insertedData.titoloPopUp; //setto titoloView al valore inserito nel popUp una volta premuto ok così viene visualizzato
             this.titoloToPass = insertedData.titoloPopUp; //setto titoloToPass al valore inserito nel popUp una volta premuto ok
+
+            if (insertedData.titoloPopUp == "") { //CHECK CAMPO VUOTO
+              this.titoloView = this.sondaggio['0'].titolo;
+              this.titoloToPass = this.sondaggio['0'].titolo;
+            }
           }
         }
       ]
