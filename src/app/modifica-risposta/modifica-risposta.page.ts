@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController} from '@ionic/angular';
+import { Router } from '@angular/router';
 
 import { ApiService } from 'src/app/providers/api.service';
 
@@ -18,7 +19,7 @@ export class ModificaRispostaPage implements OnInit {
 
   risposta = {};
 
-  constructor(public alertController: AlertController,public apiService: ApiService ) { }
+  constructor(public alertController: AlertController,public apiService: ApiService, public router: Router ) { }
 
 
   ngOnInit() {
@@ -27,7 +28,11 @@ export class ModificaRispostaPage implements OnInit {
   
     this.showResponse();
 
-    }
+  }
+
+  public back() {
+    this.router.navigate(['visualizza-risposta']);
+  }
 
 
   async modify() {
