@@ -1,8 +1,9 @@
 <ion-header>
   <ion-toolbar>
 
+
     <ion-button slot="start" fill="clear" ion-button icon-only>
-      <ion-icon name="chevron-back-outline"></ion-icon>
+      <ion-icon name="arrow-back-outline"></ion-icon>
     </ion-button>
 
     <ion-title>Nuovo sondaggio</ion-title>
@@ -11,18 +12,29 @@
       <ion-icon color="success" name="checkmark-outline"></ion-icon>
     </ion-button>
 
+
   </ion-toolbar>
 </ion-header>
 
+
+
 <ion-content>
 <ion-card>
-  <ion-item>
+<ion-card-content>
+
+
+  <!-- <ion-item>
     <ion-label position="floating">Titolo</ion-label>
     <ion-input type="text"></ion-input>
-  </ion-item>
+  </ion-item> -->
+  <ion-card-title class="textTitleBIG">Titolo:</ion-card-title>
+  <ion-textarea  [(ngModel)] = "titolo" style="border-radius: 7px;" placeholder="  Perchè i cani si mordono la coda?" rows="3"
+      class="backgroundsSecondaryItem textSimple">
+  </ion-textarea>
+
+<ion-card-title class="textTitleBIG" style="margin-top: 10px;">Scelte:</ion-card-title>
 
 <ion-list>
-
   <ion-item *ngFor="let scelta of scelte; let idx = index">
     
     <ion-label>{{idx + 1}}°</ion-label>
@@ -39,40 +51,57 @@
     </ion-button>
       
   </ion-item>
-  
 </ion-list>
 
 <ion-item lines="none">
+  <ion-button fill="clear" 
+              class="plus"
+              ion-button (click)="Add()">
+    <ion-icon name="add"></ion-icon>
+  </ion-button>  
+</ion-item>
+
+<ion-row>
+  <ion-col>
+    <ion-item lines="none" 
+              (click)="showTimerPicker()"
+              class="itemClass">
+      <ion-label>
+        <ion-icon name="time-outline" slot="start"></ion-icon>
+      </ion-label>
+          <ion-text *ngIf="[timerView]==''"
+              class="timerPlaceholder">Timer</ion-text> <!--Questo serve a dare un placeholder all'ionItem senza aver bisogno dell'ion-input-->
+          {{timerView}}
+      <ion-icon class="inner" name="caret-down-outline"></ion-icon>
+      <!-- <ion-datetime placeholder ="Timer" displayFormat="HH:mm" [(ngModel)]="myTime"(ionChange)="showTimer()"></ion-datetime> -->
+    </ion-item>
+  </ion-col>
   
-<ion-button fill="clear" 
-            class="plus"
-            ion-button (click)="Add()">
-  <ion-icon name="add"></ion-icon>
-</ion-button>
-  
-</ion-item>
+  <ion-col>
+    <ion-item lines="none"
+              class="itemClass">
+      <ion-label>
+        <ion-icon name = "bookmark-outline"></ion-icon>
+      </ion-label> 
+      <ion-select interface="action-sheet"
+                  placeholder="Categoria"
+                  [(ngModel)]="categoriaScelta"
+                  cancelText="Annulla">
+        <ion-select-option *ngFor="let categoria of categorie" key=[categoria.codice_categoria] value=[categoria]>{{categoria.titolo}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-col>
+</ion-row>
 
- <ion-item lines="none" (click)="showTimerPicker()">
-  <ion-label>
-    <ion-icon name="time-outline" slot="start"></ion-icon>
-  </ion-label>
-      {{timerView}}
-    <ion-icon class="inner" name="caret-down-outline" slot="end"></ion-icon>
-
-  <!-- <ion-datetime placeholder ="Timer" displayFormat="HH:mm" [(ngModel)]="myTime"(ionChange)="showTimer()"></ion-datetime> -->
-</ion-item>
+<!-- 
+<ion-row>
+  <ion-col>
+    <a href="/proponi-categoria">Non hai trovato la categoria adatta?</a>
+  </ion-col>
+</ion-row> -->
 
 
-<ion-item lines="none">
-<ion-label>
-  <ion-icon name = "bookmark-outline"></ion-icon>
-</ion-label> 
-<ion-select interface="action-sheet" 
-            [(ngModel)]="categoriaScelta"
-            (ionChange)="showScelta($event)">
-   <ion-select-option *ngFor="let categoria of categorie; let idx = index" >{{categoria.titolo}}</ion-select-option>
-</ion-select>
-</ion-item>
-</ion-card>
-    
+</ion-card-content>
+
+</ion-card>  
 </ion-content>

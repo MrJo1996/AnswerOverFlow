@@ -16,10 +16,11 @@ ion-title{
         color: var(--ion-color-primary);
     }
 }
+
 .inner{
     opacity: 0.6; 
-    font-size: 0.9rem;
-    margin-right: 2px;
+    font-size: 0.8rem;
+    margin-left: 4px;
     // left: 5px;
     // top: 50%;
     // margin-top: -3px;
@@ -35,6 +36,22 @@ ion-title{
     // width: 12px;
     // height: 18px;
     // visibility: inherit;
+}
+
+.timerPlaceholder{
+    opacity: 0.4; 
+}
+
+.itemClass{
+    border-radius: 10px;
+    --background: #3171e0;
+    margin-top: 10px;
+    }
+    
+ion-select{
+    position: fixed;
+    right: 0;
+    padding-right: 43px;
 }
 
 // .timer{

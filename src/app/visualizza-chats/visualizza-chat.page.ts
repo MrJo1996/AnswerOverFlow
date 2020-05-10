@@ -24,8 +24,8 @@ export class VisualizzaChatPage implements OnInit {
         this.chatUtenti = chats;
         for (let utenti of this.chatUtenti){
           if(utenti['cod_utente0']==this.user)
-            utenti['cod_utente0'] = utenti['cod_utente1']
-        }
+            utenti['cod_utente0'] = utenti['cod_utente1'];
+    }
       },
       (rej) => {
         console.log("C'è stato un errore durante la visualizzazione");
