@@ -4,7 +4,7 @@ import {Router} from "@angular/router";
 
 import {Promise} from "q";
 
-import {PostServiceService} from "../Services/post-service.service";
+import {PostServiceService} from "../services/post-service.service";
 import {NavController} from "@ionic/angular";
 
 @Component({

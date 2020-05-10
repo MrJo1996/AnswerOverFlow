@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild} from '@angular/core';
 import { IonContent } from '@ionic/angular';
 import { Content } from '@angular/compiler/src/render3/r3_ast';
 import { Promise } from "q";
-import { PostServiceService } from "../Services/post-service.service";
+import { PostServiceService } from "../services/post-service.service";
 
 @Component({
   selector: 'app-visualizza-chat',

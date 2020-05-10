@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonContent } from '@ionic/angular';
 import { Promise } from "q";
-import { PostServiceService } from "../Services/post-service.service";
+import { PostServiceService } from "../services/post-service.service";
 
 @Component({
   selector: 'app-chat',

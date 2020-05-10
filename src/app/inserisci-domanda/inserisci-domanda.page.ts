@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'src/app/providers/api.service';
-import { PostServiceService } from "../Services/post-service.service";
+import { PostServiceService } from "../services/post-service.service";
 import { AlertController } from '@ionic/angular';
 
 

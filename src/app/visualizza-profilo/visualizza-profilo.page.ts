@@ -6,7 +6,7 @@ import {Promise} from "q";
 
 import { Chart } from 'chart.js';
 
-import {PostServiceService} from "../Services/post-service.service";
+import {PostServiceService} from "../services/post-service.service";
 import {NavController} from "@ionic/angular";
 
 
