@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Promise } from "q";
 import { PostServiceService } from "../Services/post-service.service";
 import { TransitiveCompileNgModuleMetadata, ThrowStmt } from '@angular/compiler';
+import { NOMEM } from 'dns';
 
 @Component({
   selector: 'app-visualizza-domanda',
@@ -18,17 +19,29 @@ export class VisualizzaDomandaPage implements OnInit {
   requestPost: Promise<any>;
   resultPost: Promise<any>;
 
-  codice_domanda = 22
-  currentUser = "giotto"
-  domanda;
+  requestRispostaPost: Promise<any>;
+  resultRispostaPost: Promise<any>;
 
-  url = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/cancellaDomanda/5'
+
+  
+  codice_domanda = 20
+  currentMailUser = "gmailverificata"//mail dell'utente corrente
+  domanda = {};
+  risposte;
+  domandaMailUser ;//mail dell'utente che ha fatto la domanda
+  domandaNomeUser = " ";//nome e cognome dell'utente che ha fatto la domanda
+
+  url = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/cancellaDomanda/28'
   url2 = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzadomanda'
+  url3 = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzarisposteperdomanda'
+  url4 = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaProfilo'
 
   constructor(private service: PostServiceService) { }
 
   ngOnInit() {
     this.visualizzaDomanda();
+    this.visualizzaRisposte();
+    //this.trovaUtenteDomanda();
   }
 
   elimina(){
@@ -57,10 +70,11 @@ export class VisualizzaDomandaPage implements OnInit {
   
   this.resultPost = this.service.postService(postData, this.url2  ).then((data) =>{
   this.requestPost = data;
-  this.domanda = data;
+  this.domanda = data['Domande']['data']['0'];
+  this.domandaMailUser =  data['Domande']['data']['0'].cod_utente
 
   
-  console.log(data);
+  console.log(this.domanda);
   }, err => {
   console.log(err.message);
   });
@@ -68,4 +82,40 @@ export class VisualizzaDomandaPage implements OnInit {
 
   }
 
+  visualizzaRisposte(){
+    let postData ={
+      "cod_domanda" : this.codice_domanda
+  
+  }
+  
+  this.resultPost = this.service.postService(postData, this.url3 ).then((data) =>{
+  this.requestPost = data;
+  this.risposte = data.Risposte.data;;
+  
+  console.log(this.risposte);
+  }, err => {
+  console.log(err.message);
+  });
+  
+
+  }
+
+/* trovaUtenteDomanda(){
+  let postData ={
+    "email" : this.domandaMailUser
+
+}
+
+this.resultPost = this.service.postService(postData, this.url4 ).then((data) =>{
+this.requestPost = data;
+this.domandaNomeUser = data['Profilo']['0'].nome;
+
+
+console.log(data);
+}, err => {
+console.log(err.message);
+});
+ 
+}
+*/
 }
