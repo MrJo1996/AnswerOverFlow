@@ -149,7 +149,7 @@ export class ModificaSondaggioPage implements OnInit {
 
           //TODO mostrare messaggio di avvenuta modifica e riportare alla home
 
-
+            this.presentAlert();
 
           }
         }
@@ -365,6 +365,10 @@ export class ModificaSondaggioPage implements OnInit {
     });
 
     await alert.present();
+  }
+
+  public goBack() {
+    this.navCtrl.navigateRoot('/visualizza-sondaggio');
   }
   /*
   Trasforma in linguaggio umanizzato, aggiunta per prove. Potrebbe tornare utile. Non eliminare.
