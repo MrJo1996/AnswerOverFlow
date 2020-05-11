@@ -242,4 +242,36 @@ export class ApiService {
     });
   }
 
+  modificaPassword(password: string, email: string) {
+    const body = {
+
+      
+      password,
+      email
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/modificaPassword', body).subscribe(
+        data => {
+          let esito = data['message'];
+          resolve(esito);
+          console.log('esito: ', esito);
+          resolve(esito);
+        },
+        (err) => {
+
+          reject();
+        }
+      );
+    });
+
+  }
+
+
+
+
+
+
+
+
+
 }
