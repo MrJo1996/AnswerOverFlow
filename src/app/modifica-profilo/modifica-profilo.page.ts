@@ -20,7 +20,7 @@ export class ModificaProfiloPage implements OnInit {
   cognome: string;
   bio: string;
   */
-password: string;
+  password: string;
   usernameToPass: string;
   nomeToPass: string;
   cognomeToPass: string;

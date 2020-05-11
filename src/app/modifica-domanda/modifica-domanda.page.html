@@ -19,28 +19,36 @@
     <ion-item color="light">
       <ion-icon name="create-outline" slot="start"></ion-icon>
       <ion-label position="stacked">Titolo</ion-label>
-      <ion-input readonly placeholder="Perchè i cani si mordono la coda?" color="medium" (click)="popupModificaTitolo()"></ion-input>
+      <ion-input readonly placeholder={{titoloView}} color="medium" (click)="popupModificaTitolo()"></ion-input>
     </ion-item>
   
     <ion-item color="light">
       <ion-icon name="calendar-outline" slot="start"></ion-icon>
       <ion-label position="stacked">Data e ora</ion-label>
-      <ion-datetime placeholder="Data e ora" displayFormat="DD/MM/YYYY HH:mm"  pickerFormat="DD MM YYYY"></ion-datetime>
+      <ion-datetime readonly placeholder="Data e ora" displayFormat="DD/MM/YYYY HH:mm"  pickerFormat="DD MM YYYY"></ion-datetime>
 
     </ion-item>
   
     <ion-item color="light">
       <ion-icon name="time-outline" slot="start"></ion-icon>
       <ion-label position="stacked">Timer</ion-label>
-      <ion-datetime placeholder="Timer" displayFormat="HH:mm" pickerFormat="HH mm"></ion-datetime>
+      <ion-input readonly placeholder={{timerView}} color="medium" (click)="showTimerPicker()"></ion-input>
     </ion-item>
+
 
   
     <ion-item color="light">
       <ion-icon name="pencil-outline" slot="start"></ion-icon>
       <ion-label position="stacked">Descrizione</ion-label>
-      <ion-input readonly placeholder="Ho notato che il mio cane . ." color="medium" (click)="popupModificaDescrizione()"></ion-input>
+      <ion-input readonly placeholder={{descrizioneView}} color="medium" (click)="popupModificaDescrizione()"></ion-input>
       </ion-item>
+
+      <ion-item color="light">
+        <ion-icon name="alert-outline" slot="start"></ion-icon>
+        <ion-label position="stacked">La tua domanda scadrà tra</ion-label>
+        <ion-input id="timeLeft" readonly placeholder=" " color="medium" ></ion-input>
+      </ion-item>
+  
 
   </ion-card>
   
