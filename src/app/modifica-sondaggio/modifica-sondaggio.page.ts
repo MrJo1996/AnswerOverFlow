@@ -6,10 +6,8 @@ import { ApiService } from 'src/app/providers/api.service';
 //Picker - import e poi definire nel constructor
 import { PickerController } from "@ionic/angular";
 import { PickerOptions } from "@ionic/core";
-import { async } from '@angular/core/testing';
-import { Time } from '@angular/common';
-import { NavController } from '@ionic/angular';
 
+import { NavController } from '@ionic/angular';
 import { __await } from 'tslib';
 
 @Component({
@@ -30,15 +28,15 @@ export class ModificaSondaggioPage implements OnInit {
   sondaggio = {}; //conterrà tutti i dati del sondaggio da visualizzare
 
   timerSettings: string[] = ["5 min", "15 min", "30 min", "1 ora", "3 ore", "6 ore", "12 ore", "1 giorno", "3 giorni"]; //scelte nel picker
-
-
+  public SCAD;
   constructor(private alertController: AlertController, public apiService: ApiService, private pickerController: PickerController,
     public navCtrl: NavController) { }
 
 
   ngOnInit() {
+
     //Assegnazione codice forzata per ora
-    this.codice_sondaggio = 15;
+    this.codice_sondaggio = 18;
 
     this.showSurvey();
 
@@ -81,6 +79,17 @@ export class ModificaSondaggioPage implements OnInit {
 
         //stampo tempo mancante -> passare come parametri gli incrementi che ha già settati nel campo timer
         this.mappingIncrement(this.sondaggio['0'].timer);
+
+        var auxData = []; //var ausialiaria per parsare la data di creazione
+        auxData['0'] = (this.sondaggio['0'].dataeora.substring(0, 10).split("-")[0]); //anno
+        auxData['1'] = this.sondaggio['0'].dataeora.substring(0, 10).split("-")[1]; //mese [0]=gennaio
+        auxData['2'] = this.sondaggio['0'].dataeora.substring(0, 10).split("-")[2]; //gg
+        auxData['3'] = this.sondaggio['0'].dataeora.substring(11, 18).split(":")[0]; //hh
+        auxData['4'] = this.sondaggio['0'].dataeora.substring(11, 18).split(":")[1]; //mm
+        //metto dati parsati nella var dataCreazioneToview così da creare una nuova var da poter stampare nel formato adatto
+        var dataCreazioneToView = new Date(auxData['0'], parseInt(auxData['1'], 10) - 1, auxData['2'], auxData['3'], auxData['4']);
+        //stampo la var appena creata nell'elemento con id="dataOraCreazione"
+        document.getElementById("dataOraCreazione").innerHTML = dataCreazioneToView.toLocaleString();
       },
       (rej) => {
         console.log("C'è stato un errore durante la visualizzazione");
@@ -124,17 +133,24 @@ export class ModificaSondaggioPage implements OnInit {
         }
       ]
     });
-
     await alert.present();
-    //View Dati inseriti dopo click sul popup di modifica titolo. Dal console log ho visto come accedere ai dati ricevuti.
-    //this.titoloView = await (await alert.onDidDismiss()).data.values.titolo;
   }
 
   //Pop-up Conferma Modifiche
   async popupConfermaModificheSondaggio() {
+    var header = "Conferma modifiche";
+    var message = "Vuoi confermare le modifiche effettuate?";
+    
+    console.log("da mod: ", this.SCAD);
+   
+    /* if (this.SCAD) {
+      header = "Sondaggio scaduto";
+      message = "Impossibile modificare, sondaggio scaduto.";
+    } */
+
     const alert = await this.alertController.create({
-      header: 'Conferma modifiche',
-      message: 'Vuoi confermare le modifiche effettuate?',
+      header: header,
+      message: message,
       buttons: [
         {
           text: "Annulla",
@@ -143,13 +159,10 @@ export class ModificaSondaggioPage implements OnInit {
         {
           text: 'Conferma',
           handler: (value: any) => {
-
-            //LANCIO SERVIZIO MODIFICA UNA VOLTA CLICCATO "CONFERMA"
+            //LANCIO SERVIZIO MODIFICA UNA VOLTA CLICCATO "CONFERMA" e se non è scaduto il countdown
             this.modify();
 
-          //TODO mostrare messaggio di avvenuta modifica e riportare alla home
-
-            this.presentAlert();
+            //TODO mostrare messaggio di avvenuta modifica e riportare alla home
 
           }
         }
@@ -192,8 +205,66 @@ export class ModificaSondaggioPage implements OnInit {
 
   getColumnOptions() {
     let options = [];
+
+    //Check dei valori ammissibili da mostrare nel picker in base all'orario di creazione del sondaggio
+    var auxDataPicker = []; //get dati dal sondaggio
+    auxDataPicker['0'] = (this.sondaggio['0'].dataeora.substring(0, 10).split("-")[0]); //anno
+    auxDataPicker['1'] = this.sondaggio['0'].dataeora.substring(0, 10).split("-")[1]; //mese [0]=gennaio
+    auxDataPicker['2'] = this.sondaggio['0'].dataeora.substring(0, 10).split("-")[2]; //gg
+    auxDataPicker['3'] = this.sondaggio['0'].dataeora.substring(11, 18).split(":")[0]; //hh
+    auxDataPicker['4'] = this.sondaggio['0'].dataeora.substring(11, 18).split(":")[1]; //mm
+    var dataPicker = new Date(parseInt(auxDataPicker['0'], 10), parseInt(auxDataPicker['1'], 10) - 1, parseInt(auxDataPicker['2'], 10), parseInt(auxDataPicker['3'], 10), parseInt(auxDataPicker['4'], 10));
+
+    var nowPicker = new Date(); //ora
+
+    var increment; //avvalorata nello switch, incremmento in millisecondi della scelta
     this.timerSettings.forEach(x => {
-      options.push({ text: x, value: x });
+      console.log("x ", x);
+      switch (x) {
+        case (this.timerSettings['0']):
+          increment = 5 * 60 * 1000;
+          break;
+
+        case (this.timerSettings['1']):
+          increment = 15 * 60 * 1000;
+          break;
+
+        case (this.timerSettings['2']):
+          increment = 30 * 60 * 1000;
+          break;
+
+        case (this.timerSettings['3']):
+          increment = 60 * 60 * 1000;
+          break;
+
+        case (this.timerSettings['4']):
+          increment = 3 * 60 * 60 * 1000;
+          break;
+
+        case (this.timerSettings['5']):
+          increment = 6 * 60 * 60 * 1000;
+          break;
+
+        case (this.timerSettings['6']):
+          increment = 12 * 60 * 60 * 1000;
+          break;
+
+        case (this.timerSettings['7']):
+          increment = 24 * 60 * 60 * 1000;
+          break;
+
+        case (this.timerSettings['8']):
+          increment = 72 * 60 * 60 * 1000;
+          break;
+
+      }
+
+      //se datasondaggio + incremento maggiore di ora attuale allora è possibile impostare il timer per quella scelta
+      // e quindi viene mostrata nel picker aggiungendo la scelta alla lista delle opzioni mostrate
+      if ((dataPicker.getTime() + increment) > (nowPicker.getTime())) {
+        options.push({ text: x, value: x });
+      }
+
     });
     return options;
   }
@@ -243,7 +314,7 @@ export class ModificaSondaggioPage implements OnInit {
   }
 
 
-  async countDown(incAnno, incMese, incGG, incHH, incMM) {
+   countDown(incAnno, incMese, incGG, incHH, incMM) {
 
     var auxData = []; //get dati dal sondaggio
     auxData['0'] = (this.sondaggio['0'].dataeora.substring(0, 10).split("-")[0]); //anno
@@ -255,7 +326,6 @@ export class ModificaSondaggioPage implements OnInit {
     // Setto data scadenza aggiungendo l'incremento stabilito da mappingInc al momento del confermaModifiche
     var countDownDate = new Date(parseInt(auxData['0'], 10) + incAnno, parseInt(auxData['1'], 10) - 1 + incMese, parseInt(auxData['2'], 10) + incGG, parseInt(auxData['3'], 10) + incHH, parseInt(auxData['4'], 10) + incMM).getTime();
     // var countDownDateTEST = new Date(parseInt(auxData['0'], 10) + 1, parseInt(auxData['1'], 10) - 1, parseInt(auxData['2'], 10), parseInt(auxData['3'], 10), parseInt(auxData['4'], 10))/* .getTime() */;
-
 
     // Aggiorno timer ogni 1000ms (1000ms==1s)
     var x = setInterval(function () {
@@ -274,28 +344,27 @@ export class ModificaSondaggioPage implements OnInit {
 
       // Risultato delle conversioni messo nell'elemento con id="timeLeft"
       //TODO non mostrare valori se non avvalorati o pari a zero
-      document.getElementById("timeLeft").innerHTML = days + "d " + hours + "h "
-        + minutes + "m " + seconds + "s ";
-
-      this.timerView = days + "d " + hours + "h "
-        + minutes + "m " + seconds + "s ";
+      document.getElementById("timeLeft").innerHTML = days + "giorni " + hours + "ore "
+        + minutes + "min " + seconds + "s ";
+      console.log(distance);
 
       // Se finisce il countDown viene mostrato "Sondaggio scaduto."
       if (distance < 0) {
+        /* this.SCAD = true;
+        console.log("SCAD in countdown() ", this.SCAD); */
         clearInterval(x);
         document.getElementById("timeLeft").innerHTML = "Sondaggio scaduto.";
-        this.timerView = "OMBO TIMER,SCADUTA";
       }
     }, 1000);
 
   }
+
   mappingIncrement(valueToMapp) {
     //creo nuova data di scadenza settata in base al timer impostato
     //case in base a timerToPass -> hh:mm (ossia la selezione dell'utente)
 
     switch (valueToMapp) {
       case ("00:05:00"):
-        console.log("Selezionata scelta 5 min");
         this.countDown(0, 0, 0, 0, 5);
 
         break;
@@ -342,54 +411,4 @@ export class ModificaSondaggioPage implements OnInit {
     }
   }
 
-
-  async presentAlert() { // Funzione per mostrare a video finestrina che specifica "l'errore"
-    const alert = await this.alertController.create({
-      header: 'Sondaggio modificato',
-      message: 'Il tuo sondaggio scadrà tra:' + this.timerView ,
-      buttons: [
-        {
-          text: "OK",
-          role: 'ok'
-        },
-        {
-          text: 'Ok',
-          handler: (value: any) => {
-
-            //Porta a "visualizza sondaggio" dopo avvenuta modifica
-            this.navCtrl.navigateRoot('/visualizza-sondaggio');
-
-          }
-        }
-      ],
-    });
-
-    await alert.present();
-  }
-
-  public goBack() {
-    this.navCtrl.navigateRoot('/visualizza-sondaggio');
-  }
-  /*
-  Trasforma in linguaggio umanizzato, aggiunta per prove. Potrebbe tornare utile. Non eliminare.
-  parseMillisecondsIntoReadableTime(milliseconds) {
-    //da millis a hh
-    var hours = milliseconds / (1000 * 60 * 60);
-    var absoluteHours = Math.floor(hours);
-    var h = absoluteHours > 9 ? absoluteHours : '0' + absoluteHours;
-
-    //Trasformo resto in mm
-    var minutes = (hours - absoluteHours) * 60;
-    var absoluteMinutes = Math.floor(minutes);
-    var m = absoluteMinutes > 9 ? absoluteMinutes : '0' + absoluteMinutes;
-
-    //Trasformo resto in ss
-    var seconds = (minutes - absoluteMinutes) * 60;
-    var absoluteSeconds = Math.floor(seconds);
-    var s = absoluteSeconds > 9 ? absoluteSeconds : '0' + absoluteSeconds;
-
-
-    return h + ':' + m + ':' + s;
-  }
- */
 }
