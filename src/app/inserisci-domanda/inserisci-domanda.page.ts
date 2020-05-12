@@ -4,7 +4,7 @@ import { PostServiceService } from "../services/post-service.service";
 import { AlertController } from '@ionic/angular';
 import { PickerController } from "@ionic/angular";
 import { PickerOptions } from "@ionic/core";
-
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-inserisci-domanda',
@@ -26,14 +26,14 @@ export class InserisciDomandaPage implements OnInit {
   timerView; //var per la view dei valori
   timerSettings: string[] = ["5 min", "15 min", "30 min", "1 ora", "3 ore", "6 ore", "12 ore", "1 giorno", "3 giorni"]; //scelte nel picker
 
-  constructor(public apiService: ApiService, public alertController: AlertController, private pickerController: PickerController) { }
+  constructor(public apiService: ApiService, public alertController: AlertController, private pickerController: PickerController, private router: Router) { }
 
   ngOnInit() {
 
   }
 
   async checkField() {
-    if (this.titolo.length < 1){
+    if (this.titolo.length < 1) {
       const alert = await this.alertController.create({
         header: 'Titolo troppo corto!',
         buttons: [
@@ -42,7 +42,7 @@ export class InserisciDomandaPage implements OnInit {
             role: 'cancel',
             cssClass: 'secondary',
             handler: (blah) => {
-              console.log('Confirm Cancel: blah');
+              console.log('Confirm Cancel');
             }
           }
         ]
@@ -57,7 +57,7 @@ export class InserisciDomandaPage implements OnInit {
             role: 'cancel',
             cssClass: 'secondary',
             handler: (blah) => {
-              console.log('Confirm Cancel: blah');
+              console.log('Confirm Cancel');
             }
           }, {
             text: 'Si',
@@ -153,6 +153,10 @@ export class InserisciDomandaPage implements OnInit {
         this.timerToPass = "72:00";
         break;
     }
+  }
+
+  switchCategoria() {
+    this.router.navigate(['proponi-categoria']);
   }
 
 }

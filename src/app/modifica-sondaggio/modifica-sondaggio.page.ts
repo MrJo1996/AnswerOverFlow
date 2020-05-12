@@ -411,4 +411,8 @@ export class ModificaSondaggioPage implements OnInit {
     }
   }
 
+  public goBack() {
+    this.navCtrl.navigateRoot('visualizza-sondaggio');
+  }
+
 }
