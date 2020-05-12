@@ -222,6 +222,48 @@ export class ApiService {
     });
   }
 
+  inserisciSondaggio(URL: string, timer: string, dataeora: Data, cod_utente: string, titolo: string, cod_categoria: number ){
+    const body = {
+      timer,
+      dataeora,
+      titolo,
+      cod_utente,
+      cod_categoria
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post(URL, body).subscribe(
+        data => {
+          let sondaggio = data;
+          let esito = data['message'];
+          console.log("L'esito dell'inserimento sondaggio è che ", esito);
+          resolve(sondaggio);
+        },
+        (err) => {
+          reject("Url errato");
+        }
+      )
+    })
+  }
+
+  inserisciSceltaSondaggio(URL: string, codice_sondaggio: number, descrizione: string){
+    const body = {
+      codice_sondaggio,
+      descrizione
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post(URL, body).subscribe(
+        data => {
+          let esito = data['Scelte']['message'];
+          console.log("L'esito è che ", esito);
+          resolve(esito);
+        },
+        (err) => {
+          reject("Url errato");
+        }
+      )
+    })
+  }
+
   inserisciDomanda(timer: string, titolo: string, descrizione: string, cod_utente: string, cod_categoria: number) {
     const body = {
       timer,

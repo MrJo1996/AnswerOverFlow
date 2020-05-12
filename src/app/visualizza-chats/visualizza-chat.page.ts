@@ -12,7 +12,7 @@ export class VisualizzaChatPage implements OnInit {
 
   chatUtenti: any;
   testoRicercato = '' ;
-  url = "http://localhost/AnswerOverFlow-BackEnd/public/visualizzaChats";
+  url = "http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaChats";
   user = "gmailverificata";
 
   constructor(private service: ApiService) { }

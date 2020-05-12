@@ -2,26 +2,23 @@
   <ion-toolbar no-border>  
 
     <ion-button slot="start" fill="clear"  ion-button icon-only>
-      <ion-icon name="chevron-back-outline"></ion-icon>
+      <ion-icon name="arrow-back-outline"></ion-icon>
     </ion-button>
 
     <ion-title>Chat</ion-title>
 
   </ion-toolbar>
 
-
   <ion-searchbar
                  type="text" 
                  placeholder="Cerca"
                  (ionChange)="ricerca($event)"
   ></ion-searchbar>
-
   
 </ion-header>
 
+
 <ion-content>
-
-
 
   <ion-list>
   <ion-item-divider color="light">Oggi</ion-item-divider>
@@ -30,11 +27,14 @@
         <img src="../../assets/img/avatar2.png">
       </ion-avatar>
       
+      <!--TODO: aggiungere una card da visualizzare quando non ci sono chat-->
+
       <ion-label>
         <h3>{{utente.cod_utente0}}</h3>
         <!-- <p>{{utente.email}}</p> -->
       </ion-label>
     </ion-item>
   </ion-list>
+
 
 </ion-content>
