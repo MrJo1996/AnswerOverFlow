@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { resolve } from 'url';
+import { Data } from '@angular/router';
 
 
 @Injectable({
