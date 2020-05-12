@@ -268,7 +268,28 @@ export class ApiService {
 
   }
 
-
+  registrazione(email: string, username: string, password: string, nome: string, cognome: string, bio: string) {
+    const body = {
+      email,
+      username,
+      password,
+      nome,
+      cognome,
+      bio
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/registrazione', body).subscribe(
+        data => {
+          let esito = data['message'];
+          console.log('esito: ', esito);
+          resolve(esito);
+        },
+        (err) => {
+          reject();
+        }
+      );
+    });
+  }
 
 
 
