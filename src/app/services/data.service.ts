@@ -6,12 +6,10 @@ import { HttpClient } from '@angular/common/http';
 })
 
 export class DataService {
+  //VARIABILI
 
+  constructor(private http: HttpClient) { }
 
-  constructor( private http: HttpClient ) {}
-
-  getUsers() {
-    return this.http.get<any[]>('https://jsonplaceholder.typicode.com/users');
-  }
+  //FUNZIONI
 
 }
