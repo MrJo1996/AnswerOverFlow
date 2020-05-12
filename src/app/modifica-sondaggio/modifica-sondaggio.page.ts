@@ -28,7 +28,9 @@ export class ModificaSondaggioPage implements OnInit {
   sondaggio = {}; //conterrà tutti i dati del sondaggio da visualizzare
 
   timerSettings: string[] = ["5 min", "15 min", "30 min", "1 ora", "3 ore", "6 ore", "12 ore", "1 giorno", "3 giorni"]; //scelte nel picker
-  public SCAD;
+  SCAD;
+  ciao="ciao";
+
   constructor(private alertController: AlertController, public apiService: ApiService, private pickerController: PickerController,
     public navCtrl: NavController) { }
 
@@ -36,7 +38,7 @@ export class ModificaSondaggioPage implements OnInit {
   ngOnInit() {
 
     //Assegnazione codice forzata per ora
-    this.codice_sondaggio = 18;
+    this.codice_sondaggio = 17;
 
     this.showSurvey();
 
@@ -140,13 +142,13 @@ export class ModificaSondaggioPage implements OnInit {
   async popupConfermaModificheSondaggio() {
     var header = "Conferma modifiche";
     var message = "Vuoi confermare le modifiche effettuate?";
-    
+
     console.log("da mod: ", this.SCAD);
-   
-    /* if (this.SCAD) {
+console.log("da mod: ", this.ciao);
+     if (this.SCAD) {
       header = "Sondaggio scaduto";
       message = "Impossibile modificare, sondaggio scaduto.";
-    } */
+    } 
 
     const alert = await this.alertController.create({
       header: header,
@@ -178,7 +180,7 @@ export class ModificaSondaggioPage implements OnInit {
     let options: PickerOptions = {
       buttons: [
         {
-          text: "Cancel",
+          text: "Cancella",
           role: 'cancel'
         },
         {
@@ -314,7 +316,7 @@ export class ModificaSondaggioPage implements OnInit {
   }
 
 
-   countDown(incAnno, incMese, incGG, incHH, incMM) {
+  countDown(incAnno, incMese, incGG, incHH, incMM) {
 
     var auxData = []; //get dati dal sondaggio
     auxData['0'] = (this.sondaggio['0'].dataeora.substring(0, 10).split("-")[0]); //anno
@@ -354,6 +356,9 @@ export class ModificaSondaggioPage implements OnInit {
         console.log("SCAD in countdown() ", this.SCAD); */
         clearInterval(x);
         document.getElementById("timeLeft").innerHTML = "Sondaggio scaduto.";
+
+        //TODO Provare generazione allert da qui che al conferma riporta al visualizza
+        //TODO se non va sol. di sopra METTERE ROUTE AL VISUALIZZA
       }
     }, 1000);
 
@@ -409,10 +414,6 @@ export class ModificaSondaggioPage implements OnInit {
 
         break;
     }
-  }
-
-  public goBack() {
-    this.navCtrl.navigateRoot('visualizza-sondaggio');
   }
 
 }

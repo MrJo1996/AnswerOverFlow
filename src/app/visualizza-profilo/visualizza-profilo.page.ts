@@ -42,7 +42,7 @@ export class VisualizzaProfiloPage implements OnInit {
       this.request = data;
       this.Profilo = data['Profilo']['data']['0'];
 
-      console.log(this.Profilo.username);
+    //  console.log(this.Profilo.username);
 
   },err => {
     console.log(err.message);
