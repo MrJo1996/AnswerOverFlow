@@ -5,8 +5,7 @@ import { ApiService } from 'src/app/providers/api.service';
 
 import { PickerController } from "@ionic/angular";
 import { PickerOptions } from "@ionic/core";
-import { async } from '@angular/core/testing';
-import { Time } from '@angular/common';
+
 import { NavController } from '@ionic/angular';
 
 import { __await } from 'tslib';
@@ -40,25 +39,22 @@ export class ModificaDomandaPage implements OnInit {
   timerSettings: string[] = ["5 min", "15 min", "30 min", "1 ora", "3 ore", "6 ore", "12 ore", "1 giorno", "3 giorni"]; //scelte nel picker
 
 
-  /*
-  request: Promise<any>;
-  result: Promise<any>; 
-
-  url = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/modificaDomanda'; 
-*/
+  
   constructor(public alertController: AlertController, public apiService: ApiService,private pickerController: PickerController,
     public navCtrl: NavController) { }
 
   ngOnInit() {
     this.cod_categoria = 1;
-    this.codice_domanda = 31;
+    this.codice_domanda = 33;
     this.cod_preferita = 0;
+
+    this.showSurvey();
   }
 
   async modify() {
 
     if( this.titoloToPass == null) {
-      this.titoloToPass = this.timerView;
+      this.titoloToPass = this.titoloView;
     }
     if (this.descrizioneToPass == null) {
       this.descrizioneToPass = this.descrizioneView;
@@ -89,8 +85,9 @@ export class ModificaDomandaPage implements OnInit {
     this.apiService.getDomanda(this.codice_domanda).then(
       (domanda) => {
         console.log('Visualizzato con successo');
-
+        
         this.domanda = domanda['data']; //assegno alla variabile locale il risultato della chiamata. la variabile sarà utilizzata nella stampa in HTML
+        
         
         this.dataeoraView = this.domanda['0'].dataeora;  //setto var da visualizzare a video per risolvere il problema del crop schermo durante il serve dell'app ( problema stava nell'utilizzo di: ['0'] per accedere alla var da visualizzare)
         this.timerView = this.domanda['0'].timer;
@@ -100,6 +97,18 @@ export class ModificaDomandaPage implements OnInit {
         console.log('Domanda: ', this.domanda['0']);
       
         this.mappingIncrement(this.domanda['0'].timer);
+
+        var auxData = []; //var ausialiaria per parsare la data di creazione
+        auxData['0'] = (this.domanda['0'].dataeora.substring(0, 10).split("-")[0]); //anno
+        auxData['1'] = this.domanda['0'].dataeora.substring(0, 10).split("-")[1]; //mese [0]=gennaio
+        auxData['2'] = this.domanda['0'].dataeora.substring(0, 10).split("-")[2]; //gg
+        auxData['3'] = this.domanda['0'].dataeora.substring(11, 18).split(":")[0]; //hh
+        auxData['4'] = this.domanda['0'].dataeora.substring(11, 18).split(":")[1]; //mm
+        //metto dati parsati nella var dataCreazioneToview così da creare una nuova var da poter stampare nel formato adatto
+        var dataCreazioneToView = new Date(auxData['0'], parseInt(auxData['1'], 10) - 1, auxData['2'], auxData['3'], auxData['4']);
+        //stampo la var appena creata nell'elemento con id="dataOraCreazione"
+        document.getElementById("dataOraCreazione").innerHTML = dataCreazioneToView.toLocaleString();
+      
       },
       (rej) => {
         console.log("C'è stato un errore durante la visualizzazione");
@@ -110,7 +119,7 @@ export class ModificaDomandaPage implements OnInit {
 
   async popupModificaTitolo() {
     const alert = await this.alertController.create({
-      header: 'Modifica',
+      header: 'Modifica titolo',
       inputs: [
         {
           name: 'titoloPopUp',
@@ -131,8 +140,8 @@ export class ModificaDomandaPage implements OnInit {
           text: 'Ok',
           handler: insertedData => {
             console.log(JSON.stringify(insertedData)); //per vedere l'oggetto dell'handler
-            this.titoloView = insertedData.titoloPopUp; //setto titoloView al valore inserito nel popUp una volta premuto ok così viene visualizzato
-            this.titoloToPass = insertedData.titoloPopUp; //setto titoloToPass al valore inserito nel popUp una volta premuto ok
+            this.titoloView = insertedData.titoloPopUp; 
+            this.titoloToPass = insertedData.titoloPopUp;
 
             if (insertedData.titoloPopUp == "") { //CHECK CAMPO VUOTO
               this.titoloView = this.domanda['0'].titolo;
@@ -150,7 +159,7 @@ export class ModificaDomandaPage implements OnInit {
 
   async popupModificaDescrizione() {
     const alert = await this.alertController.create({
-      header: 'Modifica',
+      header: 'Modifica descrizione',
       inputs: [
         {
           name: 'descrizionePopUp',
@@ -262,8 +271,64 @@ export class ModificaDomandaPage implements OnInit {
 
   getColumnOptions() {
     let options = [];
+
+    //Check dei valori ammissibili da mostrare nel picker in base all'orario di creazione del sondaggio
+    var auxDataPicker = []; 
+    auxDataPicker['0'] = (this.domanda['0'].dataeora.substring(0, 10).split("-")[0]); //anno
+    auxDataPicker['1'] = this.domanda['0'].dataeora.substring(0, 10).split("-")[1]; //mese [0]=gennaio
+    auxDataPicker['2'] = this.domanda['0'].dataeora.substring(0, 10).split("-")[2]; //gg
+    auxDataPicker['3'] = this.domanda['0'].dataeora.substring(11, 18).split(":")[0]; //hh
+    auxDataPicker['4'] = this.domanda['0'].dataeora.substring(11, 18).split(":")[1]; //mm
+    var dataPicker = new Date(parseInt(auxDataPicker['0'], 10), parseInt(auxDataPicker['1'], 10) - 1, parseInt(auxDataPicker['2'], 10), parseInt(auxDataPicker['3'], 10), parseInt(auxDataPicker['4'], 10));
+
+    var nowPicker = new Date(); //ora
+
+    var increment; //avvalorata nello switch, incremmento in millisecondi della scelta
     this.timerSettings.forEach(x => {
-      options.push({ text: x, value: x });
+      console.log("x ", x);
+      switch (x) {
+        case (this.timerSettings['0']):
+          increment = 5 * 60 * 1000;
+          break;
+
+        case (this.timerSettings['1']):
+          increment = 15 * 60 * 1000;
+          break;
+
+        case (this.timerSettings['2']):
+          increment = 30 * 60 * 1000;
+          break;
+
+        case (this.timerSettings['3']):
+          increment = 60 * 60 * 1000;
+          break;
+
+        case (this.timerSettings['4']):
+          increment = 3 * 60 * 60 * 1000;
+          break;
+
+        case (this.timerSettings['5']):
+          increment = 6 * 60 * 60 * 1000;
+          break;
+
+        case (this.timerSettings['6']):
+          increment = 12 * 60 * 60 * 1000;
+          break;
+
+        case (this.timerSettings['7']):
+          increment = 24 * 60 * 60 * 1000;
+          break;
+
+        case (this.timerSettings['8']):
+          increment = 72 * 60 * 60 * 1000;
+          break;
+
+      }
+
+       if ((dataPicker.getTime() + increment) > (nowPicker.getTime())) {
+        options.push({ text: x, value: x });
+      }
+
     });
     return options;
   }
@@ -350,10 +415,10 @@ export class ModificaDomandaPage implements OnInit {
       this.timerView = days + "d " + hours + "h "
         + minutes + "m " + seconds + "s ";
 
-      // Se finisce il countDown viene mostrato "Sondaggio scaduto."
+      // Se finisce il countDown viene mostrato "Domanda scaduta."
       if (distance < 0) {
         clearInterval(x);
-        document.getElementById("timeLeft").innerHTML = "Domanda scaduto.";
+        document.getElementById("timeLeft").innerHTML = "Domanda scaduta.";
         this.timerView = "OMBO TIMER,SCADUTA";
       }
     }, 1000);

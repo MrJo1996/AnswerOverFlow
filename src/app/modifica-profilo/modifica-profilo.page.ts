@@ -31,12 +31,6 @@ export class ModificaProfiloPage implements OnInit {
   cognomeView: string;
   bioView: string;
 
-  /*request: Promise<any>;
-  result: Promise<any>; 
-
-  url = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/modificaProfilo'; 
-  */
-
   profilo = {};
 
   timerSettings: string[] = ["5 min", "15 min", "30 min", "1 ora", "3 ore", "6 ore", "12 ore", "1 giorno", "3 giorni"];
@@ -54,16 +48,28 @@ export class ModificaProfiloPage implements OnInit {
 
   async modify() {
 
+    if( this.usernameToPass == null) {
+      this.usernameToPass = this.usernameView;
+    }
+    if (this.nomeToPass == null) {
+      this.nomeToPass = this.nomeView;
+    }
+
+    if (this.cognomeToPass == null) {
+      this.cognomeToPass = this.cognomeView;
+    }
+    
+    if (this.bioToPass == null) {
+      this.bioToPass = this.bioView;
+    }
+
     this.apiService.modificaProfilo(this.usernameToPass, this.password, this.nomeToPass, this.cognomeToPass, this.bioToPass, this.email).then(
-      (result) => { // nel caso in cui va a buon fine la chiamata
-         // this.presentAlert();
-         //this.goToHome(); 
-        //console.log('Modifica avvenuta con successo: ',this.username, this.password, this.nome, this.cognome, this.bio, this.email);
+      (result) => { 
+        console.log('Modifica avvenuta con successo');
       },
-      (rej) => {// nel caso non vada a buon fine la chiamata
+      (rej) => {
         console.log('Modifica non effetutata');
-        /* this.goToHome();
-        this.presentAlertNegativo(); */
+  
       }
     );
 
@@ -81,10 +87,7 @@ export class ModificaProfiloPage implements OnInit {
         this.cognomeView = this.profilo['0'].cognome;
         this.bioView = this.profilo['0'].bio;
         console.log('Profilo: ', this.profilo['0']);
-        //il json di risposta della chiamata è così impostato-> Sondaggio: data: posizione{vari paramentri}
-        //bisogna quindi accedere alla posizione del sondaggio da visualizzare
-        //in apiservice accediamo già alla posizione 'Sondaggio'. Per sapere l'ordine di accesso ai dati ho stampato a video "data" da apiservice
-
+        
       },
       (rej) => {
         console.log("C'è stato un errore durante la visualizzazione");
@@ -94,7 +97,7 @@ export class ModificaProfiloPage implements OnInit {
 
   async popupModificaUsername() {
     const alert = await this.alertController.create({
-      header: 'Modifica',
+      header: 'Modifica username',
       inputs: [
         {
           name: 'usernamePopUp',
@@ -117,6 +120,11 @@ export class ModificaProfiloPage implements OnInit {
             console.log(JSON.stringify(insertedData)); //per vedere l'oggetto dell'handler
             this.usernameView = insertedData.usernamePopUp; 
             this.usernameToPass = insertedData.usernamePopUp;
+
+            if (insertedData.usernamePopUp == "") { //CHECK CAMPO VUOTO
+              this.usernameView = this.profilo['0'].username;
+              this.usernameToPass = this.profilo['0'].username;
+            }
           }
         }
       ]
@@ -129,7 +137,7 @@ export class ModificaProfiloPage implements OnInit {
 
   async popupModificaNome() {
     const alert = await this.alertController.create({
-      header: 'Modifica',
+      header: 'Modifica nome',
       inputs: [
         {
           name: 'nomePopUp',
@@ -143,7 +151,7 @@ export class ModificaProfiloPage implements OnInit {
           role: 'cancel',
           cssClass: 'secondary',
           handler: () => {
-            this.nomeView = this.profilo['0'].nome; //annullo modifiche
+            this.usernameView = this.profilo['0'].nome; //annullo modifiche
             console.log('Confirm cancel');
           }
         }, {
@@ -152,6 +160,11 @@ export class ModificaProfiloPage implements OnInit {
             console.log(JSON.stringify(insertedData)); //per vedere l'oggetto dell'handler
             this.nomeView = insertedData.nomePopUp; 
             this.nomeToPass = insertedData.nomePopUp;
+
+            if (insertedData.nomePopUp == "") { //CHECK CAMPO VUOTO
+              this.nomeView = this.profilo['0'].nome;
+              this.nomeToPass = this.profilo['0'].nome;
+            }
           }
         }
       ]
@@ -164,7 +177,7 @@ export class ModificaProfiloPage implements OnInit {
 
   async popupModificaCognome() {
     const alert = await this.alertController.create({
-      header: 'Modifica',
+      header: 'Modifica cognome',
       inputs: [
         {
           name: 'cognomePopUp',
@@ -178,7 +191,7 @@ export class ModificaProfiloPage implements OnInit {
           role: 'cancel',
           cssClass: 'secondary',
           handler: () => {
-            this.cognomeView = this.profilo['0'].cognome; //annullo modifiche
+            this.usernameView = this.profilo['0'].cognome; //annullo modifiche
             console.log('Confirm cancel');
           }
         }, {
@@ -187,6 +200,11 @@ export class ModificaProfiloPage implements OnInit {
             console.log(JSON.stringify(insertedData)); //per vedere l'oggetto dell'handler
             this.cognomeView = insertedData.cognomePopUp; 
             this.cognomeToPass = insertedData.cognomePopUp;
+
+            if (insertedData.cognomePopUp == "") { //CHECK CAMPO VUOTO
+              this.cognomeView = this.profilo['0'].cognome;
+              this.cognomeToPass = this.profilo['0'].cognome;
+            }
           }
         }
       ]
@@ -199,7 +217,7 @@ export class ModificaProfiloPage implements OnInit {
 
   async popupModificaBio() {
     const alert = await this.alertController.create({
-      header: 'Modifica',
+      header: 'Modifica bio',
       inputs: [
         {
           name: 'bioPopUp',
@@ -222,6 +240,11 @@ export class ModificaProfiloPage implements OnInit {
             console.log(JSON.stringify(insertedData)); //per vedere l'oggetto dell'handler
             this.bioView = insertedData.bioPopUp; 
             this.bioToPass = insertedData.bioPopUp;
+
+            if (insertedData.bioPopUp == "") { //CHECK CAMPO VUOTO
+              this.bioView = this.profilo['0'].bio;
+              this.bioToPass = this.profilo['0'].bio;
+            }
           }
         }
       ]
@@ -236,19 +259,47 @@ export class ModificaProfiloPage implements OnInit {
     const alert = await this.alertController.create({
       header: 'Conferma modifiche',
       message: 'Vuoi confermare le modifiche effettuate?',
-      buttons: ['Conferma']
+      buttons: [
+        {
+          text: "Annulla",
+          role: 'cancel'
+        },
+        {
+          text: 'Conferma',
+          handler: (value: any) => {
+
+            //LANCIO SERVIZIO MODIFICA UNA VOLTA CLICCATO "CONFERMA"
+            this.modify();
+
+          //TODO mostrare messaggio di avvenuta modifica e riportare alla home
+
+            this.presentAlert();
+
+          }
+        }
+      ],
+    });
+   
+    await alert.present();
+    let result = await alert.onDidDismiss();
+  }
+
+  async presentAlert() { // Funzione per mostrare a video finestrina che specifica "l'errore"
+    const alert = await this.alertController.create({
+      header: 'Modifica effettuaTa',
+      message: 'Il profilo è stato modificato con successo',
+      buttons: [
+
+        {
+          text: 'Ok',
+          handler: (value: any) => {
+
+          }
+        }
+      ],
     });
 
     await alert.present();
-    let result = await alert.onDidDismiss();
-    //console.log(result);
-    //console.log("PROVA");
-
-    this.modify();
   }
-
-  
-
-  
 
 }
