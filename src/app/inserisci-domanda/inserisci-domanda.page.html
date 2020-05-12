@@ -7,7 +7,7 @@
 
         <ion-title class="textTitle">NUOVA DOMANDA</ion-title>
 
-        <ion-button slot="end" expand="block" fill="clear" (click)="showAlert()" class="msg-btn">
+        <ion-button slot="end" expand="block" fill="clear" (click)="checkField()" class="msg-btn">
             <ion-icon color="success" slot="end" slot="icon-only" name="checkmark-sharp"></ion-icon>
         </ion-button>
 
@@ -20,48 +20,43 @@
         <ion-card-content>
 
             <ion-card-title class="textTitleBIG">Titolo:</ion-card-title>
-            <ion-textarea  [(ngModel)] = "titolo" style="border-radius: 7px;" placeholder="  Perchè i cani si mordono la coda?" rows="3"
-                class="backgroundsSecondaryItem textSimple">
+            <ion-textarea [(ngModel)]="titolo" style="border-radius: 7px;"
+                placeholder="  Perchè i cani si mordono la coda?" rows="3" class="backgroundsSecondaryItem textSimple">
             </ion-textarea>
 
             <br>
 
             <ion-card-title class="textTitleBIG">Descrizione:</ion-card-title>
-            <ion-textarea [(ngModel)] = "descrizione" style="border-radius: 7px;" placeholder="  Perchè lo fanno così spesso?" rows="10"
-                class="backgroundsSecondaryItem textSimple">
+            <ion-textarea [(ngModel)]="descrizione" style="border-radius: 7px;"
+                placeholder="  Perchè lo fanno così spesso?" rows="10" class="backgroundsSecondaryItem textSimple">
             </ion-textarea>
 
             <br>
 
             <ion-grid>
-                <ion-row>
+                
+                <ion-item lines="none" class="itemClass">
+                    <ion-icon name="bookmark-outline"></ion-icon>
+                    <ion-select style="color: white;" placeholder="Categoria" interface="popover">
+                        <ion-select-option value="Attualità">Attualità</ion-select-option>
+                        <ion-select-option value="Matematica">Matematica</ion-select-option>
+                        <ion-select-option value="Storia">Storia</ion-select-option>
+                        <ion-select-option value="Italiano">Italiano</ion-select-option>
+                    </ion-select>
+                </ion-item>
+            
+                <div>
 
-                    <ion-col>
-                        <ion-item lines="none" class="itemClass">
-                            <ion-icon name="bookmark-outline"></ion-icon>
-                            <ion-select style="color: white;" placeholder="Categoria" interface="popover">
-                                <ion-select-option value="Attualità">Attualità</ion-select-option>
-                                <ion-select-option value="Matematica">Matematica</ion-select-option>
-                                <ion-select-option value="Storia">Storia</ion-select-option>
-                                <ion-select-option value="Italiano">Italiano</ion-select-option>
-                            </ion-select>
-                        </ion-item>
-                    </ion-col>
+                    <ion-item style="margin-top: 10px;" lines="none" (click)="showTimerPicker()" class="itemClass">
+                        <ion-label>
+                            <ion-icon name="time-outline" slot="start"></ion-icon>
+                        </ion-label>
+                        <ion-text *ngIf="[timerView]==''" class="placeholderClass">Timer</ion-text>
+                        {{timerView}}
+                        <ion-icon class="inner" name="caret-down-outline"></ion-icon>
 
-                    <ion-col>
-                        <div>
-                            <ion-item lines="none" class="itemClass">
-
-                                <ion-icon name="time-outline"></ion-icon>
-
-                                <ion-datetime placeholder="Timer" displayFormat="HH:mm" pickerFormat="HH mm"
-                                    [(ngModel)]="timer"></ion-datetime>
-
-                            </ion-item>
-                        </div>
-                    </ion-col>
-
-                </ion-row>
+                    </ion-item>
+                </div>
 
                 <ion-row style="justify-content: center; padding-top: 14px;">
                     <ion-label> <a href="/proponi-categoria">Non hai trovato la categoria adatta?</a> </ion-label>

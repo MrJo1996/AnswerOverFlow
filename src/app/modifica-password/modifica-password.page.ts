@@ -67,7 +67,7 @@ export class ModificaPasswordPage implements OnInit {
     if(this.password.length < 8){
       alert('password troppo corta')
     }
-    if (this.password != this.confermapassword){
+    else if (this.password != this.confermapassword){
       alert('password non coincidono');
     }else{
       
