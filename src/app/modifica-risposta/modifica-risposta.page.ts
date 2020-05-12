@@ -30,6 +30,10 @@ export class ModificaRispostaPage implements OnInit {
 
   }
 
+  public getImage() {
+    return 
+  }
+
   public back() {
     this.router.navigate(['visualizza-risposta']);
   }
