@@ -16,27 +16,48 @@ export class ProponiCategoriaPage implements OnInit {
   proposta =  '';
   request: Promise<any>;
   result: Promise<any>;
-  url= 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/proponi_cat_o_sottocat';
+  url = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/proponi_cat_o_sottocat';
+  bad_words = new Array (/fancul/i, /cazz/i, /zoccol/i, /stronz/i, /bastard/i, /coglion/i, /puttan/i);
 
   constructor(private service: PostServiceService, private router: Router, private navctrl: NavController) { }
 
   ngOnInit() {
   }
 
-  postInvio(){
-    if(this.proposta.length > 15){
-      alert("Il nome proposto per la nuova categoria/sottocategoria è troppo lungo ")
+  controllo_parole(){
+    var i: number;
+    var cod: number;
+    var array_length: number;
+
+    array_length = this.bad_words.length;
+
+    for(i=0;i<array_length;i++){
+      cod = this.proposta.search(this.bad_words[i]);
+      if(cod>=0){
+        return true;
+      }
+    }
+    return false;
+  }
+
+  post_invio(){
+    if(this.proposta.length>15){
+      alert("Il nome proposto per la nuova categoria/sottocategoria è troppo lungo!");
     } else{
-      let postData={
-        "selezione": this.selezione,
-        "proposta": this.proposta
-      };
-      this.result = this.service.postService(postData, this.url).then((data) =>{
-        this.request = data;
-        console.log(data);
-      }, err =>{
-        console.log(err.message)
-      });
+      if(this.controllo_parole()==false){
+        let postData={
+          "selezione": this.selezione,
+          "proposta": this.proposta
+        };
+        this.result=this.service.postService(postData, this.url).then((data)=>{
+          this.request=data;
+          console.log(data);
+        }, (err)=>{
+          console.log(err.message)
+        });
+      } else{
+        alert("Hai inserito una parola scorretta! Rimuoverla per continuare");
+      }
     }
   }
 }
