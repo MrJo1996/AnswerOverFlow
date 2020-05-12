@@ -16,7 +16,7 @@ export class InserimentoSondaggioPage implements OnInit {
   scelte:any=[];
   data: boolean;
   categorie: any;
-  categoriaScelta = "";
+  categoriaScelta = "xxx";
   
   timerToPass: string; //param per le funzioni
 
