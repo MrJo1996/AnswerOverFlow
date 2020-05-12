@@ -1,14 +1,15 @@
-<ion-content class="backgrounds">
-  <ion-card>
+<ion-content padding class="background">
     <div>
       <div class="logo"></div>
-      <div align="center">
-        <ion-text class="textTitleBIG">
-          AnswerOverFlow
-        </ion-text>
-      </div>
+      
     </div>
-    <ion-item >
+    <div align="center">
+      <ion-text class="textTitleBIG">
+        AnswerOverFlow
+      </ion-text>
+    </div>
+    <ion-card>
+    <ion-item>
       <ion-label fixed>
         <ion-icon name="person">
         </ion-icon>
@@ -61,21 +62,23 @@
         </ion-icon>
       </ion-label>
       <ion-textarea [(ngModel)]="bio" placeholder="Inserisci una biografia (potrai modificarla in qualunque momento)"></ion-textarea>    </ion-item>
-    <ion-item>
+      <ion-item>
       <ion-label>
       <ion-text>Cliccando su "Registrati" accetti i </ion-text>
       <ion-text (click)="termini()" color="primary">termini</ion-text>
     </ion-label>
     </ion-item>
-    <div>
-      <ion-button expand="block" slot="start" color="light" size="large" (click)="postRegistrazione()">
-        <ion-text color="primary">REGISTRATI</ion-text>
-      </ion-button>
-    </div>
-    <div>
-      <ion-button expand="block" slot="start" color="light" size="large">
-        <ion-text (click)="login()" class="textTitleSmall">Sono già registrato</ion-text>
-      </ion-button>
-    </div>
   </ion-card>
+  <ion-grid class="grid">
+    <div>
+      <ion-button expand="block" slot="start" color="primary" size="large" (click)="checkFields()">
+        REGISTRATI
+      </ion-button>
+    </div>
+    <div>
+      <ion-label>
+        <ion-text (click)="login()" class="textTitleSmall"><u>Accedi</u></ion-text>
+      </ion-label>
+    </div>
+  </ion-grid>
 </ion-content>

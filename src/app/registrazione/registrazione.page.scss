@@ -1,3 +1,37 @@
 .item-content {
     background-color:red;
   }
+  ion-content.background {
+
+    --background: url('https://wallpapers.party/media/2018/05/dark-14.jpg') 0 0/100% 100% repeat;
+ 
+}
+ion-item {
+
+
+  margin-top: 1%;
+  align-content: center;
+  border-bottom: solid 1px grey;
+
+  color:  #97a9c5;
+
+}
+.grid{
+  height: 70%;
+  width: 70%;
+
+  text-align: center;
+
+}
+.btn-group {
+  .button-ios,
+  .button-md {
+    border-radius: 0;
+    &:first-of-type {
+      border-radius: 2px 0 0 2px;
+    }
+    &:last-of-type {
+      border-radius: 0 2px 2px 0;
+    }
+  }
+}

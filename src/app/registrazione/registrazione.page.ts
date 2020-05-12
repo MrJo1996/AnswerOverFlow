@@ -1,70 +1,121 @@
 import { Component, OnInit } from '@angular/core';
-import {PostServiceService} from '../services/post-service.service';
-import {Promise} from "q";
-import {Router} from "@angular/router";
+import { Router } from "@angular/router";
+import { ApiService } from 'src/app/providers/api.service';
+import { AlertController } from '@ionic/angular';
+import { PickerController } from "@ionic/angular";
 @Component({
   selector: 'app-registrazione',
   templateUrl: './registrazione.page.html',
   styleUrls: ['./registrazione.page.scss'],
 })
 export class RegistrazionePage implements OnInit {
-  check;
-  table;
-  nome = '' ;
-  cognome = '' ;
-  email ='';
-  username ='';
-  password ='';
+  nome = '';
+  cognome = '';
+  email = '';
+  username = '';
+  password = '';
   bio;
   confermapassword;
-  numeri: Array<number>;
-  request: Promise<any>;
-  result: Promise<any>;
-  url= 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/registrazione'
+  url = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/registrazione'
 
 
-  constructor(private service: PostServiceService, private router: Router) { }
+  constructor(public apiService: ApiService, public alertController: AlertController, private pickerController: PickerController, private router: Router) { }
   ngOnInit() {
 
   }
-
-  postRegistrazione(){
-    let list: number[];
-    if((this.nome.length <1)||(this.cognome.length <1)||(this.email.length <1)||(this.username.length <1)){
-      alert('Compilare tutti i campi contrasseganti da *');
-    }else  
-    if(this.password.length < 8){
-      alert('password troppo corta');
+  async checkFields() {
+    if ((this.nome.length < 1) || (this.cognome.length < 1) || (this.email.length < 1) || (this.username.length < 1)) {
+      const alert = await this.alertController.create({
+        header: 'Compilare tutti i campi contrassegnati da *',
+        buttons: [
+          {
+            text: 'Ok',
+            role: 'cancel',
+            cssClass: 'secondary',
+            handler: (blah) => {
+              console.log('Confirm Cancel: blah');
+            }
+          }
+        ]
+      });
+      await alert.present();
     }
     else
-    if(this.password != this.confermapassword){
-      alert('password non coincidono');
-    }
-    else{
-      let postData = {
-        "nome": this.nome,
-        "cognome": this.cognome,
-        "email": this.email,
-        "username": this.username,
-        "password": this.password,
-        "bio": this.bio}; 
-      
-      
-      this.result = this.service.postService(postData, this.url).then((data) => {
-        this.request = data;
-        console.log(data.error);
-      }, err => {
-        console.log(err.message);
+      if (this.password.length < 8) {
+        const alert = await this.alertController.create({
+          header: 'Password troppo corta. Utilizzare una password con almeno 8 caratteri',
+          buttons: [
+            {
+              text: 'Ok',
+              role: 'cancel',
+              cssClass: 'secondary',
+              handler: (blah) => {
+                console.log('Confirm Cancel: blah');
+              }
+            }
+          ]
+        });
+        await alert.present();
       }
-      );
-      console.log(postData);
-      this.router.navigate(['benvenuto']);
-      }
-    }
-    login(){
-      this.router.navigate(['login']);
-      }
-      termini(){
-        this.router.navigate(['termini']);
-      }
+      else
+        if (this.password != this.confermapassword) {
+          const alert = await this.alertController.create({
+            header: 'Le password non coincidono',
+            buttons: [
+              {
+                text: 'Ok',
+                role: 'cancel',
+                cssClass: 'secondary',
+                handler: (blah) => {
+                  console.log('Confirm Cancel: blah');
+                }
+              }
+            ]
+          });
+          await alert.present();
+        }
+        else {
+          const alert = await this.alertController.create({
+            header: 'Confermi i dati?',
+            buttons: [
+              {
+                text: 'No',
+                role: 'cancel',
+                cssClass: 'secondary',
+                handler: (blah) => {
+                  console.log('Confirm Cancel: blah');
+                }
+              }, {
+                text: 'Si',
+                handler: () => {
+                  console.log('Confirm Okay');
+                  this.postRegistrazione();
+                }
+              }
+            ]
+          });
+          await alert.present();
+        }
   }
+
+  async postRegistrazione() {
+    this.apiService.registrazione(this.email, this.username, this.password, this.nome, this.cognome, this.bio).then(
+      (result) => {
+        console.log('Inserimento avvenuto con successo:', this.email, this.username, this.password, this.nome, this.cognome, this.bio);
+        this.benvenuto();
+      },
+      (rej) => {
+        console.log('Inserimento non riuscito!');
+      }
+    );
+  }
+  login() {
+    this.router.navigate(['login']);
+  }
+  termini() {
+    this.router.navigate(['termini']);
+  }
+  benvenuto() {
+    this.router.navigate(['benvenuto']);
+  }
+}

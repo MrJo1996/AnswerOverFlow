@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {Router} from '@angular/router';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-benvenuto',
   templateUrl: './benvenuto.page.html',
@@ -12,15 +12,15 @@ export class BenvenutoPage implements OnInit {
   ngOnInit() {
   }
 
-  home(){
+  home() {
     this.router.navigate(['home']);
-    }
-    domanda(){
-      this.router.navigate(['inserisci-domanda']);
-      }
-      modificaProfilo(){
-        this.router.navigate(['modifica-profilo']);
-        }
-  
+  }
+  domanda() {
+    this.router.navigate(['inserisci-domanda']);
+  }
+  modificaProfilo() {
+    this.router.navigate(['modifica-profilo']);
+  }
+
 
 }
