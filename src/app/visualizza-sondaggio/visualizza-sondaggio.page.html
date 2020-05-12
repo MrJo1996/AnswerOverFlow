@@ -1,10 +1,10 @@
 <ion-header>
   <ion-toolbar>
-      <ion-button  slot="start" expand="block" fill="clear" (click)="goBack()" class="msg-btn">
-        <ion-icon color="primary" slot="start" slot="icon-only" name="arrow-back-outline"></ion-icon>
-      </ion-button>
-
-      <ion-title>Dettagli del tuo sondaggio</ion-title>
+    <ion-button  slot="start" expand="block" fill="clear" (click)="goBack()" class="msg-btn">
+      <ion-icon color="primary" slot="start" slot="icon-only" name="arrow-back-outline"></ion-icon>
+    </ion-button>
+      <ion-title *ngIf="currentMailUser===domandaMailUser">Dettagli della tua domanda</ion-title>
+      <ion-title  *ngIf="currentMailUser!==domandaMailUser">Dettagli della domanda</ion-title>
   </ion-toolbar>
 </ion-header>
 

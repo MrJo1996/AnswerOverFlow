@@ -3,6 +3,7 @@ import { IonContent } from '@ionic/angular';
 import { Promise } from "q";
 import { PostServiceService } from "../services/post-service.service";
 import { TransitiveCompileNgModuleMetadata } from '@angular/compiler';
+import { Router } from '@angular/router';
 
 
 
@@ -35,7 +36,7 @@ export class VisualizzaSondaggioPage implements OnInit {
   url2 = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaSondaggio'
   url3= 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaScelteDelSondaggio'
   
-  constructor(private service: PostServiceService) { }
+  constructor(private service: PostServiceService, private router: Router) { }
 
   ngOnInit() {
     this.visualizzaSondaggioSelezionato();  
@@ -99,6 +100,11 @@ console.log(err.message);
 });
 
 }
+
+goModificaDomanda(){
+  this.router.navigate(['modifica-domanda']);
+  }
+
 
 
 }
