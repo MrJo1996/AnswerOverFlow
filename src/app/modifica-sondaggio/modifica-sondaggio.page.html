@@ -13,7 +13,7 @@
 
 <ion-content class="backgrounds">
   <ion-card>
-    
+
     <ion-item color="light">
       <ion-icon name="pencil-outline" slot="start"></ion-icon>
       <ion-label position="stacked">Titolo</ion-label>
@@ -27,9 +27,15 @@
     </ion-item>
 
     <ion-item color="light">
+      <ion-icon name="calendar-outline" slot="start"></ion-icon>
+      <ion-label position="stacked">Data e ora creazione</ion-label>
+      <ion-input id="dataOraCreazione" readonly placeholder="" color="medium"></ion-input>
+    </ion-item>
+
+    <ion-item color="light">
       <ion-icon name="alert-outline" slot="start"></ion-icon>
       <ion-label position="stacked">Il tuo sondaggio scadrà tra</ion-label>
-      <ion-input id="timeLeft" readonly placeholder=" " color="medium" ></ion-input>
+      <ion-input id="timeLeft" readonly placeholder=" " color="medium"></ion-input>
     </ion-item>
 
   </ion-card>
