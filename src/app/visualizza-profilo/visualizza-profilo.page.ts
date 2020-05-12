@@ -6,7 +6,7 @@ import {Promise} from "q";
 
 import { Chart } from 'chart.js';
 
-import {PostServiceService} from "../services/post-service.service";
+import {PostServiceService} from "../Services/post-service.service";
 import {NavController} from "@ionic/angular";
 
 
@@ -17,12 +17,10 @@ import {NavController} from "@ionic/angular";
 })
 export class VisualizzaProfiloPage implements OnInit {
 
-  Username = 'giotto';
+ 
   Email = 'matitinaCom';
-  Nome = 'giovanni';
-  Cognome = 'otto';
-  Bio = 'disegno cazzi sui muri';
-
+  Profilo =  {};
+  
   request: Promise<any>;
   result:  Promise<any>;
   url = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaProfilo'
@@ -35,16 +33,16 @@ export class VisualizzaProfiloPage implements OnInit {
   ConfermaVisualizzaProfilo()  {
 
     let postData = {
-    sername :this.Username,
-    email :this.Email,
-    nome :this.Nome,
-    cognome :this.Cognome,
-    bio  :this.Bio
-
+    
+    "email" :this.Email,
+    
     };
+
     this.result = this.service.postService(postData, this.url).then((data) => {
       this.request = data;
-      console.log(data);
+      this.Profilo = data['Profilo']['data']['0'];
+
+      console.log(this.Profilo.username);
 
   },err => {
     console.log(err.message);
