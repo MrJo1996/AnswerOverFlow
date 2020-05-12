@@ -8,6 +8,7 @@ ion-title{
     font-size: 99%;
 }
 
+
 ion-input{
     ::ng-deep{
         .native-input.sc-ion-input-md{
@@ -68,11 +69,11 @@ ion-input{
     margin-top: 10px;
     }
     
-ion-select{
-    position: fixed;
-    right: 0;
-    padding-right: 43px;
-}
+// ion-select{
+//     position: fixed;
+//     right: 0;
+//     padding-right: 43px;
+// }
 
 // .timer{
 //     margin-left: 10%;

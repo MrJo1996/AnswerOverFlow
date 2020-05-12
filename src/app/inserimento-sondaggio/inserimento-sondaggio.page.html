@@ -28,7 +28,7 @@
     <ion-input type="text"></ion-input>
   </ion-item> -->
   <ion-card-title class="textTitleBIG">Titolo:</ion-card-title>
-  <ion-textarea  [(ngModel)] = "titolo" style="border-radius: 7px;" placeholder="  Perchè i cani si mordono la coda?" rows="3"
+  <ion-textarea  [(ngModel)] = "titolo" style="border-radius: 7px;" placeholder="Qui dovresti inserire la descrizione del sondaggio" rows="3"
       class="backgroundsSecondaryItem textSimple">
   </ion-textarea>
 
@@ -62,8 +62,6 @@
   </ion-button>  
 </ion-item>
 
-<ion-row>
-  <ion-col>
     <ion-item lines="none" 
               (click)="showTimerPicker()"
               class="itemClass">
@@ -76,9 +74,7 @@
       <ion-icon class="inner" name="caret-down-outline"></ion-icon>
       <!-- <ion-datetime placeholder ="Timer" displayFormat="HH:mm" [(ngModel)]="myTime"(ionChange)="showTimer()"></ion-datetime> -->
     </ion-item>
-  </ion-col>
-  
-  <ion-col>
+
     <ion-item lines="none"
               class="itemClass">
       <ion-label>
@@ -88,11 +84,10 @@
                   placeholder="Categoria"
                   [(ngModel)]="categoriaScelta"
                   cancelText="Annulla">
-        <ion-select-option *ngFor="let categoria of categorie" value={{categoria.codice_categoria}}>{{categoria.titolo}}</ion-select-option>
+        <ion-select-option *ngFor="let categoria of categorie" 
+                           value={{categoria.codice_categoria}}>{{categoria.titolo}}</ion-select-option>
       </ion-select>
     </ion-item>
-  </ion-col>
-</ion-row>
 
 <!-- 
 <ion-row>

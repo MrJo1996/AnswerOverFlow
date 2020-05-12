@@ -5,6 +5,7 @@ import { ApiService } from './../providers/api.service';
 import { PickerController } from "@ionic/angular";
 import { PickerOptions } from "@ionic/core";
 import { isEmptyExpression } from '@angular/compiler';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-inserimento-sondaggio',
@@ -26,19 +27,26 @@ export class InserimentoSondaggioPage implements OnInit {
   categoriaScelta: number = -1;
   titolo: string = "";
   timerToPass: string = ""; 
+  dataeora: any;
 
   timerView; //var per la view dei valori
   timerSettings: string[] = ["5 min", "15 min", "30 min", "1 ora", "3 ore", "6 ore", "12 ore", "1 giorno", "3 giorni"]; //scelte nel picker
   
   constructor(private service: ApiService,
               public navCtrl: NavController, 
-              private pickerController: PickerController) { }
+              private pickerController: PickerController,
+              public alertController: AlertController, 
+              private router: Router) { }
 
   ngOnInit() {
     this.service.prendiCategorie(this.urlCategorie).then(
       (categories) => {
         console.log('Categorie visualizzate con successo', categories);
         this.categorie = categories;
+        // this.categorie.push({
+        //   'codice_categoria': 0,
+        //   'titolo': 'Non hai trovato la categoria che cercavi?'
+        // })
       },
       (rej) => {
         console.log("C'è stato un errore durante la visualizzazione");
@@ -58,23 +66,19 @@ export class InserimentoSondaggioPage implements OnInit {
     console.log(event.value);
   }
 
+  switchCategoria() {
+    this.router.navigate(['proponi-categoria']);
+  }
+
   inserisciSondaggio(){
-    let dataeora = new Date;
-    dataeora.setHours(dataeora.getHours() + 2);
+    this.dataeora = new Date;
+    this.dataeora.setHours(this.dataeora.getHours() + 2);
     let datoMancante = false;
     let errMex = "Hey, hai dimenticato di inserire";
-
-
-    console.log("Il timer passato è ", this.timerToPass, 
-    " la categoria scelta è ", this.categoriaScelta,
-    " il titolo immesso è ", this.titolo,
-    " il numero di scelte inserito è ", this.scelte.length);
-
 
     if(this.titolo === ""){
       datoMancante = true;
       errMex = errMex + " il titolo"
-      console.log("Manca il titolo amico");
     }
     if(this.scelte.length < 2){
       if (datoMancante){
@@ -84,12 +88,6 @@ export class InserimentoSondaggioPage implements OnInit {
       datoMancante = true;
       errMex = errMex + " le scelte"
       }
-      console.log("Mancano le scelte amico");
-    }
-    for (let scelta of this.scelte){
-      if(scelta['value'])
-          datoMancante  = true;
-          console.log("Non vale inserire scelte vuote zì");
     }
     if(this.timerToPass === ""){
       if (datoMancante){
@@ -99,7 +97,6 @@ export class InserimentoSondaggioPage implements OnInit {
       datoMancante = true;
       errMex = errMex + " il timer"
       }
-      console.log("Manca il timer amico");
     }
     if(this.categoriaScelta == -1){
       if (datoMancante){
@@ -109,25 +106,65 @@ export class InserimentoSondaggioPage implements OnInit {
       datoMancante = true;
       errMex = errMex + " la categoria"
       }
-      console.log("Manca la categoria amico");
     }
-    console.log(errMex)
-
-
-
-    // this.service.inserisciSondaggio(this.url, '07:00', dataeora, this.emailUtente, "Un bel sondaggio", 1).then(
-    //   (sondaggio) => {
-    //     this.sondaggioInserito = sondaggio['data']['codice_sondaggio'];
-    //     console.log("il codice del sondaggio inserito è ", this.sondaggioInserito);
-    //     this.service.inserisciSceltaSondaggio(this.urlScelta, this.sondaggioInserito, "Questa è una bella descrizione per il mio primo sondaggio da App"); 
-    //   },
-    //   (rej) => {
-    //     console.log("C'è stato un errore durante la visualizzazione");
-    //   }
-    // );
-
+    this.checkField(datoMancante, errMex)
   }
 
+    async checkField(datiMancanti: Boolean, text: string) {
+      if (datiMancanti) {
+        const alert = await this.alertController.create({
+          header: text,
+          buttons: [
+            {
+              text: 'Ok',
+              role: 'cancel',
+              cssClass: 'secondary',
+              handler: (blah) => {
+                console.log('Confirm Cancel');
+              }
+            }
+          ]
+        });
+        await alert.present();
+      } else {
+        const alert = await this.alertController.create({
+          header: 'Confermi il sondaggio?',
+          buttons: [
+            {
+              text: 'No',
+              role: 'cancel',
+              cssClass: 'secondary',
+              handler: (blah) => {
+                console.log('Confirm Cancel');
+              }
+            }, {
+              text: 'Si',
+              handler: () => {
+                console.log('Confirm Okay');
+                this.postInvio();
+              }
+            }
+          ]
+        });
+        await alert.present();
+      }
+    }
+
+
+    async postInvio(){
+      this.service.inserisciSondaggio(this.url, this.timerToPass, this.dataeora, this.emailUtente, this.titolo, this.categoriaScelta).then(
+        (sondaggio) => {
+          this.sondaggioInserito = sondaggio['data']['codice_sondaggio'];
+          console.log("il codice del sondaggio inserito è ", this.sondaggioInserito);
+          for (let scelta of this.scelte){
+            this.service.inserisciSceltaSondaggio(this.urlScelta, this.sondaggioInserito, scelta.value); 
+          }
+        },
+        (rej) => {
+          console.log("C'è stato un errore durante l'inserimento");
+        }
+      );
+    }
 
 
   //PICKER
