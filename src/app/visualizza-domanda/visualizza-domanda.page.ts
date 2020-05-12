@@ -3,6 +3,7 @@ import { Promise } from "q";
 import { PostServiceService } from "../services/post-service.service";
 import { TransitiveCompileNgModuleMetadata, ThrowStmt } from '@angular/compiler';
 import { NOMEM } from 'dns';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-visualizza-domanda',
@@ -24,7 +25,7 @@ export class VisualizzaDomandaPage implements OnInit {
 
 
   
-  codice_domanda = 20
+  codice_domanda = 34
   currentMailUser = "gmailverificata"//mail dell'utente corrente
   domanda = {};
   risposte;
@@ -36,7 +37,7 @@ export class VisualizzaDomandaPage implements OnInit {
   url3 = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzarisposteperdomanda'
   url4 = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaProfilo'
 
-  constructor(private service: PostServiceService) { }
+  constructor(private service: PostServiceService, private router: Router) { }
 
   ngOnInit() {
     this.visualizzaDomanda();
@@ -99,6 +100,11 @@ export class VisualizzaDomandaPage implements OnInit {
   
 
   }
+
+  goModificaDomanda(){
+    this.router.navigate(['modifica-domanda']);
+    }
+  
 
 /* trovaUtenteDomanda(){
   let postData ={

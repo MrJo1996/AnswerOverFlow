@@ -21,7 +21,7 @@
             <ion-button slot="end" expand="block" *ngIf="currentMailUser===domandaMailUser" (click) = "elimina()" fill="clear">
               <ion-icon name="trash-sharp" color="primary" class = "icons_generic_style"></ion-icon>
             </ion-button>
-           <ion-button slot="end" *ngIf="currentMailUser===domandaMailUser" expand="block" fill="clear">
+           <ion-button slot="end" *ngIf="currentMailUser===domandaMailUser" (click) ="goModificaDomanda()" expand="block" fill="clear">
               <ion-icon name="hammer-sharp" color="primary" class = "icons_generic_style"></ion-icon>
            </ion-button>
          <!--    <ion-label slot="end" class="textTitleSMALL">  Risposte totali: 
@@ -31,7 +31,7 @@
       </ion-toolbar>
       <ion-toolbar class="backgrounds" *ngIf="currentMailUser!==domandaMailUser">
         <ion-avatar  slot="start" class="icon-avatar" >
-          <img src="https://s3.amazonaws.com/liberty-uploads/wp-content/uploads/sites/1218/2015/09/avatarsucks.jpg">
+          <img src="https://i.ytimg.com/vi/mCf6UGT3HrA/maxresdefault.jpg">
         </ion-avatar>
         <ion-label class = "username_text_style">{{domandaMailUser}}</ion-label>
 
@@ -60,7 +60,7 @@
           <ion-card-header>
             <ion-toolbar class="backgrounds">
               <ion-avatar  slot="start" class="icon-avatar" >
-                <img src="https://s3.amazonaws.com/liberty-uploads/wp-content/uploads/sites/1218/2015/09/avatarsucks.jpg">
+                <img src="https://avatars3.githubusercontent.com/u/14333644?s=460&u=c6cf7b831fd7afd92292677dc5543c858e1e05a8&v=4">
               </ion-avatar>
               <ion-label class = "username_text_style">{{risposta.cod_utente}}</ion-label>
 
