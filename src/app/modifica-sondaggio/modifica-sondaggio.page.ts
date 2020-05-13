@@ -54,6 +54,7 @@ export class ModificaSondaggioPage implements OnInit {
     if (this.titoloToPass == null) {
       this.titoloToPass = this.titoloView;
     }
+    if (!this.checkIfThereAreABadWords(this.titoloToPass)) {
     this.apiService.modificaSondaggio(this.titoloToPass, this.timerToPass, this.codice_sondaggio).then(
       (result) => { // nel caso in cui va a buon fine la chiamata
       },
@@ -62,6 +63,9 @@ export class ModificaSondaggioPage implements OnInit {
 
       }
     );
+    } else {
+      this.popupParolaScorretta();
+    }
 
   }
 
@@ -126,7 +130,7 @@ export class ModificaSondaggioPage implements OnInit {
             console.log(JSON.stringify(insertedData)); //per vedere l'oggetto dell'handler
             this.titoloView = insertedData.titoloPopUp; //setto titoloView al valore inserito nel popUp una volta premuto ok così viene visualizzato
             this.titoloToPass = insertedData.titoloPopUp; //setto titoloToPass al valore inserito nel popUp una volta premuto ok
-
+            
             if (insertedData.titoloPopUp == "") { //CHECK CAMPO VUOTO
               this.titoloView = this.sondaggio['0'].titolo;
               this.titoloToPass = this.sondaggio['0'].titolo;
@@ -415,5 +419,29 @@ console.log("da mod: ", this.ciao);
         break;
     }
   }
+
+  checkIfThereAreABadWords(string: string): boolean {
+
+    var Filter = require('bad-words'),
+    filter = new Filter();
+
+	  filter.addWords('cazzi');
+  
+    return filter.isProfane(string)
+  
+    }
+
+    async popupParolaScorretta() {
+      const alert = await this.alertController.create({
+        header: 'ATTENZIONE',
+        subHeader: 'Subtitle',
+        message: 'Hai inserito una parola scorretta',
+        buttons: ['OK']
+      });
+  
+      await alert.present();
+      let result = await alert.onDidDismiss();
+      console.log(result);
+    }
 
 }

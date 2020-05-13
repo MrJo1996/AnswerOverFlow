@@ -12,7 +12,6 @@
 </ion-toolbar>
 
 <ion-content class="background">
-  <div [ngStyle]="{'background-image': getImage()}">
     <ion-card>
       <ion-item color="light">
        <ion-icon name="pencil-outline" slot="start"></ion-icon>
@@ -20,5 +19,4 @@
        <ion-input readonly placeholder={{descrizioneView}} color="medium" (click)="popupModificaDescrizione()"></ion-input>
      </ion-item>
     </ion-card>
-  </div>
 </ion-content>
