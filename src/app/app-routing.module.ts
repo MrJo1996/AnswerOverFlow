@@ -94,7 +94,11 @@ const routes: Routes = [
 {
   path: 'benvenuto',
   loadChildren: () => import('./benvenuto/benvenuto.module').then( m => m.BenvenutoPageModule)
-}
+},  {
+    path: 'conferma-recupero',
+    loadChildren: () => import('./conferma-recupero/conferma-recupero.module').then( m => m.ConfermaRecuperoPageModule)
+  }
+
 
 ];
 

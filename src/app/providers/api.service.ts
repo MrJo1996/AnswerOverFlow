@@ -334,6 +334,24 @@ export class ApiService {
     });
   }
 
+  proponi_categoria(selezione, proposta){
+    const body ={
+      selezione,
+      proposta
+    };
+    return new Promise((resolve, reject)=>{
+      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/proponi_cat_o_sottocat', body).subscribe(
+        data =>{
+          let esito = data['message'];
+          console.log('esito: ', esito);
+          resolve(esito);
+        }, (err)=>{
+          reject();
+        }
+      );
+    });
+  }
+
 
 
 

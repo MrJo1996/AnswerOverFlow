@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Promise } from "q";
-
 import { PostServiceService } from "../services/post-service.service";
 import { Router } from '@angular/router';
-import { NavController } from '@ionic/angular';
+import { AlertController } from '@ionic/angular';
+import { ApiService } from '../providers/api.service';
 
 @Component({
   selector: 'app-proponi-categoria',
@@ -16,10 +15,9 @@ export class ProponiCategoriaPage implements OnInit {
   proposta =  '';
   request: Promise<any>;
   result: Promise<any>;
-  url = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/proponi_cat_o_sottocat';
   bad_words = new Array (/fancul/i, /cazz/i, /zoccol/i, /stronz/i, /bastard/i, /coglion/i, /puttan/i);
 
-  constructor(private service: PostServiceService, private router: Router, private navctrl: NavController) { }
+  constructor(public apiService: ApiService, private service: PostServiceService, public alertController: AlertController, private router: Router) { }
 
   ngOnInit() {
   }
@@ -40,23 +38,47 @@ export class ProponiCategoriaPage implements OnInit {
     return false;
   }
 
-  post_invio(){
+  async post_invio(){
     if(this.proposta.length>15){
-      alert("Il nome proposto per la nuova categoria/sottocategoria è troppo lungo!");
+      const alert = await this.alertController.create({
+        header: "Il nome inserito per la nuova categoria o sottocategoria è troppo lungo!",
+        buttons:[
+          {
+            text: 'OK',
+            role: 'cancel',
+            cssClass: 'secondary',
+            handler: (blah)=>{
+              console.log('Confirm cancel: blah');
+            }
+          }
+        ]
+      });
+      await alert.present();
     } else{
       if(this.controllo_parole()==false){
-        let postData={
-          "selezione": this.selezione,
-          "proposta": this.proposta
-        };
-        this.result=this.service.postService(postData, this.url).then((data)=>{
-          this.request=data;
-          console.log(data);
-        }, (err)=>{
-          console.log(err.message)
-        });
+        this.apiService.proponi_categoria(this.selezione, this.proposta).then(
+          (result)=>{
+            console.log("Proposta inviata con successo")
+          },
+          (rej)=>{
+            console.log("Invio proposta non riuscito")
+          }
+        );
       } else{
-        alert("Hai inserito una parola scorretta! Rimuoverla per continuare");
+        const alert = await this.alertController.create({
+          header: "Hai inserito una o più parole non consentite! Rimuoverle per andare avanti",
+          buttons:[
+            {
+              text: 'OK',
+              role: 'cancel',
+              cssClass: 'secondary',
+              handler: (blah)=>{
+                console.log('Confirm cancel: blah');
+              }
+            }
+          ]
+        });
+        await alert.present();
       }
     }
   }
