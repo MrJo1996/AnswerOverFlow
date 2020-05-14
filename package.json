@@ -26,6 +26,7 @@
     "bad-words": "^3.0.3",
     "chart.js": "^2.9.3",
     "core-js": "^2.5.4",
+    "italian-badwords-list": "^1.0.3",
     "pexels-api-wrapper": "^1.1.1",
     "rxjs": "~6.5.1",
     "tslib": "^1.9.0",

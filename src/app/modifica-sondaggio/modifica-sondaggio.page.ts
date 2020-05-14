@@ -54,7 +54,7 @@ export class ModificaSondaggioPage implements OnInit {
     if (this.titoloToPass == null) {
       this.titoloToPass = this.titoloView;
     }
-    if (!this.checkIfThereAreABadWords(this.titoloToPass)) {
+    if (!this.checkIfThereAreEnglishBadWords(this.titoloToPass) && (!this.checkIfThereAreItalianBadWords(this.titoloToPass))) {
     this.apiService.modificaSondaggio(this.titoloToPass, this.timerToPass, this.codice_sondaggio).then(
       (result) => { // nel caso in cui va a buon fine la chiamata
       },
@@ -420,7 +420,7 @@ console.log("da mod: ", this.ciao);
     }
   }
 
-  checkIfThereAreABadWords(string: string): boolean {
+  checkIfThereAreEnglishBadWords(string: string): boolean {
 
     var Filter = require('bad-words'),
     filter = new Filter();
@@ -430,6 +430,15 @@ console.log("da mod: ", this.ciao);
     return filter.isProfane(string)
   
     }
+
+  checkIfThereAreItalianBadWords(string: string): boolean {
+
+    let list = require('italian-badwords-list');
+    
+    let array = list.array
+
+    return array.includes(string);
+  }
 
     async popupParolaScorretta() {
       const alert = await this.alertController.create({
