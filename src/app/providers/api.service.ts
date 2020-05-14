@@ -188,10 +188,12 @@ export class ApiService {
     //TODO code lancio endPoint
   }
 
-  rimuoviDomanda(){
+  rimuoviDomanda(cod_domanda: number){
     
     return new Promise((resolve, reject) => {
-      this.http.delete('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/cancellaDomanda/34').subscribe(
+      var url = "http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/cancellaDomanda/";
+      var urlAndCode = url.concat(cod_domanda.toString());
+      this.http.delete(urlAndCode).subscribe(
         data => {
           let esito = data['message'];
           console.log('esito: ', esito);
