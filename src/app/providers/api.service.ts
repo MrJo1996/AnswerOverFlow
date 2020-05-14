@@ -140,6 +140,26 @@ export class ApiService {
     });
   }
 
+  getScelteSondaggio(codice_sondaggio: Number) {
+    const body = {
+      codice_sondaggio: codice_sondaggio
+    };
+
+    return new Promise((resolve, reject) => {
+      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaScelteSondaggio', body).subscribe(
+        data => {
+          let scelte = data;
+          resolve(scelte); //restituirò al ts un oggetto di nome "sondaggio" con accesso già alla posizione "Sondaggio" avendo visto il json di data
+          console.log(scelte);
+
+        },
+        (err) => {
+          reject();
+        }
+      );
+    });
+  }
+
  
   getRisposta(codice_risposta: Number) {
     const body = {
@@ -185,7 +205,20 @@ export class ApiService {
   }
 
   rimuoviSondaggio(codice_sondaggio: Number) {
-    //TODO code lancio endPoint
+    return new Promise((resolve, reject) => {
+      var url = "http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/cancellaSondaggio/";
+      var urlAndCode = url.concat(codice_sondaggio.toString());
+      this.http.delete(urlAndCode).subscribe(
+        data => {
+          let esito = data['message'];
+          console.log('esito: ', esito);
+          resolve(esito);
+        },
+        (err) => {
+          reject();
+        }
+      );
+    });
   }
 
   rimuoviDomanda(cod_domanda: number){

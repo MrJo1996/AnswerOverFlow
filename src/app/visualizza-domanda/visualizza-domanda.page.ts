@@ -14,7 +14,7 @@ export class VisualizzaDomandaPage implements OnInit {
   
 
   
-  codice_domanda = 37
+  codice_domanda = 37 
 
   currentMailUser = "gmailverificata"//mail dell'utente corrente
   domanda = {};
@@ -64,7 +64,7 @@ async visualizzaDomanda() {
     
       this.mappingIncrement(this.domanda['0'].timer);
 
-      var auxData = []; //var ausialiaria per parsare la data di creazione
+      var auxData = []; //var ausialiaria per parsare la data di creazionej
       auxData['0'] = (this.domanda['0'].dataeora.substring(0, 10).split("-")[0]); //anno
       auxData['1'] = this.domanda['0'].dataeora.substring(0, 10).split("-")[1]; //mese [0]=gennaio
       auxData['2'] = this.domanda['0'].dataeora.substring(0, 10).split("-")[2]; //gg
@@ -91,7 +91,7 @@ async popUpEliminaDomanda(){
         text: 'Si',
         handler: () => {
           console.log('domanda eliminata');
-        this.cancellaDomanda;
+        this.cancellaDomanda();
         }
       },
       {
@@ -99,7 +99,7 @@ async popUpEliminaDomanda(){
         role: 'cancel',
         //cssClass: 'secondary',
         handler: () => {
-          console.log('Confirm Cancel');
+          console.log('eliminazione annullata');
         }
       }
     ]

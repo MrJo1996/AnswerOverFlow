@@ -17,7 +17,7 @@
       <ion-toolbar class="backgrounds">
           <ion-icon   class = "alarm_style" name="alarm-outline" slot= "start"></ion-icon>
            <ion-label class = "textTitle">{{sondaggio.timer}}</ion-label>
-          <ion-button slot="end" expand="block" *ngIf="currentUser===sondaggioUser" (click) = "elimina()" fill="clear">
+          <ion-button slot="end" expand="block" *ngIf="currentUser===sondaggioUser" (click) = "popUpEliminaSondaggio()" fill="clear">
             <ion-icon name="trash-sharp" color="primary" class = "icons_generic_style"></ion-icon>
           </ion-button>
           <ion-button slot="end" *ngIf="currentUser===sondaggioUser" (click) ="goModificaDomanda()" expand="block" fill="clear">
@@ -49,30 +49,14 @@
           
             <div class = "backgrounds">
           
-            <ion-item>    
+            <ion-item *ngFor="let scelta of scelte">    
          
                 <ion-checkbox *ngIf="currentUser!==sondaggioUser" slot = "start"></ion-checkbox>
-                <ion-label *ngIf="currentUser===sondaggioUser">numerovoti</ion-label>
-                <ion-label slot = "start" class = "textTitleSMALL">scelta</ion-label>
+                <ion-label *ngIf="currentUser===sondaggioUser">{{scelta.num_favorevoli}}</ion-label>
+                <ion-text class="textSimple" slot = "start" >{{scelta.descrizione}}</ion-text>
             </ion-item>
   
-            <ion-item>
-              <ion-checkbox *ngIf="currentUser!==sondaggioUser" slot = "start"></ion-checkbox>
-                <ion-label *ngIf="currentUser===sondaggioUser">numerovoti</ion-label>
-                <ion-label slot = "start" class = "textTitleSMALL">scelta</ion-label>
-            </ion-item>
-  
-            <ion-item >
-              <ion-checkbox *ngIf="currentUser!==sondaggioUser" slot = "start"></ion-checkbox>
-              <ion-label *ngIf="currentUser===sondaggioUser">numerovoti</ion-label>
-              <ion-label slot = "start" class = "textTitleSMALL">scelta</ion-label>
-            </ion-item>
-  
-            <ion-item >
-              <ion-checkbox *ngIf="currentUser!==sondaggioUser" slot = "start"></ion-checkbox>
-              <ion-label *ngIf="currentUser===sondaggioUser">numerovoti</ion-label>
-              <ion-label slot = "start" class = "textTitleSMALL">scelta</ion-label>
-            </ion-item>
+            
   
           </div>
         </ion-list>
