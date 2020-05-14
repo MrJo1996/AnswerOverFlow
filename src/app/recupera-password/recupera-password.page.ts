@@ -22,23 +22,24 @@ export class RecuperaPasswordPage implements OnInit {
   }
 
   is_email_valid(email: string){
-    var formato: RegExp;
+    var format: RegExp;
 
-    formato = /^([a-zA-z0-9_.\-/])+\@([a-zA-z0-9_.\-/])+\.([a-zA-Z]{2,4})$/;
-    if(!formato.test(email)){
+    format = /^([a-zA-z0-9_.\-/])+\@([a-zA-z0-9_.\-/])+\.([a-zA-Z]{2,4})$/;
+    if(!format.test(email)){
       return false;
     }
     return true;
   }
 
   post_invio(){
-    let postData ={
+    let postData={
       "email": this.email
     };
-    this.result = this.service.postService(postData, this.url).then((data) => {
+    this.result= this.service.postService(postData, this.url).then(
+      (data)=> {
       this.request = data;
       console.log(data);
-    }, err => {
+    }, (err)=> {
       console.log(err.message);
     });
     this.goToConfirm();

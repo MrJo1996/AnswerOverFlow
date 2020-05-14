@@ -15,70 +15,63 @@ export class ProponiCategoriaPage implements OnInit {
   proposta =  '';
   request: Promise<any>;
   result: Promise<any>;
-  bad_words = new Array (/fancul/i, /cazz/i, /zoccol/i, /stronz/i, /bastard/i, /coglion/i, /puttan/i);
 
   constructor(public apiService: ApiService, private service: PostServiceService, public alertController: AlertController, private router: Router) { }
 
   ngOnInit() {
   }
 
-  controllo_parole(){
-    var i: number;
-    var cod: number;
-    var array_length: number;
-
-    array_length = this.bad_words.length;
-
-    for(i=0;i<array_length;i++){
-      cod = this.proposta.search(this.bad_words[i]);
-      if(cod>=0){
-        return true;
-      }
-    }
-    return false;
+  italian_bad_words_check(input: string){
+    let list = require('italian-badwords-list');
+    let array = list.array;
+    return array.includes(input);
   }
 
-  async post_invio(){
-    if(this.proposta.length>15){
-      const alert = await this.alertController.create({
-        header: "Il nome inserito per la nuova categoria o sottocategoria è troppo lungo!",
-        buttons:[
-          {
-            text: 'OK',
-            role: 'cancel',
-            cssClass: 'secondary',
-            handler: (blah)=>{
-              console.log('Confirm cancel: blah');
-            }
-          }
-        ]
-      });
-      await alert.present();
+  english_bad_words_check(input: string){
+    var Filter = require('bad-words'),
+    filter = new Filter();
+
+    filter.addWords('cazzi');
+    
+    return filter.isProfane(input);
+  }
+
+  async bad_words_alert(){
+    const alert = await this.alertController.create({
+      header: 'ATTENZIONE!',
+      subHeader: 'Hai inserito una o più parole non consentite. Rimuoverle per andare avanti',
+      buttons: ['OK']
+    });
+    await alert.present();
+    let result = await alert.onDidDismiss();
+    console.log(result);
+  }
+
+  async max_lenght_exceeded_alert(){
+    const alert = await this.alertController.create({
+      header: 'ATTENZIONE!',
+      subHeader: 'Il nome inserito per la nuova categoria o sottocategoria è troppo lungo. Inserire una nuova proposta',
+      buttons: ['OK']
+    });
+    await alert.present();
+    let result = await alert.onDidDismiss();
+    console.log(result);
+  }
+
+  post_invio(){
+    if(this.proposta.length > 15){
+      this.max_lenght_exceeded_alert();
     } else{
-      if(this.controllo_parole()==false){
+      if((!this.english_bad_words_check(this.proposta)) && (!this.italian_bad_words_check(this.proposta))){
         this.apiService.proponi_categoria(this.selezione, this.proposta).then(
           (result)=>{
             console.log("Proposta inviata con successo")
-          },
-          (rej)=>{
+          }, (rej)=>{
             console.log("Invio proposta non riuscito")
           }
         );
       } else{
-        const alert = await this.alertController.create({
-          header: "Hai inserito una o più parole non consentite! Rimuoverle per andare avanti",
-          buttons:[
-            {
-              text: 'OK',
-              role: 'cancel',
-              cssClass: 'secondary',
-              handler: (blah)=>{
-                console.log('Confirm cancel: blah');
-              }
-            }
-          ]
-        });
-        await alert.present();
+        this.bad_words_alert();
       }
     }
   }
