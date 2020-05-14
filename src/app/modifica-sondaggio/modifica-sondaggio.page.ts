@@ -424,8 +424,6 @@ console.log("da mod: ", this.ciao);
 
     var Filter = require('bad-words'),
     filter = new Filter();
-
-	  filter.addWords('cazzi');
   
     return filter.isProfane(string)
   
