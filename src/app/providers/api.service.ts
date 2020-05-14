@@ -163,8 +163,47 @@ export class ApiService {
     });
   }
 
+  getRispostePerDomanda(cod_domanda: Number) {
+    const body = {
+      cod_domanda: cod_domanda
+
+    };
+
+    return new Promise((resolve, reject) => {
+      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzarisposteperdomanda', body).subscribe(
+        data => {
+          let risposte = data['Risposte']['data'];
+          resolve(risposte); 
+          console.log(risposte)
+
+        },
+        (err) => {
+          reject();
+        }
+      );
+    });
+  }
+
   rimuoviSondaggio(codice_sondaggio: Number) {
     //TODO code lancio endPoint
+  }
+
+  rimuoviDomanda(){
+    
+    return new Promise((resolve, reject) => {
+      this.http.delete('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/cancellaDomanda/34').subscribe(
+        data => {
+          let esito = data['message'];
+          console.log('esito: ', esito);
+          resolve(esito);
+        },
+        (err) => {
+          reject();
+        }
+      );
+    });
+
+
   }
 
   modificaRisposta(codice_risposta: Number, descrizione: string) {
