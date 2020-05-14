@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController, AlertController } from '@ionic/angular';
 import { ApiService } from './../providers/api.service';
-//Picker - import e poi definire nel constructor
-import { PickerController } from "@ionic/angular";
+import { PickerController } from "@ionic/angular";//Picker - import e poi definire nel constructor
 import { PickerOptions } from "@ionic/core";
 import { isEmptyExpression } from '@angular/compiler';
 import { Router } from '@angular/router';
@@ -14,9 +13,9 @@ import { Router } from '@angular/router';
 })
 export class InserimentoSondaggioPage implements OnInit {
 
-  url = "http://localhost/AnswerOverFlow-BackEnd/public/inseriscisondaggio";
-  urlCategorie = 'http://localhost/AnswerOverFlow-BackEnd/public/ricercaCategorie'
-  urlScelta = 'http://localhost/AnswerOverFlow-BackEnd/public/inserisciScelteSondaggio';
+  url = "http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/inseriscisondaggio";
+  urlCategorie = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaCategorie'
+  urlScelta = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/inserisciScelteSondaggio';
 
   emailUtente = "gmailverificata";
 
@@ -43,10 +42,6 @@ export class InserimentoSondaggioPage implements OnInit {
       (categories) => {
         console.log('Categorie visualizzate con successo', categories);
         this.categorie = categories;
-        // this.categorie.push({
-        //   'codice_categoria': 0,
-        //   'titolo': 'Non hai trovato la categoria che cercavi?'
-        // })
       },
       (rej) => {
         console.log("C'è stato un errore durante la visualizzazione");
@@ -54,33 +49,55 @@ export class InserimentoSondaggioPage implements OnInit {
     );
   }
 
+
+  //Gestisco l'array delle scelte
   Add(){
     this.scelte.push({'value':''});
     }
-  
   Remove(index: any){
     this.scelte.splice(index, 1);
     }
 
-  showScelta(event){
-    console.log(event.value);
-  }
-
+  //Porta alla page per proporre una nuova categoria
   switchCategoria() {
     this.router.navigate(['proponi-categoria']);
   }
+  
+  //Torna indietro alla Home
+  backButton() {
+    this.router.navigate(['home']);
+  }
 
-  inserisciSondaggio(){
-    this.dataeora = new Date;
-    this.dataeora.setHours(this.dataeora.getHours() + 2);
+  checkField(){
+
     let datoMancante = false;
+    let scelteVuote = false;
     let errMex = "Hey, hai dimenticato di inserire";
 
+
+    //Salvo l'ora di inserimento
+    var today = new Date();
+    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    this.dataeora = date+' '+time;
+
+    // this.dataeora.setHours(this.dataeora.getHours() + 2);
+    // console.log(this.dataeora, this.categoriaScelta, this.timerToPass, this.titolo, this.scelte[0]);
+
+    //Controllo del titolo
     if(this.titolo === ""){
       datoMancante = true;
       errMex = errMex + " il titolo"
     }
-    if(this.scelte.length < 2){
+    //delle scelte immesse
+    for(let scelta of this.scelte){
+      // console.log("controllo le scelte");
+      if(scelta['value'] == ""){
+         scelteVuote = true;
+        //  console.log("scelta vuota");
+      }
+    }
+    if(this.scelte.length < 2 || scelteVuote){
       if (datoMancante){
         errMex = errMex + ", le scelte"
       }
@@ -89,6 +106,7 @@ export class InserimentoSondaggioPage implements OnInit {
       errMex = errMex + " le scelte"
       }
     }
+    //del timer
     if(this.timerToPass === ""){
       if (datoMancante){
         errMex = errMex + ", il timer"
@@ -98,6 +116,7 @@ export class InserimentoSondaggioPage implements OnInit {
       errMex = errMex + " il timer"
       }
     }
+    //della categoria scelta
     if(this.categoriaScelta == -1){
       if (datoMancante){
         errMex = errMex + " e la categoria"
@@ -107,13 +126,14 @@ export class InserimentoSondaggioPage implements OnInit {
       errMex = errMex + " la categoria"
       }
     }
-    this.checkField(datoMancante, errMex)
+    this.inserisciSondaggio(datoMancante, errMex)
   }
 
-    async checkField(datiMancanti: Boolean, text: string) {
+    async inserisciSondaggio(datiMancanti: Boolean, textAlert: string) {
       if (datiMancanti) {
         const alert = await this.alertController.create({
-          header: text,
+          header: 'Errore',
+          message: textAlert,
           buttons: [
             {
               text: 'Ok',
@@ -150,11 +170,10 @@ export class InserimentoSondaggioPage implements OnInit {
       }
     }
 
-
     async postInvio(){
       this.service.inserisciSondaggio(this.url, this.timerToPass, this.dataeora, this.emailUtente, this.titolo, this.categoriaScelta).then(
-        (sondaggio) => {
-          this.sondaggioInserito = sondaggio['data']['codice_sondaggio'];
+        (sondaggio: number) => {
+          this.sondaggioInserito = sondaggio;
           console.log("il codice del sondaggio inserito è ", this.sondaggioInserito);
           for (let scelta of this.scelte){
             this.service.inserisciSceltaSondaggio(this.urlScelta, this.sondaggioInserito, scelta.value); 
@@ -165,7 +184,6 @@ export class InserimentoSondaggioPage implements OnInit {
         }
       );
     }
-
 
   //PICKER
   async showTimerPicker() {

@@ -234,9 +234,10 @@ export class ApiService {
     return new Promise((resolve, reject) => {
       this.http.post(URL, body).subscribe(
         data => {
-          let sondaggio = data;
+          let sondaggio = data['data']['codice_sondaggio'];
           let esito = data['message'];
           console.log("L'esito dell'inserimento sondaggio è che ", esito);
+          console.log("il codice sondaggio è ", sondaggio);
           resolve(sondaggio);
         },
         (err) => {

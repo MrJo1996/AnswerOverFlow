@@ -33,14 +33,14 @@ export class AppComponent implements OnInit {
       icon: 'archive'
     },
     {
-      title: 'Trash',
-      url: '/folder/Trash',
-      icon: 'trash'
+      title: 'Chat',
+      url: '/visualizza-chats',
+      icon: 'chatbubble-ellipses'
     },
     {
-      title: 'Spam',
-      url: '/folder/Spam',
-      icon: 'warning'
+      title: 'Nuovo Sondaggio',
+      url: '/inserimento-sondaggio',
+      icon: 'trail-sign'
     }
   ];
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
