@@ -7,7 +7,9 @@ import {Promise} from 'q';
 
 export class DataService {
   codice_domanda;
-  codice_sondaggio
+  codice_sondaggio;
+  emailUtente;
+  codice_chat;
   constructor(private http: HttpClient) { }
 
   setCod_domanda(id_domanda:number){
@@ -15,5 +17,11 @@ export class DataService {
   }
   setCod_sondaggio(id_sondaggio:number){
     this.codice_sondaggio = id_sondaggio;
+  }
+  setEmail_Utente(cod_utente:string) {
+    this.emailUtente = cod_utente;
+  }
+  setCodice_chat(cod_chat: number) {
+    this.codice_chat = cod_chat;
   }
 }
