@@ -4,7 +4,8 @@ import { NOMEM } from 'dns';
 import { Router } from '@angular/router';
 import { ApiService } from '../providers/api.service';
 import { AlertController } from '@ionic/angular';
-
+import { DataService } from "../services/data.service";
+import {NavController} from "@ionic/angular";
 @Component({
   selector: 'app-visualizza-domanda',
   templateUrl: './visualizza-domanda.page.html',
@@ -14,7 +15,7 @@ export class VisualizzaDomandaPage implements OnInit {
   
 
   
-  codice_domanda = 37 
+  codice_domanda ; 
 
   currentMailUser = "gmailverificata"//mail dell'utente corrente
   domanda = {};
@@ -32,7 +33,7 @@ export class VisualizzaDomandaPage implements OnInit {
   descrizioneView: any;
   cod_preferita: any;
 
-  constructor(public apiService: ApiService, private router: Router, public alertController: AlertController) { }
+  constructor(private navCtrl:NavController, private dataService: DataService, public apiService: ApiService, private router: Router, public alertController: AlertController) { }
 
   ngOnInit() {
     this.visualizzaDomanda();
@@ -47,6 +48,8 @@ export class VisualizzaDomandaPage implements OnInit {
   
 
 async visualizzaDomanda() {
+  console.log(this.dataService.codice_domanda);
+  this.codice_domanda = this.dataService.codice_domanda;
   this.apiService.getDomanda(this.codice_domanda).then(
     (domanda) => {
       console.log('Visualizzato con successo');
@@ -234,5 +237,7 @@ async countDown(incAnno, incMese, incGG, incHH, incMM) {
 
 }
 
-
+goback() {
+  this.navCtrl.pop();
+}
 }

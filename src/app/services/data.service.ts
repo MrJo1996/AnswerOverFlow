@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-
+import {Promise} from 'q';
 @Injectable({
   providedIn: 'root'
 })
 
 export class DataService {
-  //VARIABILI
+  codice_domanda;
 
   constructor(private http: HttpClient) { }
 
-  //FUNZIONI
-
+  setCod_domanda(id_domanda:number){
+    this.codice_domanda = id_domanda;
+  }
 }
