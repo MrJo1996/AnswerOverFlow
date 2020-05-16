@@ -11,15 +11,11 @@ import {NavController} from "@ionic/angular";
 
 export class VisualizzaStatistichePage {
 
-  @ViewChild('barChart') barChart;
-  @ViewChild('doughnutCanvas') doughnutCanvas;
-  @ViewChild('barChart2') barChart2;
-  @ViewChild('doughnutCanvas2') doughnutCanvas2;
-  @ViewChild('lineCanvas') lineCanvas;
-
-
-
-
+  @ViewChild('barChart', {static:false}) barChart;
+  @ViewChild('doughnutCanvas', {static:false}) doughnutCanvas;
+  @ViewChild('barChart2', {static:false}) barChart2;
+  @ViewChild('doughnutCanvas2', {static:false}) doughnutCanvas2;
+  @ViewChild('lineCanvas', {static:false}) lineCanvas;
 
   colorArray: any;
 
