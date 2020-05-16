@@ -24,7 +24,7 @@ export class ModificaRispostaPage implements OnInit {
 
   ngOnInit() {
 
-    this.codice_risposta = 8;
+    this.codice_risposta = 10;
   
     this.showResponse();
 

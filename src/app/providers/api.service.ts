@@ -208,9 +208,9 @@ export class ApiService {
     };
 
     return new Promise((resolve, reject) => {
-      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzarisposteperdomanda', body).subscribe(
+      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/Visualizzarisposteperdomanda', body).subscribe(
         data => {
-          let risposte = data['Risposte']['data'];
+          let risposte = data['Risposte'];
           resolve(risposte); 
           console.log(risposte)
 
