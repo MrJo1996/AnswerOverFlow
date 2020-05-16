@@ -54,24 +54,12 @@
     
       </ion-card>
 
-    <p></p><ion-button *ngIf = "Email !== UserProfileViewId" color="light" class="ion-button">Invia messaggio</ion-button>
+    <p></p>
+    <ion-button *ngIf = "Email !== UserProfileViewId" color="light" class="ion-button">Invia messaggio</ion-button>
+    <ion-button color="primary" class= "ion-button" (click)= "stats()" >Visualizza statistiche</ion-button>
     <ion-button *ngIf = "Email !== UserProfileViewId"  (click) = "showAlertView()" color="danger" class="ion-button">Segnala Utente</ion-button>
+    
 
-
-    <ion-content>
-      <ion-list-header color="light">Statistiche Utente</ion-list-header>
-      <ion-card class="welcome-card">
-        <ion-card-header>
-          <ion-card-subtitle>Categorie Preferite</ion-card-subtitle>
-          <ion-card-title>0</ion-card-title>
-        </ion-card-header>
-        <ion-card-content>
-          <canvas #barChart></canvas>
-        </ion-card-content>
-      </ion-card>
-    </ion-content>
-  
-</ion-content>
-
+    
 
 

@@ -21,9 +21,11 @@ export class VisualizzaProfiloPage implements OnInit {
   url = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaProfilo'
 
   constructor(
+    private router : Router,
     private alertController: AlertController,
     private apiService: ApiService,
     private navCtrl: NavController
+  
     
     ){
 
@@ -36,6 +38,10 @@ export class VisualizzaProfiloPage implements OnInit {
 
   goBack(){
     this.navCtrl.back();
+  }
+
+  stats(){
+    this.router.navigate(['visualizza-statistiche']);
   }
 
 
