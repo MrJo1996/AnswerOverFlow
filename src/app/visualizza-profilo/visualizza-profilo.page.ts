@@ -52,7 +52,7 @@ export class VisualizzaProfiloPage implements OnInit {
   Nome = 'giovanni';
   Cognome = 'otto';
   Bio = 'disegno cazzi sui muri';
-
+ 
 
   
   async selectProfile() {
@@ -97,6 +97,7 @@ async showAlertView() {
         handler: () => {
           this.confirmSpamAlert();
           console.log('Conferma segnalazione: spam');
+          console.log("provaprova");
         }
       }, {
         text: 'Altro',

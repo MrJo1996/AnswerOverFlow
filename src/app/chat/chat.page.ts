@@ -12,6 +12,7 @@ import { isNull } from "util";
   styleUrls: ["./chat.page.scss"],
 })
 export class ChatPage implements OnInit {
+  
   request: Promise<any>;
   result: Promise<any>;
   showMessagesUrl =
@@ -22,15 +23,14 @@ export class ChatPage implements OnInit {
     "http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/creachat";
   findChatUrl =
     "http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/trovachat";
-  findLastMsgChatUrl =
-    "http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/trovaUltimoMessaggioInviato";
+  
 
   @ViewChild("content", { read: IonContent, static: false })
   myContent: IonContent;
 
   constructor(
     private service: PostServiceService,
-    data: DataService,
+    private dataService: DataService,
     private router: Router
   ) {}
 
@@ -179,6 +179,7 @@ export class ChatPage implements OnInit {
   ////////////////////////////////////////////
 
   goToProfile() {
+    this.dataService.emailOthers = this.chatFriend_id;
     this.router.navigate(["/visualizza-profilo"]);
   }
 
