@@ -3,7 +3,9 @@ import { TransitiveCompileNgModuleMetadata, ThrowStmt } from '@angular/compiler'
 import { NOMEM } from 'dns';
 import { Router } from '@angular/router';
 import { ApiService } from '../providers/api.service';
-
+import { AlertController } from '@ionic/angular';
+import { DataService } from "../services/data.service";
+import {NavController} from "@ionic/angular";
 @Component({
   selector: 'app-visualizza-domanda',
   templateUrl: './visualizza-domanda.page.html',
@@ -13,7 +15,8 @@ export class VisualizzaDomandaPage implements OnInit {
   
 
   
-  codice_domanda = 37
+  codice_domanda ; 
+
   currentMailUser = "gmailverificata"//mail dell'utente corrente
   domanda = {};
   risposte;
@@ -30,11 +33,12 @@ export class VisualizzaDomandaPage implements OnInit {
   descrizioneView: any;
   cod_preferita: any;
 
-  constructor(public apiService: ApiService, private router: Router) { }
+  constructor(private navCtrl:NavController, private dataService: DataService, public apiService: ApiService, private router: Router, public alertController: AlertController) { }
 
   ngOnInit() {
-    this.visualizzaDomanda();
+    this.visualizzaDomanda(); 
     this.showRisposte();
+    
     //this.trovaUtenteDomanda();
   }
 
@@ -45,6 +49,8 @@ export class VisualizzaDomandaPage implements OnInit {
   
 
 async visualizzaDomanda() {
+  console.log(this.dataService.codice_domanda);
+  this.codice_domanda = this.dataService.codice_domanda;
   this.apiService.getDomanda(this.codice_domanda).then(
     (domanda) => {
       console.log('Visualizzato con successo');
@@ -62,7 +68,7 @@ async visualizzaDomanda() {
     
       this.mappingIncrement(this.domanda['0'].timer);
 
-      var auxData = []; //var ausialiaria per parsare la data di creazione
+      var auxData = []; //var ausialiaria per parsare la data di creazionej
       auxData['0'] = (this.domanda['0'].dataeora.substring(0, 10).split("-")[0]); //anno
       auxData['1'] = this.domanda['0'].dataeora.substring(0, 10).split("-")[1]; //mese [0]=gennaio
       auxData['2'] = this.domanda['0'].dataeora.substring(0, 10).split("-")[2]; //gg
@@ -81,12 +87,37 @@ async visualizzaDomanda() {
 
 }
 
+async popUpEliminaDomanda(){
+  const alert = await this.alertController.create({
+    header: 'Sei sicuro di voler eliminare questa domanda?',
+    buttons: [
+       {
+        text: 'Si',
+        handler: () => {
+          console.log('domanda eliminata');
+        this.cancellaDomanda();
+        }
+      },
+      {
+        text: 'No',
+        role: 'cancel',
+        //cssClass: 'secondary',
+        handler: () => {
+          console.log('eliminazione annullata');
+        }
+      }
+    ]
+  });
+  await alert.present();
+}
+
 async showRisposte() {
+  this.codice_domanda = this.dataService.codice_domanda;
   this.apiService.getRispostePerDomanda(this.codice_domanda).then(
     (risposte) => {
       console.log('Visualizzato con successo');
 
-      this.risposte = risposte;
+      this.risposte = risposte['Risposte']['data'];
       console.log(risposte) 
     },
     (rej) => {
@@ -96,7 +127,7 @@ async showRisposte() {
 }
 
 async cancellaDomanda() {
-  this.apiService.rimuoviDomanda().then(
+  this.apiService.rimuoviDomanda(this.codice_domanda).then(
     (risultato) => {
       console.log('eliminata');
 
@@ -208,5 +239,7 @@ async countDown(incAnno, incMese, incGG, incHH, incMM) {
 
 }
 
-
+goback() {
+  this.navCtrl.pop();
+}
 }

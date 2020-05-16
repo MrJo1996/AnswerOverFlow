@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
-    <ion-button  slot="start" expand="block" fill="clear" (click)="goBack()" class="msg-btn">
-      <ion-icon color="primary" slot="start" slot="icon-only" name="arrow-back-outline"></ion-icon>
+    <ion-button  (click)="goback()" slot="start" expand="block" fill="clear" class="msg-btn">
+      <ion-icon  color="primary" slot="start" slot="icon-only" name="arrow-back-outline"></ion-icon>
     </ion-button>
       <ion-title *ngIf="currentMailUser===domandaMailUser">Dettagli della tua domanda</ion-title>
       <ion-title  *ngIf="currentMailUser!==domandaMailUser">Dettagli della domanda</ion-title>
@@ -18,7 +18,7 @@
        
             <ion-icon   class = "alarm_style" name="alarm-outline" slot= "start"></ion-icon>
             <ion-label  class = "textTitle">{{timerView}}</ion-label>
-            <ion-button slot="end" expand="block" *ngIf="currentMailUser===domandaMailUser" (click) = "cancellaDomanda()" fill="clear">
+            <ion-button slot="end" expand="block" *ngIf="currentMailUser===domandaMailUser" (click) = "popUpEliminaDomanda()" fill="clear">
               <ion-icon name="trash-sharp" color="primary" class = "icons_generic_style"></ion-icon>
             </ion-button>
            <ion-button slot="end" *ngIf="currentMailUser===domandaMailUser" (click) ="  goModificaDomanda() " expand="block" fill="clear">

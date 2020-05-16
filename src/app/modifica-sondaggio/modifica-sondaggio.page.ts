@@ -70,6 +70,7 @@ export class ModificaSondaggioPage implements OnInit {
   }
 
   async showSurvey() {
+    //this.codice_sondaggio= this.dataService.codice_sondaggio;
     this.apiService.getSondaggio(this.codice_sondaggio).then(
       (sondaggio) => {
         console.log('Visualizzato con successo');
