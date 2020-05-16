@@ -9,6 +9,7 @@ export class DataService {
   codice_domanda;
   codice_sondaggio;
   emailUtente;
+  emailOthers;
   codice_chat;
   constructor(private http: HttpClient) { }
 
