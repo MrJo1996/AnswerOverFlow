@@ -25,4 +25,25 @@ export class DataService {
   setCodice_chat(cod_chat: number) {
     this.codice_chat = cod_chat;
   }
+ 
+  setEmailOthers(emailOthers) {
+    this.emailOthers = emailOthers;
+  }
+ 
+  getCod_domanda(){
+    return this.codice_domanda;
+  }
+  getCod_sondaggio(){
+    return this.codice_sondaggio;
+  }
+  getEmail_Utente() {
+    return this.emailUtente;
+  }
+  getCodice_chat() {
+    return this.codice_chat;
+  }
+ 
+  getEmailOthers(emailOthers) {
+    return this.emailOthers;
+  }
 }
