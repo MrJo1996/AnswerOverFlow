@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { PostServiceService } from "../services/post-service.service";
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { ApiService } from '../providers/api.service';
@@ -16,7 +15,7 @@ export class ProponiCategoriaPage implements OnInit {
   request: Promise<any>;
   result: Promise<any>;
 
-  constructor(public apiService: ApiService, private service: PostServiceService, public alertController: AlertController, private router: Router) { }
+  constructor(public apiService: ApiService, public alertController: AlertController, private router: Router) { }
 
   ngOnInit() {
   }
@@ -70,9 +69,14 @@ export class ProponiCategoriaPage implements OnInit {
             console.log("Invio proposta non riuscito")
           }
         );
+        this.goToConfirm();
       } else{
         this.bad_words_alert();
       }
     }
+  }
+
+  goToConfirm(){
+    this.router.navigate(['conferma-invio-proposta']);
   }
 }

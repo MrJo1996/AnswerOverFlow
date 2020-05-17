@@ -102,6 +102,7 @@ async showRisposte() {
       console.log('Visualizzato con successo');
 
       this.risposte = risposte['Risposte']['data'];
+      
       console.log(risposte) 
     },
     (rej) => {
@@ -137,8 +138,7 @@ async getUserDomanda(){
 }
 
 async getUsersRisposte(){
-
-
+    
 
 
 }

@@ -54,7 +54,7 @@
           </ion-toolbar>
     </ion-card-content>
   </ion-card>
-
+  <ion-label *ngIf="risposte===NULL" class = "textSimple">Non ci sono ancora risposte per questa domanda</ion-label>
 
         <ion-card *ngFor="let risposta of risposte" class = "backgrounds">    
           <ion-card-header>
@@ -66,10 +66,10 @@
 
               <ion-icon name="ribbon" *ngIf="risposta.codice_risposta===cod_preferita"  class="ribbon_style" slot="end"></ion-icon>
               <ion-label slot = "end" class = "textTitleSMALL">{{risposta.num_like}}</ion-label>
-              <ion-icon name="caret-up-circle-outline" class="thumb_up_style" slot= "end"></ion-icon>
+              <ion-icon name="thumbs-up-sharp" class="thumb_up_style" slot= "end" ></ion-icon>
 
               <ion-label slot = "end" class = "textTitleSMALL">{{risposta.num_dislike}}</ion-label>
-              <ion-icon name="caret-down-circle-outline" class="thumb_down_style" slot= "end"></ion-icon>
+              <ion-icon name="thumbs-down-sharp" class="thumb_down_style" slot= "end" ></ion-icon>
 
             </ion-toolbar>
           </ion-card-header>
