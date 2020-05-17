@@ -106,7 +106,11 @@ const routes: Routes = [
   {
     path: 'visualizza-statistiche',
     loadChildren: () => import('./visualizza-statistiche/visualizza-statistiche.module').then(m => m.VisualizzaStatistichePageModule)
+  },  {
+    path: 'conferma-invio-proposta',
+    loadChildren: () => import('./conferma-invio-proposta/conferma-invio-proposta.module').then( m => m.ConfermaInvioPropostaPageModule)
   }
+
 
 
 ];
