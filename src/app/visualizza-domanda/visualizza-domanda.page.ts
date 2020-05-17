@@ -29,12 +29,15 @@ export class VisualizzaDomandaPage implements OnInit {
 
   risposte: any;
 
+  descrizioneRispostaView;
+  descrizioneRispostaToPass;
+  risposta = {};
+
   constructor(private navCtrl:NavController, private dataService: DataService, public apiService: ApiService, private router: Router, public alertController: AlertController) { }
 
   ngOnInit() {
     this.visualizzaDomanda(); 
     this.showRisposte();
-    
   }
 
 
@@ -137,13 +140,60 @@ async getUserDomanda(){
 
 }
 
-async getUsersRisposte(){
-    
-
-
-}
-
 goback() {
   this.navCtrl.pop();
 }
+
+async modify() {
+
+  this.apiService.modificaRisposta(this.dataService.codice_risposta, this.descrizioneRispostaToPass).then(
+    (result) => { // nel caso in cui va a buon fine la chiamata
+    },
+    (rej) => {// nel caso non vada a buon fine la chiamata
+      console.log('Modifica non effetutata'); //anche se va nel rej va bene, modifiche effettive nel db
+    }
+  );
+
+}
+
+async popupModificaDescrizioneRisposta() {
+  const alert = await this.alertController.create({
+    header: 'Modifica',
+    inputs: [
+      {
+        name: 'descrizionePopUp',
+        type: 'text',
+      }
+    ],
+    buttons: [
+      {
+        text: 'Annulla',
+        role: 'cancel',
+        cssClass: 'secondary',
+        handler: () => {
+          console.log('Confirm cancel');
+        }
+      }, {
+        text: 'Ok',
+        handler: insertedData => {
+          console.log(JSON.stringify(insertedData)); //per vedere l'oggetto dell'handler
+          this.descrizioneRispostaView = insertedData.descrizionePopUp; //setto descrizioneView al valore inserito nel popUp una volta premuto ok così viene visualizzato
+          this.descrizioneRispostaToPass = insertedData.descrizionePopUp; //setto descrizioneToPass al valore inserito nel popUp una volta premuto ok
+
+          this.modify();
+        }
+      }
+    ]
+  });
+
+  await alert.present();
+  //View Dati inseriti dopo click sul popup di modifica descrizione. Dal console log ho visto come accedere ai dati ricevuti.
+  //this.descrizioneView = await (await alert.onDidDismiss()).data.values.descrizione;
+  }
+
+clickRisposta(i){
+  this.dataService.codice_risposta = i;
+  console.log(this.dataService.codice_risposta);
+  }
+
 }
