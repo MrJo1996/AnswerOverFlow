@@ -52,7 +52,7 @@
             <ion-item *ngFor="let scelta of scelte">    
          
                 <ion-checkbox *ngIf="currentUser!==sondaggioUser" slot = "start"></ion-checkbox>
-                <ion-label *ngIf="currentUser===sondaggioUser">{{scelta.num_favorevoli}}</ion-label>
+                <ion-label *ngIf="currentUser===sondaggioUser" slot = "start">{{scelta.num_favorevoli}}</ion-label>
                 <ion-text class="textSimple" slot = "start" >{{scelta.descrizione}}</ion-text>
             </ion-item>
   
