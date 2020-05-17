@@ -18,9 +18,48 @@ export class BioPage implements OnInit {
   ngOnInit() {
     this.utente = this.dataService.utente;
   }
-  buttonClick(){
-    this.clickRegistrazione();
-  }
+  async buttonClick(){
+    const alert = await this.alertController.create({
+      header: 'Confermi i dati?',
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('Confirm Cancel: blah');
+          }
+        }, {
+          text: 'Si',
+          handler: () => {
+            console.log('Confirm Okay');
+            this.clickRegistrazione();
+          }
+        }
+      ]
+    });
+    await alert.present();}
+    async buttonsaltaClick(){
+      const alert = await this.alertController.create({
+        header: 'Sicuro di voler saltare?',
+        buttons: [
+          {
+            text: 'No',
+            role: 'cancel',
+            cssClass: 'secondary',
+            handler: (blah) => {
+              console.log('Confirm Cancel: blah');
+            }
+          }, {
+            text: 'Si',
+            handler: () => {
+              console.log('Confirm Okay');
+              this.postRegistrazione();
+            }
+          }
+        ]
+      });
+      await alert.present();}
   clickRegistrazione(){
     this.dataService.setUtente( this.utente['0'],this.utente['1'],this.utente['2'],this.utente['3'],this.utente['4'],this.bio);
     console.log(this.dataService.utente);
