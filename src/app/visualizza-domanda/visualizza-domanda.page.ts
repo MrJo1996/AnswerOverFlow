@@ -101,7 +101,7 @@ async showRisposte() {
     (risposte) => {
       console.log('Visualizzato con successo');
 
-      this.risposte = risposte;
+      this.risposte = risposte['Risposte']['data'];
       console.log(risposte) 
     },
     (rej) => {
@@ -133,6 +133,13 @@ async getUserDomanda(){
       console.log("C'è stato un errore durante la visualizzazione del profilo");
     }
   );
+
+}
+
+async getUsersRisposte(){
+
+
+
 
 }
 
