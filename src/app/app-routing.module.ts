@@ -97,6 +97,10 @@ const routes: Routes = [
 },  {
     path: 'conferma-recupero',
     loadChildren: () => import('./conferma-recupero/conferma-recupero.module').then( m => m.ConfermaRecuperoPageModule)
+  },
+  {
+    path: 'bio',
+    loadChildren: () => import('./bio/bio.module').then( m => m.BioPageModule)
   }
 
 

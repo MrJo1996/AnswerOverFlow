@@ -1,0 +1,17 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-button  (click)="goback()" slot="start" expand="block" fill="clear" class="msg-btn">
+        <ion-icon  color="primary" slot="start" slot="icon-only" name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    <ion-title>bio</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-textarea [(ngModel)]="bio" placeholder="Inserisci una biografia (potrai modificarla in qualunque momento)"></ion-textarea>
+  <div>
+    <ion-button expand="block" slot="start" color="primary" size="large" (click)="buttonClick()">
+      Registrati
+    </ion-button>
+  </div>
+</ion-content>
