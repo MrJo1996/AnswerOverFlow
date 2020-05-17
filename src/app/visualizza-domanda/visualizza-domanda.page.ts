@@ -117,7 +117,7 @@ async showRisposte() {
     (risposte) => {
       console.log('Visualizzato con successo');
 
-      this.risposte = risposte['Risposte']['data'];
+      this.risposte = risposte;
       console.log(risposte) 
     },
     (rej) => {

@@ -201,16 +201,16 @@ export class ApiService {
     });
   }
 
-  getRispostePerDomanda(cod_domanda: Number) {
+  getRispostePerDomanda(codice_domanda: Number) {
     const body = {
-      cod_domanda: cod_domanda
+      codice_domanda: codice_domanda
 
     };
 
     return new Promise((resolve, reject) => {
       this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/risposteperdomanda', body).subscribe(
         data => {
-          let risposte = data;
+          let risposte = data['Risposte']['data']
           resolve(risposte); 
           console.log(risposte)
 
