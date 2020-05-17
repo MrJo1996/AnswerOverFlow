@@ -24,20 +24,16 @@
 
   <ion-list>
 
-    <ion-item-group *ngFor="let utente of chatUtenti; let i = index">
+    <ion-item-group>
       <ion-item-divider sticky color="primary" lines="none">
         <ion-text>
-          <h4>{{ chatUtenti[i].codice_chat }}</h4>
+          <p>Qui è da inserire una costante fatta in TS</p>
         </ion-text>
       </ion-item-divider>
 
-
-
-
-
   <!-- <ion-item-divider color="light">Oggi</ion-item-divider> -->
     <ion-item *ngFor="let utente of chatUtenti | filtro: testoRicercato: 'cod_utente0' "
-                (click) = "mostraMessaggi(utente.codice_chat)"
+                (click) = "mostraMessaggi(utente.codice_chat, utente.cod_utente0)"
                 button = "true">
       <ion-avatar item-start>
         <img src="../../assets/img/avatar2.png">
