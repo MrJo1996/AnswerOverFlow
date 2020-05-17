@@ -6,9 +6,16 @@ import { HttpClient } from '@angular/common/http';
 
 export class DataService {
   codice_domanda;
+<<<<<<< HEAD
   email;
   utente={};
 
+=======
+  codice_sondaggio;
+  emailUtente;
+  emailOthers;
+  codice_chat;
+>>>>>>> 032d97f57a85a6790b8e700c7daef2745f32dde2
   constructor(private http: HttpClient) { }
   setUtente(id:string, username:string,password:string, nome:string,cognome:string,bio:string){
     this.utente['0']=id;
@@ -21,7 +28,39 @@ export class DataService {
   setCod_domanda(id_domanda:number){
     this.codice_domanda = id_domanda;
   }
+<<<<<<< HEAD
   setEmail_utente(id_utente:string){
     this.email = id_utente;
+=======
+  setCod_sondaggio(id_sondaggio:number){
+    this.codice_sondaggio = id_sondaggio;
+  }
+  setEmail_Utente(cod_utente:string) {
+    this.emailUtente = cod_utente;
+  }
+  setCodice_chat(cod_chat: number) {
+    this.codice_chat = cod_chat;
+  }
+ 
+  setEmailOthers(emailOthers) {
+    this.emailOthers = emailOthers;
+  }
+ 
+  getCod_domanda(){
+    return this.codice_domanda;
+  }
+  getCod_sondaggio(){
+    return this.codice_sondaggio;
+  }
+  getEmail_Utente() {
+    return this.emailUtente;
+  }
+  getCodice_chat() {
+    return this.codice_chat;
+  }
+ 
+  getEmailOthers(emailOthers) {
+    return this.emailOthers;
+>>>>>>> 032d97f57a85a6790b8e700c7daef2745f32dde2
   }
 }

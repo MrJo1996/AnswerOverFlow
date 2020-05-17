@@ -4,6 +4,7 @@ import { PostServiceService } from "../services/post-service.service";
 import { TransitiveCompileNgModuleMetadata, ThrowStmt } from '@angular/compiler';
 import { Router } from '@angular/router';
 import { ApiService } from '../providers/api.service';
+import { DataService } from '../services/data.service';
 
 
 
@@ -28,7 +29,7 @@ export class VisualizzaSondaggioPage implements OnInit {
   url2 = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaSondaggio'
   url3 = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaScelteSondaggio'
 
-  constructor(private service: PostServiceService, private router: Router, public apiService: ApiService, public alertController: AlertController) { }
+  constructor(private service: PostServiceService, private dataService: DataService,private router: Router, public apiService: ApiService, public alertController: AlertController) { }
 
   ngOnInit() {
     this.visualizzaSondaggioSelezionato();
@@ -85,13 +86,17 @@ export class VisualizzaSondaggioPage implements OnInit {
   }
 
   async visualizzaSondaggioSelezionato() {
+    //this.codice_sondaggio= this.dataService.codice_sondaggio;
     this.apiService.getSondaggio(this.codice_sondaggio).then(
       (sondaggio) => {
       
         console.log('Visualizzato con successo');
-
+     
         this.sondaggio = sondaggio['data']['0']; 
-        this.sondaggioUser = sondaggio['data']['0'].cod_utente;//assegno alla variabile locale il risultato della chiamata. la variabile sarà utilizzata nella stampa in HTML
+        this.sondaggioUser = sondaggio['data']['0'].cod_utente;
+        
+        
+        //assegno alla variabile locale il risultato della chiamata. la variabile sarà utilizzata nella stampa in HTML
         /*this.titoloView = this.sondaggio['0'].titolo;  //setto var da visualizzare a video per risolvere il problema del crop schermo durante il serve dell'app ( problema stava nell'utilizzo di: ['0'] per accedere alla var da visualizzare)
         this.timerView = this.sondaggio['0'].timer;
 

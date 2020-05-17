@@ -99,8 +99,13 @@ const routes: Routes = [
     loadChildren: () => import('./conferma-recupero/conferma-recupero.module').then( m => m.ConfermaRecuperoPageModule)
   },
   {
+<<<<<<< HEAD
     path: 'bio',
     loadChildren: () => import('./bio/bio.module').then( m => m.BioPageModule)
+=======
+    path: 'visualizza-statistiche',
+    loadChildren: () => import('./visualizza-statistiche/visualizza-statistiche.module').then( m => m.VisualizzaStatistichePageModule)
+>>>>>>> 032d97f57a85a6790b8e700c7daef2745f32dde2
   }
 
 

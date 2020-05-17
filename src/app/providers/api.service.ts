@@ -208,9 +208,9 @@ export class ApiService {
     };
 
     return new Promise((resolve, reject) => {
-      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzarisposteperdomanda', body).subscribe(
+      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/risposteperdomanda', body).subscribe(
         data => {
-          let risposte = data['Risposte']['data'];
+          let risposte = data;
           resolve(risposte); 
           console.log(risposte)
 
@@ -443,5 +443,25 @@ export class ApiService {
       );
     });
   }
+
+  segnala_utente(segnalazione: string ,utente_segnalato: string, email_utente_segnalato: string){
+    const body ={
+      segnalazione,
+      utente_segnalato: 'frova',
+      email_utente_segnalato: 'prova'
+    };
+    return new Promise((resolve, reject)=>{
+      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/segnala_utente', body).subscribe(
+        data =>{
+          let esito = data['message'];
+          resolve(esito);
+        }, (err)=>{
+          reject();
+        }
+      );
+    });
+  }
+
+
 
 }

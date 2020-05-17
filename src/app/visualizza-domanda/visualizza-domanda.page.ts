@@ -36,8 +36,9 @@ export class VisualizzaDomandaPage implements OnInit {
   constructor(private navCtrl:NavController, private dataService: DataService, public apiService: ApiService, private router: Router, public alertController: AlertController) { }
 
   ngOnInit() {
-    this.visualizzaDomanda();
+    this.visualizzaDomanda(); 
     this.showRisposte();
+    
     //this.trovaUtenteDomanda();
   }
 
@@ -111,11 +112,12 @@ async popUpEliminaDomanda(){
 }
 
 async showRisposte() {
+  this.codice_domanda = this.dataService.codice_domanda;
   this.apiService.getRispostePerDomanda(this.codice_domanda).then(
     (risposte) => {
       console.log('Visualizzato con successo');
 
-      this.risposte = risposte;
+      this.risposte = risposte['Risposte']['data'];
       console.log(risposte) 
     },
     (rej) => {

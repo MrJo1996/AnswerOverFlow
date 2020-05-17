@@ -5,6 +5,7 @@ import { PickerController } from "@ionic/angular";//Picker - import e poi defini
 import { PickerOptions } from "@ionic/core";
 import { isEmptyExpression } from '@angular/compiler';
 import { Router } from '@angular/router';
+import { DataService } from '../services/data.service';
 
 @Component({
   selector: 'app-inserimento-sondaggio',
@@ -17,7 +18,7 @@ export class InserimentoSondaggioPage implements OnInit {
   urlCategorie = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaCategorie'
   urlScelta = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/inserisciScelteSondaggio';
 
-  emailUtente = "gmailverificata";
+  emailUtente = "";
 
   scelte:any=[];
   categorie: any;
@@ -35,9 +36,15 @@ export class InserimentoSondaggioPage implements OnInit {
               public navCtrl: NavController, 
               private pickerController: PickerController,
               public alertController: AlertController, 
-              private router: Router) { }
+              private router: Router,
+              private data: DataService) { }
 
   ngOnInit() {
+    if (this.data.emailUtente != undefined){
+      this.emailUtente = this.data.emailUtente;
+    } else {
+      this.emailUtente = "gmailverificata"
+    }
     this.service.prendiCategorie(this.urlCategorie).then(
       (categories) => {
         console.log('Categorie visualizzate con successo', categories);
@@ -80,9 +87,6 @@ export class InserimentoSondaggioPage implements OnInit {
     var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
     var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
     this.dataeora = date+' '+time;
-
-    // this.dataeora.setHours(this.dataeora.getHours() + 2);
-    // console.log(this.dataeora, this.categoriaScelta, this.timerToPass, this.titolo, this.scelte[0]);
 
     //Controllo del titolo
     if(this.titolo === ""){

@@ -7,7 +7,7 @@
      
       <ion-title style="font-size: x-large; text-align: center;"><b>Visualizza profilo</b></ion-title>
       
-      <ion-button  slot="end" expand="block" fill="clear" (click)="ConfermaVisualizzaProfilo()" class="msg-btn">
+      <ion-button  slot="end" expand="block" fill="clear" (click)="selectProfile()" class="msg-btn">
         <ion-icon color="primary" slot="end" slot="icon-only" name="checkmark-sharp"></ion-icon>
         </ion-button>
      
@@ -24,51 +24,42 @@
         <ion-item color="light">
           <ion-icon name="happy-outline" slot="start"></ion-icon>
           <ion-label position="stacked">Username</ion-label>
-          <ion-text>{{Profilo.username}}</ion-text>
+          <ion-text><!-- {{profilo.username}} -->provagiogiogiogiogiogiiog</ion-text>
        
         </ion-item>
       
         <ion-item color="light">
           <ion-icon name="pencil-outline" slot="start"></ion-icon>
           <ion-label position="stacked">Email</ion-label>
-          <ion-text>{{Profilo.email}}</ion-text>
+          <ion-text><!-- {{profilo.email}} -->provagoigoigogiogigsdsd</ion-text>
         </ion-item>
   
         <ion-item color="light">
           <ion-icon name="create-outline" slot="start"></ion-icon>
           <ion-label position="stacked">Nome</ion-label>
-          <ion-text>{{Profilo.nome}}</ion-text>
+          <ion-text><!-- {{profilo.nome}} -->prova</ion-text>
         </ion-item>
 
         <ion-item color="light">
           <ion-icon name="create-outline" slot="start"></ion-icon>
           <ion-label position="stacked">Cognome</ion-label>
-          <ion-text>{{Profilo.cognome}}</ion-text>
+          <ion-text><!-- {{profilo.cognome}} -->prova</ion-text>
         </ion-item>
   
         <ion-item color="light">
           <ion-icon name="chatbox-outline" slot="start"></ion-icon>
           <ion-label position="stacked">Bio</ion-label>
-          <ion-text>{{Profilo.bio}}</ion-text>
+          <ion-text><!-- {{profilo.bio}} -->prova</ion-text>
         </ion-item>
     
       </ion-card>
 
-    <p></p><ion-button color="light" class="ion-button">Invia messaggio</ion-button>
-    <ion-button color="danger" class="ion-button">Segnala Utente</ion-button>
+    <p></p>
+    <ion-button *ngIf = "Email !== UserProfileViewId" color="light" class="ion-button">Invia messaggio</ion-button>
+    <ion-button color="primary" class= "ion-button" (click)= "stats()" >Visualizza statistiche</ion-button>
+    <ion-button *ngIf = "Email !== UserProfileViewId"  (click) = "showAlertView()" color="danger" class="ion-button">Segnala Utente</ion-button>
+    
+
+    
 
 
-    <ion-content>
-      <ion-list-header color="light">Statistiche Utente</ion-list-header>
-      <ion-card class="welcome-card">
-        <ion-card-header>
-          <ion-card-subtitle>Categorie Preferite</ion-card-subtitle>
-          <ion-card-title>0</ion-card-title>
-        </ion-card-header>
-        <ion-card-content>
-          <canvas #barChart></canvas>
-        </ion-card-content>
-      </ion-card>
-    </ion-content>
-  
-</ion-content>
