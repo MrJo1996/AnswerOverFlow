@@ -1,0 +1,35 @@
+ 
+<ion-content padding class="background">
+  <div align="right">
+    <ion-button (click)="buttonsaltaClick()" color="primary">
+    <ion-text >Salta</ion-text>
+   </ion-button>
+  </div>
+  <div align="center">
+  <ion-text class="textTitleBIG">
+    Inserisci una biografia
+  </ion-text>
+  </div>
+  <div align="center">
+  <ion-text class="textTitle">
+  Inizia subito a farti conoscere alla community inserendo una biografia, potrai modificarla in qualunque momento.  
+  </ion-text>
+</div>
+  <ion-card>
+    <div class="bio">
+      <ion-textarea [(ngModel)]="bio" placeholder="es. Sono laureato in scienze geopolitiche"></ion-textarea>
+    </div>
+  </ion-card>
+    <div>
+      <ion-button expand="block" slot="start" color="primary" size="large" (click)="buttonClick()">
+        Registrati
+      </ion-button>
+    </div>
+    <div align="center">
+      <ion-text (click)="goback()" color="primary">
+        <u>
+          Vuoi modificare i tui dati?
+        </u>
+      </ion-text>
+    </div>
+</ion-content>

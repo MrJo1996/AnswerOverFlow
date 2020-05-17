@@ -3,6 +3,8 @@ import { Router } from "@angular/router";
 import { ApiService } from 'src/app/providers/api.service';
 import { AlertController } from '@ionic/angular';
 import { PickerController } from "@ionic/angular";
+import { DataService } from "../services/data.service";
+
 @Component({
   selector: 'app-registrazione',
   templateUrl: './registrazione.page.html',
@@ -14,12 +16,14 @@ export class RegistrazionePage implements OnInit {
   email = '';
   username = '';
   password = '';
-  bio;
+  bio = '';
   confermapassword;
+  id;
+  utente = {};
   url = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/registrazione'
 
 
-  constructor(public apiService: ApiService, public alertController: AlertController, private pickerController: PickerController, private router: Router) { }
+  constructor(private dataService: DataService,public apiService: ApiService, public alertController: AlertController, private pickerController: PickerController, private router: Router) { }
   ngOnInit() {
 
   }
@@ -89,7 +93,7 @@ export class RegistrazionePage implements OnInit {
                 text: 'Si',
                 handler: () => {
                   console.log('Confirm Okay');
-                  this.postRegistrazione();
+                  this.clickRegistrazione();
                 }
               }
             ]
@@ -98,24 +102,17 @@ export class RegistrazionePage implements OnInit {
         }
   }
 
-  async postRegistrazione() {
-    this.apiService.registrazione(this.email, this.username, this.password, this.nome, this.cognome, this.bio).then(
-      (result) => {
-        console.log('Inserimento avvenuto con successo:', this.email, this.username, this.password, this.nome, this.cognome, this.bio);
-        this.benvenuto();
-      },
-      (rej) => {
-        console.log('Inserimento non riuscito!');
-      }
-    );
+  
+  clickRegistrazione(){
+    this.dataService.setUtente(this.email, this.username, this.password, this.nome, this.cognome,this.bio);
+    this.router.navigate(['bio']);
+    console.log(this.dataService.utente);
+
   }
   login() {
     this.router.navigate(['login']);
   }
   termini() {
     this.router.navigate(['termini']);
-  }
-  benvenuto() {
-    this.router.navigate(['benvenuto']);
   }
 }

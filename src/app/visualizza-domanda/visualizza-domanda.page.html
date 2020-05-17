@@ -15,7 +15,7 @@
   <ion-card class = "backgrounds">    
     <ion-card-header>
       <ion-toolbar class="backgrounds">
-       
+
             <ion-icon   class = "alarm_style" name="alarm-outline" slot= "start"></ion-icon>
             <ion-label  class = "textTitle">{{timerView}}</ion-label>
             <ion-button slot="end" expand="block" *ngIf="currentMailUser===domandaMailUser" (click) = "popUpEliminaDomanda()" fill="clear">
@@ -33,7 +33,7 @@
         <ion-avatar  slot="start" class="icon-avatar" >
           <img src="https://i.ytimg.com/vi/mCf6UGT3HrA/maxresdefault.jpg">
         </ion-avatar>
-        <ion-label class = "username_text_style"></ion-label>
+        <ion-label class = "username_text_style">{{profiloUserDomanda.username}}</ion-label>
 
       </ion-toolbar>
       <ion-card-title class = "textTitleBIG"> {{titoloView}}</ion-card-title>
@@ -48,7 +48,7 @@
               <ion-icon name="calendar-outline" slot = start class = "calendar_icon_style"></ion-icon>
               <ion-label class= "description_text" slot = "start" >{{dataeoraView}}</ion-label>
               <ion-icon name="list" slot = "start"  class = "icon_list_style"></ion-icon>
-              <ion-label class= "description_text" slot = "start" >categoria</ion-label>
+              <ion-label class= "description_text" slot = "start" >categoriaaaa</ion-label>
                
 
           </ion-toolbar>
