@@ -157,12 +157,13 @@ async modify() {
 }
 
 async popupModificaDescrizioneRisposta() {
+
   const alert = await this.alertController.create({
     header: 'Modifica',
     inputs: [
       {
         name: 'descrizionePopUp',
-        type: 'text',
+        type: 'text'
       }
     ],
     buttons: [
