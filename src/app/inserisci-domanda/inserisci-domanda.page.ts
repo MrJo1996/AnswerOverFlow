@@ -15,13 +15,13 @@ import { Router } from "@angular/router";
 export class InserisciDomandaPage implements OnInit {
 
   titolo = '';
-categorie : any;
+  categorie: any;
   descrizione = '';
   cod_utente = 'gmailverificata';
   cod_categoria: any;
   url = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/inserisciDomanda'
   urlCategorie = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaCategorie'
- 
+
   timerToPass: string; //param per le funzioni
   timerView; //var per la view dei valori
   timerSettings: string[] = ["5 min", "15 min", "30 min", "1 ora", "3 ore", "6 ore", "12 ore", "1 giorno", "3 giorni"]; //scelte nel picker
@@ -41,9 +41,9 @@ categorie : any;
   }
 
   async checkField() {
-    if (this.titolo.length < 1) {
+    if ((this.titolo.length < 1) || (this.timerToPass == undefined) || (this.cod_categoria == undefined) ) {
       const alert = await this.alertController.create({
-        header: 'Titolo troppo corto!',
+        header: 'Devi compilare i campi obbligatori!',
         buttons: [
           {
             text: 'Ok',
@@ -165,6 +165,10 @@ categorie : any;
 
   switchCategoria() {
     this.router.navigate(['proponi-categoria']);
+  }
+
+  switchHome() {
+    this.router.navigate(['home']);
   }
 
 }
