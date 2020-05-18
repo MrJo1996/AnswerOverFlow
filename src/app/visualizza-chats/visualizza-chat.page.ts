@@ -4,6 +4,7 @@ import { ApiService } from './../providers/api.service';
 import { Observable } from 'rxjs';
 import { DataService } from '../services/data.service';
 import { Router } from '@angular/router';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-visualizza-chat',
@@ -17,7 +18,8 @@ export class VisualizzaChatPage implements OnInit {
   url = "http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaChats";
   user = "";
 
-  constructor(private service: ApiService, 
+  constructor(private navCtrl:NavController,
+              private service: ApiService, 
               private data: DataService,
               private router: Router) { }
 
@@ -35,15 +37,15 @@ export class VisualizzaChatPage implements OnInit {
     // Richiamo le api per prendermi le chat dell'utente loggato
     this.service.prendiChats(this.user, this.url).then(
       (chats) => {
-        console.log('Visualizzato con successo', chats);
         this.chatUtenti = chats;
-        for (let utenti of this.chatUtenti){
-          if(utenti['cod_utente0']==this.user){
-            cache = utenti['cod_utente0'];
-            utenti['cod_utente0'] = utenti['cod_utente1'];
-            utenti['cod_utente1'] = cache;
+        for (let i = 0; i < this.chatUtenti.length; i++) {
+          if(this.chatUtenti[i]['cod_utente0'] == this.user){
+            cache = this.chatUtenti[i]['cod_utente0'];
+            this.chatUtenti[i]['cod_utente0'] = this.chatUtenti[i]['cod_utente1'];
+            this.chatUtenti[i]['cod_utente1'] = cache;
           }
-    }
+        }
+        console.log('Visualizzato con successo', this.chatUtenti);
       },
       (rej) => {
         console.log("C'è stato un errore durante la visualizzazione");
@@ -56,14 +58,16 @@ export class VisualizzaChatPage implements OnInit {
     this.testoRicercato = event.detail.value;
   }
 
-  mostraMessaggi(codiceChat: number){
-    // console.log(codiceChat)
+  mostraMessaggi(codiceChat: number, chatter: string){
+    // console.log(chatter)
     this.data.setCodice_chat(codiceChat);
+    this.data.setEmailOthers(chatter);
     this.router.navigate(['chat']);
   }
 
   //Torna indietro alla Home
   goBack() {
+    // this.navCtrl.pop();
     this.router.navigate(['home']);
   }
 }

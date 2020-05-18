@@ -63,7 +63,7 @@ export class BioPage implements OnInit {
   clickRegistrazione(){
     this.dataService.setUtente( this.utente['0'],this.utente['1'],this.utente['2'],this.utente['3'],this.utente['4'],this.bio);
     console.log(this.dataService.utente);
-    this.dataService.setEmail_utente(this.utente['0']);
+    this.dataService.setEmail_Utente(this.utente['0']);
     this.postRegistrazione();
   }
   async postRegistrazione() {

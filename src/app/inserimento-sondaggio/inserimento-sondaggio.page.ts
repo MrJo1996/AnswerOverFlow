@@ -20,27 +20,27 @@ export class InserimentoSondaggioPage implements OnInit {
 
   emailUtente = "";
 
-  scelte:any=[];
+  scelte: any = [];
   categorie: any;
   //parametri per le funzioni
   sondaggioInserito: number;
   categoriaScelta: number = -1;
   titolo: string = "";
-  timerToPass: string = ""; 
+  timerToPass: string = "";
   dataeora: any;
 
   timerView; //var per la view dei valori
   timerSettings: string[] = ["5 min", "15 min", "30 min", "1 ora", "3 ore", "6 ore", "12 ore", "1 giorno", "3 giorni"]; //scelte nel picker
-  
+
   constructor(private service: ApiService,
-              public navCtrl: NavController, 
-              private pickerController: PickerController,
-              public alertController: AlertController, 
-              private router: Router,
-              private data: DataService) { }
+    public navCtrl: NavController,
+    private pickerController: PickerController,
+    public alertController: AlertController,
+    private router: Router,
+    private data: DataService) { }
 
   ngOnInit() {
-    if (this.data.emailUtente != undefined){
+    if (this.data.emailUtente != undefined) {
       this.emailUtente = this.data.emailUtente;
     } else {
       this.emailUtente = "gmailverificata"
@@ -58,24 +58,24 @@ export class InserimentoSondaggioPage implements OnInit {
 
 
   //Gestisco l'array delle scelte
-  Add(){
-    this.scelte.push({'value':''});
-    }
-  Remove(index: any){
+  Add() {
+    this.scelte.push({ 'value': '' });
+  }
+  Remove(index: any) {
     this.scelte.splice(index, 1);
-    }
+  }
 
   //Porta alla page per proporre una nuova categoria
   switchCategoria() {
     this.router.navigate(['proponi-categoria']);
   }
-  
+
   //Torna indietro alla Home
   backButton() {
     this.router.navigate(['home']);
   }
 
-  checkField(){
+  checkField() {
 
     let datoMancante = false;
     let scelteVuote = false;
@@ -84,110 +84,110 @@ export class InserimentoSondaggioPage implements OnInit {
 
     //Salvo l'ora di inserimento
     var today = new Date();
-    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
     var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-    this.dataeora = date+' '+time;
+    this.dataeora = date + ' ' + time;
 
     //Controllo del titolo
-    if(this.titolo === ""){
+    if (this.titolo === "") {
       datoMancante = true;
       errMex = errMex + " il titolo"
     }
     //delle scelte immesse
-    for(let scelta of this.scelte){
+    for (let scelta of this.scelte) {
       // console.log("controllo le scelte");
-      if(scelta['value'] == ""){
-         scelteVuote = true;
+      if (scelta['value'] == "") {
+        scelteVuote = true;
         //  console.log("scelta vuota");
       }
     }
-    if(this.scelte.length < 2 || scelteVuote){
-      if (datoMancante){
+    if (this.scelte.length < 2 || scelteVuote) {
+      if (datoMancante) {
         errMex = errMex + ", le scelte"
       }
       else {
-      datoMancante = true;
-      errMex = errMex + " le scelte"
+        datoMancante = true;
+        errMex = errMex + " le scelte"
       }
     }
     //del timer
-    if(this.timerToPass === ""){
-      if (datoMancante){
+    if (this.timerToPass === "") {
+      if (datoMancante) {
         errMex = errMex + ", il timer"
       }
       else {
-      datoMancante = true;
-      errMex = errMex + " il timer"
+        datoMancante = true;
+        errMex = errMex + " il timer"
       }
     }
     //della categoria scelta
-    if(this.categoriaScelta == -1){
-      if (datoMancante){
+    if (this.categoriaScelta == -1) {
+      if (datoMancante) {
         errMex = errMex + " e la categoria"
       }
       else {
-      datoMancante = true;
-      errMex = errMex + " la categoria"
+        datoMancante = true;
+        errMex = errMex + " la categoria"
       }
     }
     this.inserisciSondaggio(datoMancante, errMex)
   }
 
-    async inserisciSondaggio(datiMancanti: Boolean, textAlert: string) {
-      if (datiMancanti) {
-        const alert = await this.alertController.create({
-          header: 'Errore',
-          message: textAlert,
-          buttons: [
-            {
-              text: 'Ok',
-              role: 'cancel',
-              cssClass: 'secondary',
-              handler: (blah) => {
-                console.log('Confirm Cancel');
-              }
+  async inserisciSondaggio(datiMancanti: Boolean, textAlert: string) {
+    if (datiMancanti) {
+      const alert = await this.alertController.create({
+        header: 'Errore',
+        message: textAlert,
+        buttons: [
+          {
+            text: 'Ok',
+            role: 'cancel',
+            cssClass: 'secondary',
+            handler: (blah) => {
+              console.log('Confirm Cancel');
             }
-          ]
-        });
-        await alert.present();
-      } else {
-        const alert = await this.alertController.create({
-          header: 'Confermi il sondaggio?',
-          buttons: [
-            {
-              text: 'No',
-              role: 'cancel',
-              cssClass: 'secondary',
-              handler: (blah) => {
-                console.log('Confirm Cancel');
-              }
-            }, {
-              text: 'Si',
-              handler: () => {
-                console.log('Confirm Okay');
-                this.postInvio();
-              }
-            }
-          ]
-        });
-        await alert.present();
-      }
-    }
-
-    async postInvio(){
-      this.service.inserisciSondaggio(this.url, this.timerToPass, this.dataeora, this.emailUtente, this.titolo, this.categoriaScelta).then(
-        (sondaggio: number) => {
-          this.sondaggioInserito = sondaggio;
-          console.log("il codice del sondaggio inserito è ", this.sondaggioInserito);
-          for (let scelta of this.scelte){
-            this.service.inserisciSceltaSondaggio(this.urlScelta, this.sondaggioInserito, scelta.value); 
           }
-        },
-        (rej) => {
-          console.log("C'è stato un errore durante l'inserimento");
-        }
-      );
+        ]
+      });
+      await alert.present();
+    } else {
+      const alert = await this.alertController.create({
+        header: 'Confermi il sondaggio?',
+        buttons: [
+          {
+            text: 'No',
+            role: 'cancel',
+            cssClass: 'secondary',
+            handler: (blah) => {
+              console.log('Confirm Cancel');
+            }
+          }, {
+            text: 'Si',
+            handler: () => {
+              console.log('Confirm Okay');
+              this.postInvio();
+            }
+          }
+        ]
+      });
+      await alert.present();
     }
+  }
+
+  async postInvio() {
+    this.service.inserisciSondaggio(this.url, this.timerToPass, this.dataeora, this.emailUtente, this.titolo, this.categoriaScelta).then(
+      (sondaggio: number) => {
+        this.sondaggioInserito = sondaggio;
+        console.log("il codice del sondaggio inserito è ", this.sondaggioInserito);
+        for (let scelta of this.scelte) {
+          this.service.inserisciSceltaSondaggio(this.urlScelta, this.sondaggioInserito, scelta.value);
+        }
+      },
+      (rej) => {
+        console.log("C'è stato un errore durante l'inserimento");
+      }
+    );
+  }
 
   //PICKER
   async showTimerPicker() {

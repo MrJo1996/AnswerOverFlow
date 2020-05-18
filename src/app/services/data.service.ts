@@ -13,7 +13,6 @@ export class DataService {
   emailUtente;
   emailOthers;
   codice_chat;
-
   codice_risposta;
   constructor(private http: HttpClient) { }
   setUtente(id:string, username:string,password:string, nome:string,cognome:string,bio:string){
@@ -42,10 +41,6 @@ export class DataService {
   setEmailOthers(emailOthers) {
     this.emailOthers = emailOthers;
   }
-
-  setCod_risposta(cod_risposta: number) {
-    this.codice_risposta = cod_risposta;
-  }
  
   getCod_domanda(){
     return this.codice_domanda;
@@ -62,5 +57,9 @@ export class DataService {
  
   getEmailOthers(emailOthers) {
     return this.emailOthers;
+  }
+  getCodiceRisposta(){
+
+    return this.codice_risposta;
   }
 }
