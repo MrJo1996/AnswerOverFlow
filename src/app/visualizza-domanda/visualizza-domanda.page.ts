@@ -193,7 +193,7 @@ async popupModificaDescrizioneRisposta() {
 
 clickRisposta(i){
   this.dataService.codice_risposta = i;
-  console.log(this.dataService.codice_risposta);
+  console.log(this.dataService.getCodiceRisposta);
   }
 
 }
