@@ -201,6 +201,27 @@ export class ApiService {
     });
   }
 
+  getCategoria(codice_categoria: Number) {
+    const body = {
+      codice_categoria: codice_categoria
+
+    };
+
+    return new Promise((resolve, reject) => {
+      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzacategoria', body).subscribe(
+        data => {
+          let categoria = data;
+          resolve(categoria); 
+          console.log(categoria)
+  
+        },
+        (err) => {
+          reject();
+        }
+      );
+    });
+  }
+
   getRispostePerDomanda(codice_domanda: Number) {
     const body = {
       codice_domanda: codice_domanda
