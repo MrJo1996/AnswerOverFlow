@@ -36,6 +36,17 @@
             <ion-grid>
 
                 <ion-item lines="none" class="itemClass">
+                    <ion-label>
+                        <ion-icon name="bookmark-outline"></ion-icon>
+                    </ion-label>
+                    <ion-select interface="action-sheet" placeholder="Categoria" [(ngModel)]="cod_categoria"
+                        cancelText="Annulla">
+                        <ion-select-option *ngFor="let categoria of categorie" value={{categoria.codice_categoria}}>
+                            {{categoria.titolo}}</ion-select-option>
+                    </ion-select>
+                </ion-item>
+
+                <!--   <ion-item lines="none" class="itemClass">
                     <ion-icon name="bookmark-outline"></ion-icon>
                     <ion-select style="color: white;" placeholder="Categoria" interface="popover">
                         <ion-select-option value="Attualità">Attualità</ion-select-option>
@@ -43,7 +54,7 @@
                         <ion-select-option value="Storia">Storia</ion-select-option>
                         <ion-select-option value="Italiano">Italiano</ion-select-option>
                     </ion-select>
-                </ion-item>
+                </ion-item> -->
 
                 <div>
 

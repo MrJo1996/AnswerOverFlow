@@ -15,13 +15,13 @@ import { Router } from "@angular/router";
 export class InserisciDomandaPage implements OnInit {
 
   titolo = '';
-  /* dataeora; */
-  /* timer = ''; */
+categorie : any;
   descrizione = '';
   cod_utente = 'gmailverificata';
-  cod_categoria = 1;
+  cod_categoria: any;
   url = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/inserisciDomanda'
-
+  urlCategorie = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaCategorie'
+ 
   timerToPass: string; //param per le funzioni
   timerView; //var per la view dei valori
   timerSettings: string[] = ["5 min", "15 min", "30 min", "1 ora", "3 ore", "6 ore", "12 ore", "1 giorno", "3 giorni"]; //scelte nel picker
@@ -29,7 +29,15 @@ export class InserisciDomandaPage implements OnInit {
   constructor(public apiService: ApiService, public alertController: AlertController, private pickerController: PickerController, private router: Router) { }
 
   ngOnInit() {
-
+    this.apiService.prendiCategorie(this.urlCategorie).then(
+      (categories) => {
+        console.log('Categorie visualizzate con successo', categories);
+        this.categorie = categories;
+      },
+      (rej) => {
+        console.log("C'è stato un errore durante la visualizzazione");
+      }
+    );
   }
 
   async checkField() {
