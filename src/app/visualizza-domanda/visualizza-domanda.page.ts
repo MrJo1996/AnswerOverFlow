@@ -6,6 +6,7 @@ import { ApiService } from '../providers/api.service';
 import { AlertController } from '@ionic/angular';
 import { DataService } from "../services/data.service";
 import {NavController} from "@ionic/angular";
+import { resolve } from 'url';
 @Component({
   selector: 'app-visualizza-domanda',
   templateUrl: './visualizza-domanda.page.html',
@@ -162,6 +163,7 @@ goback() {
 
 async modify() {
 
+  if (!this.checkIfThereAreEnglishBadWords(this.descrizioneRispostaView) && !this.checkIfThereAreItalianBadWords(this.descrizioneRispostaView)) {
   this.apiService.modificaRisposta(this.dataService.codice_risposta, this.descrizioneRispostaToPass).then(
     (result) => { // nel caso in cui va a buon fine la chiamata
     },
@@ -169,6 +171,9 @@ async modify() {
       console.log('Modifica non effetutata'); //anche se va nel rej va bene, modifiche effettive nel db
     }
   );
+  } else {
+    this.popupParolaScorretta();
+  }
 
 }
 
@@ -179,7 +184,8 @@ async popupModificaDescrizioneRisposta() {
     inputs: [
       {
         name: 'descrizionePopUp',
-        type: 'text'
+        type: 'text',
+        placeholder: this.descrizioneRispostaView
       }
     ],
     buttons: [
@@ -210,7 +216,60 @@ async popupModificaDescrizioneRisposta() {
 
 clickRisposta(i){
   this.dataService.codice_risposta = i;
-  console.log(this.dataService.getCodiceRisposta);
+  console.log(this.dataService.getCodiceRisposta());
+
+  this.showDescrizioneRisposta().then(
+    () => {
+      this.popupModificaDescrizioneRisposta();
+    },
+    () => {
+      console.log('Errore');
+    }
+  )
+  }
+
+  checkIfThereAreEnglishBadWords(string: string): boolean {
+
+    var Filter = require('bad-words'),
+    filter = new Filter();
+  
+    return filter.isProfane(string)
+  
+    }
+
+  checkIfThereAreItalianBadWords(string: string): boolean {
+
+    let list = require('italian-badwords-list');
+    
+    let array = list.array
+
+    return array.includes(string);
+  }
+
+
+  async popupParolaScorretta() {
+    const alert = await this.alertController.create({
+      header: 'ATTENZIONE',
+      subHeader: 'Subtitle',
+      message: 'Hai inserito una parola scorretta',
+      buttons: ['OK']
+    });
+
+    await alert.present();
+    let result = await alert.onDidDismiss();
+    console.log(result);
+  }
+
+  async showDescrizioneRisposta() {
+    this.apiService.getRisposta(this.dataService.getCodiceRisposta()).then(
+      resolve => {
+        this.descrizioneRispostaView = resolve['data']['0'].descrizione;
+        console.log(this.descrizioneRispostaView);
+      },
+      (rej) => {
+        console.log("C'è stato un errore durante il recupero dei dati");
+      }
+    )
   }
 
 }
