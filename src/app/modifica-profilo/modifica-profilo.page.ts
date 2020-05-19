@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController} from '@ionic/angular';
-
+import { DataService } from "../services/data.service";
 import { ApiService } from 'src/app/providers/api.service';
 
 import { PickerController } from "@ionic/angular";
@@ -34,12 +34,12 @@ export class ModificaProfiloPage implements OnInit {
   profilo = {};
 
   timerSettings: string[] = ["5 min", "15 min", "30 min", "1 ora", "3 ore", "6 ore", "12 ore", "1 giorno", "3 giorni"];
-  constructor(public alertController: AlertController,public apiService: ApiService, private pickerController: PickerController) { }
+  constructor( private dataService: DataService, public alertController: AlertController,public apiService: ApiService, private pickerController: PickerController) { }
  
   ngOnInit() {
-    this.email = 'gmailverificata';
+    //this.email = 'gmailverificata';
     //this.username = 'prova modifica';
-    this.password = 'prova modifica'
+    //this.password = 'prova modifica'
     //this.nome = 'prova modifica';
     //this.cognome = 'prova modifica';
     //this.bio = 'prova modifica';
@@ -76,6 +76,7 @@ export class ModificaProfiloPage implements OnInit {
   }
 
   async showSurvey() {
+    this.email = this.dataService.email;
     this.apiService.getProfilo(this.email).then(
       (profilo) => {
         console.log('Visualizzato con successo');
@@ -86,6 +87,7 @@ export class ModificaProfiloPage implements OnInit {
         this.nomeView = this.profilo['0'].nome;
         this.cognomeView = this.profilo['0'].cognome;
         this.bioView = this.profilo['0'].bio;
+        this.password = this.profilo.['0'].password;
         console.log('Profilo: ', this.profilo['0']);
         
       },

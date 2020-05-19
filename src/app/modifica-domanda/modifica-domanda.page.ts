@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController} from '@ionic/angular';
-
+import { Router } from "@angular/router";
 import { ApiService } from 'src/app/providers/api.service';
+import { DataService } from "../services/data.service";
 
 import { PickerController } from "@ionic/angular";
 import { PickerOptions } from "@ionic/core";
@@ -40,13 +41,13 @@ export class ModificaDomandaPage implements OnInit {
 
 
   
-  constructor(public alertController: AlertController, public apiService: ApiService,private pickerController: PickerController,
+  constructor( private dataService: DataService, public alertController: AlertController, public apiService: ApiService,private pickerController: PickerController,
     public navCtrl: NavController) { }
 
   ngOnInit() {
-    this.cod_categoria = 1;
-    this.codice_domanda = 33;
-    this.cod_preferita = 0;
+    //this.cod_categoria = 1;
+    //this.codice_domanda = 33;
+    //this.cod_preferita = 0;
 
     this.showSurvey();
   }
@@ -82,6 +83,8 @@ export class ModificaDomandaPage implements OnInit {
   }
 
   async showSurvey() {
+    console.log(this.dataService.codice_domanda);
+    this.codice_domanda = this.dataService.codice_domanda;
     this.apiService.getDomanda(this.codice_domanda).then(
       (domanda) => {
         console.log('Visualizzato con successo');
@@ -93,7 +96,9 @@ export class ModificaDomandaPage implements OnInit {
         this.timerView = this.domanda['0'].timer;
         this.titoloView = this.domanda['0'].titolo;
         this.descrizioneView = this.domanda['0'].descrizione;
-
+        this.cod_preferita = this.domanda['0'].cod_preferita;
+        this.cod_categoria = this.domanda['0'].cod_categoria;
+        
         console.log('Domanda: ', this.domanda['0']);
       
         this.mappingIncrement(this.domanda['0'].timer);
@@ -498,6 +503,8 @@ export class ModificaDomandaPage implements OnInit {
     await alert.present();
   }
 
-
+  goBack() {
+    this.navCtrl.navigateRoot(['/visualizza-domanda']);
+  }
 
 }
