@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController } from '@ionic/angular';
+import { AlertController, NavController } from '@ionic/angular';
 import { ApiService } from '../providers/api.service';
 
 @Component({
@@ -15,7 +15,7 @@ export class ProponiCategoriaPage implements OnInit {
   request: Promise<any>;
   result: Promise<any>;
 
-  constructor(public apiService: ApiService, public alertController: AlertController, private router: Router) { }
+  constructor(public apiService: ApiService, public alertController: AlertController, private router: Router, private navCtrl: NavController) { }
 
   ngOnInit() {
   }
@@ -78,5 +78,9 @@ export class ProponiCategoriaPage implements OnInit {
 
   goToConfirm(){
     this.router.navigate(['conferma-invio-proposta']);
+  }
+
+  goback(){
+    this.navCtrl.pop();
   }
 }
