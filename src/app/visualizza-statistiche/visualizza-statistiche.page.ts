@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import Chart from 'chart.js';
 import {NavController} from "@ionic/angular";
+import { ApiService } from '../providers/api.service';
 
 
 @Component({
@@ -10,6 +11,8 @@ import {NavController} from "@ionic/angular";
 })
 
 export class VisualizzaStatistichePage {
+
+
 
   @ViewChild('barChart', {static:false}) barChart;
   @ViewChild('doughnutCanvas', {static:false}) doughnutCanvas;
@@ -25,9 +28,11 @@ export class VisualizzaStatistichePage {
   sdoughnutChart: any;
   lineChart: any;
 
+  Domande = {};
+
   
 
-  constructor(private navCtrl: NavController) {
+  constructor(private navCtrl: NavController,public apiService: ApiService) {
     
    }
    
@@ -43,6 +48,11 @@ export class VisualizzaStatistichePage {
     this.lineChartMethod();
     
   }
+
+  
+
+  
+
 
   goBack(){
     this.navCtrl.back();

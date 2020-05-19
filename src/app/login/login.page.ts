@@ -6,6 +6,7 @@ import {Promise} from "q";
 
 import {PostServiceService} from "../services/post-service.service";
 import {NavController} from "@ionic/angular";
+import { DataService } from "../services/data.service";
 
 @Component({
   selector: 'app-login',
@@ -15,13 +16,18 @@ import {NavController} from "@ionic/angular";
 export class LoginPage implements OnInit {
 
   click = false;
+  email = '';
   username = "";
   password = "";
+  nome = '';
+  cognome = '';
+  bio = '';
+ 
   request: Promise<any>;
   result:  Promise<any>;
   url= 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/login'
 
-  constructor(private service: PostServiceService, private router : Router, private navctrl: NavController) {
+  constructor( private dataService: DataService ,private service: PostServiceService, private router : Router, private navctrl: NavController) {
     
   }  
 
@@ -44,6 +50,7 @@ export class LoginPage implements OnInit {
       this.result = this.service.postService(postData, this.url).then((data) => {
         this.request = data;
         console.log(data);
+        this.clickLogin();
 
 
         
@@ -53,6 +60,12 @@ export class LoginPage implements OnInit {
     }
   }
 
+  clickLogin(){
+    this.dataService.setUtente(this.email, this.username, this.password, this.nome, this.cognome,this.bio);
+    this.router.navigate(['home']);
+    console.log(this.dataService.utente);
+
+}
 }
 
 
