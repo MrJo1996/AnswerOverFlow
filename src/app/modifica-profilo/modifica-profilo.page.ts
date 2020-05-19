@@ -87,7 +87,7 @@ export class ModificaProfiloPage implements OnInit {
         this.nomeView = this.profilo['0'].nome;
         this.cognomeView = this.profilo['0'].cognome;
         this.bioView = this.profilo['0'].bio;
-        this.password = this.profilo.['0'].password;
+        this.password = this.profilo['0'].password;
         console.log('Profilo: ', this.profilo['0']);
         
       },

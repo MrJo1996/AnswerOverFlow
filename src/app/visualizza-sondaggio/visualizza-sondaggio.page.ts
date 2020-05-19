@@ -5,6 +5,7 @@ import { TransitiveCompileNgModuleMetadata, ThrowStmt } from '@angular/compiler'
 import { Router } from '@angular/router';
 import { ApiService } from '../providers/api.service';
 import { DataService } from '../services/data.service';
+import {NavController} from "@ionic/angular";
 
 
 
@@ -15,7 +16,7 @@ import { DataService } from '../services/data.service';
 })
 export class VisualizzaSondaggioPage implements OnInit {
 
-  codice_sondaggio = 15
+  codice_sondaggio;
   sondaggio = {};
   scelte;
   currentUser = "gmailverificata"
@@ -29,7 +30,7 @@ export class VisualizzaSondaggioPage implements OnInit {
   url2 = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaSondaggio'
   url3 = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaScelteSondaggio'
 
-  constructor(private service: PostServiceService, private dataService: DataService,private router: Router, public apiService: ApiService, public alertController: AlertController) { }
+  constructor(private navCtrl:NavController,private service: PostServiceService, private dataService: DataService,private router: Router, public apiService: ApiService, public alertController: AlertController) { }
 
   ngOnInit() {
     this.visualizzaSondaggioSelezionato();
@@ -86,7 +87,7 @@ export class VisualizzaSondaggioPage implements OnInit {
   }
 
   async visualizzaSondaggioSelezionato() {
-    //this.codice_sondaggio= this.dataService.codice_sondaggio;
+this.codice_sondaggio= this.dataService.codice_sondaggio;
     this.apiService.getSondaggio(this.codice_sondaggio).then(
       (sondaggio) => {
       
@@ -159,9 +160,11 @@ export class VisualizzaSondaggioPage implements OnInit {
     );
 
   }
-
+  goback(){
+    this.navCtrl.pop();
+  }
+  
 }
-
 
 
 
