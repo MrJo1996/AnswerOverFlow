@@ -34,6 +34,7 @@ export class VisualizzaDomandaPage implements OnInit {
   descrizioneRispostaView;
   descrizioneRispostaToPass;
   risposta = {};
+  rispostaCliccata;
 
   constructor(private navCtrl:NavController, private dataService: DataService, public apiService: ApiService, private router: Router, public alertController: AlertController) { }
 
@@ -185,7 +186,7 @@ async popupModificaDescrizioneRisposta() {
       {
         name: 'descrizionePopUp',
         type: 'text',
-        placeholder: this.descrizioneRispostaView
+        placeholder: this.rispostaCliccata.descrizione
       }
     ],
     buttons: [
@@ -215,17 +216,14 @@ async popupModificaDescrizioneRisposta() {
   }
 
 clickRisposta(i){
-  this.dataService.codice_risposta = i;
+  this.dataService.codice_risposta = i.codice_risposta;
   console.log(this.dataService.getCodiceRisposta());
 
-  this.showDescrizioneRisposta().then(
-    () => {
-      this.popupModificaDescrizioneRisposta();
-    },
-    () => {
-      console.log('Errore');
-    }
-  )
+  this.rispostaCliccata = i;
+
+  this.popupModificaDescrizioneRisposta();
+
+  
   }
 
   checkIfThereAreEnglishBadWords(string: string): boolean {
@@ -260,7 +258,7 @@ clickRisposta(i){
     console.log(result);
   }
 
-  async showDescrizioneRisposta() {
+/*   async showDescrizioneRisposta() {
     this.apiService.getRisposta(this.dataService.getCodiceRisposta()).then(
       resolve => {
         this.descrizioneRispostaView = resolve['data']['0'].descrizione;
@@ -270,6 +268,6 @@ clickRisposta(i){
         console.log("C'è stato un errore durante il recupero dei dati");
       }
     )
-  }
+  } */
 
 }
