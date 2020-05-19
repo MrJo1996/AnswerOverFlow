@@ -58,8 +58,10 @@ export class DataService {
   getEmailOthers(emailOthers) {
     return this.emailOthers;
   }
+  
   getCodiceRisposta(){
 
     return this.codice_risposta;
   }
+
 }
