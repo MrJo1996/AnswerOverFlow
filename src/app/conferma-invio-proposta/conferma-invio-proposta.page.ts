@@ -16,5 +16,16 @@ export class ConfermaInvioPropostaPage implements OnInit {
   goback(){
     this.router.navigate(['proponi-categoria']);
   }
+  
+  goTo_insDomanda(){
+    this.router.navigate(['inserisci-domanda']);
+  }
 
+  goTo_insSondaggio(){
+    this.router.navigate(['inserimento-sondaggio']);
+  }
+
+  goTo_Home(){
+    this.router.navigate(['home']);
+  }
 }

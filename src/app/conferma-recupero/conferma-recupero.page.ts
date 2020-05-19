@@ -17,4 +17,7 @@ export class ConfermaRecuperoPage implements OnInit {
     this.router.navigate(['recupera-password'])
   }
 
+  goTo_login(){
+    this.router.navigate(['login']);
+  }
 }

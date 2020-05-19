@@ -26,6 +26,7 @@ export class VisualizzaDomandaPage implements OnInit {
   titoloView: any;
   descrizioneView: any;
   cod_preferita: any;
+  codice_categoria = 1;
 
   risposte: any;
 
@@ -38,6 +39,7 @@ export class VisualizzaDomandaPage implements OnInit {
   ngOnInit() {
     this.visualizzaDomanda(); 
     this.showRisposte();
+    this.visualizzaCategoria();
   }
 
 
@@ -107,6 +109,20 @@ async showRisposte() {
       this.risposte = risposte['Risposte']['data'];
       
       console.log(risposte) 
+    },
+    (rej) => {
+      console.log("C'è stato un errore durante la visualizzazione");
+    }
+  );
+}
+
+async visualizzaCategoria() {
+  
+  this.apiService.getCategoria(this.codice_categoria).then(
+    (categoria) => {
+      
+      console.log(categoria['Categoria']['data']['0'].titolo) ;
+     
     },
     (rej) => {
       console.log("C'è stato un errore durante la visualizzazione");

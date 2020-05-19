@@ -51,6 +51,25 @@ export class ApiService {
       );
     });
   }
+  getSondaggioHome() {
+    const body = {
+    };
+
+    return new Promise((resolve, reject) => {
+      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzasondaggihome', body).subscribe(
+        data => {
+         
+          let sondaggi = data['Sondaggi']['data'];
+
+          resolve(sondaggi); 
+          console.log(sondaggi);
+        },
+        (err) => {
+          reject();
+        }
+      );
+    });
+  }
 
   modificaDomanda(codice_domanda: number, dataeora: string, timer: string, titolo: string, descrizione: string, cod_categoria: number, cod_preferita: number) {
     const body = {
@@ -193,6 +212,27 @@ export class ApiService {
           console.log(risposta)//restituirò al ts un oggetto di nome "risposta" con accesso già alla posizione "Risposta" avendo visto il json di data
           // console.log('ciao' ,);
 
+        },
+        (err) => {
+          reject();
+        }
+      );
+    });
+  }
+
+  getCategoria(codice_categoria: Number) {
+    const body = {
+      codice_categoria: codice_categoria
+
+    };
+
+    return new Promise((resolve, reject) => {
+      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzacategoria', body).subscribe(
+        data => {
+          let categoria = data;
+          resolve(categoria); 
+          console.log(categoria)
+  
         },
         (err) => {
           reject();

@@ -14,7 +14,7 @@
   <ion-card class="backgrounds">
     <ion-card-content>
       <ion-card-title class="titleSize">Abbiamo inviato una mail con una nuova password all'indirizzo da te specificato!</ion-card-title>
-      <ion-card-subtitle class="normalText"><a href="./login">Clicca qui per tornare alla pagina di login</a></ion-card-subtitle>
+      <ion-card-subtitle (click)="goTo_login()" class="linkText" color="primary">Clicca qui per tornare alla pagina di login.</ion-card-subtitle>
     </ion-card-content>
   </ion-card>
 </ion-content>
