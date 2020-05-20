@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { IonContent, AlertController } from '@ionic/angular';
+import { IonContent, AlertController, IonCheckbox } from '@ionic/angular';
 import { PostServiceService } from "../services/post-service.service";
 import { TransitiveCompileNgModuleMetadata, ThrowStmt } from '@angular/compiler';
 import { Router } from '@angular/router';
@@ -7,6 +7,7 @@ import { ApiService } from '../providers/api.service';
 import { DataService } from '../services/data.service';
 import {NavController} from "@ionic/angular";
 
+enum scelteEnum{};
 
 
 @Component({
@@ -18,13 +19,16 @@ export class VisualizzaSondaggioPage implements OnInit {
 
   codice_sondaggio;
   sondaggio = {};
-  scelte;
-  currentUser = "gmailverificata"
+  scelte = new Array();
+  currentUser = "matitinaCom"
   sondaggioUser;
-
-
-
+  sceltaSelezionata = " ";
   thrashActive;
+  hasVoted = false;
+  codici_scelte = new Array();
+  index_scelta_selezionata: number;
+  codice_scelta_selezionata;
+
 
   url = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/cancellaSondaggio/14'
   url2 = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaSondaggio'
@@ -40,26 +44,8 @@ export class VisualizzaSondaggioPage implements OnInit {
 
   @ViewChild('content', { read: IonContent, static: false }) myContent: IonContent;
 
-/*   elimina() {
-
-    let deleteData = {
-      "codice_sondaggio": this.codice_sondaggio
-
-    }
-
-    this.resultDelete = this.service.deleteService(this.url, deleteData).then((data) => {
-      this.requestDelete = data;
-
-
-      console.log(data);
-    }, err => {
-      console.log(err.message);
-    });
-  }
- */
-
   goModificaDomanda() {
-    this.router.navigate(['modifica-domanda']);
+    this.router.navigate(['modifica-sondaggio']);
   }
 
   async popUpEliminaSondaggio(){
@@ -96,29 +82,6 @@ this.codice_sondaggio= this.dataService.codice_sondaggio;
         this.sondaggio = sondaggio['data']['0']; 
         this.sondaggioUser = sondaggio['data']['0'].cod_utente;
         
-        
-        //assegno alla variabile locale il risultato della chiamata. la variabile sarà utilizzata nella stampa in HTML
-        /*this.titoloView = this.sondaggio['0'].titolo;  //setto var da visualizzare a video per risolvere il problema del crop schermo durante il serve dell'app ( problema stava nell'utilizzo di: ['0'] per accedere alla var da visualizzare)
-        this.timerView = this.sondaggio['0'].timer;
-
-        console.log('Sondaggio: ', this.sondaggio['0']);
-        //il json di risposta della chiamata è così impostato-> Sondaggio: data: posizione{vari paramentri}
-        //bisogna quindi accedere alla posizione del sondaggio da visualizzare
-        //in apiservice accediamo già alla posizione 'Sondaggio'. Per sapere l'ordine di accesso ai dati ho stampato a video "data" da apiservice
-
-        //stampo tempo mancante -> passare come parametri gli incrementi che ha già settati nel campo timer
-        this.mappingIncrement(this.sondaggio['0'].timer);
-
-        var auxData = []; //var ausialiaria per parsare la data di creazione
-        auxData['0'] = (this.sondaggio['0'].dataeora.substring(0, 10).split("-")[0]); //anno
-        auxData['1'] = this.sondaggio['0'].dataeora.substring(0, 10).split("-")[1]; //mese [0]=gennaio
-        auxData['2'] = this.sondaggio['0'].dataeora.substring(0, 10).split("-")[2]; //gg
-        auxData['3'] = this.sondaggio['0'].dataeora.substring(11, 18).split(":")[0]; //hh
-        auxData['4'] = this.sondaggio['0'].dataeora.substring(11, 18).split(":")[1]; //mm
-        //metto dati parsati nella var dataCreazioneToview così da creare una nuova var da poter stampare nel formato adatto
-        var dataCreazioneToView = new Date(auxData['0'], parseInt(auxData['1'], 10) - 1, auxData['2'], auxData['3'], auxData['4']);
-        //stampo la var appena creata nell'elemento con id="dataOraCreazione"
-        document.getElementById("dataOraCreazione").innerHTML = dataCreazioneToView.toLocaleString(); */
       },
       (rej) => {
         console.log("C'è stato un errore durante la visualizzazione");
@@ -134,9 +97,9 @@ this.codice_sondaggio= this.dataService.codice_sondaggio;
     this.apiService.getScelteSondaggio(this.codice_sondaggio).then(
       (scelte) => {
       
-        console.log('Visualizzato con successo');
 
         this.scelte = scelte['Scelte']['data'];
+        
       },
       (rej) => {
         console.log("C'è stato un errore durante la visualizzazione");
@@ -160,12 +123,93 @@ this.codice_sondaggio= this.dataService.codice_sondaggio;
     );
 
   }
-  goback(){
-    this.navCtrl.pop();
-  }
-  
-}
 
+  inviaVoto(){
+ this.codice_scelta_selezionata = this.scelte[this.index_scelta_selezionata]['codice_scelta'];
+ console.log('codice scelta ->', this.codice_scelta_selezionata);
+ console.log('codice sondaggio ->', this.codice_sondaggio);
+   this.apiService.votaSondaggio(this.codice_scelta_selezionata, this.codice_sondaggio).then(
+      (scelte) => {
+      
+        console.log('Votato con successo');
+
+      },
+      (rej) => {
+        console.log("C'è stato un errore durante il voto");
+      }
+    );  
+
+  }
+
+ async goback(){
+    if(this.hasVoted === true){
+    const alert = await this.alertController.create({
+      header: 'Sei sicuro di voler uscire senza confermare il voto?',
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('Confirm Cancel');
+          }
+        }, {
+          text: 'Si',
+          handler: () => {
+            console.log('Confirm Okay');
+           
+            this.navCtrl.pop();
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+}
+  
+
+
+   getScelta(scelta, i){
+
+    this.sceltaSelezionata = scelta;
+    if(!this.hasVoted)
+    this.hasVoted = true;
+    this.index_scelta_selezionata = i;
+    console.log();
+
+ 
+   
+  }
+
+  async confermaVoto(scelta){
+    const alert = await this.alertController.create({
+      header: 'Sei sicuro della tua scelta' ,
+      buttons: [
+         {
+          text: 'Si',
+          handler: () => {
+            console.log('scelta confermata');
+            this.inviaVoto();
+            this.router.navigate(['home']);
+            
+          }
+        },
+        {
+          text: 'No',
+          role: 'cancel',
+          //cssClass: 'secondary',
+          handler: () => {
+            console.log('eliminazione annullata');
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+
+
+}
 
 
 

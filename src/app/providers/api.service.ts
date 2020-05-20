@@ -379,6 +379,8 @@ export class ApiService {
     })
   }
 
+
+
   inserisciSceltaSondaggio(URL: string, codice_sondaggio: number, descrizione: string){
     const body = {
       codice_sondaggio,
@@ -502,6 +504,25 @@ export class ApiService {
     });
   }
 
+
+  votaSondaggio(codice_scelta: number, cod_sondaggio: number){
+    const body = {
+      codice_scelta,
+      cod_sondaggio
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post('//answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/votasondaggio', body).subscribe(
+        data => {
+          let esitoVoto = data
+          console.log(esitoVoto);
+          resolve(esitoVoto);
+        },
+        (err) => {
+          reject();
+        }
+      )
+    })
+  }
 
 
 }
