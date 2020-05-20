@@ -14,6 +14,8 @@ export class DataService {
   emailOthers;
   codice_chat;
   codice_risposta;
+  selezione_cat;
+  nuova_proposta
   constructor(private http: HttpClient) { }
   setUtente(id:string, username:string,password:string, nome:string,cognome:string,bio:string){
     this.utente['0']=id;
@@ -41,6 +43,12 @@ export class DataService {
   setEmailOthers(emailOthers) {
     this.emailOthers = emailOthers;
   }
+  setSelezioneCategoria(selezione){
+    this.selezione_cat = selezione;
+  }
+  setNuovaProposta(proposta){
+    this.nuova_proposta = proposta;
+  }
  
   getCod_domanda(){
     return this.codice_domanda;
@@ -58,10 +66,17 @@ export class DataService {
   getEmailOthers(emailOthers) {
     return this.emailOthers;
   }
+  getCatSelezionata(){
+    return this.selezione_cat;
+  }
+  getNuovaProposta(){
+    return this.nuova_proposta;
+  }
   
   getCodiceRisposta(){
 
     return this.codice_risposta;
   }
+  
 
 }

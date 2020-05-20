@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { DataService } from '../services/data.service';
 
 @Component({
   selector: 'app-conferma-invio-proposta',
@@ -8,9 +9,14 @@ import { Router } from '@angular/router';
 })
 export class ConfermaInvioPropostaPage implements OnInit {
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private dataService: DataService) { }
 
+  cat_selezionata;
+  proposta_confermata;
+  
   ngOnInit() {
+    this.cat_selezionata = this.dataService.getCatSelezionata();
+    this.proposta_confermata = this.dataService.getNuovaProposta();
   }
 
   goback(){
