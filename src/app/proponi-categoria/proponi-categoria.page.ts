@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, NavController } from '@ionic/angular';
 import { ApiService } from '../providers/api.service';
+import { DataService } from '../services/data.service';
 
 @Component({
   selector: 'app-proponi-categoria',
@@ -15,7 +16,7 @@ export class ProponiCategoriaPage implements OnInit {
   request: Promise<any>;
   result: Promise<any>;
 
-  constructor(public apiService: ApiService, public alertController: AlertController, private router: Router, private navCtrl: NavController) { }
+  constructor(public apiService: ApiService, public alertController: AlertController, private router: Router, private navCtrl: NavController, private dataService: DataService) { }
 
   ngOnInit() {
   }
@@ -77,6 +78,8 @@ export class ProponiCategoriaPage implements OnInit {
   }
 
   goToConfirm(){
+    this.dataService.setSelezioneCategoria(this.selezione);
+    this.dataService.setNuovaProposta(this.proposta);
     this.router.navigate(['conferma-invio-proposta']);
   }
 

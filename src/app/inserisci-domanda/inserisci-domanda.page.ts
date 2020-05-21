@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'src/app/providers/api.service';
 import { PostServiceService } from "../services/post-service.service";
+import { DataService } from "../services/data.service";
 import { AlertController } from '@ionic/angular';
 import { PickerController } from "@ionic/angular";
 import { PickerOptions } from "@ionic/core";
 import { Router } from "@angular/router";
+import { NavController } from "@ionic/angular";
 
 @Component({
   selector: 'app-inserisci-domanda',
@@ -17,7 +19,7 @@ export class InserisciDomandaPage implements OnInit {
   titolo = '';
   categorie: any;
   descrizione = '';
-  cod_utente = 'gmailverificata';
+  cod_utente = 'gmailverificata';  //gmailVerificata
   cod_categoria: any;
   url = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/inserisciDomanda'
   urlCategorie = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaCategorie'
@@ -26,7 +28,12 @@ export class InserisciDomandaPage implements OnInit {
   timerView; //var per la view dei valori
   timerSettings: string[] = ["5 min", "15 min", "30 min", "1 ora", "3 ore", "6 ore", "12 ore", "1 giorno", "3 giorni"]; //scelte nel picker
 
-  constructor(public apiService: ApiService, public alertController: AlertController, private pickerController: PickerController, private router: Router) { }
+  constructor(public apiService: ApiService,
+    public alertController: AlertController,
+    private pickerController: PickerController,
+    private router: Router,
+    private dataService: DataService,
+    private navCtrl: NavController) { }
 
   ngOnInit() {
     this.apiService.prendiCategorie(this.urlCategorie).then(
@@ -38,10 +45,13 @@ export class InserisciDomandaPage implements OnInit {
         console.log("C'è stato un errore durante la visualizzazione");
       }
     );
+
+    this.cod_utente = this.dataService.getEmail_Utente();
+
   }
 
   async checkField() {
-    if ((this.titolo.length < 1) || (this.timerToPass == undefined) || (this.cod_categoria == undefined) ) {
+    if ((this.titolo.length < 1) || (this.timerToPass == undefined) || (this.cod_categoria == undefined)) {
       const alert = await this.alertController.create({
         header: 'Devi compilare i campi obbligatori!',
         buttons: [
@@ -72,6 +82,7 @@ export class InserisciDomandaPage implements OnInit {
             handler: () => {
               console.log('Confirm Okay');
               this.postInvio();
+              this.goHome();
             }
           }
         ]
@@ -167,8 +178,12 @@ export class InserisciDomandaPage implements OnInit {
     this.router.navigate(['proponi-categoria']);
   }
 
-  switchHome() {
+  goHome() {
     this.router.navigate(['home']);
+  }
+
+  goBack() {
+    this.navCtrl.back();
   }
 
 }

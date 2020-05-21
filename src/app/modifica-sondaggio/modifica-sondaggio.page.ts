@@ -10,6 +10,8 @@ import { PickerOptions } from "@ionic/core";
 import { NavController } from '@ionic/angular';
 import { __await } from 'tslib';
 
+import { DataService } from "../services/data.service";
+
 @Component({
   selector: 'app-modifica-sondaggio',
   templateUrl: './modifica-sondaggio.page.html',
@@ -32,13 +34,12 @@ export class ModificaSondaggioPage implements OnInit {
   ciao="ciao";
 
   constructor(private alertController: AlertController, public apiService: ApiService, private pickerController: PickerController,
-    public navCtrl: NavController) { }
+    public navCtrl: NavController, public dataService: DataService) { }
 
 
   ngOnInit() {
 
-    //Assegnazione codice forzata per ora
-    this.codice_sondaggio = 17;
+    this.codice_sondaggio = this.dataService.getCod_sondaggio();
 
     this.showSurvey();
 

@@ -10,9 +10,11 @@ import {Router} from '@angular/router';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
-  i;
+  codice_domanda;
+  codice_sondaggio
   currentMailUser = "gmailverificata"//mail dell'utente corrente
   domande;
+  sondaggi;
   domandaMailUser ;//mail dell'utente che ha fatto la domanda
   domandaNomeUser = " ";//nome e cognome dell'utente che ha fatto la domanda
 
@@ -20,6 +22,7 @@ export class HomePage implements OnInit {
   
   ngOnInit() {
     this.visualizzaDomandaHome();
+    this.visualizzaSondaggiHome();
   }
   
   async visualizzaDomandaHome() {
@@ -38,9 +41,31 @@ export class HomePage implements OnInit {
     );
   
   }
-  clickDomanda(i){
-    this.dataService.codice_domanda = i;
+  async visualizzaSondaggiHome() {
+    this.apiService.getSondaggioHome().then(
+      (sondaggi) => {
+        console.log('Visualizzato con successo');
+        
+        this.sondaggi = sondaggi; //assegno alla variabile locale il risultato della chiamata. la variabile sarà utilizzata nella stampa in HTML
+        
+        console.log('Sondaggi: ', this.sondaggi);
+      
+      },
+      (rej) => {
+        console.log("C'è stato un errore durante la visualizzazione");
+      }
+    );
+  
+  }
+  
+  clickDomanda(codice_domanda){
+    this.dataService.codice_domanda = codice_domanda;
     console.log(this.dataService.codice_domanda);
     this.router.navigate(['/visualizza-domanda']);
+  }
+  clickSondaggio(codice_sondaggio){
+    this.dataService.codice_sondaggio = codice_sondaggio;
+    console.log(this.dataService.codice_sondaggio);
+    this.router.navigate(['/visualizza-sondaggio']);
   }
 }
