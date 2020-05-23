@@ -56,14 +56,14 @@
   </ion-card>
   <ion-label *ngIf="risposte===NULL" class = "textSimple">Non ci sono ancora risposte per questa domanda</ion-label>
 
-        <ion-card *ngFor="let risposta of risposte" class = "backgrounds">    
+        <ion-card *ngFor="let risposta of risposte; let i = index" class = "backgrounds">    
           <ion-card-header>
             <ion-toolbar class="backgrounds">
               <ion-avatar  slot="start" class="icon-avatar" >
                 <img src="https://avatars3.githubusercontent.com/u/14333644?s=460&u=c6cf7b831fd7afd92292677dc5543c858e1e05a8&v=4">
               </ion-avatar>
-              <ion-label class = "username_text_style">{{risposta.cod_utente}}</ion-label>
-
+              <ion-label *ngIf="currentMailUser!==risposta.cod_utente" class = "username_text_style">{{risposta.cod_utente}}</ion-label>
+              <ion-label *ngIf="currentMailUser===risposta.cod_utente " class = "username_text_style">Tu</ion-label>
               <ion-icon name="ribbon" *ngIf="risposta.codice_risposta===cod_preferita"  class="ribbon_style" slot="end"></ion-icon>
               <ion-label slot = "end" class = "textTitleSMALL">{{risposta.num_like}}</ion-label>
               <ion-icon name="thumbs-up-sharp" class="thumb_up_style" slot= "end" ></ion-icon>
@@ -75,7 +75,7 @@
           </ion-card-header>
           <ion-card-content >
               <!-- <p class= "textSimple">{{risposta.descrizione}}</p> -->
-              <p readonly class= "textSimple" (click)="clickRisposta(risposta)">{{risposta.descrizione}}</p>
+              <p readonly class= "textSimple" (click)="clickRisposta(risposta, i)">{{risposta.descrizione}}</p>
               <ion-toolbar class="backgrounds">
     
                 <ion-icon name="calendar-outline" slot="start" class = "calendar_icon_style" ></ion-icon>
