@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import {Router} from "@angular/router";
 
 import {Promise} from "q";
+import {Storage} from '@ionic/storage';
 
 import {PostServiceService} from "../services/post-service.service";
 import {NavController} from "@ionic/angular";
@@ -27,7 +28,7 @@ export class LoginPage implements OnInit {
   result:  Promise<any>;
   url= 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/login'
 
-  constructor( private dataService: DataService ,private service: PostServiceService, private router : Router, private navctrl: NavController) {
+  constructor( private dataService: DataService ,private service: PostServiceService, private router : Router, private navctrl: NavController, private storage: Storage) {
     
   }  
 
@@ -50,7 +51,7 @@ export class LoginPage implements OnInit {
       this.result = this.service.postService(postData, this.url).then((data) => {
         this.request = data;
         console.log(data);
-        this.clickLogin();
+        this.clickLogin(!data.error, data);
 
 
         
@@ -60,20 +61,34 @@ export class LoginPage implements OnInit {
     }
   }
 
-  clickLogin(){
-    this.dataService.setUtente(this.email, this.username, this.password, this.nome, this.cognome,this.bio);
+  clickLogin(condizione, data){
+
+    if (condizione) {
+
+      this.storage.set('utente', data.utente);
+      this.storage.set('session', true);
+      console.log('false', data);
+      this.click = true;
+
+      this.storage.set('session', true);
+      this.storage.get('session').then(data => {
+          this.storage.set('session', true);
+          console.log('login ha settato bene' + data)
+      });
+      this.router.navigate(['home']);
+  } else {
+      console.log('error');
+
+
+
+   /* this.dataService.setUtente(this.email, this.username, this.password, this.nome, this.cognome,this.bio);
     this.router.navigate(['home']);
-    console.log(this.dataService.utente);
+    console.log(this.dataService.utente);*/
 
 }
 }
 
-
-
-
-
-
-
+}
 
 
 

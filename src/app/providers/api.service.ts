@@ -525,4 +525,91 @@ export class ApiService {
   }
 
 
+  get_top_Domande(cod_utente: string) {
+    const body = {
+      cod_utente: cod_utente
+
+    };
+
+    return new Promise((resolve, reject) => {
+      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzastatistichedomanda', body).subscribe(
+        data => {
+          let domande = data;
+          resolve(domande); 
+        
+  
+        },
+        (err) => {
+          reject();
+        }
+      );
+    });
+  }
+
+
+  get_tot_Domande(cod_utente: string) {
+    const body = {
+      cod_utente: cod_utente
+
+    };
+
+    return new Promise((resolve, reject) => {
+      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaTOTStatisticheDomanda', body).subscribe(
+        data => {
+          let domande = data;
+          resolve(domande); 
+          console.log(domande)
+  
+        },
+        (err) => {
+          reject();
+        }
+      );
+    });
+  }
+
+  get_top_Risposte(cod_utente: string) {
+    const body = {
+      cod_utente: cod_utente
+
+    };
+
+    return new Promise((resolve, reject) => {
+      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaStatisticherisposta', body).subscribe(
+        data => {
+          let risposte = data;
+          resolve(risposte); 
+          console.log(risposte)
+  
+        },
+        (err) => {
+          reject();
+        }
+      );
+    });
+  }
+
+  get_tot_Risposte(cod_utente: string) {
+    const body = {
+      cod_utente: cod_utente
+
+    };
+
+    return new Promise((resolve, reject) => {
+      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaStatisticheTOTrisposta', body).subscribe(
+        data => {
+          let risposte = data;
+          resolve(risposte); 
+          console.log(risposte)
+  
+        },
+        (err) => {
+          reject();
+        }
+      );
+    });
+  }
+
+
+
 }
