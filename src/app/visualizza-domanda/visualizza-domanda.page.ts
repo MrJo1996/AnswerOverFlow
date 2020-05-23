@@ -29,7 +29,7 @@ export class VisualizzaDomandaPage implements OnInit {
   cod_preferita: any;
   codice_categoria = 1;
 
-  risposte: any;
+  risposte = new Array();
 
   descrizioneRispostaView;
   descrizioneRispostaToPass;
@@ -215,15 +215,17 @@ async popupModificaDescrizioneRisposta() {
   //this.descrizioneView = await (await alert.onDidDismiss()).data.values.descrizione;
   }
 
-clickRisposta(i){
-  this.dataService.codice_risposta = i.codice_risposta;
+clickRisposta(risposta, i){
+  if(this.risposte[i]['cod_utente'] === this.currentMailUser){
+
+  this.dataService.codice_risposta = risposta.codice_risposta;
   console.log(this.dataService.getCodiceRisposta());
 
-  this.rispostaCliccata = i;
+  this.rispostaCliccata = risposta;
 
   this.popupModificaDescrizioneRisposta();
 
-  
+  }
   }
 
   checkIfThereAreEnglishBadWords(string: string): boolean {
