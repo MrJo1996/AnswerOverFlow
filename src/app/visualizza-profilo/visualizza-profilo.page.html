@@ -1,65 +1,68 @@
 <ion-header>
   <ion-toolbar class="backgroundsSecondaryItem">
-   
-      <ion-button  slot="start" expand="block" fill="clear" (click)="goBack()" class="msg-btn">
-        <ion-icon color="primary" slot="start" slot="icon-only" name="arrow-back-outline"></ion-icon>
-        </ion-button>
-     
-      <ion-title style="font-size: x-large; text-align: center;"><b>Visualizza profilo</b></ion-title>
-      
-      <ion-button  slot="end" expand="block" fill="clear" (click)="selectProfile()" class="msg-btn">
-        <ion-icon color="primary" slot="end" slot="icon-only" name="checkmark-sharp"></ion-icon>
-        </ion-button>
-     
-    </ion-toolbar>
-  </ion-header>
 
-<ion-content class="backgrounds">
+    <ion-button slot="start" expand="block" fill="clear" (click)="goBack()" class="msg-btn">
+      <ion-icon color="primary" slot="start" slot="icon-only" name="arrow-back-outline"></ion-icon>
+    </ion-button>
+
+    <ion-title style="font-size: x-large; text-align: center;"><b>Visualizza profilo</b></ion-title>
+
+    <ion-button slot="end" expand="block" fill="clear" (click)="selectProfile()" class="msg-btn">
+      <ion-icon color="primary" slot="end" slot="icon-only" name="checkmark-sharp"></ion-icon>
+    </ion-button>
+
+  </ion-toolbar>
+</ion-header>
 
 
-  <ion-card>
-    <ion-icon class="profilePicture" name="person-circle-outline"></ion-icon>
-    
-  
-        <ion-item color="light">
-          <ion-icon name="happy-outline" slot="start"></ion-icon>
-          <ion-label position="stacked">Username</ion-label>
-          <ion-text><!-- {{profilo.username}} -->provagiogiogiogiogiogiiog</ion-text>
-       
-        </ion-item>
-      
-        <ion-item color="light">
-          <ion-icon name="pencil-outline" slot="start"></ion-icon>
-          <ion-label position="stacked">Email</ion-label>
-          <ion-text><!-- {{profilo.email}} -->provagoigoigogiogigsdsd</ion-text>
-        </ion-item>
-  
-        <ion-item color="light">
-          <ion-icon name="create-outline" slot="start"></ion-icon>
-          <ion-label position="stacked">Nome</ion-label>
-          <ion-text><!-- {{profilo.nome}} -->prova</ion-text>
-        </ion-item>
+<ion-content>
 
-        <ion-item color="light">
-          <ion-icon name="create-outline" slot="start"></ion-icon>
-          <ion-label position="stacked">Cognome</ion-label>
-          <ion-text><!-- {{profilo.cognome}} -->prova</ion-text>
-        </ion-item>
-  
-        <ion-item color="light">
-          <ion-icon name="chatbox-outline" slot="start"></ion-icon>
-          <ion-label position="stacked">Bio</ion-label>
-          <ion-text><!-- {{profilo.bio}} -->prova</ion-text>
-        </ion-item>
-    
-      </ion-card>
+  <ion-content *ngIf="profilo" class="backgrounds">
+
+
+    <ion-card>
+      <ion-icon class="profilePicture" name="person-circle-outline"></ion-icon>
+
+
+      <ion-item color="light">
+        <ion-icon name="happy-outline" slot="start"></ion-icon>
+        <ion-label position="stacked">Username</ion-label>
+        <ion-text>{{profilo?.username}}</ion-text>
+
+      </ion-item>
+
+      <ion-item color="light">
+        <ion-icon name="pencil-outline" slot="start"></ion-icon>
+        <ion-label position="stacked">Email</ion-label>
+        <ion-text>{{profilo?.email}}</ion-text>
+      </ion-item>
+
+      <ion-item color="light">
+        <ion-icon name="create-outline" slot="start"></ion-icon>
+        <ion-label position="stacked">Nome</ion-label>
+        <ion-text>{{profilo?.nome}}</ion-text>
+      </ion-item>
+
+      <ion-item color="light">
+        <ion-icon name="create-outline" slot="start"></ion-icon>
+        <ion-label position="stacked">Cognome</ion-label>
+        <ion-text>{{profilo?.cognome}}</ion-text>
+      </ion-item>
+
+      <ion-item color="light">
+        <ion-icon name="chatbox-outline" slot="start"></ion-icon>
+        <ion-label position="stacked">Bio</ion-label>
+        <ion-text>{{profilo?.bio}}</ion-text>
+      </ion-item>
+
+    </ion-card>
 
     <p></p>
-    <ion-button *ngIf = "Email !== UserProfileViewId" color="light" class="ion-button">Invia messaggio</ion-button>
-    <ion-button color="primary" class= "ion-button" (click)= "stats()" >Visualizza statistiche</ion-button>
-    <ion-button *ngIf = "Email !== UserProfileViewId"  (click) = "showAlertView()" color="danger" class="ion-button">Segnala Utente</ion-button>
-    
+    <ion-button *ngIf="Email !== UserProfileViewId" color="light" class="ion-button">Invia messaggio</ion-button>
+    <ion-button color="primary" class="ion-button" (click)="stats()">Visualizza statistiche</ion-button>
+    <ion-button *ngIf="Email !== UserProfileViewId" (click)="showAlertView()" color="danger" class="ion-button">Segnala
+      Utente</ion-button>
 
-    
+  </ion-content>
 
-
+</ion-content>

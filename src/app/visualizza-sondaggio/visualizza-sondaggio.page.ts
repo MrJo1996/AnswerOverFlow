@@ -20,7 +20,7 @@ export class VisualizzaSondaggioPage implements OnInit {
   codice_sondaggio;
   sondaggio = {};
   scelte = new Array();
-  currentUser = "matitinaCom"
+  currentUser = "gmailverificata"
   sondaggioUser;
   sceltaSelezionata = " ";
   thrashActive;
