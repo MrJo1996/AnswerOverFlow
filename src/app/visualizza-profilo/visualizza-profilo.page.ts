@@ -5,6 +5,7 @@ import { AlertController} from '@ionic/angular';
 import { ApiService } from 'src/app/providers/api.service'; 
 import { Chart } from 'chart.js';
 import {NavController} from "@ionic/angular";
+import { DataService } from '../services/data.service';
 
 
 @Component({
@@ -24,7 +25,8 @@ export class VisualizzaProfiloPage implements OnInit {
     private router : Router,
     private alertController: AlertController,
     private apiService: ApiService,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private dataService: DataService
   
     
     ){
@@ -45,27 +47,33 @@ export class VisualizzaProfiloPage implements OnInit {
   }
 
 
-  profilo: any;
-  UserProfileViewId = "gmailverificata";
+  
+  /* UserProfileViewId = "gmailverificata";
   Username = 'giotto';
   Email = 'matitinaCom'; //matitinaCom
   Nome = 'giovanni';
   Cognome = 'otto';
-  Bio = 'disegno cazzi sui muri';
- 
+  Bio = 'disegno cazzi sui muri'; */
+
+  
+  userProfileId = this.dataService.getEmailOthers()
+  profilo: any;
+
+
 
   
   async selectProfile() {
-   /*  this.apiService.getProfilo(this.Email).then(
+     this.apiService.getProfilo(this.userProfileId).then(
       (data) => {
         console.log('Visualizzato con successo');
-        console.log(data);
-        this.profilo = data[0];
+        this.profilo = data['data'][0];
+        console.log(this.profilo.bio);
+
       },
       (rej) => {
         console.log("C'è stato un errore durante la visualizzazione");
       }
-    ); */
+    ); 
   }
 
 
@@ -97,7 +105,7 @@ async showAlertView() {
         handler: () => {
           this.confirmSpamAlert();
           console.log('Conferma segnalazione: spam');
-          console.log("provaprova");
+          
         }
       }, {
         text: 'Altro',

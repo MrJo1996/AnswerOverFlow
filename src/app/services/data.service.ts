@@ -12,7 +12,7 @@ export class DataService {
   codice_sondaggio;
   emailUtente;
   emailOthers;
-  codice_chat;
+  codice_chat=null;
   codice_risposta;
   selezione_cat;
   nuova_proposta
@@ -63,7 +63,7 @@ export class DataService {
     return this.codice_chat;
   }
  
-  getEmailOthers(emailOthers) {
+  getEmailOthers() {
     return this.emailOthers;
   }
   getCatSelezionata(){
