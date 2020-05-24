@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import Chart from 'chart.js';
+import {Chart} from 'chart.js';
 import {NavController} from "@ionic/angular";
 import { ApiService } from '../providers/api.service';
 import { DataService } from "../services/data.service";
@@ -36,6 +36,10 @@ export class VisualizzaStatistichePage {
   num_domandeTOP: any;
   num_domandeTOP2: any;
   num_domandeTOP3 : any;
+  num_risposteTOP: any;
+  num_risposteTOP2: any;
+  num_risposteTOP3 : any;
+  risposteTOP: any;
 
   
 
@@ -84,12 +88,15 @@ async visualizzaStatisticheDomanda(){
     this.domandeTOP = domande['Domande'];
     console.log(this.domandeTOP['data']['0'].num_domande);
     this.num_domandeTOP=this.domandeTOP['data']['0'].num_domande;
-        console.log(this.num_domandeTOP);
-       /* this.num_domandeTOP2=this.domandeTOP['data']['1'].num_domande;
-        this.num_domandeTOP3=this.domandeTOP['data']['2'].num_domande;*/
+       
+
+        this.num_domandeTOP2=this.domandeTOP['data']['1'].num_domande;
+        this.num_domandeTOP3=this.domandeTOP['data']['2'].num_domande;
 
         let numdomandeTOP = this.domandeTOP['data']['0'].num_domande;
         console.log(numdomandeTOP);
+        this.createBarChart();
+
       
     },
     (rej) => {
@@ -133,6 +140,15 @@ async visualizzaTOTStatisticheDomanda(){
     this.apiService.get_top_Risposte(this.cod_utente).then(
       (risposte) => {
        console.log(risposte['Risposte']['Data']);
+       this.risposteTOP = risposte['Risposte'];
+       this.num_risposteTOP=this.risposteTOP['data']['0'].Risposte;
+       
+
+       this.num_risposteTOP2=this.risposteTOP['data']['1'].Risposte;
+       this.num_risposteTOP3=this.risposteTOP['data']['2'].Risposte;
+       this.secondbars();
+
+
         
       },
       (rej) => {
@@ -188,7 +204,7 @@ async visualizzaTOTStatisticheDomanda(){
         labels:['Storia', 'Informatica', 'Scienze', 'Geografia', 'Filosofia'] ,
         datasets: [{
           label: 'ciaooo',
-          data: ['5', '12', '14', '1', '2'],
+          data: [ , , ],
           backgroundColor: this.colorArray,
           hoverBackgroundColor: this.colorArray
         }]
@@ -203,7 +219,7 @@ async visualizzaTOTStatisticheDomanda(){
         labels: ['Filosofia', 'Informatica', 'Geografia'],
           datasets: [{
             label: 'Numero di risposte',
-            data: [2 , 10 , 5],
+            data: [this.num_risposteTOP , this.num_risposteTOP2, this.num_risposteTOP3],
             backgroundColor:this.colorArray , 
             borderColor: this.colorArray, 
             borderWidth: 1
@@ -228,7 +244,7 @@ async visualizzaTOTStatisticheDomanda(){
         labels:['Filosofia', 'Informatica', 'Geografia', 'Scienze', 'Filosofia'] ,
         datasets: [{
           
-          data: ['8', '12', '14', '2', '5' ],
+          data: [8],
           backgroundColor: this.colorArray,
           hoverBackgroundColor: this.colorArray
         }]
@@ -264,7 +280,7 @@ async visualizzaTOTStatisticheDomanda(){
             pointHoverBorderWidth: 2,
             pointRadius: 1,
             pointHitRadius: 10,
-            data: ['5', '10', '25','26','9'],
+            data: [],
             spanGaps: false,
           }
         ]
