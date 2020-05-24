@@ -65,6 +65,7 @@ export class ChatPage implements OnInit {
   data: string;
   oggi;
   ieri;
+  prova
   flag;
 
   ///////////////////////////////////////
