@@ -19,63 +19,82 @@
 
 
 <ion-content>
-<ion-card>
-<ion-card-content>
+  <ion-card>
+    <ion-card-content>
 
 
-  <!-- <ion-item>
+      <!-- <ion-item>
     <ion-label position="floating">Titolo</ion-label>
     <ion-input type="text"></ion-input>
   </ion-item> -->
-  <ion-card-title class="textTitleBIG">Titolo:</ion-card-title>
-  <ion-textarea  [(ngModel)] = "titolo" style="border-radius: 7px;" placeholder="Qui dovresti inserire la descrizione del sondaggio" rows="3"
-      class="backgroundsSecondaryItem textSimple">
-  </ion-textarea>
+      <ion-card-title class="textTitleBIG">Titolo:</ion-card-title>
+      <ion-textarea [(ngModel)]="titolo" style="border-radius: 7px;" placeholder="Inserire un titolo descrittivo"
+        rows="3" class="backgroundsSecondaryItem textSimple">
+      </ion-textarea>
 
-<ion-card-title class="textTitleBIG" style="margin-top: 10px;">Scelte:</ion-card-title>
+      <ion-card-title class="textTitleBIG" style="margin-top: 10px;">Scelte:</ion-card-title>
 
-<ion-list>
-  <ion-item *ngFor="let scelta of scelte; let idx = index"
-            lines="none">
-    
-    <ion-input type="text" 
-              [(ngModel)]="scelte[idx].value"
-              placeholder="{{idx + 1}}° Scelta"
-              class="backgroundsSecondaryItem textSimple"
-              style="border-radius: 7px;">
-    <ion-button *ngIf="idx > 1"
-                fill="clear"
-                class="delete"
-                ion-button (click)="Remove(idx)">
-      <ion-icon color="danger" name="close-circle-outline"></ion-icon>
-    </ion-button>
-    </ion-input>
-      
-  </ion-item>
-</ion-list>
+      <ion-list>
+        <ion-item *ngFor="let scelta of scelte; let idx = index" lines="none">
 
-<ion-item lines="none">
-  <ion-button fill="clear" 
-              class="plus"
-              ion-button (click)="Add()">
-    <ion-icon name="add"></ion-icon>
-  </ion-button>  
-</ion-item>
+          <ion-input type="text" [(ngModel)]="scelte[idx].value" placeholder="{{idx + 1}}° Scelta"
+            class="backgroundsSecondaryItem textSimple" style="border-radius: 7px;">
+            <ion-button *ngIf="idx > 1" fill="clear" class="delete" ion-button (click)="Remove(idx)">
+              <ion-icon color="danger" name="close-circle-outline"></ion-icon>
+            </ion-button>
+          </ion-input>
 
-    <ion-item lines="none" 
-              (click)="showTimerPicker()"
-              class="itemClass">
-      <ion-label>
-        <ion-icon name="time-outline" slot="start"></ion-icon>
-      </ion-label>
-          <ion-text *ngIf="[timerView]==''"
-              class="timerPlaceholder">Timer</ion-text> <!--Questo serve a dare un placeholder all'ionItem senza aver bisogno dell'ion-input-->
-          {{timerView}}
-      <ion-icon class="inner" name="caret-down-outline"></ion-icon>
-      <!-- <ion-datetime placeholder ="Timer" displayFormat="HH:mm" [(ngModel)]="myTime"(ionChange)="showTimer()"></ion-datetime> -->
-    </ion-item>
+        </ion-item>
+      </ion-list>
 
-    <ion-item lines="none"
+      <ion-item lines="none">
+        <ion-button fill="clear" class="plus" ion-button (click)="Add()">
+          <ion-icon name="add"></ion-icon>
+        </ion-button>
+      </ion-item>
+
+      <ion-grid>
+        <ion-row>
+          <ion-col size="5">
+
+            <ion-item lines="none" (click)="showTimerPicker()" class="itemClass">
+              <ion-label>
+                <ion-icon name="time-outline" slot="start"></ion-icon>
+              </ion-label>
+              <ion-text *ngIf="[timerView]==''" class="placeholder">Timer</ion-text>
+              <!--Questo serve a dare un placeholder all'ionItem senza aver bisogno dell'ion-input-->
+              <ion-text *ngIf="[timerView]!=''" class="text" style="max-width: 60%;">{{timerView}}</ion-text>
+              <ion-icon class="inner" name="caret-down-outline"></ion-icon>
+            </ion-item>
+          </ion-col>
+
+          <ion-col size="7">
+
+            <ion-item lines="none" (click)="showCategoriaPicker()" class="itemClass">
+              <ion-label>
+                <ion-icon name="bookmark-outline" slot="start"></ion-icon>
+              </ion-label>
+              <ion-text *ngIf="[categoriaView]==''" class="placeholder">Categoria</ion-text>
+              <!--Questo serve a dare un placeholder all'ionItem senza aver bisogno dell'ion-input-->
+              <ion-text *ngIf="[categoriaView]!=''" class="text">{{categoriaView}}</ion-text>
+              <ion-icon class="inner" name="caret-down-outline"></ion-icon>
+            </ion-item>
+          </ion-col>
+
+        </ion-row>
+
+
+        <ion-row style="justify-content: center; padding-top: 15px;">
+          <ion-label>
+            <ion-text (click)="switchCategoria()" color="primary">
+              Non hai trovato la categoria che cercavi?</ion-text>
+          </ion-label>
+        </ion-row>
+      </ion-grid>
+
+
+
+      <!-- <ion-item lines="none"
               class="itemClass">
       <ion-label>
         <ion-icon name = "bookmark-outline"></ion-icon>
@@ -88,16 +107,10 @@
                            value={{categoria.codice_categoria}}>
                            {{categoria.titolo}}</ion-select-option>
       </ion-select>
-    </ion-item>
+    </ion-item> -->
 
 
-    <ion-label>
-      <ion-text (click)="switchCategoria()" 
-                color="primary">
-                Non hai trovato la categoria che cercavi?</ion-text>
-    </ion-label>
-
-<!-- 
+      <!-- 
 <ion-row>
   <ion-col>
     <a href="/proponi-categoria">Non hai trovato la categoria adatta?</a>
@@ -105,7 +118,7 @@
 </ion-row> -->
 
 
-</ion-card-content>
+    </ion-card-content>
 
-</ion-card>  
+  </ion-card>
 </ion-content>
