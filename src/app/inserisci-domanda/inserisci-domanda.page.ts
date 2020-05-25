@@ -19,7 +19,7 @@ export class InserisciDomandaPage implements OnInit {
   titolo = '';
   categorie: any;
   descrizione = '';
-  cod_utente = 'gmailverificata';  //gmailVerificata
+  cod_utente = 'gmailverificata';
   cod_categoria: any;
   url = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/inserisciDomanda'
   urlCategorie = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaCategorie'
@@ -36,10 +36,12 @@ export class InserisciDomandaPage implements OnInit {
     private navCtrl: NavController) { }
 
   ngOnInit() {
+
     this.apiService.prendiCategorie(this.urlCategorie).then(
       (categories) => {
         console.log('Categorie visualizzate con successo', categories);
         this.categorie = categories;
+        console.log(this.categorie);
       },
       (rej) => {
         console.log("C'è stato un errore durante la visualizzazione");
@@ -51,9 +53,39 @@ export class InserisciDomandaPage implements OnInit {
   }
 
   async checkField() {
-    if ((this.titolo.length < 1) || (this.timerToPass == undefined) || (this.cod_categoria == undefined)) {
+    if (this.titolo.length < 1) {
       const alert = await this.alertController.create({
-        header: 'Devi compilare i campi obbligatori!',
+        header: 'Devi inserire un titolo valido!',
+        buttons: [
+          {
+            text: 'Ok',
+            role: 'cancel',
+            cssClass: 'secondary',
+            handler: (blah) => {
+              console.log('Confirm Cancel');
+            }
+          }
+        ]
+      });
+      await alert.present();
+    } else if (this.cod_categoria == undefined) {
+      const alert = await this.alertController.create({
+        header: 'Devi selezionare una categoria!',
+        buttons: [
+          {
+            text: 'Ok',
+            role: 'cancel',
+            cssClass: 'secondary',
+            handler: (blah) => {
+              console.log('Confirm Cancel');
+            }
+          }
+        ]
+      });
+      await alert.present();
+    } else if (this.timerToPass == undefined) {
+      const alert = await this.alertController.create({
+        header: 'Devi impostare un timer!',
         buttons: [
           {
             text: 'Ok',
@@ -81,6 +113,7 @@ export class InserisciDomandaPage implements OnInit {
             text: 'Si',
             handler: () => {
               console.log('Confirm Okay');
+              this.showInsert();
               this.postInvio();
               this.goHome();
             }
@@ -91,11 +124,28 @@ export class InserisciDomandaPage implements OnInit {
     }
   }
 
+  async showInsert() {
+    const alert = await this.alertController.create({
+      header: 'Inserimento avvenuto con successo!',
+      buttons: [
+        {
+          text: 'Ok',
+          handler: () => {
+            console.log('Confirm Okay');
+
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
   async postInvio() {
     this.apiService.inserisciDomanda(this.timerToPass, this.titolo, this.descrizione, this.cod_utente, this.cod_categoria).then(
       (result) => {
 
         console.log('Inserimento avvenuto con successo:', this.titolo, this.timerToPass, this.descrizione, this.cod_utente, this.cod_categoria);
+
       },
       (rej) => {
         console.log('Inserimento non riuscito!');
@@ -115,9 +165,7 @@ export class InserisciDomandaPage implements OnInit {
           handler: (value: any) => {
             console.log(value);
 
-            this.timerView = value['ValoreTimerSettato'].value; //setto timerPopUp al valore inserito nel popUp una volta premuto ok così viene visualizzato
-            //this.timerToPass = value['ValoreTimerSettato'].value; //setto timerPopUp al valore inserito nel popUp una volta premuto ok 
-            /* this.timerToPass = this.timerToPass.split(" ")[0]; //taglio la stringa dopo lo spazio e prendo a partira da carattere zero */
+            this.timerView = value['ValoreTimerSettato'].value;
             this.mappingTimerValueToPass(value['ValoreTimerSettato'].value);
             console.log('timer to pass: ', this.timerToPass);
           }
