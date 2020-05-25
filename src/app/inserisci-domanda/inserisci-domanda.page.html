@@ -35,15 +35,14 @@
 
             <ion-grid>
 
-                <ion-item lines="none" class="itemClass">
+                <ion-item lines="none" (click)="showCategoriaPicker()" class="itemClass">
                     <ion-label>
-                        <ion-icon name="bookmark-outline"></ion-icon>
+                        <ion-icon name="bookmark-outline" slot="start"></ion-icon>
                     </ion-label>
-                    <ion-select interface="action-sheet" placeholder="Categoria" [(ngModel)]="cod_categoria"
-                        cancelText="Annulla">
-                        <ion-select-option *ngFor="let categoria of categorie" value={{categoria.codice_categoria}}>
-                            {{categoria.titolo}}</ion-select-option>
-                    </ion-select>
+                    <ion-text *ngIf="[categoriaView]==''" class="placeholder">Categoria</ion-text>
+                    <!--Questo serve a dare un placeholder all'ionItem senza aver bisogno dell'ion-input-->
+                    <ion-text *ngIf="[categoriaView]!=''" class="text">{{categoriaView}}</ion-text>
+                    <ion-icon class="inner" name="caret-down-outline"></ion-icon>
                 </ion-item>
 
                 <div>

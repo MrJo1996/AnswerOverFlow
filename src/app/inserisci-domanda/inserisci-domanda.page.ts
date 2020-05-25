@@ -28,6 +28,10 @@ export class InserisciDomandaPage implements OnInit {
   timerView; //var per la view dei valori
   timerSettings: string[] = ["5 min", "15 min", "30 min", "1 ora", "3 ore", "6 ore", "12 ore", "1 giorno", "3 giorni"]; //scelte nel picker
 
+  categoriaScelta;
+  categoriaView;
+  categoriaSettings: any = [];
+
   constructor(public apiService: ApiService,
     public alertController: AlertController,
     private pickerController: PickerController,
@@ -39,9 +43,8 @@ export class InserisciDomandaPage implements OnInit {
 
     this.apiService.prendiCategorie(this.urlCategorie).then(
       (categories) => {
-        console.log('Categorie visualizzate con successo', categories);
-        this.categorie = categories;
-        console.log(this.categorie);
+        this.categoriaSettings = categories;
+        console.log('Categorie visualizzate con successo', this.categoriaSettings);
       },
       (rej) => {
         console.log("C'è stato un errore durante la visualizzazione");
@@ -68,7 +71,7 @@ export class InserisciDomandaPage implements OnInit {
         ]
       });
       await alert.present();
-    } else if (this.cod_categoria == undefined) {
+    } else if (this.categoriaScelta == undefined) {
       const alert = await this.alertController.create({
         header: 'Devi selezionare una categoria!',
         buttons: [
@@ -141,7 +144,7 @@ export class InserisciDomandaPage implements OnInit {
   }
 
   async postInvio() {
-    this.apiService.inserisciDomanda(this.timerToPass, this.titolo, this.descrizione, this.cod_utente, this.cod_categoria).then(
+    this.apiService.inserisciDomanda(this.timerToPass, this.titolo, this.descrizione, this.cod_utente, this.categoriaScelta).then(
       (result) => {
 
         console.log('Inserimento avvenuto con successo:', this.titolo, this.timerToPass, this.descrizione, this.cod_utente, this.cod_categoria);
@@ -233,5 +236,42 @@ export class InserisciDomandaPage implements OnInit {
   goBack() {
     this.navCtrl.back();
   }
+
+  async showCategoriaPicker() {
+    let options: PickerOptions = {
+      buttons: [
+        {
+          text: "Annulla",
+          role: 'cancel'
+        },
+        {
+          text: 'Ok',
+          handler: (value: any) => {
+            console.log(value);
+
+            this.categoriaView = value['ValoreCategoriaSettata'].text; //setto timerPopUp al valore inserito nel popUp una volta premuto ok così viene visualizzato
+            this.categoriaScelta = this.categoriaView;
+            console.log('categoria to pass: ', this.categoriaScelta);
+          }
+        }
+      ],
+      columns: [{
+        name: 'ValoreCategoriaSettata', //nome intestazione json dato 
+        options: this.getCategorieOptions()
+      }]
+    };
+
+    let picker = await this.pickerController.create(options);
+    picker.present()
+  }
+
+  getCategorieOptions() {
+    let options = [];
+    this.categoriaSettings.forEach(x => {
+      options.push({ text: x.titolo, value: x.codice_categoria });
+    });
+    return options;
+  }
+
 
 }
