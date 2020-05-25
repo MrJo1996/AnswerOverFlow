@@ -1,4 +1,4 @@
-<ion-header class= "ion-no-border">
+<ion-header class="ion-no-border">
   <ion-toolbar>
     <ion-button slot="start" expand="block" fill="clear" (click)="goBack()" class="msg-btn">
       <ion-icon color="primary" slot="start" slot="icon-only" name="arrow-back-outline"></ion-icon>
@@ -16,9 +16,28 @@
 <ion-content #content [scrollEvents]="true" class="backgrounds" style="overflow: scroll;">
   <ion-grid>
     <ion-row *ngFor="let message of messages; let indexElement=index;">
-      <div class="datarow" *ngIf="messages[indexElement].dataeora === messages[indexElement].dataeora " >
-        <ion-label> {{messages[indexElement].dataeora | date: "fullDate"}}  </ion-label>
+
+
+      <div class="datarow" *ngIf=" indexElement === 0 ">
+        <ion-label *ngIf="messages[indexElement].data !== oggi && messages[indexElement].data !== ieri ">
+          {{messages[indexElement].dataeora | date: "fullDate"}}</ion-label>
+        <ion-label *ngIf="messages[indexElement].data === oggi "><b>Oggi</b></ion-label>
+        <ion-label *ngIf="messages[indexElement].data === ieri "><b>Ieri</b></ion-label>
+
       </div>
+
+      <div class=" datarow"
+        *ngIf=" (indexElement - 1) > 0 && messages[indexElement].data !== messages[indexElement-1].data">
+
+        <ion-label *ngIf="messages[indexElement].data !== oggi && messages[indexElement].data !== ieri ">
+          {{messages[indexElement].dataeora | date: "fullDate"}}</ion-label>
+        <ion-label *ngIf="messages[indexElement].data === oggi "><b>Oggi</b></ion-label>
+        <ion-label *ngIf="messages[indexElement].data === ieri "><b>Ieri</b></ion-label>
+
+      </div>
+
+
+
       <ion-col size="9" class="message other-message" *ngIf="msg_utente_id !== message.msg_utente_id">
         <span>{{message.testo}}</span>
         <div class="time"><br>
@@ -41,7 +60,7 @@
   <ion-toolbar calss="backgroundsSecondaryItem">
     <ion-row style="align-items: center;">
       <ion-col style="padding-inline-start: 10px;" size="10">
-        <ion-textarea class="message-input" [(ngModel)]="testo" placeholder="Messaggio" rows="1">
+        <ion-textarea class="message-input" [(ngModel)]="testo" rows="1" placeholder="Messaggio">
         </ion-textarea>
       </ion-col>
       <ion-col size="2">
@@ -52,3 +71,5 @@
     </ion-row>
   </ion-toolbar>
 </ion-footer>
+
+

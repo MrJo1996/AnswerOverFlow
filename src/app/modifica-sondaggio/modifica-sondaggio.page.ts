@@ -453,4 +453,10 @@ console.log("da mod: ", this.ciao);
       console.log(result);
     }
 
+
+    goBack(){
+      this.navCtrl.pop();
+
+    }
+
 }

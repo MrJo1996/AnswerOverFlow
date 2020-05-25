@@ -1,47 +1,45 @@
-ion-button{
-    ion-icon{
+ion-button {
+    ion-icon {
         font-size: 1.5rem;
     }
 }
 
-ion-title{
+ion-title {
     font-size: 99%;
 }
 
-
-ion-input{
-    ::ng-deep{
-        .native-input.sc-ion-input-md{
+ion-input {
+    ::ng-deep {
+        .native-input.sc-ion-input-md {
             padding-left: 8px;
         }
-        
-        .native-input.sc-ion-input-ios{
+
+        .native-input.sc-ion-input-ios {
             padding-left: 8px;
         }
     }
 }
 
-.delete{
+.delete {
     position: absolute;
     right: 0;
     margin-bottom: 8;
     margin-top: 0;
-
 }
 
-.plus{
+.plus {
     margin-left: auto;
     margin-right: auto;
-    ion-icon{
+    ion-icon {
         font-size: 1.5rem;
         color: var(--ion-color-primary);
     }
 }
 
-.inner{
-    opacity: 0.6; 
+.inner {
+    opacity: 0.6;
     font-size: 0.8rem;
-    margin-left: 4px;
+    margin-left: 2px;
     // left: 5px;
     // top: 50%;
     // margin-top: -3px;
@@ -59,16 +57,25 @@ ion-input{
     // visibility: inherit;
 }
 
-.timerPlaceholder{
-    opacity: 0.4; 
+.placeholder {
+    opacity: 0.4;
 }
 
-.itemClass{
+.itemClass {
     border-radius: 10px;
-    --background: #3171e0;
     margin-top: 10px;
-    }
-    
+    --background: #3171e0;
+}
+
+ion-text.text{
+    max-width: 75%;
+    white-space: nowrap;
+    overflow: hidden !important;
+    text-overflow: ellipsis;
+    // max-height: 10%;
+    // font-size:9vw
+}
+
 // ion-select{
 //     position: fixed;
 //     right: 0;
@@ -87,4 +94,3 @@ ion-input{
 //         color: var(--ion-color-primary);
 //     }
 // }
-

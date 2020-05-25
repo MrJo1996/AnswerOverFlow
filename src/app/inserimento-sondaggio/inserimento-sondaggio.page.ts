@@ -24,10 +24,13 @@ export class InserimentoSondaggioPage implements OnInit {
   categorie: any;
   //parametri per le funzioni
   sondaggioInserito: number;
-  categoriaScelta: number = -1;
+  categoriaScelta;
   titolo: string = "";
   timerToPass: string = "";
   dataeora: any;
+
+  categoriaView;
+  categoriaSettings: any = [];
 
   timerView; //var per la view dei valori
   timerSettings: string[] = ["5 min", "15 min", "30 min", "1 ora", "3 ore", "6 ore", "12 ore", "1 giorno", "3 giorni"]; //scelte nel picker
@@ -47,17 +50,17 @@ export class InserimentoSondaggioPage implements OnInit {
     }
     this.service.prendiCategorie(this.urlCategorie).then(
       (categories) => {
-        console.log('Categorie visualizzate con successo', categories);
-        this.categorie = categories;
+        this.categoriaSettings = categories;
+        console.log('Categorie visualizzate con successo', this.categoriaSettings);
       },
       (rej) => {
-        console.log("C'è stato un errore durante la visualizzazione");
+        console.log("C'è stato un errore");
       }
     );
   }
 
 
-  //Gestisco l'array delle scelte
+  //----------------Array Scelta----------------
   Add() {
     this.scelte.push({ 'value': '' });
   }
@@ -65,40 +68,34 @@ export class InserimentoSondaggioPage implements OnInit {
     this.scelte.splice(index, 1);
   }
 
-  //Porta alla page per proporre una nuova categoria
+  //----------------Routers----------------
   switchCategoria() {
     this.router.navigate(['proponi-categoria']);
   }
-
-  //Torna indietro alla Home
   backButton() {
     this.router.navigate(['home']);
   }
 
+  //----------------Controllo Valori ----------------
   checkField() {
 
     let datoMancante = false;
     let scelteVuote = false;
     let errMex = "Hey, hai dimenticato di inserire";
 
-
-    //Salvo l'ora di inserimento
     var today = new Date();
     var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
     var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
     this.dataeora = date + ' ' + time;
 
-    //Controllo del titolo
     if (this.titolo === "") {
       datoMancante = true;
       errMex = errMex + " il titolo"
     }
-    //delle scelte immesse
+
     for (let scelta of this.scelte) {
-      // console.log("controllo le scelte");
       if (scelta['value'] == "") {
         scelteVuote = true;
-        //  console.log("scelta vuota");
       }
     }
     if (this.scelte.length < 2 || scelteVuote) {
@@ -110,7 +107,7 @@ export class InserimentoSondaggioPage implements OnInit {
         errMex = errMex + " le scelte"
       }
     }
-    //del timer
+
     if (this.timerToPass === "") {
       if (datoMancante) {
         errMex = errMex + ", il timer"
@@ -120,8 +117,8 @@ export class InserimentoSondaggioPage implements OnInit {
         errMex = errMex + " il timer"
       }
     }
-    //della categoria scelta
-    if (this.categoriaScelta == -1) {
+
+    if (this.categoriaScelta == null) {
       if (datoMancante) {
         errMex = errMex + " e la categoria"
       }
@@ -133,6 +130,7 @@ export class InserimentoSondaggioPage implements OnInit {
     this.inserisciSondaggio(datoMancante, errMex)
   }
 
+  //----------------Alert----------------
   async inserisciSondaggio(datiMancanti: Boolean, textAlert: string) {
     if (datiMancanti) {
       const alert = await this.alertController.create({
@@ -174,6 +172,7 @@ export class InserimentoSondaggioPage implements OnInit {
     }
   }
 
+  //----------------Post Finale----------------
   async postInvio() {
     this.service.inserisciSondaggio(this.url, this.timerToPass, this.dataeora, this.emailUtente, this.titolo, this.categoriaScelta).then(
       (sondaggio: number) => {
@@ -189,7 +188,44 @@ export class InserimentoSondaggioPage implements OnInit {
     );
   }
 
-  //PICKER
+  //----------------Picker Categoria----------------
+  async showCategoriaPicker() {
+    let options: PickerOptions = {
+      buttons: [
+        {
+          text: "Annulla",
+          role: 'cancel'
+        },
+        {
+          text: 'Ok',
+          handler: (value: any) => {
+            console.log(value);
+
+            this.categoriaView = value['ValoreCategoriaSettata'].text; //setto timerPopUp al valore inserito nel popUp una volta premuto ok così viene visualizzato
+            this.categoriaScelta = this.categoriaView;
+            console.log('categoria to pass: ', this.categoriaScelta);
+          }
+        }
+      ],
+      columns: [{
+        name: 'ValoreCategoriaSettata', //nome intestazione json dato 
+        options: this.getCategorieOptions()
+      }]
+    };
+
+    let picker = await this.pickerController.create(options);
+    picker.present()
+  }
+
+  getCategorieOptions() {
+    let options = [];
+    this.categoriaSettings.forEach(x => {
+      options.push({ text: x.titolo, value: x.codice_categoria });
+    });
+    return options;
+  }
+
+  //----------------Picker Timer----------------
   async showTimerPicker() {
     let options: PickerOptions = {
       buttons: [

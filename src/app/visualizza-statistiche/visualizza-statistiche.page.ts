@@ -1,8 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
-import Chart from 'chart.js';
+import {Chart} from 'chart.js';
 import {NavController} from "@ionic/angular";
 import { ApiService } from '../providers/api.service';
-
+import { DataService } from "../services/data.service";
 
 @Component({
   selector: 'app-visualizza-statistiche',
@@ -27,19 +27,33 @@ export class VisualizzaStatistichePage {
   sbars: any;
   sdoughnutChart: any;
   lineChart: any;
+  num_domande: any;
 
   Domande = {};
+  codice_categoria = 1;
+  cod_utente = "gmailverificata";
+  domandeTOP = {};
+  num_domandeTOP: any;
+  num_domandeTOP2: any;
+  num_domandeTOP3 : any;
+  num_risposteTOP: any;
+  num_risposteTOP2: any;
+  num_risposteTOP3 : any;
+  risposteTOP: any;
 
   
 
-  constructor(private navCtrl: NavController,public apiService: ApiService) {
+  constructor(private dataService: DataService, private navCtrl: NavController,public apiService: ApiService) {
     
    }
    
 
   ionViewDidEnter() {
-    
-    
+    this.visualizzaStatisticheDomanda();
+    this.visualizzaCategoria();
+    this.visualizzaTOTStatisticheDomanda();
+    this.visualizzaStatitischeRisposta();
+    this.visualizzaTOTStatitischeRisposta();
     this.generateColorArray(8);
     this.createBarChart();
     this.doughnutChartMethod();
@@ -65,16 +79,107 @@ export class VisualizzaStatistichePage {
       }
     }
 
+async visualizzaStatisticheDomanda(){
+
+  this.apiService.get_top_Domande(this.cod_utente).then(
+    (domande) => {
+     console.log(domande['Domande']['data']['0']['num_domande']);
+
+    this.domandeTOP = domande['Domande'];
+    console.log(this.domandeTOP['data']['0'].num_domande);
+    this.num_domandeTOP=this.domandeTOP['data']['0'].num_domande;
+       
+
+        this.num_domandeTOP2=this.domandeTOP['data']['1'].num_domande;
+        this.num_domandeTOP3=this.domandeTOP['data']['2'].num_domande;
+
+        let numdomandeTOP = this.domandeTOP['data']['0'].num_domande;
+        console.log(numdomandeTOP);
+        this.createBarChart();
+
+      
+    },
+    (rej) => {
+      console.log("C'è stato un errore durante la visualizzazione");
+    }
+  )
+}
+
+async visualizzaTOTStatisticheDomanda(){
+
+  this.apiService.get_tot_Domande(this.cod_utente).then(
+    (domandeT) => {
+     console.log(domandeT['Domande']['Data']);
+      
+    },
+    (rej) => {
+      console.log("C'è stato un errore durante la visualizzazione");
+    }
+  )
+}
+
+
+
+
+
+    async visualizzaCategoria() {
+  
+      this.apiService.getCategoria(this.codice_categoria).then(
+        (categoria) => {
+          
+          console.log(categoria['Categoria']['data']['0'].titolo) ;
+         
+        },
+        (rej) => {
+          console.log("C'è stato un errore durante la visualizzazione");
+        }
+      );
+    }
+    
+   async visualizzaStatitischeRisposta(){
+    this.apiService.get_top_Risposte(this.cod_utente).then(
+      (risposte) => {
+       console.log(risposte['Risposte']['Data']);
+       this.risposteTOP = risposte['Risposte'];
+       this.num_risposteTOP=this.risposteTOP['data']['0'].Risposte;
+       
+
+       this.num_risposteTOP2=this.risposteTOP['data']['1'].Risposte;
+       this.num_risposteTOP3=this.risposteTOP['data']['2'].Risposte;
+       this.secondbars();
+
+
+        
+      },
+      (rej) => {
+        console.log("C'è stato un errore durante la visualizzazione");
+      }
+    )
+   }
+
+   async visualizzaTOTStatitischeRisposta(){
+    this.apiService.get_top_Risposte(this.cod_utente).then(
+      (risposteT) => {
+       console.log(risposteT['Risposte']['Data']);
+        
+      },
+      (rej) => {
+        console.log("C'è stato un errore durante la visualizzazione");
+      }
+    )
+   }
+
 
   
   createBarChart() {
+    
     this.bars = new Chart(this.barChart.nativeElement, {
       type: 'bar',
       data: {
         labels: ['Storia', 'Informatica', 'Scienze'],
           datasets: [{
             label: 'Numero di domande',
-            data: [2 , 10 , 5],
+            data: [ this.num_domandeTOP , this.num_domandeTOP2,  this.num_domandeTOP3],
             backgroundColor: this.colorArray, 
             borderColor: this.colorArray, 
             borderWidth: 1
@@ -99,7 +204,7 @@ export class VisualizzaStatistichePage {
         labels:['Storia', 'Informatica', 'Scienze', 'Geografia', 'Filosofia'] ,
         datasets: [{
           label: 'ciaooo',
-          data: ['5', '12', '14', '1', '2'],
+          data: [ , , ],
           backgroundColor: this.colorArray,
           hoverBackgroundColor: this.colorArray
         }]
@@ -114,7 +219,7 @@ export class VisualizzaStatistichePage {
         labels: ['Filosofia', 'Informatica', 'Geografia'],
           datasets: [{
             label: 'Numero di risposte',
-            data: [2 , 10 , 5],
+            data: [this.num_risposteTOP , this.num_risposteTOP2, this.num_risposteTOP3],
             backgroundColor:this.colorArray , 
             borderColor: this.colorArray, 
             borderWidth: 1
@@ -139,7 +244,7 @@ export class VisualizzaStatistichePage {
         labels:['Filosofia', 'Informatica', 'Geografia', 'Scienze', 'Filosofia'] ,
         datasets: [{
           
-          data: ['8', '12', '14', '2', '5' ],
+          data: [8],
           backgroundColor: this.colorArray,
           hoverBackgroundColor: this.colorArray
         }]
@@ -175,7 +280,7 @@ export class VisualizzaStatistichePage {
             pointHoverBorderWidth: 2,
             pointRadius: 1,
             pointHitRadius: 10,
-            data: ['5', '10', '25','26','9'],
+            data: [],
             spanGaps: false,
           }
         ]
