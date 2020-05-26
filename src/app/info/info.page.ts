@@ -10,7 +10,7 @@ import { NavController } from '@ionic/angular';
 export class InfoPage implements OnInit {
 
 
-  constructor(private router: Router, public navCtrl: NavController,) { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
   }
