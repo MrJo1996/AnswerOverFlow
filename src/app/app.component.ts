@@ -41,7 +41,14 @@ export class AppComponent implements OnInit {
       title: 'Nuovo Sondaggio',
       url: '/inserimento-sondaggio',
       icon: 'trail-sign'
+    },
+    {
+      title: 'Informazioni applicazione',
+      url: '/info',
+      icon: 'book'
     }
+
+
   ];
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
 
