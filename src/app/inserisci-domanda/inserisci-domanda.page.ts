@@ -7,6 +7,7 @@ import { PickerController } from "@ionic/angular";
 import { PickerOptions } from "@ionic/core";
 import { Router } from "@angular/router";
 import { NavController } from "@ionic/angular";
+import { Storage } from "@ionic/storage";
 
 @Component({
   selector: 'app-inserisci-domanda',
@@ -19,7 +20,7 @@ export class InserisciDomandaPage implements OnInit {
   titolo = '';
   categorie: any;
   descrizione = '';
-  cod_utente = 'gmailverificata';
+  cod_utente;
   cod_categoria: any;
   url = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/inserisciDomanda'
   urlCategorie = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaCategorie'
@@ -38,7 +39,8 @@ export class InserisciDomandaPage implements OnInit {
     private pickerController: PickerController,
     private router: Router,
     private dataService: DataService,
-    private navCtrl: NavController) { }
+    private navCtrl: NavController,
+    private storage: Storage) { }
 
   ngOnInit() {
 
@@ -52,7 +54,7 @@ export class InserisciDomandaPage implements OnInit {
       }
     );
 
-    this.cod_utente = this.dataService.getEmail_Utente();
+    this.storage.get('utente').then (data => { this.cod_utente = data.email });
 
   }
 
@@ -240,13 +242,13 @@ export class InserisciDomandaPage implements OnInit {
     }
   }
 
-  switchCategoria() {
+  goToCategoria() {
     this.router.navigate(['proponi-categoria']);
   }
 
   goHome() {
     this.router.navigate(['home']);
-  }
+  } 
 
   goBack() {
     this.navCtrl.back();
