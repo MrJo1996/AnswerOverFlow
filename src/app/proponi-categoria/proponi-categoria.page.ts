@@ -31,6 +31,7 @@ export class ProponiCategoriaPage implements OnInit {
     var Filter = require('bad-words'),
     filter = new Filter();
 
+    
     filter.addWords('cazzi');
     
     return filter.isProfane(input);

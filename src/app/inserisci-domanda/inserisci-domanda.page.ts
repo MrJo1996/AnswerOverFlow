@@ -28,6 +28,7 @@ export class InserisciDomandaPage implements OnInit {
   timerView; //var per la view dei valori
   timerSettings: string[] = ["5 min", "15 min", "30 min", "1 ora", "3 ore", "6 ore", "12 ore", "1 giorno", "3 giorni"]; //scelte nel picker
 
+  codCategoriaScelta;
   categoriaScelta;
   categoriaView;
   categoriaSettings: any = [];
@@ -56,9 +57,40 @@ export class InserisciDomandaPage implements OnInit {
   }
 
   async checkField() {
-    if (this.titolo.length < 1) {
+    if ((this.italian_bad_words_check(this.titolo) || this.italian_bad_words_check(this.descrizione))) {
+      const alert = await this.alertController.create({
+        header: 'ATTENZIONE!',
+        subHeader: 'Hai inserito una o più parole non consentite. Rimuoverle per andare avanti',
+        buttons: [
+          {
+            text: 'Ok',
+            role: 'cancel',
+            cssClass: 'secondary',
+            handler: (blah) => {
+              console.log('Confirm Cancel');
+            }
+          }
+        ]
+      });
+      await alert.present();
+    } else if (this.titolo.length < 1 || this.titolo.length > 150) {
       const alert = await this.alertController.create({
         header: 'Devi inserire un titolo valido!',
+        buttons: [
+          {
+            text: 'Ok',
+            role: 'cancel',
+            cssClass: 'secondary',
+            handler: (blah) => {
+              console.log('Confirm Cancel');
+            }
+          }
+        ]
+      });
+      await alert.present();
+    } else if (this.descrizione.length > 1000) {
+      const alert = await this.alertController.create({
+        header: 'Descrizione troppo lunga!',
         buttons: [
           {
             text: 'Ok',
@@ -116,7 +148,6 @@ export class InserisciDomandaPage implements OnInit {
             text: 'Si',
             handler: () => {
               console.log('Confirm Okay');
-              this.showInsert();
               this.postInvio();
               this.goHome();
             }
@@ -127,24 +158,8 @@ export class InserisciDomandaPage implements OnInit {
     }
   }
 
-  async showInsert() {
-    const alert = await this.alertController.create({
-      header: 'Inserimento avvenuto con successo!',
-      buttons: [
-        {
-          text: 'Ok',
-          handler: () => {
-            console.log('Confirm Okay');
-
-          }
-        }
-      ]
-    });
-    await alert.present();
-  }
-
   async postInvio() {
-    this.apiService.inserisciDomanda(this.timerToPass, this.titolo, this.descrizione, this.cod_utente, this.categoriaScelta).then(
+    this.apiService.inserisciDomanda(this.timerToPass, this.titolo, this.descrizione, this.cod_utente, this.codCategoriaScelta).then(
       (result) => {
 
         console.log('Inserimento avvenuto con successo:', this.titolo, this.timerToPass, this.descrizione, this.cod_utente, this.cod_categoria);
@@ -251,7 +266,10 @@ export class InserisciDomandaPage implements OnInit {
 
             this.categoriaView = value['ValoreCategoriaSettata'].text; //setto timerPopUp al valore inserito nel popUp una volta premuto ok così viene visualizzato
             this.categoriaScelta = this.categoriaView;
-            console.log('categoria to pass: ', this.categoriaScelta);
+            this.cod_categoria = value['ValoreCategoriaSettata'].value;
+            this.codCategoriaScelta = this.cod_categoria;
+            console.log('categoria to pass: ', this.codCategoriaScelta);
+
           }
         }
       ],
@@ -273,5 +291,19 @@ export class InserisciDomandaPage implements OnInit {
     return options;
   }
 
+  italian_bad_words_check(input: string) {
+    let list = require('italian-badwords-list');
+    let array = list.array;
+    return array.includes(input);
+  }
+
+  english_bad_words_check(input: string) {
+    var Filter = require('bad-words'),
+      filter = new Filter();
+
+    filter.addWords('cazzi');
+
+    return filter.isProfane(input);
+  }
 
 }
