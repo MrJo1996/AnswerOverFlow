@@ -21,28 +21,34 @@
 
       <ion-item color="light">
         <ion-icon name="happy-outline" slot="start"></ion-icon>
-        <ion-label position="stacked">Username</ion-label>
+        <ion-label position="stacked"><strong>Username</strong>
+        </ion-label>
         <ion-input readonly placeholder={{usernameView}} color="medium" (click)="popupModificaUsername()"></ion-input>
       </ion-item>
     
       <ion-item color="light">
         <ion-icon name="create-outline" slot="start"></ion-icon>
-        <ion-label position="stacked">Nome</ion-label>
+        <ion-label position="stacked"><strong>Nome</strong></ion-label>
         <ion-input placeholder={{nomeView}} color="medium" (click)="popupModificaNome()" ></ion-input>
       </ion-item>
 
       <ion-item color="light">
         <ion-icon name="create-outline" slot="start"></ion-icon>
-        <ion-label position="stacked">Cognome</ion-label>
+        <ion-label position="stacked"><strong>Cognome</strong></ion-label>
         <ion-input placeholder={{cognomeView}} color="medium" (click)="popupModificaCognome()" ></ion-input>
       </ion-item>
 
       <ion-item color="light">
         <ion-icon name="chatbox-outline" slot="start"></ion-icon>
-        <ion-label position="stacked">Bio</ion-label>
+        <ion-label position="stacked"><strong>Bio</strong></ion-label>
         <ion-input placeholder={{bioView}} color="medium" (click)="popupModificaBio()" ></ion-input>
       </ion-item>
-  
+      
+
     </ion-card>
-  
+    
+    <ion-button expand="block" color="light" class="ion-margin" a routerLink="/modifica-password">
+      <ion-text color="danger">Modifica password</ion-text>
+    </ion-button>
+
 </ion-content>

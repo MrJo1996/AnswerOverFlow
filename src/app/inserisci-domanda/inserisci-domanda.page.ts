@@ -7,6 +7,8 @@ import { PickerController } from "@ionic/angular";
 import { PickerOptions } from "@ionic/core";
 import { Router } from "@angular/router";
 import { NavController } from "@ionic/angular";
+import { Storage } from "@ionic/storage";
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-inserisci-domanda',
@@ -19,8 +21,10 @@ export class InserisciDomandaPage implements OnInit {
   titolo = '';
   categorie: any;
   descrizione = '';
-  cod_utente = 'gmailverificata';
+
+  cod_utente;
   cod_categoria: any;
+
   url = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/inserisciDomanda'
   urlCategorie = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaCategorie'
 
@@ -38,7 +42,9 @@ export class InserisciDomandaPage implements OnInit {
     private pickerController: PickerController,
     private router: Router,
     private dataService: DataService,
-    private navCtrl: NavController) { }
+    private navCtrl: NavController,
+    private storage: Storage,
+    public toastController: ToastController) { }
 
   ngOnInit() {
 
@@ -52,7 +58,7 @@ export class InserisciDomandaPage implements OnInit {
       }
     );
 
-    this.cod_utente = this.dataService.getEmail_Utente();
+    this.storage.get('utente').then(data => { this.cod_utente = data.email });
 
   }
 
@@ -148,6 +154,7 @@ export class InserisciDomandaPage implements OnInit {
             text: 'Si',
             handler: () => {
               console.log('Confirm Okay');
+              this.showToast();
               this.postInvio();
               this.goHome();
             }
@@ -240,7 +247,7 @@ export class InserisciDomandaPage implements OnInit {
     }
   }
 
-  switchCategoria() {
+  goToCategoria() {
     this.router.navigate(['proponi-categoria']);
   }
 
@@ -304,6 +311,18 @@ export class InserisciDomandaPage implements OnInit {
     filter.addWords('cazzi');
 
     return filter.isProfane(input);
+  }
+
+  async showToast() {
+    const toast = document.createElement('ion-toast');
+    toast.message = 'Inserimento avvenuto con successo!';
+    toast.duration = 2000;
+    toast.position = "top";
+    toast.style.fontSize = '20px';
+    toast.color = 'success';
+
+    document.body.appendChild(toast);
+    return toast.present();
   }
 
 }

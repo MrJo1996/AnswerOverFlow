@@ -6,6 +6,8 @@ ion-button{
 }
 
 ion-searchbar {
+    margin-top: 10px;
+    margin-bottom: 10px;
     height: 45px !important;
     // --height: 40px;
     // max-width: 400px;
@@ -34,6 +36,7 @@ ion-searchbar {
             }
         }   
 }
+
 
 ion-avatar{
     background-color: var(--ion-text-color);

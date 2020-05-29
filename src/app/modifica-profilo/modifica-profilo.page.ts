@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AlertController} from '@ionic/angular';
 import { DataService } from "../services/data.service";
 import { ApiService } from 'src/app/providers/api.service';
-
+import { NavController } from '@ionic/angular';
 import { PickerController } from "@ionic/angular";
 import { PickerOptions } from "@ionic/core";
 
@@ -34,6 +34,7 @@ export class ModificaProfiloPage implements OnInit {
   profilo = {};
 
   timerSettings: string[] = ["5 min", "15 min", "30 min", "1 ora", "3 ore", "6 ore", "12 ore", "1 giorno", "3 giorni"];
+  
   constructor( private dataService: DataService, public alertController: AlertController,public apiService: ApiService, private pickerController: PickerController) { }
  
   ngOnInit() {
@@ -216,6 +217,7 @@ export class ModificaProfiloPage implements OnInit {
     //View Dati inseriti dopo click sul popup di modifica username. Dal console log ho visto come accedere ai dati ricevuti.
     //this.titoloView = await (await alert.onDidDismiss()).data.values.titolo;
   }
+  
 
   async popupModificaBio() {
     const alert = await this.alertController.create({

@@ -27,8 +27,8 @@
             <br>
 
             <ion-card-title class="textTitleBIG">Descrizione:</ion-card-title>
-            <ion-textarea [(ngModel)]="descrizione" style="border-radius: 7px; padding-left: 5px;"
-                placeholder="  Perchè lo fanno così spesso?" rows="10" class="backgroundsSecondaryItem textSimple">
+            <ion-textarea [(ngModel)]="descrizione" style="border-radius: 7px; padding-left: 5px; "
+                placeholder="  Perchè lo fanno così spesso?" rows="11" class="backgroundsSecondaryItem textSimple" >
             </ion-textarea>
 
             <br>
@@ -59,7 +59,7 @@
 
                 <ion-row style="justify-content: center; padding-top: 15px;">
                     <ion-label>
-                        <ion-text (click)="switchCategoria()" color="primary">Non hai trovato la categoria che cercavi?
+                        <ion-text (click)="goToCategoria()" color="primary">Non hai trovato la categoria che cercavi?
                         </ion-text>
                     </ion-label>
                 </ion-row>

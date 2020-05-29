@@ -338,6 +338,24 @@ export class ApiService {
     });
   }
 
+  prendiUltimoMessaggio(cod_chat: number, url: string) {
+    const body = {
+      cod_chat
+    };
+    const URL = url;
+    return new Promise((resolve, reject) => {
+      this.http.post(URL, body).subscribe(
+        data => {
+          let messaggio = data;
+          resolve(messaggio); 
+        },
+        (err) => {
+          reject("Non sono prensenti messaggi in questa chat");
+        }
+      );
+    });
+  }
+
   prendiCategorie(url: string) {
     const URL = url;
     return new Promise((resolve, reject) => {

@@ -28,9 +28,9 @@ export class AppComponent implements OnInit {
       icon: 'heart'
     },
     {
-      title: 'Archived',
-      url: '/folder/Archived',
-      icon: 'archive'
+      title: 'Nuova domanda',
+      url: '/inserisci-domanda',
+      icon: 'reader'
     },
     {
       title: 'Chat',
