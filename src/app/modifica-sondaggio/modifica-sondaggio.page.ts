@@ -11,6 +11,8 @@ import { NavController } from '@ionic/angular';
 import { __await } from 'tslib';
 
 import { DataService } from "../services/data.service";
+import { Time } from '@angular/common';
+import { timer } from 'rxjs';
 
 @Component({
   selector: 'app-modifica-sondaggio',
@@ -47,7 +49,7 @@ export class ModificaSondaggioPage implements OnInit {
 
   async modify() {
     //se l'utente decide di modificare solo un campo il servizio non effettuava le modifiche. 
-    //In questo modo si settano i paramentri non settati al valore che già avevano.
+    //In questo modo si settano i paramentri non settati al valore che già avevano. 
 
     if (this.timerToPass == null) {
       this.timerToPass = this.timerView;
@@ -55,17 +57,22 @@ export class ModificaSondaggioPage implements OnInit {
     if (this.titoloToPass == null) {
       this.titoloToPass = this.titoloView;
     }
-    if (!this.checkIfThereAreEnglishBadWords(this.titoloToPass) && (!this.checkIfThereAreItalianBadWords(this.titoloToPass))) {
-    this.apiService.modificaSondaggio(this.titoloToPass, this.timerToPass, this.codice_sondaggio).then(
-      (result) => { // nel caso in cui va a buon fine la chiamata
-      },
-      (rej) => {// nel caso non vada a buon fine la chiamata
-        console.log('Modifica effetutata'); //anche se va nel rej va bene, modifiche effettive nel db
 
-      }
-    );
-    } else {
+    if (this.stringLengthChecker()) {
+      this.popupInvalidString();
+    } else if (this.deadlineCheck()) {
+      this.popupSondaggioScaduto();
+    } else if (this.checkIfThereAreEnglishBadWords(this.titoloToPass) || (this.checkIfThereAreItalianBadWords(this.titoloToPass))) {
       this.popupParolaScorretta();
+    } else {
+      this.apiService.modificaSondaggio(this.titoloToPass, this.timerToPass, this.codice_sondaggio).then(
+        (result) => { // nel caso in cui va a buon fine la chiamata
+        },
+        (rej) => {// nel caso non vada a buon fine la chiamata
+          console.log('Modifica effetutata'); //anche se va nel rej va bene, modifiche effettive nel db
+  
+        }
+      );
     }
 
   }
@@ -148,13 +155,6 @@ export class ModificaSondaggioPage implements OnInit {
   async popupConfermaModificheSondaggio() {
     var header = "Conferma modifiche";
     var message = "Vuoi confermare le modifiche effettuate?";
-
-    console.log("da mod: ", this.SCAD);
-console.log("da mod: ", this.ciao);
-     if (this.SCAD) {
-      header = "Sondaggio scaduto";
-      message = "Impossibile modificare, sondaggio scaduto.";
-    } 
 
     const alert = await this.alertController.create({
       header: header,
@@ -456,7 +456,62 @@ console.log("da mod: ", this.ciao);
 
     goBack(){
       this.navCtrl.pop();
-
     }
+
+    async popupSondaggioScaduto() {
+        const alert = await this.alertController.create({
+          header: 'ATTENZIONE',
+          subHeader: 'Subtitle',
+          message: 'Sondaggio scaduto!! !mpossibile effettuare le modifiche!!!',
+          buttons: ['OK']
+        });
+    
+        await alert.present();
+        let result = await alert.onDidDismiss();
+        console.log(result);
+      }
+
+    deadlineCheck(): boolean {
+      var date = new Date(this.sondaggio['0'].dataeora.toLocaleString());
+      console.log(date.getTime());
+      var timer = this.sondaggio['0'].timer;
+      console.log(timer);
+      var dateNow = new Date().getTime();
+  
+  
+      // Since the getTime function of the Date object gets the milliseconds since 1970/01/01, we can do this:
+      var time2 = date.getTime();
+      var seconds = new Date('1970-01-01T' + timer + 'Z').getTime();
+
+      var diff = dateNow - time2;
+  
+      console.log(seconds);
+      console.log(time2);
+      console.log(diff);
+
+      return diff > seconds;
+    }
+
+    stringLengthChecker():boolean {
+
+      if ((this.titoloToPass.length > 300) || !(this.titoloToPass.match(/[a-zA-Z0-9_]+/))) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  async popupInvalidString() {
+    const alert = await this.alertController.create({
+      header: 'ATTENZIONE',
+      subHeader: 'Subtitle',
+      message: 'ATTENZIONE! Hai lasciato un campo vuoto oppure hai superato la lunghezza massima!',
+      buttons: ['OK']
+    });
+
+    await alert.present();
+    let result = await alert.onDidDismiss();
+    console.log(result);
+  }
 
 }
