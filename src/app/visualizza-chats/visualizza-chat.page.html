@@ -1,9 +1,7 @@
 <ion-header no-border>
-  <ion-toolbar no-border>  
+  <ion-toolbar no-border>
 
-    <ion-button slot="start" fill="clear"  
-                ion-button icon-only
-                (click) = "goBack">
+    <ion-button slot="start" fill="clear" ion-button icon-only (click)="goBack">
       <ion-icon name="arrow-back-outline"></ion-icon>
     </ion-button>
 
@@ -11,45 +9,47 @@
 
   </ion-toolbar>
 
-  <ion-searchbar
-                 type="text" 
-                 placeholder="Cerca"
-                 (ionChange)="ricerca($event)"
-  ></ion-searchbar>
-  
+  <ion-searchbar type="text" placeholder="Cerca" (ionChange)="ricerca($event)"></ion-searchbar>
+
 </ion-header>
 
 
 <ion-content>
 
-  <ion-list>
+  <ion-spinner *ngIf="loading" 
+               style="margin-top: 20%; 
+                      margin-left: 45%; 
+                      font-size: 5rem;"></ion-spinner>
 
-    <ion-item-group>
-      <ion-item-divider sticky color="primary" lines="none">
-        <ion-text>
-          <p>Qui è da inserire una costante fatta in TS</p>
-        </ion-text>
-      </ion-item-divider>
+  <ion-card *ngIf="thereAreChats && !loading" style="margin-top: -10px;">
+    <ion-list>
+      <ion-item *ngFor="let singleChat of chat | filtro: testoRicercato: 'cod_utente0' "
+        (click)="mostraMessaggi(singleChat.codice_chat, singleChat.cod_utente0)" button="true">
+        <ion-avatar item-start>
+          <img src="../../assets/img/avatar2.png">
+        </ion-avatar>
+        <ion-label>
+          <h2>{{singleChat.cod_utente0}}</h2>
+          <p>{{singleChat.data.testo}}</p>
+          <p>{{singleChat.data.dataeora | date: "fullDate"}}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-card>
 
-  <!-- <ion-item-divider color="light">Oggi</ion-item-divider> -->
-    <ion-item *ngFor="let utente of chatUtenti | filtro: testoRicercato: 'cod_utente0' "
-                (click) = "mostraMessaggi(utente.codice_chat, utente.cod_utente0)"
-                button = "true">
-      <ion-avatar item-start>
-        <img src="../../assets/img/avatar2.png">
-      </ion-avatar>
-      
-      <!--TODO: aggiungere una card da visualizzare quando non ci sono chat-->
-
-      <ion-label>
-        <h3>{{utente.cod_utente0}}</h3>
-      </ion-label>
-    </ion-item>
-  </ion-item-group>
-  </ion-list>
-
-  <!-- <ion-card *ngIf = "chatUtenti.leng == 0">
-    <ion-text>No chat</ion-text>
-  </ion-card> -->
+  <ion-card *ngIf="!thereAreChats && !loading" style="
+  position:absolute; 
+  top: 30%;
+  margin-top: -25%;
+  text-align: center">
+    <ion-icon name="chatbubble-ellipses-outline" style="font-size:5rem; margin-top:8%"></ion-icon>
+    <ion-text>
+      <h1 style="margin-bottom:20px;
+             margin-left: 10px;
+             margin-right: 10px">
+        La tua lista delle chat è vuota, per iniziare a messaggiare
+        naviga nel profilo di un utente e clicca nel pulsante per messagiare!</h1>
+    </ion-text>
+  </ion-card>
 
 </ion-content>
