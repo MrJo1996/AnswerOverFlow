@@ -30,18 +30,21 @@ export class VisualizzaDomandaPage implements OnInit {
   codice_categoria = 1;
 
   risposte = new Array();
+  profiliUtentiRisposte = new Array();
 
   descrizioneRispostaView;
   descrizioneRispostaToPass;
   risposta = {};
   rispostaCliccata;
+  indexMigliorRisposta: number;
+  private buttonColor: string = "#000";
+  categoria = {};
 
   constructor(private navCtrl:NavController, private dataService: DataService, public apiService: ApiService, private router: Router, public alertController: AlertController) { }
 
   ngOnInit() {
     this.visualizzaDomanda(); 
     this.showRisposte();
-    this.visualizzaCategoria();
   }
 
 
@@ -55,7 +58,7 @@ async visualizzaDomanda() {
   this.codice_domanda = this.dataService.codice_domanda;
   this.apiService.getDomanda(this.codice_domanda).then(
     (domanda) => {
-      console.log('Visualizzato con successo');
+
       
       this.domanda = domanda['data']; 
       
@@ -68,6 +71,7 @@ async visualizzaDomanda() {
       this.cod_preferita = this.domanda['0'].cod_preferita;
       console.log('Domanda: ', this.domanda['0']);
       this.getUserDomanda();
+      this.visualizzaCategoria();
       
   
     },
@@ -109,6 +113,10 @@ async showRisposte() {
       console.log('Visualizzato con successo');
 
       this.risposte = risposte['Risposte']['data'];
+      this.risposte.forEach(element => {
+        this.trovaProfiliUtentiRisposte(element.cod_utente);
+      });
+      
       
       console.log(risposte) 
     },
@@ -118,13 +126,29 @@ async showRisposte() {
   );
 }
 
+async trovaProfiliUtentiRisposte(mailUtenteRisposta){
+  this.apiService.getProfilo(mailUtenteRisposta).then(
+    (profilo) => {
+      this.profiliUtentiRisposte.push(profilo['data']);
+      console.log('profilo trovato con successo', this.profiliUtentiRisposte);
+
+    },
+    (rej) => {
+      console.log("C'è stato un errore durante la visualizzazione del profilo");
+    }
+  );
+
+}
+
+
+
 async visualizzaCategoria() {
   
   this.apiService.getCategoria(this.codice_categoria).then(
     (categoria) => {
-      
-      console.log(categoria['Categoria']['data']['0'].titolo) ;
-     
+      this.categoria = categoria['Categoria']['data']['0'].titolo;
+     console.log("questa è datacategoria",categoria['Categoria']['data']['0'].titolo );
+     console.log(this.categoria );
     },
     (rej) => {
       console.log("C'è stato un errore durante la visualizzazione");
@@ -135,11 +159,11 @@ async visualizzaCategoria() {
 async cancellaDomanda() {
   this.apiService.rimuoviDomanda(this.codice_domanda).then(
     (risultato) => {
-      console.log('eliminata');
+      //console.log('eliminata');
 
     },
     (rej) => {
-      console.log("C'è stato un errore durante l'eliminazione");
+      //console.log("C'è stato un errore durante l'eliminazione");
     }
   );
 }
@@ -148,11 +172,11 @@ async getUserDomanda(){
   this.apiService.getProfilo(this.domandaMailUser).then(
     (profilo) => {
       this.profiloUserDomanda = profilo['data']['0'];
-      console.log('profilo trovato con successo', this.profiloUserDomanda);
+      //console.log('profilo trovato con successo', this.profiloUserDomanda);
 
     },
     (rej) => {
-      console.log("C'è stato un errore durante la visualizzazione del profilo");
+      //console.log("C'è stato un errore durante la visualizzazione del profilo");
     }
   );
 
@@ -219,7 +243,7 @@ clickRisposta(risposta, i){
   if(this.risposte[i]['cod_utente'] === this.currentMailUser){
 
   this.dataService.codice_risposta = risposta.codice_risposta;
-  console.log(this.dataService.getCodiceRisposta());
+ 
 
   this.rispostaCliccata = risposta;
 
@@ -259,6 +283,16 @@ clickRisposta(risposta, i){
     let result = await alert.onDidDismiss();
     console.log(result);
   }
+
+  changeColor(){
+    if(this.buttonColor === "#000")
+    this.buttonColor = "#fff";
+    else
+    this.buttonColor = "#000";
+
+  }
+
+
 
 /*   async showDescrizioneRisposta() {
     this.apiService.getRisposta(this.dataService.getCodiceRisposta()).then(

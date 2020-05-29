@@ -48,7 +48,7 @@
               <ion-icon name="calendar-outline" slot = start class = "calendar_icon_style"></ion-icon>
               <ion-label class= "description_text" slot = "start" >{{dataeoraView}}</ion-label>
               <ion-icon name="list" slot = "start"  class = "icon_list_style"></ion-icon>
-              <ion-label class= "description_text" slot = "start" >categoriaaaa</ion-label>
+              <ion-label class= "description_text" slot = "start" >{{categoria}}</ion-label>
                
 
           </ion-toolbar>
@@ -62,14 +62,13 @@
               <ion-avatar  slot="start" class="icon-avatar" >
                 <img src="https://avatars3.githubusercontent.com/u/14333644?s=460&u=c6cf7b831fd7afd92292677dc5543c858e1e05a8&v=4">
               </ion-avatar>
-              <ion-label *ngIf="currentMailUser!==risposta.cod_utente" class = "username_text_style">{{risposta.cod_utente}}</ion-label>
+              <ion-label *ngIf="currentMailUser!==risposta.cod_utente" class = "username_text_style">{{profiliUtentiRisposte[i]['0'].username}}</ion-label>
               <ion-label *ngIf="currentMailUser===risposta.cod_utente " class = "username_text_style">Tu</ion-label>
               <ion-icon name="ribbon" *ngIf="risposta.codice_risposta===cod_preferita"  class="ribbon_style" slot="end"></ion-icon>
               <ion-label slot = "end" class = "textTitleSMALL">{{risposta.num_like}}</ion-label>
-              <ion-icon name="thumbs-up-sharp" class="thumb_up_style" slot= "end" ></ion-icon>
-
-              <ion-label slot = "end" class = "textTitleSMALL">{{risposta.num_dislike}}</ion-label>
-              <ion-icon name="thumbs-down-sharp" class="thumb_down_style" slot= "end" ></ion-icon>
+              <ion-icon name="chevron-up-circle-outline" class="thumb_up_style" slot= "end" ></ion-icon>
+             <ion-label slot = "end" class = "textTitleSMALL">{{risposta.num_dislike}}</ion-label>
+              <ion-icon name="chevron-down-circle-outline" class="thumb_down_style" slot= "end" ></ion-icon>
 
             </ion-toolbar>
           </ion-card-header>
@@ -82,10 +81,10 @@
                 <ion-label class= "description_text"  slot="start" ></ion-label>
             
               
-              <ion-button  slot="end" expand="block" fill="clear">
-                <ion-icon color="white" class="icons_generic_style" name="heart-outline" ></ion-icon>
+             <ion-button  (click)="changeColor()" slot="end" expand="block" fill = "clear">
+                <ion-icon [style.backgroundColor]="buttonColor" slot="start" slot="icon-only"  name="heart-outline" ></ion-icon>
               </ion-button>
-  
+       
             </ion-toolbar>
               
           </ion-card-content>
