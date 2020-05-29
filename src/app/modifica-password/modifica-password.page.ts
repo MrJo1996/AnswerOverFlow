@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController} from '@ionic/angular';
+import {NavController} from "@ionic/angular";
+import { Router } from "@angular/router";
 
 import { ApiService } from 'src/app/providers/api.service';
 
@@ -16,7 +18,7 @@ import { PickerOptions } from "@ionic/core";
 
 export class ModificaPasswordPage implements OnInit {
 
-  constructor(public alertController: AlertController,public apiService: ApiService, private pickerController: PickerController) { }
+  constructor(public alertController: AlertController,public apiService: ApiService, private pickerController: PickerController, private navCtrl: NavController,private router: Router) { }
 
 
   email: string; //param per le funzioni
@@ -52,9 +54,6 @@ export class ModificaPasswordPage implements OnInit {
   }
 
 
-  goback(){}
-
-
 
   ngOnInit() {
 
@@ -62,13 +61,51 @@ export class ModificaPasswordPage implements OnInit {
     this.password = 'password'
   }
 
+  is_email_valid(email: string){
+    var format: RegExp;
+
+    format = /^([a-zA-z0-9_.\-/])+\@([a-zA-z0-9_.\-/])+\.([a-zA-Z]{2,4})$/;
+    if(!format.test(email)){
+      return false;
+    }
+    return true;
+  }
+
   async modify() {
 
     if(this.password.length < 8){
-      alert('password troppo corta')
+      const alert = await this.alertController.create({
+        header: 'Password troppo corta. Utilizzare una password con almeno 8 caratteri',
+        buttons: [
+          {
+            text: 'Ok',
+            role: 'cancel',
+            cssClass: 'secondary',
+            handler: (blah) => {
+              console.log('Confirm Cancel: blah');
+            }
+          }
+        ]
+      });
+      await alert.present();
     }
+     
+    
     else if (this.password != this.confermapassword){
-      alert('password non coincidono');
+      const alert = await this.alertController.create({
+        header: 'Le password non coincidono',
+        buttons: [
+          {
+            text: 'Ok',
+            role: 'cancel',
+            cssClass: 'secondary',
+            handler: (blah) => {
+              console.log('Confirm Cancel: blah');
+            }
+          }
+        ]
+      });
+      await alert.present();
     }else{
       
       this.apiService.modificaPassword(this.password, this.email).then(
@@ -84,6 +121,10 @@ export class ModificaPasswordPage implements OnInit {
 
   }
 
+}
+
+goback(){
+  this.router.navigate(['home']);
 }
 
 }

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from "@angular/router";
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-info',
@@ -8,9 +10,14 @@ import { Component, OnInit } from '@angular/core';
 export class InfoPage implements OnInit {
 
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
+  }
+
+
+  goback(){
+    this.router.navigate(['home']);
   }
 
 }

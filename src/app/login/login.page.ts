@@ -65,7 +65,7 @@ export class LoginPage implements OnInit {
 
     if (condizione) {
 
-      this.storage.set('utente', data.utente);
+      this.storage.set('utente', data.data[0]);
       this.storage.set('session', true);
       console.log('false', data);
       this.click = true;
