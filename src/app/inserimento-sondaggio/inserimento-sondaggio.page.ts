@@ -6,6 +6,7 @@ import { PickerOptions } from "@ionic/core";
 import { isEmptyExpression } from '@angular/compiler';
 import { Router } from '@angular/router';
 import { DataService } from '../services/data.service';
+import { Storage } from "@ionic/storage";
 
 @Component({
   selector: 'app-inserimento-sondaggio',
@@ -40,14 +41,11 @@ export class InserimentoSondaggioPage implements OnInit {
     private pickerController: PickerController,
     public alertController: AlertController,
     private router: Router,
-    private data: DataService) { }
+    private data: DataService,
+    private storage: Storage) { }
 
   ngOnInit() {
-    if (this.data.emailUtente != undefined) {
-      this.emailUtente = this.data.emailUtente;
-    } else {
-      this.emailUtente = "gmailverificata"
-    }
+    this.storage.get('utente').then (data => { this.emailUtente = data.email });
     this.service.prendiCategorie(this.urlCategorie).then(
       (categories) => {
         this.categoriaSettings = categories;
@@ -80,6 +78,7 @@ export class InserimentoSondaggioPage implements OnInit {
   checkField() {
     let datoMancante = false;
     let scelteVuote = false;
+    let scelteScorrette = false;
     let errMex = "Hey, hai dimenticato di inserire";
 
     var today = new Date();
@@ -93,6 +92,9 @@ export class InserimentoSondaggioPage implements OnInit {
     }
 
     for (let scelta of this.scelte) {
+      if (this.italian_bad_words_check(scelta['value'])){
+        scelteScorrette = true;
+      }
       if (scelta['value'] == "") {
         scelteVuote = true;
       }
@@ -126,12 +128,28 @@ export class InserimentoSondaggioPage implements OnInit {
         errMex = errMex + " la categoria"
       }
     }
-    this.inserisciSondaggio(datoMancante, errMex)
+    this.inserisciSondaggio(datoMancante,scelteScorrette, errMex)
   }
 
   //----------------Alert----------------
-  async inserisciSondaggio(datiMancanti: Boolean, textAlert: string) {
-    if (datiMancanti) {
+  async inserisciSondaggio(datiMancanti: Boolean, scelteScorrette, textAlert: string) {
+    if ((this.italian_bad_words_check(this.titolo) || scelteScorrette)) {
+      const alert = await this.alertController.create({
+        header: 'ATTENZIONE!',
+        subHeader: 'Hai inserito una o più parole non consentite. Rimuoverle per andare avanti',
+        buttons: [
+          {
+            text: 'Ok',
+            role: 'cancel',
+            cssClass: 'secondary',
+            handler: (blah) => {
+              console.log('Confirm Cancel');
+            }
+          }
+        ]
+      });
+      await alert.present();
+    } else if (datiMancanti) {
       const alert = await this.alertController.create({
         header: 'Errore',
         message: textAlert,
@@ -294,6 +312,21 @@ export class InserimentoSondaggioPage implements OnInit {
         this.timerToPass = "72:00";
         break;
     }
+  }
+
+  italian_bad_words_check(input: string) {
+    let list = require('italian-badwords-list');
+    let array = list.array;
+    return array.includes(input);
+  }
+
+  english_bad_words_check(input: string) {
+    var Filter = require('bad-words'),
+      filter = new Filter();
+
+    filter.addWords('cazzi');
+
+    return filter.isProfane(input);
   }
 
 }
