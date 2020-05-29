@@ -78,7 +78,6 @@ export class InserimentoSondaggioPage implements OnInit {
 
   //----------------Controllo Valori ----------------
   checkField() {
-
     let datoMancante = false;
     let scelteVuote = false;
     let errMex = "Hey, hai dimenticato di inserire";

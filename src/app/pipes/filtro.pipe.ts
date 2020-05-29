@@ -13,7 +13,7 @@ export class FiltroPipe implements PipeTransform {
       return array;
     }
 
-    text.toLowerCase();
+    text = text.toLowerCase();
 
     return array.filter( item => {
       return item[colonna].toLowerCase()
