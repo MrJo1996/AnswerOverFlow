@@ -507,8 +507,8 @@ export class ApiService {
   segnala_utente(segnalazione: string ,utente_segnalato: string, email_utente_segnalato: string){
     const body ={
       segnalazione,
-      utente_segnalato: 'frova',
-      email_utente_segnalato: 'prova'
+      utente_segnalato,
+      email_utente_segnalato
     };
     return new Promise((resolve, reject)=>{
       this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/segnala_utente', body).subscribe(

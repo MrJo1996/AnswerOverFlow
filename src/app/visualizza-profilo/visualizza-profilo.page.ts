@@ -6,6 +6,7 @@ import { ApiService } from 'src/app/providers/api.service';
 import { Chart } from 'chart.js';
 import {NavController} from "@ionic/angular";
 import { DataService } from '../services/data.service';
+import {Storage} from '@ionic/storage';
 
 
 @Component({
@@ -26,10 +27,15 @@ export class VisualizzaProfiloPage implements OnInit {
     private alertController: AlertController,
     private apiService: ApiService,
     private navCtrl: NavController,
-    private dataService: DataService
-  
+    private dataService: DataService,
+    private storage: Storage
     
     ){
+
+      this.storage.get('utente').then(data => {
+        this.userId = data.email;
+    });
+    
 
      }
 
@@ -42,32 +48,30 @@ export class VisualizzaProfiloPage implements OnInit {
     this.navCtrl.back();
   }
 
+  goToProfile() {
+    this.dataService.emailOthers = this.profilo.email;
+    this.router.navigateByUrl("/chat");
+    
+  }
+
   stats(){
     this.router.navigate(['visualizza-statistiche']);
   }
 
-
-  
-  /* UserProfileViewId = "gmailverificata";
-  Username = 'giotto';
-  Email = 'matitinaCom'; //matitinaCom
-  Nome = 'giovanni';
-  Cognome = 'otto';
-  Bio = 'disegno cazzi sui muri'; */
-
   
   userProfileId = this.dataService.getEmailOthers()
+  userId: string;
   profilo: any;
-
-
-
+  segnalazione: string;
+  //note:string = "prova textx area"
+  
   
   async selectProfile() {
      this.apiService.getProfilo(this.userProfileId).then(
       (data) => {
         console.log('Visualizzato con successo');
         this.profilo = data['data'][0];
-        console.log(this.profilo.bio);
+        //console.log(this.profilo.bio);
 
       },
       (rej) => {
@@ -78,8 +82,8 @@ export class VisualizzaProfiloPage implements OnInit {
 
 
   segnalaUtente(){
-    
-        this.apiService.segnala_utente("giogiogio","piopiopio","nonononon").then(
+
+        this.apiService.segnala_utente(this.segnalazione,this.profilo.username ,this.profilo.email).then(
           (result)=>{
             console.log("Segnalazione inviata con successo")
           }, (rej)=>{
@@ -88,10 +92,6 @@ export class VisualizzaProfiloPage implements OnInit {
         );
       } 
     
-
-
-
-
 
 
 async showAlertView() {
@@ -136,6 +136,7 @@ async confirmSpamAlert() {
         text: 'Si',
         handler: () => {
           console.log('Invia segnalazione: spam');
+          this.segnalazione = " Spam"
           this.segnalaUtente();
         }
       }
@@ -165,8 +166,10 @@ async confirmAboutAlert() {
         }
       }, {
         text: 'Conferma',
-        handler: () => {
-          console.log('Invia segnalazione: altro');
+        handler: (res) => {
+          this.segnalazione = res.Segnala;
+          this.segnalaUtente();
+          console.log('Invia segnalazione: altro:' , res.Segnala);
         }
       }
     ]
@@ -175,6 +178,10 @@ async confirmAboutAlert() {
 }
 
 
+goToHome(){
+
+  this.router.navigate(['/home'])
+}
 
 
 }

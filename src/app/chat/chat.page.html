@@ -5,7 +5,7 @@
     </ion-button>
 
     <ion-title style="font-size: x-large; text-align: center;"><b>{{chatFriend}}</b></ion-title>
-    <ion-avatar slot="end" class="icon-avatar" (click)="goToProfile()">
+    <ion-avatar slot="end" class="icon-avatar" (click)="goToProfile()" > 
       <img
         src="https://ladante.it/images/slideshow_homepage/2015/07luglio/le100parole-del-gusto/foto-in-cerchio/bruno-vespa-96x96-tonde.png">
     </ion-avatar>
@@ -14,14 +14,14 @@
 </ion-header>
 
 <ion-content #content [scrollEvents]="true" class="backgrounds" style="overflow: scroll;">
-  <ion-grid>
-    <ion-row *ngFor="let message of messages; let indexElement=index;">
+  <ion-grid >
+    <ion-row  *ngFor="let message of messages; let indexElement=index;" >
 
 
       <div class="datarow" *ngIf=" indexElement === 0 ">
-        <ion-label *ngIf="messages[indexElement].data !== oggi && messages[indexElement].data !== ieri ">
-          {{messages[indexElement].dataeora | date: "fullDate"}}</ion-label>
-        <ion-label *ngIf="messages[indexElement].data === oggi "><b>Oggi</b></ion-label>
+        <ion-label *ngIf="messages[indexElement]?.data !== oggi && messages[indexElement].data !== ieri ">
+          <b>{{message.data}}</b></ion-label>
+        <ion-label *ngIf="messages[indexElement]?.data === oggi "><b>Oggi</b></ion-label>
         <ion-label *ngIf="messages[indexElement].data === ieri "><b>Ieri</b></ion-label>
 
       </div>
@@ -30,7 +30,7 @@
         *ngIf=" (indexElement - 1) > 0 && messages[indexElement].data !== messages[indexElement-1].data">
 
         <ion-label *ngIf="messages[indexElement].data !== oggi && messages[indexElement].data !== ieri ">
-          {{messages[indexElement].dataeora | date: "fullDate"}}</ion-label>
+          <b>{{message.data}}</b></ion-label>
         <ion-label *ngIf="messages[indexElement].data === oggi "><b>Oggi</b></ion-label>
         <ion-label *ngIf="messages[indexElement].data === ieri "><b>Ieri</b></ion-label>
 

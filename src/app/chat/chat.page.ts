@@ -5,6 +5,8 @@ import { PostServiceService } from "../services/post-service.service";
 import { DataService } from "../services/data.service";
 import { NavController } from "@ionic/angular";
 import { Router } from "@angular/router";
+import {Storage} from '@ionic/storage';
+
 
 @Component({
   selector: "app-chat",
@@ -14,6 +16,10 @@ import { Router } from "@angular/router";
 export class ChatPage implements OnInit {
   request: Promise<any>;
   result: Promise<any>;
+
+  @ViewChild("content", { read: IonContent, static: false })
+  myContent: IonContent;
+
   showMessagesUrl =
     "http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaMessaggi";
   sendMessageUrl =
@@ -22,81 +28,111 @@ export class ChatPage implements OnInit {
     "http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/creachat";
   findChatUrl =
     "http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/trovachat";
+  viewUserUrl =
+    "http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaProfilo";
 
-  @ViewChild("content", { read: IonContent, static: false })
-  myContent: IonContent;
 
   constructor(
     private service: PostServiceService,
     private dataService: DataService,
     private router: Router,
-    private navCtrl: NavController
-  ) {}
+    private navCtrl: NavController,
+    public storage: Storage
+  ) {
+      this.storage.get('utente').then(data => {
+        this.msg_utente_id = data.email;
+        //console.log(this.msg_utente_id)
+      })
 
-  ngOnInit() {
-    //this.cod_chat = this.dataService.codice_chat;
-    this.oggi = this.getToday();
-    this.ieri = this.getYesterday();
-    
-    this.flag = true;
-    this.findChat();
-    this.showMessages();
-    setTimeout(() => {
-      this.scrollToBottoms(0);
-    }, 1500);
+      this.chatFriend_id = this.dataService.getEmailOthers();     
+      this.cod_chat = this.dataService.getCodice_chat();
 
-    this.refreshMessages();
 
-    //this.cod_chat = this.dataService.codice_chat;
-    // this.findChat();
+
+
   }
+  
 
-  textMessage;
-  chat;
-  currentUser = "giovanni";
-  chatFriend = "paolo";
-  chatFriend_id = "pippo.cocainasd.com";
-  msg_utente_id = "email"; //gmailverificata giorgiovanni
-  cod_utente1 = "";
+  chatFriend: string;
+  chatFriend_id: string; // = "pippo.cocainasd.com";
+  msg_utente_id: string; //gmailverificata giorgiovanni
   cod_chat = null;
   testo = "";
   visualizzato = 0;
   messages = new Array();
-  data: string;
   oggi;
   ieri;
-  prova
   flag;
+  textMessage;
 
-  ///////////////////////////////////////
+  
+  ngOnInit() {
+    //this.cod_chat = this.dataService.codice_chat;
+    
+    this.selectChatFriend();
 
-  goBack() {
-    this.navCtrl.back();
-    this.flag = false;
+    this.oggi = this.setDate(this.getToday());
+    this.ieri = this.setDate(this.getYesterday());
+    this.flag = true;
+   
+    if(this.cod_chat === null ){
+    this.findChat(); 
+    }
+      this.showMessages();
+     
+      setTimeout(() => {
+         this.scrollToBottoms(0);
+      }, 1200);
+
+      this.refreshMessages();
+    
   }
+
+  
+ 
+  /////////////////////////////////////////
+
+
+
+  selectChatFriend() {
+    let postData = {
+      email: this.chatFriend_id,
+    };
+
+    this.result = this.service.postService(postData, this.viewUserUrl).then(
+      (data) => {
+        this.request = data;
+        //console.log(data.Profilo);
+        this.chatFriend = data.Profilo.data[0].username;
+ 
+      },
+      (err) => {
+        console.log(err.message);
+      }
+    );
+  }
+
+
 
   /////////////////////////////////////
   showMessages() {
-
-    
-
     let postData = {
-      cod_chat: this.cod_chat,
+      cod_chat: this.cod_chat
     };
-
     this.result = this.service.postService(postData, this.showMessagesUrl).then(
       (data) => {
         //this.giorno = new Date();
         this.request = data;
         console.log(data);
         this.messages = data.Messaggi.data;
-      
+
         for (let i = 0; i < this.messages.length; i++) {
           let data = this.messages[i].dataeora;
           let dataMessaggio = data.substring(0, 10);
-         // console.log(this.getYesterday(), this.getToday());
-
+          // console.log(this.getYesterday(), this.getToday());
+          dataMessaggio = this.setDate(dataMessaggio);
           this.messages[i]["data"] = dataMessaggio;
+         
         }
       },
       (err) => {
@@ -117,9 +153,8 @@ export class ChatPage implements OnInit {
         console.log(data);
         console.log("Chat creata");
         this.cod_chat = data.Chat.cod_chat;
-        console.log(this.cod_chat);
+       // console.log(this.cod_chat);
         this.sendMessage();
-        
       },
       (err) => {
         console.log(err.message);
@@ -139,7 +174,7 @@ export class ChatPage implements OnInit {
         this.request = data;
         console.log(data);
 
-        console.log(data.Chat.data);
+       // console.log(data.Chat.data);
         this.cod_chat = data.Chat.data;
         this.showMessages();
         this.scrollToBottoms(0);
@@ -154,8 +189,6 @@ export class ChatPage implements OnInit {
 
   /////////////////////////////////////////
   sendMessage() {
-
-
     if (this.cod_chat === null) {
       this.createChat();
       console.log(this.cod_chat);
@@ -168,9 +201,9 @@ export class ChatPage implements OnInit {
       };
 
       let messageData = postData;
-      messageData["data"] = this.getToday();
+      messageData["data"] = this.oggi;
       messageData["dataeora"] = new Date();
-      
+
       console.log(messageData);
 
       this.messages.push(messageData);
@@ -198,7 +231,6 @@ export class ChatPage implements OnInit {
   ///////////////////////////////////////////
 
   clicca() {
-    
     this.textMessage = this.testo;
     this.sendMessage();
     this.testo = "";
@@ -207,7 +239,13 @@ export class ChatPage implements OnInit {
 
   goToProfile() {
     this.dataService.emailOthers = this.chatFriend_id;
-    this.router.navigateByUrl("/visualizza-profilo");
+    this.router.navigate(['visualizza-profilo']);
+    this.flag = false;
+  }
+
+  
+  goBack() {
+    this.navCtrl.back();
     this.flag = false;
   }
 
@@ -220,13 +258,12 @@ export class ChatPage implements OnInit {
   }
 
   refreshMessages() {
-    
-    if (this.flag === true) {
+   // if (this.flag === true) {
       setTimeout(() => {
         this.showMessages();
         this.refreshMessages();
       }, 6000);
-    }
+   // }
   }
 
   getToday() {
@@ -243,6 +280,39 @@ export class ChatPage implements OnInit {
     giorno.setDate(giorno.getDate() - 1);
     return giorno.toISOString().split("T")[0];
   }
+
+  setDate(date) {
+
+    let gg = new Date(date);
+    let weekday: string[] = [
+      "Domenica",
+      "Lunedì",
+      "Martedì",
+      "Mercoledì",
+      "Giovedì",
+      "Venerdì",
+      "Sabato"
+      
+    ];
+
+    const dateTimeFormat = new Intl.DateTimeFormat("it", {
+      year: "numeric",
+      month: "short",
+      day: "2-digit",
+    });
+    const [
+      { value: day },
+      ,
+      { value: month },
+      ,
+      { value: year },
+    ] = dateTimeFormat.formatToParts(gg);
+    return  weekday[gg.getDay()] + ", " + day + " " + month + " " + year;
+  }
+
+
+
+
 }
 
 /* 

@@ -7,8 +7,9 @@
 
     <ion-title style="font-size: x-large; text-align: center;"><b>Visualizza profilo</b></ion-title>
 
-    <ion-button slot="end" expand="block" fill="clear" (click)="selectProfile()" class="msg-btn">
-      <ion-icon color="primary" slot="end" slot="icon-only" name="checkmark-sharp"></ion-icon>
+    <!--   -->
+    <ion-button *ngIf="userId !== userProfileId" slot="end" expand="block" fill="clear" (click)="goToHome()" class="msg-btn" >  
+    <ion-img  slot="end" class = "logo-btn" src = "/assets/img/logo AnswerOverFlow.png"></ion-img>    
     </ion-button>
 
   </ion-toolbar>
@@ -57,12 +58,13 @@
 
     </ion-card>
 
-    <p></p>
-    <ion-button *ngIf="Email !== UserProfileViewId" color="light" class="ion-button">Invia messaggio</ion-button>
+    <ion-button *ngIf="userId !== userProfileId" color="light" class="ion-button"  (click)="goToProfile()">Invia messaggio</ion-button>
     <ion-button color="primary" class="ion-button" (click)="stats()">Visualizza statistiche</ion-button>
-    <ion-button *ngIf="Email !== UserProfileViewId" (click)="showAlertView()" color="danger" class="ion-button">Segnala
+    <ion-button *ngIf="userId !== userProfileId" (click)="showAlertView()" color="danger" class="ion-button">Segnala
       Utente</ion-button>
 
+
+<!--       <ion-textarea  rows = 5 placeholder="Tap here"   [(ngModel)]="note" name="note" autocomplete="on" autocorrect="on"></ion-textarea>  --> 
   </ion-content>
 
 </ion-content>

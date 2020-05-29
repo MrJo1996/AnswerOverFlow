@@ -320,6 +320,7 @@ export class InserisciDomandaPage implements OnInit {
     toast.position = "top";
     toast.style.fontSize = '20px';
     toast.color = 'success';
+    //toast.cssClass = " -- background" ;
 
     document.body.appendChild(toast);
     return toast.present();
