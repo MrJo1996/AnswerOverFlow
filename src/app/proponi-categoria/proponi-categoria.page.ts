@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AlertController, NavController } from '@ionic/angular';
 import { ApiService } from '../providers/api.service';
 import { DataService } from '../services/data.service';
+import { Storage } from "@ionic/storage";
 
 @Component({
   selector: 'app-proponi-categoria',
@@ -13,13 +14,18 @@ export class ProponiCategoriaPage implements OnInit {
 
   selezione = '';
   proposta =  '';
+  cod_utente;
   request: Promise<any>;
   result: Promise<any>;
 
-  constructor(public apiService: ApiService, public alertController: AlertController, private router: Router, private navCtrl: NavController, private dataService: DataService) { }
+  constructor(public apiService: ApiService, private storage: Storage, public alertController: AlertController, private router: Router, private navCtrl: NavController, private dataService: DataService) { }
 
   ngOnInit() {
-  }
+    this.storage.get('utente').then(
+      (data)=>{
+        this.cod_utente = data.email
+      });
+    }
 
   italian_bad_words_check(input: string){
     let list = require('italian-badwords-list');
@@ -37,31 +43,33 @@ export class ProponiCategoriaPage implements OnInit {
     return filter.isProfane(input);
   }
 
-  async bad_words_alert(){
-    const alert = await this.alertController.create({
-      header: 'ATTENZIONE!',
-      subHeader: 'Hai inserito una o più parole non consentite. Rimuoverle per andare avanti',
-      buttons: ['OK']
-    });
-    await alert.present();
-    let result = await alert.onDidDismiss();
-    console.log(result);
+  bad_words_toast(){
+    const toast = document.createElement('ion-toast');
+    toast.message = 'Hai inserito una o più parole non consentite!';
+    toast.duration = 2000;
+    toast.position = "middle";
+    toast.style.fontSize = '20px';
+    toast.color = 'danger';
+    toast.style.textAlign = 'center';
+    document.body.appendChild(toast);
+    return toast.present();    
   }
 
-  async max_lenght_exceeded_alert(){
-    const alert = await this.alertController.create({
-      header: 'ATTENZIONE!',
-      subHeader: 'Il nome inserito per la nuova categoria o sottocategoria è troppo lungo. Inserire una nuova proposta',
-      buttons: ['OK']
-    });
-    await alert.present();
-    let result = await alert.onDidDismiss();
-    console.log(result);
+  max_lenght_exceeded_toast(){
+    const toast = document.createElement('ion-toast');
+    toast.message = 'Il nome inserito per la nuova categoria o sottocategoria è troppo lungo!';
+    toast.duration = 2000;
+    toast.position = "middle";
+    toast.style.fontSize = '20px';
+    toast.color = 'danger';
+    toast.style.textAlign = 'center';
+    document.body.appendChild(toast);
+    return toast.present();
   }
 
   post_invio(){
-    if(this.proposta.length > 15){
-      this.max_lenght_exceeded_alert();
+    if(this.proposta.length>20){
+      this.max_lenght_exceeded_toast();
     } else{
       if((!this.english_bad_words_check(this.proposta)) && (!this.italian_bad_words_check(this.proposta))){
         this.apiService.proponi_categoria(this.selezione, this.proposta).then(
@@ -73,7 +81,7 @@ export class ProponiCategoriaPage implements OnInit {
         );
         this.goToConfirm();
       } else{
-        this.bad_words_alert();
+        this.bad_words_toast();
       }
     }
   }
@@ -85,6 +93,6 @@ export class ProponiCategoriaPage implements OnInit {
   }
 
   goback(){
-    this.navCtrl.pop();
+    this.navCtrl.back();
   }
 }
