@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
+import { ToastController } from '@ionic/angular';
 
 import { ApiService } from 'src/app/providers/api.service';
 
@@ -13,6 +14,7 @@ import { __await } from 'tslib';
 import { DataService } from "../services/data.service";
 import { Time } from '@angular/common';
 import { timer } from 'rxjs';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-modifica-sondaggio',
@@ -36,7 +38,7 @@ export class ModificaSondaggioPage implements OnInit {
   ciao="ciao";
 
   constructor(private alertController: AlertController, public apiService: ApiService, private pickerController: PickerController,
-    public navCtrl: NavController, public dataService: DataService) { }
+    public navCtrl: NavController, public dataService: DataService, private toastController: ToastController) { }
 
 
   ngOnInit() {
@@ -50,6 +52,7 @@ export class ModificaSondaggioPage implements OnInit {
   async modify() {
     //se l'utente decide di modificare solo un campo il servizio non effettuava le modifiche. 
     //In questo modo si settano i paramentri non settati al valore che già avevano. 
+   
 
     if (this.timerToPass == null) {
       this.timerToPass = this.timerView;
@@ -59,12 +62,13 @@ export class ModificaSondaggioPage implements OnInit {
     }
 
     if (this.stringLengthChecker()) {
-      this.popupInvalidString();
+      this.toastInvalidString();
     } else if (this.deadlineCheck()) {
-      this.popupSondaggioScaduto();
-    } else if (this.checkIfThereAreEnglishBadWords(this.titoloToPass) || (this.checkIfThereAreItalianBadWords(this.titoloToPass))) {
-      this.popupParolaScorretta();
+      this.toastSondaggioScaduto();
+    } else if (this.checkIfThereAreEnglishBadWords(this.titoloToPass) || this.checkIfThereAreItalianBadWords(this.titoloToPass)) {
+      this.toastParolaScoretta();
     } else {
+      console.log(this.checkIfThereAreItalianBadWords(this.titoloToPass));
       this.apiService.modificaSondaggio(this.titoloToPass, this.timerToPass, this.codice_sondaggio).then(
         (result) => { // nel caso in cui va a buon fine la chiamata
         },
@@ -73,6 +77,7 @@ export class ModificaSondaggioPage implements OnInit {
   
         }
       );
+      this.toastModificheEffettuate();
     }
 
   }
@@ -120,8 +125,8 @@ export class ModificaSondaggioPage implements OnInit {
       inputs: [
         {
           name: 'titoloPopUp',
-          type: 'text',
-          placeholder: this.titoloView //risposta del servizio visualizzaSondaggio
+          type: 'textarea',
+          value: this.titoloView //risposta del servizio visualizzaSondaggio
         }
       ],
       buttons: [
@@ -169,8 +174,6 @@ export class ModificaSondaggioPage implements OnInit {
           handler: (value: any) => {
             //LANCIO SERVIZIO MODIFICA UNA VOLTA CLICCATO "CONFERMA" e se non è scaduto il countdown
             this.modify();
-
-            //TODO mostrare messaggio di avvenuta modifica e riportare alla home
 
           }
         }
@@ -426,7 +429,7 @@ export class ModificaSondaggioPage implements OnInit {
 
     var Filter = require('bad-words'),
     filter = new Filter();
-  
+
     return filter.isProfane(string)
   
     }
@@ -434,23 +437,40 @@ export class ModificaSondaggioPage implements OnInit {
   checkIfThereAreItalianBadWords(string: string): boolean {
 
     let list = require('italian-badwords-list');
-    
+
     let array = list.array
 
-    return array.includes(string);
+    console.log(array);
+
+    let stringArray = [];
+    let stringPassed = string.split(' ');
+    stringArray = stringArray.concat(stringPassed);
+
+    console.log(stringArray);
+
+    var check;
+
+    stringArray.forEach( element => {
+      if (array.includes(element))
+      check = true; 
+    });
+
+    console.log(check);
+
+    return check;
+
   }
 
-    async popupParolaScorretta() {
-      const alert = await this.alertController.create({
-        header: 'ATTENZIONE',
-        subHeader: 'Subtitle',
-        message: 'Hai inserito una parola scorretta',
-        buttons: ['OK']
+    async toastParolaScoretta() {
+      const toast = await this.toastController.create({
+        message: 'Hai inserito una parola scorretta!',
+        duration: 2000
       });
-  
-      await alert.present();
-      let result = await alert.onDidDismiss();
-      console.log(result);
+      toast.color = 'danger';
+      toast.position = "middle";
+      toast.style.fontSize = '20px';
+      toast.style.textAlign = 'center';
+      toast.present();
     }
 
 
@@ -458,18 +478,17 @@ export class ModificaSondaggioPage implements OnInit {
       this.navCtrl.pop();
     }
 
-    async popupSondaggioScaduto() {
-        const alert = await this.alertController.create({
-          header: 'ATTENZIONE',
-          subHeader: 'Subtitle',
-          message: 'Sondaggio scaduto!! !mpossibile effettuare le modifiche!!!',
-          buttons: ['OK']
-        });
-    
-        await alert.present();
-        let result = await alert.onDidDismiss();
-        console.log(result);
-      }
+    async toastSondaggioScaduto() {
+      const toast = await this.toastController.create({
+        message: 'Sondaggio scaduto!! !mpossibile effettuare le modifiche!!!',
+        duration: 2000
+      });
+      toast.color = 'danger';
+      toast.position = "middle";
+      toast.style.fontSize = '20px';
+      toast.style.textAlign = 'center';
+      toast.present();
+    }
 
     deadlineCheck(): boolean {
       var date = new Date(this.sondaggio['0'].dataeora.toLocaleString());
@@ -501,17 +520,29 @@ export class ModificaSondaggioPage implements OnInit {
     }
   }
 
-  async popupInvalidString() {
-    const alert = await this.alertController.create({
-      header: 'ATTENZIONE',
-      subHeader: 'Subtitle',
+  async toastInvalidString() {
+    const toast = await this.toastController.create({
       message: 'ATTENZIONE! Hai lasciato un campo vuoto oppure hai superato la lunghezza massima!',
-      buttons: ['OK']
+      duration: 2000
     });
-
-    await alert.present();
-    let result = await alert.onDidDismiss();
-    console.log(result);
+    toast.color = 'danger';
+    toast.position = "middle";
+    toast.style.fontSize = '20px';
+    toast.style.textAlign = 'center';
+    toast.present();
   }
+
+  async toastModificheEffettuate() {
+    const toast = await this.toastController.create({
+      message: 'Moifiche effettuate con successo!',
+      duration: 2000
+    });
+    toast.color = 'success';
+    toast.position = "top";
+    toast.style.fontSize = '20px';
+    toast.style.textAlign = 'center';
+    toast.present();
+  }
+
 
 }
