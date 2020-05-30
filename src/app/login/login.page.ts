@@ -71,6 +71,13 @@ export class LoginPage implements OnInit {
       this.click = true;
 
       this.storage.set('session', true);
+
+      setTimeout(() => {
+        this.storage.get('session').then(data => {
+          console.log('login ha settato bene' + data)
+        });
+      }, 3000); 
+
       this.storage.get('session').then(data => {
           this.storage.set('session', true);
           console.log('login ha settato bene' + data)

@@ -64,81 +64,65 @@ export class InserisciDomandaPage implements OnInit {
 
   async checkField() {
     if ((this.italian_bad_words_check(this.titolo) || this.italian_bad_words_check(this.descrizione))) {
-      const alert = await this.alertController.create({
-        header: 'ATTENZIONE!',
-        subHeader: 'Hai inserito una o più parole non consentite. Rimuoverle per andare avanti',
-        buttons: [
-          {
-            text: 'Ok',
-            role: 'cancel',
-            cssClass: 'secondary',
-            handler: (blah) => {
-              console.log('Confirm Cancel');
-            }
-          }
-        ]
-      });
-      await alert.present();
-    } else if (this.titolo.length < 1 || this.titolo.length > 150) {
-      const alert = await this.alertController.create({
-        header: 'Devi inserire un titolo valido!',
-        buttons: [
-          {
-            text: 'Ok',
-            role: 'cancel',
-            cssClass: 'secondary',
-            handler: (blah) => {
-              console.log('Confirm Cancel');
-            }
-          }
-        ]
-      });
-      await alert.present();
+      const toast = document.createElement('ion-toast');
+
+      toast.message = 'Hai inserito una parola scorretta!';
+      toast.duration = 2000;
+      toast.position = "middle";
+      toast.style.fontSize = '20px';
+      toast.color = 'danger';
+      toast.style.textAlign = 'center';
+
+      document.body.appendChild(toast);
+      return toast.present();
+    } else if (this.titolo.length < 1 || this.titolo.length > 150 || !(this.titolo.match(/[a-zA-Z0-9_]+/))) {
+
+      const toast = document.createElement('ion-toast');
+      toast.message = 'Devi inserire un titolo valido!';
+      toast.duration = 2000;
+      toast.position = "middle";
+      toast.style.fontSize = '20px';
+      toast.color = 'danger';
+      toast.style.textAlign = 'center';
+      document.body.appendChild(toast);
+      return toast.present();
+
     } else if (this.descrizione.length > 1000) {
-      const alert = await this.alertController.create({
-        header: 'Descrizione troppo lunga!',
-        buttons: [
-          {
-            text: 'Ok',
-            role: 'cancel',
-            cssClass: 'secondary',
-            handler: (blah) => {
-              console.log('Confirm Cancel');
-            }
-          }
-        ]
-      });
-      await alert.present();
+
+      const toast = document.createElement('ion-toast');
+      toast.message = 'Descrizione troppo lunga!';
+      toast.duration = 2000;
+      toast.position = "middle";
+      toast.style.fontSize = '20px';
+      toast.color = 'danger';
+      toast.style.textAlign = 'center';
+      document.body.appendChild(toast);
+      return toast.present();
+
     } else if (this.categoriaScelta == undefined) {
-      const alert = await this.alertController.create({
-        header: 'Devi selezionare una categoria!',
-        buttons: [
-          {
-            text: 'Ok',
-            role: 'cancel',
-            cssClass: 'secondary',
-            handler: (blah) => {
-              console.log('Confirm Cancel');
-            }
-          }
-        ]
-      });
-      await alert.present();
+
+      const toast = document.createElement('ion-toast');
+      toast.message = 'Devi selezionare una categoria!';
+      toast.duration = 2000;
+      toast.position = "middle";
+      toast.style.fontSize = '20px';
+      toast.color = 'danger';
+      toast.style.textAlign = 'center';
+      document.body.appendChild(toast);
+      return toast.present();
+
     } else if (this.timerToPass == undefined) {
-      const alert = await this.alertController.create({
-        header: 'Devi impostare un timer!',
-        buttons: [
-          {
-            text: 'Ok',
-            role: 'cancel',
-            cssClass: 'secondary',
-            handler: (blah) => {
-              console.log('Confirm Cancel');
-            }
-          }
-        ]
-      });
-      await alert.present();
+
+      const toast = document.createElement('ion-toast');
+      toast.message = 'Devi impostare un timer!';
+      toast.duration = 2000;
+      toast.position = "middle";
+      toast.style.fontSize = '20px';
+      toast.color = 'danger';
+      toast.style.textAlign = 'center';
+      document.body.appendChild(toast);
+      return toast.present();
+
     } else {
       const alert = await this.alertController.create({
         header: 'Confermi la domanda?',
@@ -154,7 +138,7 @@ export class InserisciDomandaPage implements OnInit {
             text: 'Si',
             handler: () => {
               console.log('Confirm Okay');
-              this.showToast();
+              this.showOKToast();
               this.postInvio();
               this.goHome();
             }
@@ -313,17 +297,16 @@ export class InserisciDomandaPage implements OnInit {
     return filter.isProfane(input);
   }
 
-  async showToast() {
+  async showOKToast() {
     const toast = document.createElement('ion-toast');
-    toast.message = 'Inserimento avvenuto con successo!';
-    toast.duration = 2000;
-    toast.position = "top";
-    toast.style.fontSize = '20px';
-    toast.color = 'success';
-    //toast.cssClass = " -- background" ;
-
-    document.body.appendChild(toast);
-    return toast.present();
-  }
+      toast.message = 'Inserimento avvenuto con successo!';
+      toast.duration = 2000;
+      toast.position = "top";
+      toast.style.fontSize = '20px';
+      toast.color = 'success';
+      toast.style.textAlign = 'center';
+      document.body.appendChild(toast);
+      return toast.present();
+  } 
 
 }

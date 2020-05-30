@@ -4,6 +4,12 @@ import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
+
+import { Router } from '@angular/router';
+import { Storage } from '@ionic/storage';
+import { AlertController } from '@ionic/angular';
+
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -13,19 +19,9 @@ export class AppComponent implements OnInit {
   public selectedIndex = 0;
   public appPages = [
     {
-      title: 'Inbox',
-      url: '/folder/Inbox',
-      icon: 'mail'
-    },
-    {
-      title: 'Outbox',
-      url: '/folder/Outbox',
-      icon: 'paper-plane'
-    },
-    {
-      title: 'Favorites',
-      url: '/folder/Favorites',
-      icon: 'heart'
+      title: 'Home',
+      url: '/home',
+      icon: 'home'
     },
     {
       title: 'Nuova domanda',
@@ -33,29 +29,96 @@ export class AppComponent implements OnInit {
       icon: 'reader'
     },
     {
+      title: 'Nuovo sondaggio',
+      url: '/inserimento-sondaggio',
+      icon: 'trail-sign'
+    },
+    {
       title: 'Chat',
       url: '/visualizza-chats',
       icon: 'chatbubble-ellipses'
     },
     {
-      title: 'Nuovo Sondaggio',
-      url: '/inserimento-sondaggio',
-      icon: 'trail-sign'
+      title: 'Visualizza profilo',
+      url: '/visualizza-profilo',
+      icon: 'person'
     },
     {
-      title: 'Informazioni applicazione',
+      title: 'Le mie attività?????',
+      url: '/inserimento-sondaggio',
+      icon: 'swap-vertical'
+    },
+    {
+      title: 'Info',
       url: '/info',
-      icon: 'book'
+      icon: 'information-circle'
+    },
+    {
+      title: 'Logout',
+      icon: 'exit',
+      url: '',
+
     }
-
-
   ];
-  public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
+
+  async alert() {
+    const alert = await this.alertController.create({
+      header: 'Vuoi uscire?',
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('Confirm Cancel');
+          }
+        }, {
+          text: 'Si',
+          handler: () => {
+            
+            this.storage.set('session', false);
+            this.storage.set('utente', null);
+
+            this.router.navigate(['login']);
+
+            setTimeout(() => {
+              this.storage.get('session').then(data => {
+                console.log('login ha settato bene' + data)
+              });
+            }, 3000); 
+
+            //console.log(this.selectedIndex);
+            //this.appPages[7].url = '/login';
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+
+  switch(index) {
+    this.selectedIndex = index;
+
+    if (this.selectedIndex === 7) {
+
+      console.log(this.appPages[7].url);
+      this.alert();
+
+    } else
+
+    this.router.navigateByUrl(this.appPages[index].url);
+    
+  }
 
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
-    private statusBar: StatusBar
+    private statusBar: StatusBar,
+    private storage: Storage,
+    private router: Router,
+    public alertController: AlertController,
+
   ) {
     this.initializeApp();
   }
@@ -74,3 +137,9 @@ export class AppComponent implements OnInit {
     }
   }
 }
+
+
+
+
+
+
