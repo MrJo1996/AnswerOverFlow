@@ -43,7 +43,15 @@ export class LoginPage implements OnInit {
 
   postLogin(){
     if(this.password.length < 8){
-      alert('password troppo corta');
+    const toast = document.createElement('ion-toast');
+    toast.message = 'password troppo corta!';
+    toast.duration = 2000;
+    toast.position = "middle";
+    toast.style.fontSize = '20px';
+    toast.color = 'danger';
+    toast.style.textAlign = 'center';
+    document.body.appendChild(toast);
+    return toast.present();
     }else{
       let postData = {
         "username":this.username,
@@ -91,20 +99,8 @@ export class LoginPage implements OnInit {
     document.body.appendChild(toast);
     return toast.present();
 
-  }else if (this.password.length < 1 ) {
-
-    const toast = document.createElement('ion-toast');
-    toast.message = 'password troppo corta!';
-    toast.duration = 2000;
-    toast.position = "middle";
-    toast.style.fontSize = '20px';
-    toast.color = 'danger';
-    toast.style.textAlign = 'center';
-    document.body.appendChild(toast);
-    return toast.present();
   
-  }else if (data.error==(true)
-  ){
+  }else if (data.error==(true)){
 
     const toast = document.createElement('ion-toast');
     toast.message = 'Credenziali errate!';
