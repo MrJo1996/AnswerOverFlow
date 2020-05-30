@@ -75,8 +75,28 @@ export class LoginPage implements OnInit {
     }
   }
 
+  italian_bad_words_check(input: string) {
+    let list = require('italian-badwords-list');
+    let array = list.array;
+    return array.includes(input);
+  }
+
  checkField(data) {
-  if (this.username.length < 1 || this.password.length < 8 ) {
+  if ((this.italian_bad_words_check(this.username) || this.italian_bad_words_check(this.password))) {
+    const toast = document.createElement('ion-toast');
+
+    toast.message = 'Hai inserito una parola scorretta!';
+    toast.duration = 2000;
+    toast.position = "middle";
+    toast.style.fontSize = '20px';
+    toast.color = 'danger';
+    toast.style.textAlign = 'center';
+
+    document.body.appendChild(toast);
+    return toast.present();
+
+}
+  else if (this.username.length < 1 || this.password.length < 8 ) {
     const toast = document.createElement('ion-toast');
     toast.message = 'Devi inserire un username valido!';
     toast.duration = 2000;
@@ -102,9 +122,7 @@ export class LoginPage implements OnInit {
   
     
   }
-
  }
-
 
   clickLogin(condizione, data){
 
@@ -133,14 +151,15 @@ export class LoginPage implements OnInit {
 
       
 
-
-
+     
    /* this.dataService.setUtente(this.email, this.username, this.password, this.nome, this.cognome,this.bio);
     this.router.navigate(['home']);
     console.log(this.dataService.utente);*/
 
 }
+
 }
+
 
 }
 
