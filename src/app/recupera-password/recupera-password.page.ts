@@ -32,17 +32,21 @@ export class RecuperaPasswordPage implements OnInit {
   }
 
   post_invio(){
-    let postData={
-      "email": this.email
-    };
-    this.result= this.service.postService(postData, this.url).then(
-      (data)=> {
-      this.request = data;
-      console.log(data);
-    }, (err)=> {
-      console.log(err.message);
-    });
-    this.goToConfirm();
+    if(this.email.length>100){
+      alert("email troppo lunga")
+    } else{
+      let postData ={
+        "email": this.email
+      };
+      this.result = this.service.postService(postData, this.url).then(
+        (data)=>{
+          this.request = data;
+          console.log(data);
+        }, (err)=>{
+          console.log(err.message);
+        });
+        this.goToConfirm();
+    }
   }
 
   goback(){
