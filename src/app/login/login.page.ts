@@ -4,10 +4,11 @@ import {Router} from "@angular/router";
 
 import {Promise} from "q";
 import {Storage} from '@ionic/storage';
-
 import {PostServiceService} from "../services/post-service.service";
 import {NavController} from "@ionic/angular";
 import { DataService } from "../services/data.service";
+import { ToastController } from '@ionic/angular';
+import { ApiService } from 'src/app/providers/api.service';
 
 @Component({
   selector: 'app-login',
@@ -28,7 +29,7 @@ export class LoginPage implements OnInit {
   result:  Promise<any>;
   url= 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/login'
 
-  constructor( private dataService: DataService ,private service: PostServiceService, private router : Router, private navctrl: NavController, private storage: Storage) {
+  constructor( public apiService: ApiService ,public toastController: ToastController ,private dataService: DataService ,private service: PostServiceService, private router : Router, private navctrl: NavController, private storage: Storage) {
     
   }  
 
@@ -39,9 +40,18 @@ export class LoginPage implements OnInit {
     this.router.navigate(['registrazione']);
   }
 
+
   postLogin(){
     if(this.password.length < 8){
-      alert('password troppo corta');
+    const toast = document.createElement('ion-toast');
+    toast.message = 'password troppo corta o non valida!';
+    toast.duration = 2000;
+    toast.position = "middle";
+    toast.style.fontSize = '20px';
+    toast.color = 'danger';
+    toast.style.textAlign = 'center';
+    document.body.appendChild(toast);
+    return toast.present();
     }else{
       let postData = {
         "username":this.username,
@@ -51,15 +61,68 @@ export class LoginPage implements OnInit {
       this.result = this.service.postService(postData, this.url).then((data) => {
         this.request = data;
         console.log(data);
+
+        this.checkField(data);
         this.clickLogin(!data.error, data);
+        
 
 
         
       }, err => {
         console.log(err.message);
+        
       })
     }
   }
+
+  italian_bad_words_check(input: string) {
+    let list = require('italian-badwords-list');
+    let array = list.array;
+    return array.includes(input);
+  }
+
+ checkField(data) {
+  if ((this.italian_bad_words_check(this.username) || this.italian_bad_words_check(this.password))) {
+    const toast = document.createElement('ion-toast');
+
+    toast.message = 'Hai inserito una parola scorretta!';
+    toast.duration = 2000;
+    toast.position = "middle";
+    toast.style.fontSize = '20px';
+    toast.color = 'danger';
+    toast.style.textAlign = 'center';
+
+    document.body.appendChild(toast);
+    return toast.present();
+
+}
+  else if (this.username.length < 1 || this.password.length < 8 ) {
+    const toast = document.createElement('ion-toast');
+    toast.message = 'Devi inserire un username valido!';
+    toast.duration = 2000;
+    toast.position = "middle";
+    toast.style.fontSize = '20px';
+    toast.color = 'danger';
+    toast.style.textAlign = 'center';
+    document.body.appendChild(toast);
+    return toast.present();
+
+  
+  }else if (data.error==(true)){
+
+    const toast = document.createElement('ion-toast');
+    toast.message = 'Credenziali errate!';
+    toast.duration = 2000;
+    toast.position = "middle";
+    toast.style.fontSize = '20px';
+    toast.color = 'danger';
+    toast.style.textAlign = 'center';
+    document.body.appendChild(toast);
+    return toast.present();
+  
+    
+  }
+ }
 
   clickLogin(condizione, data){
 
@@ -86,14 +149,17 @@ export class LoginPage implements OnInit {
   } else {
       console.log('error');
 
+      
 
-
+     
    /* this.dataService.setUtente(this.email, this.username, this.password, this.nome, this.cognome,this.bio);
     this.router.navigate(['home']);
     console.log(this.dataService.utente);*/
 
 }
+
 }
+
 
 }
 

@@ -31,18 +31,34 @@ export class RecuperaPasswordPage implements OnInit {
     return true;
   }
 
+  email_length_toast(){
+    const toast = document.createElement('ion-toast');
+    toast.message = 'La mail inserita è troppo lunga!';
+    toast.duration = 2000;
+    toast.position = "middle";
+    toast.style.fontSize = '20px';
+    toast.color = 'danger';
+    toast.style.textAlign = 'center';
+    document.body.appendChild(toast);
+    return toast.present();
+  }
+
   post_invio(){
-    let postData={
-      "email": this.email
-    };
-    this.result= this.service.postService(postData, this.url).then(
-      (data)=> {
-      this.request = data;
-      console.log(data);
-    }, (err)=> {
-      console.log(err.message);
-    });
-    this.goToConfirm();
+    if(this.email.length>100){
+      this.email_length_toast();
+    } else{
+      let postData ={
+        "email": this.email
+      };
+      this.result = this.service.postService(postData, this.url).then(
+        (data)=>{
+          this.request = data;
+          console.log(data);
+        }, (err)=>{
+          console.log(err.message);
+        });
+        this.goToConfirm();
+    }
   }
 
   goback(){

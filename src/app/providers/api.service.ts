@@ -318,6 +318,28 @@ export class ApiService {
     });
   }
   
+  inserisciRisposta(descrizione: string, cod_utente: string, cod_domanda: Number ) {
+    const body = {
+      descrizione,
+      cod_utente,
+      cod_domanda
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/inserisci_risposta', body).subscribe(
+        data => {
+          let esito = data['message'];
+          console.log('esito inserisci risposta: ', esito);
+          resolve(esito);
+        },
+        (err) => {
+          reject();
+        }
+      );
+    });
+  }
+  
+
+
   prendiChats(codice_utente: string, url: string) {
     const body = {
       codice_utente
