@@ -7,6 +7,8 @@ import { AlertController } from '@ionic/angular';
 import { DataService } from "../services/data.service";
 import {NavController} from "@ionic/angular";
 import { resolve } from 'url';
+import { Storage } from "@ionic/storage";
+import { ToastController } from '@ionic/angular';
 @Component({
   selector: 'app-visualizza-domanda',
   templateUrl: './visualizza-domanda.page.html',
@@ -16,7 +18,7 @@ export class VisualizzaDomandaPage implements OnInit {
   
   codice_domanda ; 
 
-  currentMailUser = "gmailverificata"//mail dell'utente corrente
+  currentMailUser  ="";//mail dell'utente corrente
   userNameUserDomanda: string;
   domandaMailUser: string;//mail di chi ha fatto la domanda
 
@@ -38,17 +40,20 @@ export class VisualizzaDomandaPage implements OnInit {
   rispostaCliccata;
   indexMigliorRisposta: number;
   rispostaVisible = false;
-  private buttonColor: string = "#000";
+  private buttonColor: string = "#2a2a2a";
+  private buttonColorBest: string = "gold";
   descrizione_risposta = "";
 
 
   categoria = {};
 
-  constructor(private navCtrl:NavController, private dataService: DataService, public apiService: ApiService, private router: Router, public alertController: AlertController) { }
+  constructor(private navCtrl:NavController, private dataService: DataService, public apiService: ApiService, private router: Router, public alertController: AlertController, private storage: Storage,
+    public toastController: ToastController) { }
 
   ngOnInit() {
     this.visualizzaDomanda(); 
     this.showRisposte();
+    this.storage.get('utente').then(data => { this.currentMailUser = data.email });
   }
 
 
@@ -206,6 +211,15 @@ async modify() {
 
 }
 
+async scegliPreferita(){
+  this.apiService.scegliRispostaPreferita(this.codice_domanda, this.cod_preferita).then(
+    (result) => { // nel caso in cui va a buon fine la chiamata
+    },
+    (rej) => {// nel caso non vada a buon fine la chiamata
+      console.log('Modifica non effetutata'); //anche se va nel rej va bene, modifiche effettive nel db
+    }
+  );
+}
 
 
 clickInviaRisposta(){
@@ -312,11 +326,16 @@ clickRisposta(risposta, i){
     console.log(result);
   }
 
-  changeColor(){
-    if(this.buttonColor === "#000")
-    this.buttonColor = "#fff";
-    else
-    this.buttonColor = "#000";
+  changeColor(cod_nuova_preferita){
+    if(this.cod_preferita === cod_nuova_preferita){
+        this.cod_preferita = " ";
+        this.scegliPreferita();
+
+    }
+    else{
+    this.cod_preferita = cod_nuova_preferita;
+    this.scegliPreferita();  
+  }
 
   }
 
@@ -326,10 +345,7 @@ clickRisposta(risposta, i){
     else
         this.rispostaVisible = false;
 
-
   }
-
-
 
 /*   async showDescrizioneRisposta() {
     this.apiService.getRisposta(this.dataService.getCodiceRisposta()).then(

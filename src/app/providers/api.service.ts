@@ -650,6 +650,24 @@ export class ApiService {
     });
   }
 
+  scegliRispostaPreferita(codice_domanda: number, cod_preferita: number) {
+    const body = {
+      codice_domanda,
+      cod_preferita
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/sceglirispostapreferita', body).subscribe(
+        data => {
+          let esito = data['message'];
+          resolve(esito);
+        },
+        (err) => {
+          reject();
+        }
+      );
+    });
+  }
+
 
 
 }

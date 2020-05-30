@@ -71,7 +71,7 @@
               </ion-avatar>
               <ion-label *ngIf="currentMailUser!==risposta.cod_utente" class = "username_text_style">{{profiliUtentiRisposte[i]['0'].username}}</ion-label>
               <ion-label *ngIf="currentMailUser===risposta.cod_utente " class = "username_text_style">Tu</ion-label>
-              <ion-icon name="ribbon" *ngIf="risposta.codice_risposta===cod_preferita"  class="ribbon_style" slot="end"></ion-icon>
+             
               <ion-label slot = "end" class = "textTitleSMALL">{{risposta.num_like}}</ion-label>
               <ion-icon name="chevron-up-circle-outline" class="thumb_up_style" slot= "end" ></ion-icon>
              <ion-label slot = "end" class = "textTitleSMALL">{{risposta.num_dislike}}</ion-label>
@@ -88,8 +88,10 @@
                 <ion-label class= "description_text"  slot="start" ></ion-label>
             
               
-             <ion-button  (click)="changeColor()" slot="end" expand="block" fill = "clear">
-                <ion-icon [style.backgroundColor]="buttonColor" slot="start" slot="icon-only"  name="heart-outline" ></ion-icon>
+             <ion-button  (click)="changeColor(risposta.codice_risposta)" slot="end" expand="block" fill = "clear">
+            <!--     <ion-icon  class="ribbon_style" *ngIf="risposta.codice_risposta!==cod_preferita" slot="start" slot="icon-only"  name="ribbon" ></ion-icon> -->
+                <ion-icon [style.color]="buttonColor" class="ribbon_style_not_pushed" *ngIf="risposta.codice_risposta!==cod_preferita" slot="end" name="ribbon" ></ion-icon>
+                <ion-icon [style.color]="buttonColorBest" class="ribbon_style" *ngIf="risposta.codice_risposta===cod_preferita"  slot="end"   name="ribbon"></ion-icon>
               </ion-button>
        
             </ion-toolbar>
