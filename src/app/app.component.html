@@ -1,17 +1,26 @@
 <ion-app>
+
+  <div *ngIf="showSplash" class="splash">
+    <div class="spinner">
+      <div class="double-bounce1"></div>
+      <div class="double-bounce2"></div>
+    </div>
+  </div>
+
   <ion-split-pane contentId="main-content">
     <ion-menu contentId="main-content" type="overlay">
       <ion-content>
         <ion-list id="inbox-list">
           <!-- <ion-list-header>ICON PROFILO CLICCABILE</ion-list-header> -->
-          <ion-avatar slot="end" class="icon-avatar" (click)="goToProfile()"> 
+          <ion-avatar slot="end" class="icon-avatar" (click)="goToProfile()">
             <img
               src="https://i.guim.co.uk/img/static/sys-images/Media/Pix/pictures/2002/01/17/BinLaden1.jpg?width=300&quality=85&auto=format&fit=max&s=b17c1c5deb5f0b1f99e1149226e7ab8a">
           </ion-avatar>
-          <ion-note style="margin-bottom: 2em;" >PROPRIO USERNAME</ion-note>
+          <ion-note style="margin-bottom: 2em;">PROPRIO USERNAME</ion-note>
 
           <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
-            <ion-item (click)="switch(i)" routerDirection="root"  lines="none" detail="false" [class.selected]="selectedIndex == i">
+            <ion-item (click)="switch(i)" routerDirection="root" lines="none" detail="false"
+              [class.selected]="selectedIndex == i">
               <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
               <ion-label>{{ p.title }}</ion-label>
             </ion-item>

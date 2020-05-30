@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { Storage } from '@ionic/storage';
 import { AlertController } from '@ionic/angular';
 
+import { timer } from 'rxjs/observable/timer'; //splash
 
 @Component({
   selector: 'app-root',
@@ -16,6 +17,8 @@ import { AlertController } from '@ionic/angular';
   styleUrls: ['app.component.scss']
 })
 export class AppComponent implements OnInit {
+  showSplash = true; //splash
+
   public selectedIndex = 0;
   public appPages = [
     {
@@ -75,7 +78,7 @@ export class AppComponent implements OnInit {
         }, {
           text: 'Si',
           handler: () => {
-            
+
             this.storage.set('session', false);
             this.storage.set('utente', null);
 
@@ -85,7 +88,7 @@ export class AppComponent implements OnInit {
               this.storage.get('session').then(data => {
                 console.log('login ha settato bene' + data)
               });
-            }, 3000); 
+            }, 3000);
 
             //console.log(this.selectedIndex);
             //this.appPages[7].url = '/login';
@@ -107,8 +110,8 @@ export class AppComponent implements OnInit {
 
     } else
 
-    this.router.navigateByUrl(this.appPages[index].url);
-    
+      this.router.navigateByUrl(this.appPages[index].url);
+
   }
 
   constructor(
@@ -126,7 +129,9 @@ export class AppComponent implements OnInit {
   initializeApp() {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
-      this.splashScreen.hide();
+      this.splashScreen.hide(); //////////////////////////
+
+      timer(2000).subscribe(()=>this.showSplash=false); //durata animazione definita in app.component.html -> 2s (era 3.5s)
     });
   }
 
