@@ -69,3 +69,16 @@
 
 
 }
+
+.msg-btn{
+    --padding-start: 0.5em;
+    --padding-end: 0.5em
+}
+
+.message-input{
+    border-top-left-radius: 5px; 
+    border-top-right-radius: 5px;
+    //background-color: var(--ion-color-light); 
+    border-bottom: solid 0.5px var(--ion-color-medium-shade);
+    
+}

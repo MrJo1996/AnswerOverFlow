@@ -37,7 +37,11 @@ export class VisualizzaDomandaPage implements OnInit {
   risposta = {};
   rispostaCliccata;
   indexMigliorRisposta: number;
+  rispostaVisible = false;
   private buttonColor: string = "#000";
+  descrizione_risposta = "";
+
+
   categoria = {};
 
   constructor(private navCtrl:NavController, private dataService: DataService, public apiService: ApiService, private router: Router, public alertController: AlertController) { }
@@ -202,6 +206,30 @@ async modify() {
 
 }
 
+
+
+clickInviaRisposta(){
+
+  this.inserisciRisposta();
+  this.rispostaVisible = false;
+
+}
+
+
+
+async inserisciRisposta() {  
+  this.apiService.inserisciRisposta(this.descrizione_risposta, this.currentMailUser, this.codice_domanda).then(
+    (result) => { // nel caso in cui va a buon fine la chiamata
+    },
+    (rej) => {// nel caso non vada a buon fine la chiamata
+      console.log('Modifica non effetutata'); //anche se va nel rej va bene, modifiche effettive nel db
+    }
+  );
+
+}
+
+
+
 async popupModificaDescrizioneRisposta() {
 
   const alert = await this.alertController.create({
@@ -289,6 +317,15 @@ clickRisposta(risposta, i){
     this.buttonColor = "#fff";
     else
     this.buttonColor = "#000";
+
+  }
+
+  setRispostaVisible(){
+    if(this.rispostaVisible === false)
+        this.rispostaVisible = true;
+    else
+        this.rispostaVisible = false;
+
 
   }
 
