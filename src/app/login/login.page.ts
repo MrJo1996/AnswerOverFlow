@@ -44,7 +44,7 @@ export class LoginPage implements OnInit {
   postLogin(){
     if(this.password.length < 8){
     const toast = document.createElement('ion-toast');
-    toast.message = 'password troppo corta!';
+    toast.message = 'password troppo corta o non valida!';
     toast.duration = 2000;
     toast.position = "middle";
     toast.style.fontSize = '20px';
@@ -76,21 +76,9 @@ export class LoginPage implements OnInit {
   }
 
  checkField(data) {
-  if (this.username.length < 1 || this.username.length > 20 ) {
+  if (this.username.length < 1 || this.password.length < 8 ) {
     const toast = document.createElement('ion-toast');
     toast.message = 'Devi inserire un username valido!';
-    toast.duration = 2000;
-    toast.position = "middle";
-    toast.style.fontSize = '20px';
-    toast.color = 'danger';
-    toast.style.textAlign = 'center';
-    document.body.appendChild(toast);
-    return toast.present();
-
-  }else if (this.password.length > 8 ) {
-
-    const toast = document.createElement('ion-toast');
-    toast.message = 'password troppo lunga!';
     toast.duration = 2000;
     toast.position = "middle";
     toast.style.fontSize = '20px';
