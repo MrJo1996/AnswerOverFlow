@@ -1,5 +1,7 @@
 {
   "name": "AnswerOverFlow",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
