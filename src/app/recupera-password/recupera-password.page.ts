@@ -10,28 +10,36 @@ import { Router } from '@angular/router';
 })
 
 export class RecuperaPasswordPage implements OnInit {
-  
-  email= '';
+
+  email = '';
   request: Promise<any>;
   result: Promise<any>;
-  url= 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/recupero'
+  url = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/recupero'
 
   constructor(private service: PostServiceService, private router: Router) { }
 
-  ngOnInit(){
+  ngOnInit() {
+    //disable scroll (anche su ios)
+    var fixed = document.getElementById('fixed');
+
+    fixed.addEventListener('touchmove', function (e) {
+
+      e.preventDefault();
+
+    }, false);
   }
 
-  is_email_valid(email: string){
+  is_email_valid(email: string) {
     var format: RegExp;
 
     format = /^([a-zA-z0-9_.\-/])+\@([a-zA-z0-9_.\-/])+\.([a-zA-Z]{2,4})$/;
-    if(!format.test(email)){
+    if (!format.test(email)) {
       return false;
     }
     return true;
   }
 
-  email_length_toast(){
+  email_length_toast() {
     const toast = document.createElement('ion-toast');
     toast.message = 'La mail inserita è troppo lunga!';
     toast.duration = 2000;
@@ -43,29 +51,29 @@ export class RecuperaPasswordPage implements OnInit {
     return toast.present();
   }
 
-  post_invio(){
-    if(this.email.length>100){
+  post_invio() {
+    if (this.email.length > 100) {
       this.email_length_toast();
-    } else{
-      let postData ={
+    } else {
+      let postData = {
         "email": this.email
       };
       this.result = this.service.postService(postData, this.url).then(
-        (data)=>{
+        (data) => {
           this.request = data;
           console.log(data);
-        }, (err)=>{
+        }, (err) => {
           console.log(err.message);
         });
-        this.goToConfirm();
+      this.goToConfirm();
     }
   }
 
-  goback(){
+  goback() {
     this.router.navigate(['login']);
   }
 
-  goToConfirm(){
+  goToConfirm() {
     this.router.navigate(['conferma-recupero']);
   }
 }

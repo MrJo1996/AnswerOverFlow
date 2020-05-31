@@ -23,9 +23,16 @@ export class RegistrazionePage implements OnInit {
   url = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/registrazione'
 
 
-  constructor(private dataService: DataService,public apiService: ApiService, public alertController: AlertController, private pickerController: PickerController, private router: Router) { }
+  constructor(private dataService: DataService, public apiService: ApiService, public alertController: AlertController, private pickerController: PickerController, private router: Router) { }
   ngOnInit() {
+    //disable scroll (anche su ios)
+    var fixed = document.getElementById('fixed');
 
+    fixed.addEventListener('touchmove', function (e) {
+
+      e.preventDefault();
+
+    }, false);
   }
   async checkFields() {
     if ((this.nome.length < 1) || (this.cognome.length < 1) || (this.email.length < 1) || (this.username.length < 1)) {
@@ -102,9 +109,9 @@ export class RegistrazionePage implements OnInit {
         }
   }
 
-  
-  clickRegistrazione(){
-    this.dataService.setUtente(this.email, this.username, this.password, this.nome, this.cognome,this.bio);
+
+  clickRegistrazione() {
+    this.dataService.setUtente(this.email, this.username, this.password, this.nome, this.cognome, this.bio);
     this.router.navigate(['bio']);
     console.log(this.dataService.utente);
 
