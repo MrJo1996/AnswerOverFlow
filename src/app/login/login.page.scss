@@ -1,13 +1,18 @@
 ion-item {
-
-
-  margin-top: 1%;
+ /*  margin-top: 1%;
   align-content: center;
   border-bottom: solid 1px grey;
-
-  color:  #97a9c5;
-
+  color:  #97a9c5; */
+  background-color: #121212;
+  border-radius: 30px !important;
+  /* padding-left: 30px !important; */
+  font-size: 0.9em;
+  margin-bottom: 10px;
+  border: 1px solid #121212;
+  border-bottom: 0px !important;
+  box-shadow: none !important;
 }
+
 //sfondo gradiente
  .bg-class{
   --background: linear-gradient(250deg, rgba(100,100,100,1) 0%, rgba(63,63,63,1) 13.5%, rgba(29,29,29,1) 33.33%, rgba(0,0,0,1) 100%) !important;
