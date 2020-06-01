@@ -3,6 +3,7 @@ import { PostServiceService } from "../services/post-service.service";
 import { DataService } from "../services/data.service";
 import { ApiService } from '../providers/api.service';
 import {Router} from '@angular/router';
+import { Storage } from "@ionic/storage";
 
 @Component({
   selector: 'app-home',
@@ -12,17 +13,18 @@ import {Router} from '@angular/router';
 export class HomePage implements OnInit {
   codice_domanda;
   codice_sondaggio
-  currentMailUser = "gmailverificata"//mail dell'utente corrente
+  currentMailUser = ""//mail dell'utente corrente
   domande;
   sondaggi;
   domandaMailUser ;//mail dell'utente che ha fatto la domanda
   domandaNomeUser = " ";//nome e cognome dell'utente che ha fatto la domanda
 
-  constructor(private apiService: ApiService,private service: PostServiceService, private dataService: DataService, private router: Router) { }
+  constructor(private storage: Storage,private apiService: ApiService,private service: PostServiceService, private dataService: DataService, private router: Router) { }
   
   ngOnInit() {
     this.visualizzaDomandaHome();
     this.visualizzaSondaggiHome();
+    this.storage.get('utente').then(data => { this.currentMailUser = data.email });
   }
   
   async visualizzaDomandaHome() {
