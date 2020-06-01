@@ -6,11 +6,8 @@ import { Router } from '@angular/router';
 import { Storage } from '@ionic/storage';
 import { AlertController } from '@ionic/angular';
 
-<<<<<<< Updated upstream
 import { timer } from 'rxjs/observable/timer'; //splash
 
-=======
->>>>>>> Stashed changes
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -79,23 +76,11 @@ export class AppComponent implements OnInit {
   cognome:string;
   username: string;
 
-  initializeApp() {
-    this.platform.ready().then(() => {
-      this.statusBar.styleDefault();
-      this.splashScreen.hide();
-    });
-
-  }
-
   ngOnInit() {
     const path = window.location.pathname.split('folder/')[1];
     if (path !== undefined) {
       this.selectedIndex = this.appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
     }
-
-    this.storage.get('utente').then(data => { this.nome = data.nome });
-    this.storage.get('utente').then(data => { this.cognome = data.cognome });
-    this.storage.get('utente').then(data => { this.username = data.username });
 
   }
 
@@ -148,23 +133,19 @@ export class AppComponent implements OnInit {
     } else
 
       this.router.navigateByUrl(this.appPages[index].url);
-<<<<<<< Updated upstream
 
   }
 
-  constructor(
+ /*  constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private storage: Storage,
     private router: Router,
     public alertController: AlertController,
-=======
->>>>>>> Stashed changes
 
-  }
+  } */
 
-<<<<<<< Updated upstream
   initializeApp() {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
@@ -173,9 +154,6 @@ export class AppComponent implements OnInit {
       timer(2000).subscribe(()=>this.showSplash=false); //durata animazione definita in app.component.html -> 2s (era 3.5s)
     });
   }
-=======
-  //-------------------------------------------------------------
->>>>>>> Stashed changes
 
   goToProfile() {
     //this.dataService. = this.chatFriend_id;
