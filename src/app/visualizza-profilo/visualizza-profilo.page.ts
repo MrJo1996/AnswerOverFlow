@@ -32,26 +32,40 @@ export class VisualizzaProfiloPage implements OnInit {
     
     ){
 
+      this.userProfileId = this.dataService.getEmailOthers()    
       this.storage.get('utente').then(data => {
         this.userId = data.email;
     });
-    
-
+   
      }
 
-  ngOnInit() {
-    this.selectProfile();
-  }
+     
 
+     
+  ngOnInit() {
+ 
+    this.userProfileId = this.dataService.getEmailOthers()
+    setTimeout(() => {
+    if(this.userProfileId === "undefined"){
+     
+        this.selectProfile(this.userId);
+     
+    }else{
+     
+        this.selectProfile(this.userProfileId);
+    
+    }
+    
+  },1000)
+}
 
   goBack(){
     this.navCtrl.back();
   }
 
-  goToProfile() {
+  goToChat() {
     this.dataService.emailOthers = this.profilo.email;
     this.router.navigateByUrl("/chat");
-    
   }
 
   stats(){
@@ -59,18 +73,27 @@ export class VisualizzaProfiloPage implements OnInit {
   }
 
   
-  userProfileId = this.dataService.getEmailOthers()
+  userProfileId:string; 
   userId: string;
   profilo: any;
   segnalazione: string;
+  selectedProfile:string;
+  selectId
   //note:string = "prova textx area"
   
   
-  async selectProfile() {
-     this.apiService.getProfilo(this.userProfileId).then(
+  async selectProfile(id) { 
+    console.log(this.userProfileId+ "userIDProfilo");
+    console.log(this.userId + "userID");
+
+   
+
+      console.log(id+" fiofifoifo");
+     this.apiService.getProfilo(id).then(
       (data) => {
         console.log('Visualizzato con successo');
         this.profilo = data['data'][0];
+        this.selectId = this.profilo.email
         //console.log(this.profilo.bio);
 
       },

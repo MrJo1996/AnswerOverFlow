@@ -57,13 +57,14 @@ export class ChatPage implements OnInit {
   chatFriend_id: string; // = "pippo.cocainasd.com";
   msg_utente_id: string; //gmailverificata giorgiovanni
   cod_chat = null;
+  textMessage;
   testo = "";
-  visualizzato = 0;
+  
   messages = new Array();
   oggi;
   ieri;
-  flag;
-  textMessage;
+  
+  //visualizzato = 0;
 
   
   ngOnInit() {
@@ -73,7 +74,6 @@ export class ChatPage implements OnInit {
 
     this.oggi = this.setDate(this.getToday());
     this.ieri = this.setDate(this.getYesterday());
-    this.flag = true;
    
     if(this.cod_chat === null ){
     this.findChat(); 
@@ -83,15 +83,12 @@ export class ChatPage implements OnInit {
       setTimeout(() => {
          this.scrollToBottoms(0);
       }, 1200);
-
-      this.refreshMessages();
-    
+      this.refreshMessages(); 
   }
 
   
  
   /////////////////////////////////////////
-
 
 
   selectChatFriend() {
@@ -104,7 +101,6 @@ export class ChatPage implements OnInit {
         this.request = data;
         //console.log(data.Profilo);
         this.chatFriend = data.Profilo.data[0].username;
- 
       },
       (err) => {
         console.log(err.message);
@@ -121,9 +117,8 @@ export class ChatPage implements OnInit {
     };
     this.result = this.service.postService(postData, this.showMessagesUrl).then(
       (data) => {
-        //this.giorno = new Date();
         this.request = data;
-        console.log(data);
+        //console.log(data);
         this.messages = data.Messaggi.data;
 
         for (let i = 0; i < this.messages.length; i++) {
@@ -195,7 +190,7 @@ export class ChatPage implements OnInit {
     } else {
       let postData = {
         testo: this.textMessage,
-        visualizzato: this.visualizzato,
+        visualizzato: 0,
         cod_chat: this.cod_chat,
         msg_utente_id: this.msg_utente_id,
       };
@@ -240,13 +235,12 @@ export class ChatPage implements OnInit {
   goToProfile() {
     this.dataService.emailOthers = this.chatFriend_id;
     this.router.navigate(['visualizza-profilo']);
-    this.flag = false;
+   
   }
 
   
   goBack() {
     this.navCtrl.back();
-    this.flag = false;
   }
 
   ///////////////////////////////////////////
@@ -258,12 +252,10 @@ export class ChatPage implements OnInit {
   }
 
   refreshMessages() {
-   // if (this.flag === true) {
       setTimeout(() => {
         this.showMessages();
         this.refreshMessages();
       }, 6000);
-   // }
   }
 
   getToday() {

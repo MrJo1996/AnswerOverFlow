@@ -11,11 +11,14 @@ export class DataService {
 
   codice_sondaggio;
   emailUtente;
-  emailOthers;
+  emailOthers: string;
   codice_chat=null;
   codice_risposta;
   selezione_cat;
   nuova_proposta
+
+
+
   constructor(private http: HttpClient) { }
   setUtente(id:string, username:string,password:string, nome:string,cognome:string,bio:string){
     this.utente['0']=id;

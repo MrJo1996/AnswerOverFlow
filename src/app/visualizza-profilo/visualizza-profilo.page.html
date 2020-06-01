@@ -5,7 +5,7 @@
       <ion-icon color="primary" slot="start" slot="icon-only" name="arrow-back-outline"></ion-icon>
     </ion-button>
 
-    <ion-title style="font-size: x-large; text-align: center;"><b>Visualizza profilo</b></ion-title>
+    <ion-title style="font-size: 1.5rem; text-align: center;"><b>Visualizza profilo</b></ion-title>
 
     <!--   -->
     <ion-button *ngIf="userId !== userProfileId" slot="end" expand="block" fill="clear" (click)="goToHome()" class="msg-btn" >  
@@ -58,9 +58,9 @@
 
     </ion-card>
 
-    <ion-button *ngIf="userId !== userProfileId" color="light" class="ion-button"  (click)="goToProfile()">Invia messaggio</ion-button>
+    <ion-button *ngIf="selectId === userProfileId" color="light" class="ion-button"  (click)="goToChat()">Invia messaggio</ion-button>
     <ion-button color="primary" class="ion-button" (click)="stats()">Visualizza statistiche</ion-button>
-    <ion-button *ngIf="userId !== userProfileId" (click)="showAlertView()" color="danger" class="ion-button">Segnala
+    <ion-button *ngIf="selectId === userProfileId" (click)="showAlertView()" color="danger" class="ion-button">Segnala
       Utente</ion-button>
 
 

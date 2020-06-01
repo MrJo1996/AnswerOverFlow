@@ -146,7 +146,13 @@ export class LoginPage implements OnInit {
       setTimeout(() => {
         this.storage.get('session').then(data => {
           console.log('login ha settato bene' + data)
+        
         });
+
+        this.storage.get('utente').then(data => {
+          this.dataService.emailUtente = data.email;
+      });
+
       }, 3000);
 
       this.storage.get('session').then(data => {
