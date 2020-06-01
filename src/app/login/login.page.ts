@@ -147,6 +147,11 @@ export class LoginPage implements OnInit {
         this.storage.get('session').then(data => {
           console.log('SESSION:' + data)
         });
+
+        this.storage.get('utente').then(data => {
+          this.dataService.emailUtente = data.email;
+      });
+
       }, 3000);
 
       this.storage.get('session').then(data => {

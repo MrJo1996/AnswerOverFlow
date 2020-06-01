@@ -40,7 +40,7 @@
           </ion-card>
 
           <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
-            <ion-item (click)="switch(i)" routerDirection="root" lines="none" detail="false"
+            <ion-item *ngIf="p.view" (click)="switch(i)" routerDirection="root" lines="none" detail="false"
               [class.selected]="selectedIndex == i">
               <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
               <ion-label>{{ p.title }}</ion-label>
