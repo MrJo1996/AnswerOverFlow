@@ -70,4 +70,14 @@ export class HomePage implements OnInit {
     console.log(this.dataService.codice_sondaggio);
     this.router.navigate(['/visualizza-sondaggio']);
   }
+  doRefresh(event){
+  this.visualizzaDomandaHome();
+  this.visualizzaSondaggiHome();
+
+  setTimeout(() => {
+   
+    event.target.complete();
+  }, 2000);
 }
+}
+

@@ -5,6 +5,9 @@
 </ion-header>
 
 <ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <ion-card (click)="clickDomanda(domanda.codice_domanda)" class = "backgrounds" *ngFor="let domanda of domande">    
     <ion-card-header>
       <ion-toolbar class="backgrounds">
