@@ -69,7 +69,13 @@ export class ModificaDomandaPage implements OnInit {
       this.timerToPass = this.timerView;
     }
 
-
+    if (this.stringDescriptionChecker()) {
+      this.popupInvalidDescription();
+    } else if (this.stringTitleLengthChecker()) {
+      this.popupInvalidTitle();
+    } else if (this.deadlineCheck()) {
+      this.popupDomandaScaduta();
+    } else {
     this.apiService.modificaDomanda(this.codice_domanda, this.dataeoraToPass, this.timerToPass, this.titoloToPass, this.descrizioneToPass, this.cod_categoria, this.cod_preferita).then(
       (result) => {  
         console.log('Modifica avvenuta con successo: ');
@@ -79,7 +85,7 @@ export class ModificaDomandaPage implements OnInit {
         
       }
     );
-
+    }
   }
 
   async showSurvey() {
@@ -121,6 +127,44 @@ export class ModificaDomandaPage implements OnInit {
     );
 
   }
+  
+  stringDescriptionChecker():boolean {
+    if ((this.descrizioneToPass.length > 1) || !(this.descrizioneToPass.match(/[a-zA-Z0-9_]+/))) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  stringTitleLengthChecker():boolean {
+
+    if ((this.titoloToPass.length > 1) || !(this.titoloToPass.match(/[a-zA-Z0-9_]+/))) {
+    return true;
+  } else {
+    return false;
+  }
+}
+async popupInvalidDescription(){
+  const toast = document.createElement('ion-toast');
+  toast.message = 'ERRORE! Hai lasciato la descrizione vuota o hai superato la lunghezza massima!';
+  toast.duration = 2000;
+  toast.position = "middle";
+  toast.style.fontSize = '20px';
+  toast.color = 'danger';
+  toast.style.textAlign = 'center';
+  document.body.appendChild(toast);
+  return toast.present();
+}
+async popupInvalidTitle(){
+    const toast = document.createElement('ion-toast');
+    toast.message = 'ERRORE! Hai lasciato il titolo vuoto o hai superato la lunghezza massima!';
+    toast.duration = 2000;
+    toast.position = "middle";
+    toast.style.fontSize = '20px';
+    toast.color = 'danger';
+    toast.style.textAlign = 'center';
+    document.body.appendChild(toast);
+    return toast.present();
+  }
 
   async popupModificaTitolo() {
     const alert = await this.alertController.create({
@@ -143,7 +187,8 @@ export class ModificaDomandaPage implements OnInit {
           }
         }, {
           text: 'Ok',
-          handler: insertedData => {
+
+            handler: insertedData => {
             console.log(JSON.stringify(insertedData)); //per vedere l'oggetto dell'handler
             this.titoloView = insertedData.titoloPopUp; 
             this.titoloToPass = insertedData.titoloPopUp;
@@ -162,6 +207,40 @@ export class ModificaDomandaPage implements OnInit {
     //this.titoloView = await (await alert.onDidDismiss()).data.values.titolo;
   }
 
+  async popupDomandaScaduta() {
+    const alert = await this.alertController.create({
+      header: 'ATTENZIONE',
+      subHeader: '',
+      message: 'Domanda scaduta! !mpossibile effettuare le modifiche!',
+      buttons: ['OK']
+    });
+
+    await alert.present();
+    let result = await alert.onDidDismiss();
+    console.log(result);
+  }
+
+  deadlineCheck(): boolean {
+    var date = new Date(this.domanda['0'].dataeora.toLocaleString());
+    console.log(date.getTime());
+    var timer = this.domanda['0'].timer;
+    console.log(timer);
+    var dateNow = new Date().getTime();
+
+
+    // Since the getTime function of the Date object gets the milliseconds since 1970/01/01, we can do this:
+    var time2 = date.getTime();
+    var seconds = new Date('1970-01-01T' + timer + 'Z').getTime();
+
+    var diff = dateNow - time2;
+
+    console.log(seconds);
+    console.log(time2);
+    console.log(diff);
+
+    return diff > seconds;
+  }
+  
   async popupModificaDescrizione() {
     const alert = await this.alertController.create({
       header: 'Modifica descrizione',
@@ -233,7 +312,9 @@ export class ModificaDomandaPage implements OnInit {
             this.modify();
 
           //TODO mostrare messaggio di avvenuta modifica e riportare alla home
-
+            if (this.deadlineCheck()) {
+              this.navCtrl.navigateRoot('/visualizza-domanda');
+            } else
             this.presentAlert();
 
           }
