@@ -145,8 +145,7 @@ export class LoginPage implements OnInit {
 
       setTimeout(() => {
         this.storage.get('session').then(data => {
-          console.log('login ha settato bene' + data)
-        
+          console.log('SESSION:' + data)
         });
 
         this.storage.get('utente').then(data => {
@@ -156,8 +155,8 @@ export class LoginPage implements OnInit {
       }, 3000);
 
       this.storage.get('session').then(data => {
-        this.storage.set('session', true);
-        console.log('login ha settato bene' + data)
+          this.storage.set('session', true);
+          console.log('SESSION:' + data)
       });
       this.router.navigate(['home']);
     } else {

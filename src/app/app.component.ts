@@ -87,9 +87,29 @@ export class AppComponent implements OnInit {
     },
   ];
 
+  /* constructor(
+    private platform: Platform,
+    private splashScreen: SplashScreen,
+    private statusBar: StatusBar,
+    private storage: Storage,
+    private router: Router,
+    public alertController: AlertController
+  ) {
+    this.initializeApp();
+  } */
+
+  nome:string;
+  cognome:string;
+  username: string;
+
+ 
+
+
+  //ALERT E ROUTING LOGOUT---------------------------------------
+
   async alert() {
     const alert = await this.alertController.create({
-      header: "Vuoi uscire?",
+      header: 'Vuoi effettuare il logout?',
       buttons: [
         {
           text: "No",
@@ -105,11 +125,13 @@ export class AppComponent implements OnInit {
             this.storage.set("session", false);
             this.storage.set("utente", null);
 
-            this.router.navigate(["login"]);
+            this.storage.set('session', false);
+            this.storage.set('utente', null);
+            this.router.navigate(['login']);
 
             setTimeout(() => {
-              this.storage.get("session").then((data) => {
-                console.log("login ha settato bene " + data);
+              this.storage.get('session').then(data => {
+                console.log('SESSION:' + data)
               });
             }, 3000);
 
@@ -123,6 +145,7 @@ export class AppComponent implements OnInit {
   }
 
   switch(index) {
+
     this.selectedIndex = index;
     
     if (this.appPages[this.selectedIndex ].title === "Logout") {
@@ -154,7 +177,7 @@ export class AppComponent implements OnInit {
 
   }
 
-  constructor(
+   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
@@ -188,4 +211,5 @@ export class AppComponent implements OnInit {
       );
     }
   }
+
 }

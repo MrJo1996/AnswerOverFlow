@@ -18,6 +18,9 @@ import { ToastController } from '@ionic/angular';
 
 export class InserisciDomandaPage implements OnInit {
 
+  url = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/inserisciDomanda'
+  urlCategorie = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaCategorie'
+
   titolo = '';
   categorie: any;
   descrizione = '';
@@ -25,17 +28,14 @@ export class InserisciDomandaPage implements OnInit {
   cod_utente;
   cod_categoria: any;
 
-  url = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/inserisciDomanda'
-  urlCategorie = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaCategorie'
-
-  timerToPass: string; //param per le funzioni
-  timerView; //var per la view dei valori
-  timerSettings: string[] = ["5 min", "15 min", "30 min", "1 ora", "3 ore", "6 ore", "12 ore", "1 giorno", "3 giorni"]; //scelte nel picker
-
   codCategoriaScelta;
   categoriaScelta;
   categoriaView;
   categoriaSettings: any = [];
+
+  timerToPass: string;   //param per le funzioni
+  timerView;             //var per la view dei valori
+  timerSettings: string[] = ["5 min", "15 min", "30 min", "1 ora", "3 ore", "6 ore", "12 ore", "1 giorno", "3 giorni"];
 
   constructor(public apiService: ApiService,
     public alertController: AlertController,
@@ -51,10 +51,10 @@ export class InserisciDomandaPage implements OnInit {
     this.apiService.prendiCategorie(this.urlCategorie).then(
       (categories) => {
         this.categoriaSettings = categories;
-        console.log('Categorie visualizzate con successo', this.categoriaSettings);
+        console.log('Categorie visualizzate con successo.', this.categoriaSettings);
       },
       (rej) => {
-        console.log("C'è stato un errore durante la visualizzazione");
+        console.log("C'è stato un errore durante la visualizzazione delle categorie.");
       }
     );
 
@@ -62,7 +62,28 @@ export class InserisciDomandaPage implements OnInit {
 
   }
 
+
+  //INVIO DATI AL SERVER
+
+  async postInvio() {
+
+    this.apiService.inserisciDomanda(this.timerToPass, this.titolo, this.descrizione, this.cod_utente, this.codCategoriaScelta).then(
+      (result) => {
+
+        console.log('INSERIMENTO AVVENUTO CON SUCCESSO:', this.titolo, this.timerToPass, this.descrizione, this.cod_utente, this.cod_categoria);
+
+      },
+      (rej) => {
+        console.log('INSERIMENTO NON RIUSCITO');
+      }
+    );
+  }
+
+
+  //CHECK  ALL FIELD
+
   async checkField() {
+
     if ((this.italian_bad_words_check(this.titolo) || this.italian_bad_words_check(this.descrizione))) {
       const toast = document.createElement('ion-toast');
 
@@ -99,7 +120,7 @@ export class InserisciDomandaPage implements OnInit {
       document.body.appendChild(toast);
       return toast.present();
 
-    } else if (this.categoriaScelta == undefined) {
+    } else if (this.categoriaScelta === undefined) {
 
       const toast = document.createElement('ion-toast');
       toast.message = 'Devi selezionare una categoria!';
@@ -111,7 +132,7 @@ export class InserisciDomandaPage implements OnInit {
       document.body.appendChild(toast);
       return toast.present();
 
-    } else if (this.timerToPass == undefined) {
+    } else if (this.timerToPass === undefined) {
 
       const toast = document.createElement('ion-toast');
       toast.message = 'Devi impostare un timer!';
@@ -124,6 +145,7 @@ export class InserisciDomandaPage implements OnInit {
       return toast.present();
 
     } else {
+
       const alert = await this.alertController.create({
         header: 'Confermi la domanda?',
         buttons: [
@@ -149,20 +171,67 @@ export class InserisciDomandaPage implements OnInit {
     }
   }
 
-  async postInvio() {
-    this.apiService.inserisciDomanda(this.timerToPass, this.titolo, this.descrizione, this.cod_utente, this.codCategoriaScelta).then(
-      (result) => {
-
-        console.log('Inserimento avvenuto con successo:', this.titolo, this.timerToPass, this.descrizione, this.cod_utente, this.cod_categoria);
-
-      },
-      (rej) => {
-        console.log('Inserimento non riuscito!');
-      }
-    );
+  italian_bad_words_check(input: string) {
+    let list = require('italian-badwords-list');
+    let array = list.array;
+    return array.includes(input);
   }
 
+  english_bad_words_check(input: string) {
+    var Filter = require('bad-words'),
+      filter = new Filter();
+    filter.addWords('cazzi');
+    return filter.isProfane(input);
+  }
+
+
+  //CATEGORIA PICKER
+
+  async showCategoriaPicker() {
+
+    let options: PickerOptions = {
+      buttons: [
+        {
+          text: "Annulla",
+          role: 'cancel'
+        },
+        {
+          text: 'Ok',
+          handler: (value: any) => {
+            console.log(value);
+
+            this.categoriaView = value['ValoreCategoriaSettata'].text; //setto timerPopUp al valore inserito nel popUp una volta premuto ok così viene visualizzato
+            this.categoriaScelta = this.categoriaView;
+            this.cod_categoria = value['ValoreCategoriaSettata'].value;
+            this.codCategoriaScelta = this.cod_categoria;
+            console.log('Codice catgoria settata: ', this.codCategoriaScelta);
+
+          }
+        }
+      ],
+      columns: [{
+        name: 'ValoreCategoriaSettata', //nome intestazione json dato 
+        options: this.getCategorieOptions()
+      }]
+    };
+
+    let picker = await this.pickerController.create(options);
+    picker.present()
+  }
+
+  getCategorieOptions() {
+    let options = [];
+    this.categoriaSettings.forEach(x => {
+      options.push({ text: x.titolo, value: x.codice_categoria });
+    });
+    return options;
+  }
+
+
+  //TIMER PICKER
+
   async showTimerPicker() {
+
     let options: PickerOptions = {
       buttons: [
         {
@@ -176,7 +245,7 @@ export class InserisciDomandaPage implements OnInit {
 
             this.timerView = value['ValoreTimerSettato'].value;
             this.mappingTimerValueToPass(value['ValoreTimerSettato'].value);
-            console.log('timer to pass: ', this.timerToPass);
+            console.log('Timer settato: ', this.timerToPass);
           }
         }
       ],
@@ -231,6 +300,9 @@ export class InserisciDomandaPage implements OnInit {
     }
   }
 
+
+  //ROUTING
+
   goToCategoria() {
     this.router.navigate(['proponi-categoria']);
   }
@@ -243,70 +315,19 @@ export class InserisciDomandaPage implements OnInit {
     this.navCtrl.back();
   }
 
-  async showCategoriaPicker() {
-    let options: PickerOptions = {
-      buttons: [
-        {
-          text: "Annulla",
-          role: 'cancel'
-        },
-        {
-          text: 'Ok',
-          handler: (value: any) => {
-            console.log(value);
 
-            this.categoriaView = value['ValoreCategoriaSettata'].text; //setto timerPopUp al valore inserito nel popUp una volta premuto ok così viene visualizzato
-            this.categoriaScelta = this.categoriaView;
-            this.cod_categoria = value['ValoreCategoriaSettata'].value;
-            this.codCategoriaScelta = this.cod_categoria;
-            console.log('categoria to pass: ', this.codCategoriaScelta);
-
-          }
-        }
-      ],
-      columns: [{
-        name: 'ValoreCategoriaSettata', //nome intestazione json dato 
-        options: this.getCategorieOptions()
-      }]
-    };
-
-    let picker = await this.pickerController.create(options);
-    picker.present()
-  }
-
-  getCategorieOptions() {
-    let options = [];
-    this.categoriaSettings.forEach(x => {
-      options.push({ text: x.titolo, value: x.codice_categoria });
-    });
-    return options;
-  }
-
-  italian_bad_words_check(input: string) {
-    let list = require('italian-badwords-list');
-    let array = list.array;
-    return array.includes(input);
-  }
-
-  english_bad_words_check(input: string) {
-    var Filter = require('bad-words'),
-      filter = new Filter();
-
-    filter.addWords('cazzi');
-
-    return filter.isProfane(input);
-  }
+  //SUCCESS TOAST
 
   async showOKToast() {
     const toast = document.createElement('ion-toast');
-      toast.message = 'Inserimento avvenuto con successo!';
-      toast.duration = 2000;
-      toast.position = "top";
-      toast.style.fontSize = '20px';
-      toast.color = 'success';
-      toast.style.textAlign = 'center';
-      document.body.appendChild(toast);
-      return toast.present();
-  } 
+    toast.message = 'Inserimento avvenuto con successo!';
+    toast.duration = 2000;
+    toast.position = "top";
+    toast.style.fontSize = '20px';
+    toast.color = 'success';
+    toast.style.textAlign = 'center';
+    document.body.appendChild(toast);
+    return toast.present();
+  }
 
 }
