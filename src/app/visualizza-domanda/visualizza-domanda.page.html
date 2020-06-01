@@ -11,7 +11,7 @@
 
 
 <ion-content class = "backgrounds">
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab  *ngIf="currentMailUser !== domandaMailUser"  vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button  (click) = "setRispostaVisible()">
       <ion-icon *ngIf="rispostaVisible === false" name="add"></ion-icon>
       <ion-icon *ngIf="rispostaVisible === true" name="close"></ion-icon>
@@ -19,6 +19,10 @@
   </ion-fab>
 
   <ion-card class = "backgrounds">    
+    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+
     <ion-card-header>
       <ion-toolbar class="backgrounds">
 
@@ -61,7 +65,8 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-label *ngIf="risposte===NULL" class = "textSimple">Non ci sono ancora risposte per questa domanda</ion-label>
+  <ion-label *ngIf="risposte.length === 0 && currentMailUser===domandaMailUser" class = "textSimple">Non ci sono ancora risposte alla tua domanda</ion-label>
+  <ion-label *ngIf="risposte.length === 0  && currentMailUser!==domandaMailUser" class = "textSimple">Non ci sono ancora risposte per questa domanda. Rispondi per primo!</ion-label>
 
         <ion-card *ngFor="let risposta of risposte; let i = index" class = "backgrounds">    
           <ion-card-header>
@@ -88,12 +93,12 @@
                 <ion-label class= "description_text"  slot="start" ></ion-label>
             
               
-             <ion-button  (click)="changeColor(risposta.codice_risposta)" slot="end" expand="block" fill = "clear">
+             <ion-button  *ngIf="currentMailUser === domandaMailUser" (click)="changeColor(risposta.codice_risposta)" slot="end" expand="block" fill = "clear">
             <!--     <ion-icon  class="ribbon_style" *ngIf="risposta.codice_risposta!==cod_preferita" slot="start" slot="icon-only"  name="ribbon" ></ion-icon> -->
                 <ion-icon [style.color]="buttonColor" class="ribbon_style_not_pushed" *ngIf="risposta.codice_risposta!==cod_preferita" slot="end" name="ribbon" ></ion-icon>
                 <ion-icon [style.color]="buttonColorBest" class="ribbon_style" *ngIf="risposta.codice_risposta===cod_preferita"  slot="end"   name="ribbon"></ion-icon>
               </ion-button>
-       
+              <ion-icon [style.color]="buttonColorBest" class="ribbon_style" *ngIf="risposta.codice_risposta===cod_preferita && currentMailUser !== domandaMailUser"  slot="end"   name="ribbon"></ion-icon>
             </ion-toolbar>
               
           </ion-card-content>

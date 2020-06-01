@@ -9,6 +9,7 @@ import {NavController} from "@ionic/angular";
 import { resolve } from 'url';
 import { Storage } from "@ionic/storage";
 import { ToastController } from '@ionic/angular';
+import { element } from 'protractor';
 @Component({
   selector: 'app-visualizza-domanda',
   templateUrl: './visualizza-domanda.page.html',
@@ -33,7 +34,6 @@ export class VisualizzaDomandaPage implements OnInit {
 
   risposte = new Array();
   profiliUtentiRisposte = new Array();
-
   descrizioneRispostaView;
   descrizioneRispostaToPass;
   risposta = {};
@@ -125,8 +125,25 @@ async showRisposte() {
       this.risposte.forEach(element => {
         this.trovaProfiliUtentiRisposte(element.cod_utente);
       });
+      let i = 0;
+      this.risposte.forEach(element => {
+        
+        if(element.codice_risposta === this.cod_preferita)
+        {
+          let aux = this.risposte[0];
+          this.risposte[0] = this.risposte[i];
+          this.risposte[i] = aux;
+          for(let j = 1; j<i; j++) {
+            let aux = this.risposte[j];
+            this.risposte[j] = this.risposte[i];
+            this.risposte[i] = aux;
+          }
+        }
+        
+        i++;
       
-      
+      });
+       
       console.log(risposte) 
     },
     (rej) => {
@@ -226,6 +243,7 @@ clickInviaRisposta(){
 
   this.inserisciRisposta();
   this.rispostaVisible = false;
+  this.doRefresh(event);
 
 }
 
@@ -345,6 +363,16 @@ clickRisposta(risposta, i){
     else
         this.rispostaVisible = false;
 
+  }
+
+  doRefresh(event) {
+    this.visualizzaDomanda(); 
+    this.showRisposte();
+
+    setTimeout(() => {
+     
+      event.target.complete();
+    }, 2000);
   }
 
 /*   async showDescrizioneRisposta() {
