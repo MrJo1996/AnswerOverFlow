@@ -98,12 +98,9 @@ export class AppComponent implements OnInit {
     this.initializeApp();
   } */
 
-  nome:string;
-  cognome:string;
-  username: string;
-
- 
-
+  nome = "Davide";
+  cognome = "Russo";
+  username = "username";
 
   //ALERT E ROUTING LOGOUT---------------------------------------
 
@@ -122,8 +119,6 @@ export class AppComponent implements OnInit {
         {
           text: "Si",
           handler: () => {
-            this.storage.set("session", false);
-            this.storage.set("utente", null);
 
             this.storage.set('session', false);
             this.storage.set('utente', null);
@@ -134,7 +129,6 @@ export class AppComponent implements OnInit {
                 console.log('SESSION:' + data)
               });
             }, 3000);
-
             //console.log(this.selectedIndex);
             //this.appPages[7].url = '/login';
           },
@@ -147,37 +141,34 @@ export class AppComponent implements OnInit {
   switch(index) {
 
     this.selectedIndex = index;
-    
-    if (this.appPages[this.selectedIndex ].title === "Logout") {
+
+    if (this.appPages[this.selectedIndex].title === "Logout") {
       this.alert();
-    } else if(this.appPages[this.selectedIndex ].title === "Visualizza profilo"){
-      this.dataService.emailOthers = "undefined";    
-     // this.navCtrl.navigateForward(this.appPages[index].url)
-       this.router.navigateByUrl(this.appPages[index].url)
+    } else if (this.appPages[this.selectedIndex].title === "Visualizza profilo") {
+      this.dataService.emailOthers = "undefined";
+      // this.navCtrl.navigateForward(this.appPages[index].url)
+      this.router.navigateByUrl(this.appPages[index].url)
+
+    } else
+      this.router.navigateByUrl(this.appPages[index].url);
+
+
+    /* 
+  switch (this.appPages[this.selectedIndex].title) {
+    case "Logout":
+      this.alert();
+      break;
+    case "Visualizza profilo":
       
-    }else
-    this.router.navigateByUrl(this.appPages[index].url);
-   
-   
-      /* 
-    switch (this.appPages[this.selectedIndex].title) {
-      case "Logout":
-        this.alert();
-        break;
-      case "Visualizza profilo":
-        
-        this.router.navigateByUrl(this.appPages[index].url);
-        break;
-      default:
-        break;
-    } */
-
-    
-
+      this.router.navigateByUrl(this.appPages[index].url);
+      break;
+    default:
+      break;
+  } */
 
   }
 
-   constructor(
+  constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
@@ -185,24 +176,22 @@ export class AppComponent implements OnInit {
     private router: Router,
     public alertController: AlertController,
     public dataService: DataService,
-    public navCtrl:NavController
+    public navCtrl: NavController
   ) {
     this.initializeApp();
   }
 
   initializeApp() {
+
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide(); //////////////////////////
-      
-      
       timer(2000).subscribe(() => (this.showSplash = false)); //durata animazione definita in app.component.html -> 2s (era 3.5s)
     });
+
   }
 
   ngOnInit() {
-
-    
 
     const path = window.location.pathname.split("folder/")[1];
     if (path !== undefined) {
