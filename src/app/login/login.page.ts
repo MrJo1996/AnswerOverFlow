@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
-import {Router} from "@angular/router";
+import { Router } from "@angular/router";
 
-import {Promise} from "q";
-import {Storage} from '@ionic/storage';
-import {PostServiceService} from "../services/post-service.service";
-import {NavController} from "@ionic/angular";
+import { Promise } from "q";
+import { Storage } from '@ionic/storage';
+import { PostServiceService } from "../services/post-service.service";
+import { NavController } from "@ionic/angular";
 import { DataService } from "../services/data.service";
 import { ToastController } from '@ionic/angular';
 import { ApiService } from 'src/app/providers/api.service';
@@ -24,53 +24,61 @@ export class LoginPage implements OnInit {
   nome = '';
   cognome = '';
   bio = '';
- 
+
   request: Promise<any>;
-  result:  Promise<any>;
-  url= 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/login'
+  result: Promise<any>;
+  url = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/login'
 
-  constructor( public apiService: ApiService ,public toastController: ToastController ,private dataService: DataService ,private service: PostServiceService, private router : Router, private navctrl: NavController, private storage: Storage) {
-    
-  }  
+  constructor(public apiService: ApiService, public toastController: ToastController, private dataService: DataService, private service: PostServiceService, private router: Router, private navctrl: NavController, private storage: Storage) {
 
-  ngOnInit() {
   }
 
-  public reg(){
+  ngOnInit() {
+    //disable scroll (anche su ios)
+    var fixed = document.getElementById('fixed');
+
+    fixed.addEventListener('touchmove', function (e) {
+
+      e.preventDefault();
+
+    }, false);
+  }
+
+  public reg() {
     this.router.navigate(['registrazione']);
   }
 
 
-  postLogin(){
-    if(this.password.length < 8){
-    const toast = document.createElement('ion-toast');
-    toast.message = 'password troppo corta o non valida!';
-    toast.duration = 2000;
-    toast.position = "middle";
-    toast.style.fontSize = '20px';
-    toast.color = 'danger';
-    toast.style.textAlign = 'center';
-    document.body.appendChild(toast);
-    return toast.present();
-    }else{
+  postLogin() {
+    if (this.password.length < 8) {
+      const toast = document.createElement('ion-toast');
+      toast.message = 'password troppo corta o non valida!';
+      toast.duration = 2000;
+      toast.position = "middle";
+      toast.style.fontSize = '20px';
+      toast.color = 'danger';
+      toast.style.textAlign = 'center';
+      document.body.appendChild(toast);
+      return toast.present();
+    } else {
       let postData = {
-        "username":this.username,
+        "username": this.username,
         "password": this.password
       };
-      
+
       this.result = this.service.postService(postData, this.url).then((data) => {
         this.request = data;
         console.log(data);
 
         this.checkField(data);
         this.clickLogin(!data.error, data);
-        
 
 
-        
+
+
       }, err => {
         console.log(err.message);
-        
+
       })
     }
   }
@@ -81,50 +89,50 @@ export class LoginPage implements OnInit {
     return array.includes(input);
   }
 
- checkField(data) {
-  if ((this.italian_bad_words_check(this.username) || this.italian_bad_words_check(this.password))) {
-    const toast = document.createElement('ion-toast');
+  checkField(data) {
+    if ((this.italian_bad_words_check(this.username) || this.italian_bad_words_check(this.password))) {
+      const toast = document.createElement('ion-toast');
 
-    toast.message = 'Hai inserito una parola scorretta!';
-    toast.duration = 2000;
-    toast.position = "middle";
-    toast.style.fontSize = '20px';
-    toast.color = 'danger';
-    toast.style.textAlign = 'center';
+      toast.message = 'Hai inserito una parola scorretta!';
+      toast.duration = 2000;
+      toast.position = "middle";
+      toast.style.fontSize = '20px';
+      toast.color = 'danger';
+      toast.style.textAlign = 'center';
 
-    document.body.appendChild(toast);
-    return toast.present();
+      document.body.appendChild(toast);
+      return toast.present();
 
-}
-  else if (this.username.length < 1 || this.password.length < 8 ) {
-    const toast = document.createElement('ion-toast');
-    toast.message = 'Devi inserire un username valido!';
-    toast.duration = 2000;
-    toast.position = "middle";
-    toast.style.fontSize = '20px';
-    toast.color = 'danger';
-    toast.style.textAlign = 'center';
-    document.body.appendChild(toast);
-    return toast.present();
+    }
+    else if (this.username.length < 1 || this.password.length < 8) {
+      const toast = document.createElement('ion-toast');
+      toast.message = 'Devi inserire un username valido!';
+      toast.duration = 2000;
+      toast.position = "middle";
+      toast.style.fontSize = '20px';
+      toast.color = 'danger';
+      toast.style.textAlign = 'center';
+      document.body.appendChild(toast);
+      return toast.present();
 
-  
-  }else if (data.error==(true)){
 
-    const toast = document.createElement('ion-toast');
-    toast.message = 'Credenziali errate!';
-    toast.duration = 2000;
-    toast.position = "middle";
-    toast.style.fontSize = '20px';
-    toast.color = 'danger';
-    toast.style.textAlign = 'center';
-    document.body.appendChild(toast);
-    return toast.present();
-  
-    
+    } else if (data.error == (true)) {
+
+      const toast = document.createElement('ion-toast');
+      toast.message = 'Credenziali errate!';
+      toast.duration = 2000;
+      toast.position = "middle";
+      toast.style.fontSize = '20px';
+      toast.color = 'danger';
+      toast.style.textAlign = 'center';
+      document.body.appendChild(toast);
+      return toast.present();
+
+
+    }
   }
- }
 
-  clickLogin(condizione, data){
+  clickLogin(condizione, data) {
 
     if (condizione) {
 
@@ -139,26 +147,26 @@ export class LoginPage implements OnInit {
         this.storage.get('session').then(data => {
           console.log('login ha settato bene' + data)
         });
-      }, 3000); 
+      }, 3000);
 
       this.storage.get('session').then(data => {
-          this.storage.set('session', true);
-          console.log('login ha settato bene' + data)
+        this.storage.set('session', true);
+        console.log('login ha settato bene' + data)
       });
       this.router.navigate(['home']);
-  } else {
+    } else {
       console.log('error');
 
-      
 
-     
-   /* this.dataService.setUtente(this.email, this.username, this.password, this.nome, this.cognome,this.bio);
-    this.router.navigate(['home']);
-    console.log(this.dataService.utente);*/
 
-}
 
-}
+      /* this.dataService.setUtente(this.email, this.username, this.password, this.nome, this.cognome,this.bio);
+       this.router.navigate(['home']);
+       console.log(this.dataService.utente);*/
+
+    }
+
+  }
 
 
 }
