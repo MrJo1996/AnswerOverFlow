@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-
-
 import { Router } from '@angular/router';
 import { Storage } from '@ionic/storage';
 import { AlertController } from '@ionic/angular';
@@ -64,9 +61,35 @@ export class AppComponent implements OnInit {
     }
   ];
 
+  constructor(
+    private platform: Platform,
+    private splashScreen: SplashScreen,
+    private statusBar: StatusBar,
+    private storage: Storage,
+    private router: Router,
+    public alertController: AlertController
+  ) {
+    this.initializeApp();
+  }
+
+  nome:string;
+  cognome:string;
+  username: string;
+
+  ngOnInit() {
+    const path = window.location.pathname.split('folder/')[1];
+    if (path !== undefined) {
+      this.selectedIndex = this.appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
+    }
+
+  }
+
+
+  //ALERT E ROUTING LOGOUT---------------------------------------
+
   async alert() {
     const alert = await this.alertController.create({
-      header: 'Vuoi uscire?',
+      header: 'Vuoi effettuare il logout?',
       buttons: [
         {
           text: 'No',
@@ -81,12 +104,11 @@ export class AppComponent implements OnInit {
 
             this.storage.set('session', false);
             this.storage.set('utente', null);
-
             this.router.navigate(['login']);
 
             setTimeout(() => {
               this.storage.get('session').then(data => {
-                console.log('login ha settato bene' + data)
+                console.log('SESSION:' + data)
               });
             }, 3000);
 
@@ -99,13 +121,13 @@ export class AppComponent implements OnInit {
     await alert.present();
   }
 
-
   switch(index) {
+
     this.selectedIndex = index;
 
     if (this.selectedIndex === 7) {
 
-      console.log(this.appPages[7].url);
+      //console.log(this.appPages[7].url);
       this.alert();
 
     } else
@@ -114,7 +136,7 @@ export class AppComponent implements OnInit {
 
   }
 
-  constructor(
+ /*  constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
@@ -122,9 +144,7 @@ export class AppComponent implements OnInit {
     private router: Router,
     public alertController: AlertController,
 
-  ) {
-    this.initializeApp();
-  }
+  } */
 
   initializeApp() {
     this.platform.ready().then(() => {
@@ -135,12 +155,12 @@ export class AppComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-    const path = window.location.pathname.split('folder/')[1];
-    if (path !== undefined) {
-      this.selectedIndex = this.appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
-    }
+  goToProfile() {
+    //this.dataService. = this.chatFriend_id;
+    this.router.navigate(['visualizza-profilo']);
+    //this.flag = false;
   }
+
 }
 
 
