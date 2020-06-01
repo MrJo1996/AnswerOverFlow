@@ -45,6 +45,54 @@ export class RegistrazionePage implements OnInit {
       await alert.present();
     }
     else
+    if(this.nome.length > 19){
+      const alert = await this.alertController.create({
+        header: 'Nome troppo lungo (Max 20 caratteri)',
+        buttons: [
+          {
+            text: 'Ok',
+            role: 'cancel',
+            cssClass: 'secondary',
+            handler: (blah) => {
+              console.log('Confirm Cancel: blah');
+            }
+          }
+        ]
+      });
+      await alert.present();
+    }else
+    if(this.cognome.length > 19){
+      const alert = await this.alertController.create({
+        header: 'Cognome troppo lungo (Max 20 caratteri)',
+        buttons: [
+          {
+            text: 'Ok',
+            role: 'cancel',
+            cssClass: 'secondary',
+            handler: (blah) => {
+              console.log('Confirm Cancel: blah');
+            }
+          }
+        ]
+      });
+      await alert.present();
+    }else
+    if(this.username.length > 19){
+      const alert = await this.alertController.create({
+        header: 'Username troppo lungo (Max 20 caratteri)',
+        buttons: [
+          {
+            text: 'Ok',
+            role: 'cancel',
+            cssClass: 'secondary',
+            handler: (blah) => {
+              console.log('Confirm Cancel: blah');
+            }
+          }
+        ]
+      });
+      await alert.present();
+    }else
       if (this.password.length < 8) {
         const alert = await this.alertController.create({
           header: 'Password troppo corta. Utilizzare una password con almeno 8 caratteri',
