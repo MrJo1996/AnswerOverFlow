@@ -113,6 +113,10 @@ const routes: Routes = [
   },  {
     path: 'search-results',
     loadChildren: () => import('./search-results/search-results.module').then( m => m.SearchResultsPageModule)
+  },
+  {
+    path: 'mie-attivita',
+    loadChildren: () => import('./mie-attivita/mie-attivita.module').then( m => m.MieAttivitaPageModule)
   }
 
 

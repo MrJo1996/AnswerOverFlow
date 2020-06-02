@@ -668,6 +668,46 @@ export class ApiService {
     });
   }
 
+  getMieDomande(cod_utente: string) {
+    const body = {
+      cod_utente: cod_utente
+    };
+
+    return new Promise((resolve, reject) => {
+      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaDomandeMie', body).subscribe(
+        data => {
+         
+          let domande = data;['Domande']['data'];
+          console.log(domande);
+          resolve(domande); 
+        },
+        (err) => {
+          reject();
+        }
+      );
+    });
+  }
+
+  getMieiSondaggi(cod_utente: string) {
+    const body = {
+      cod_utente: cod_utente
+    };
+
+    return new Promise((resolve, reject) => {
+      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaSondaggiMiei', body).subscribe(
+        data => {
+         
+          let sondaggi = data['Sondaggi']['data'];
+          console.log(sondaggi);
+          resolve(sondaggi); 
+        },
+        (err) => {
+          reject();
+        }
+      );
+    });
+  }
+
 
 
   //RICERCA
