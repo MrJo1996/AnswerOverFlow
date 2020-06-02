@@ -1,6 +1,9 @@
 <ion-header>
   <ion-toolbar class="backgroundsSecondaryItem">
-    <ion-searchbar placeholder="Ricerca..." animated="true"></ion-searchbar>
+    <ion-searchbar placeholder="Ricerca..." animated="true"
+    [(ngModel)]="keywordToSearch"
+    (search)="ricerca($event)"
+    ></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 

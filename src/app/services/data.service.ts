@@ -15,7 +15,9 @@ export class DataService {
   codice_chat=null;
   codice_risposta;
   selezione_cat;
-  nuova_proposta
+  nuova_proposta;
+
+  keywordToSearch;
 
 
 
@@ -52,6 +54,10 @@ export class DataService {
   setNuovaProposta(proposta){
     this.nuova_proposta = proposta;
   }
+
+  setKeywordToSearch(key: string) {
+    this.keywordToSearch = key;
+  }
  
   getCod_domanda(){
     return this.codice_domanda;
@@ -79,6 +85,10 @@ export class DataService {
   getCodiceRisposta(){
 
     return this.codice_risposta;
+  }
+
+  getKeywordToSearch(){
+    return this.keywordToSearch;
   }
   
 

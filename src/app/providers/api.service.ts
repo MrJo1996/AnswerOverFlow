@@ -711,6 +711,42 @@ export class ApiService {
 
 
   //RICERCA
-  
+  ricercaDomanda(keyword: string) {
+    const body = {
+      keyword
+    };
+    return new Promise((resolve, reject) => {
+      
+      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaDomandaKeyword', body).subscribe(
+        (data) => {
+          let esito = data['Domanda']['data'];
+          resolve(esito);
+        },
+        (err) => {
+          console.log(err);
+          reject();
+        }
+      );
+    });
+  }
+
+  ricercaSondaggio(keyword: string) {
+    const body = {
+      keyword
+    };
+    return new Promise((resolve, reject) => {
+      
+      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaSondaggioKeyword', body).subscribe(
+        (data) => {
+          let esito = data['Sondaggio']['data'];
+          resolve(esito);
+        },
+        (err) => {
+          console.log("Rej sond",err);
+          reject();
+        }
+      );
+    });
+  }
 
 }

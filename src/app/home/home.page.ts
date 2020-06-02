@@ -18,7 +18,9 @@ export class HomePage implements OnInit {
   sondaggi;
   domandaMailUser;//mail dell'utente che ha fatto la domanda
   domandaNomeUser = " ";//nome e cognome dell'utente che ha fatto la domanda
-
+  keywordToSearch;
+  searchingResults;
+  request: Promise<any>;
   constructor(private storage: Storage, private apiService: ApiService, private service: PostServiceService, private dataService: DataService, private router: Router) { }
 
   ngOnInit() {
@@ -80,8 +82,31 @@ export class HomePage implements OnInit {
     }, 2000);
   }
 
+  ricerca() {
+    console.log("hai cliccato la lente, input: ", this.keywordToSearch);
+
+    this.apiService.ricercaDomanda(this.keywordToSearch).then(
+      (result) => { // nel caso in cui va a buon fine la chiamata
+        console.log("RICERCA: ", result);
+      },
+      (rej) => {// nel caso non vada a buon fine la chiamata
+        console.log('rej RICERCA');
+      }
+    );
+
+    this.apiService.ricercaSondaggio(this.keywordToSearch).then(
+      (result) => { // nel caso in cui va a buon fine la chiamata
+        console.log("Sondaggio: ", result);
+      },
+      (rej) => {// nel caso non vada a buon fine la chiamata
+        console.log('rej sondaggio');
+      }
+    );
+
+    this.dataService.setKeywordToSearch(this.keywordToSearch);
+    this.router.navigate(['/search-results']); 
+  }
 
 
-  
 }
 

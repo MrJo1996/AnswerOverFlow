@@ -1,9 +1,112 @@
 <ion-header>
+
   <ion-toolbar>
-    <ion-title>searchResults</ion-title>
+    <ion-button slot="start" fill="clear" ion-button icon-only (click)="backButton()">
+      <ion-icon name="arrow-back-outline"></ion-icon>
+    </ion-button>
+
+    <ion-title>Risultati della ricerca per</ion-title>
+    <ion-label>
+      <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<u><i>{{keyRicerca}}</i></u></p>
+    </ion-label>
+
   </ion-toolbar>
+
 </ion-header>
 
+
+<ion-card>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-icon name="reader"></ion-icon>
+        Domande
+        <ion-label class="colorBlu">
+          (11)
+        </ion-label>
+      </ion-col>
+      <ion-col>
+        <ion-icon name="trail-sign"></ion-icon>
+        Sondaggi
+        <ion-label class="colorBlu">
+          (77)
+        </ion-label>
+      </ion-col>
+      <ion-col>
+        <ion-icon name="person"></ion-icon>
+        Utenti
+        <ion-label class="colorBlu">
+          (55)
+        </ion-label>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-card>
+
+
 <ion-content>
+  <!-- 
+  <ion-card class="backgrounds" (click)="clickSondaggio(sondaggio.codice_sondaggio)" *ngFor="let sondaggio of sondaggi">
+    <ion-card-header>
+      <ion-toolbar class="backgrounds">
+        <ion-icon class="alarm_style" name="alarm-outline" slot="start"></ion-icon>
+        <ion-label class="textTitle">{{sondaggio.timer}}</ion-label>
+        <ion-button slot="end" expand="block" *ngIf="currentUser===sondaggioUser" (click)="popUpEliminaSondaggio()"
+          fill="clear">
+          <ion-icon name="trash-sharp" color="primary" class="icons_generic_style"></ion-icon>
+        </ion-button>
+        <ion-button slot="end" *ngIf="currentUser===sondaggioUser" (click)="goModificaDomanda()" expand="block"
+          fill="clear">
+          <ion-icon name="hammer-sharp" color="primary" class="icons_generic_style"></ion-icon>
+        </ion-button>
+
+      </ion-toolbar>
+      <ion-toolbar class="backgrounds" *ngIf="currentUser!==sondaggioUser">
+        <ion-avatar slot="start" class="icon-avatar">
+          <img src="https://i.ytimg.com/vi/mCf6UGT3HrA/maxresdefault.jpg">
+        </ion-avatar>
+        <ion-label class="username_text_style">{{sondaggioUser}}</ion-label>
+
+      </ion-toolbar>
+
+      <ion-card-title class="textTitleBIG">{{sondaggio.titolo}}</ion-card-title>
+    </ion-card-header>
+
+
+
+    <ion-card-content>
+      <p class="textSimple">{{descrizione}}</p>
+
+      <ion-list class="backgrounds">
+        <ion-list-header>
+          <ion-label *ngIf="currentUser===sondaggioUser">Voti totali: {{voti_totali}}</ion-label>
+        </ion-list-header>
+
+        <div class="backgrounds">
+
+          <ion-item *ngFor="let scelta of scelte">
+
+            <ion-checkbox *ngIf="currentUser!==sondaggioUser" slot="start"></ion-checkbox>
+            <ion-label *ngIf="currentUser===sondaggioUser" slot="start">{{scelta.num_favorevoli}}</ion-label>
+            <ion-text class="textSimple" slot="start">{{scelta.descrizione}}</ion-text>
+          </ion-item>
+
+
+
+        </div>
+      </ion-list>
+
+
+
+      <ion-toolbar>
+        <ion-icon name="calendar-outline" slot=start class="calendar_icon_style"></ion-icon>
+        <ion-label class="description_text" slot="start">{{sondaggio.dataeora}}</ion-label>
+        <ion-icon name="list" slot="start" class="icon_list_style"></ion-icon>
+        <ion-label class="description_text" slot="start"></ion-label>
+
+
+      </ion-toolbar>
+    </ion-card-content>
+  </ion-card> -->
 
 </ion-content>
