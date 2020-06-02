@@ -3,6 +3,7 @@ import {Chart} from 'chart.js';
 import {NavController} from "@ionic/angular";
 import { ApiService } from '../providers/api.service';
 import { DataService } from "../services/data.service";
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-visualizza-statistiche',
@@ -32,7 +33,7 @@ export class VisualizzaStatistichePage {
   Domande = {};
   codice_categoria = 1;
   cod_utente = "gmailverificata";
-  domandeTOP = {};
+  domandeTOP = new Array();
   risposteTOP = {};
   num_domandeTOP: any;
   num_domandeTOP2: any;
@@ -40,7 +41,7 @@ export class VisualizzaStatistichePage {
   num_risposteTOP: any;
   num_risposteTOP1: any;
   num_risposteTOP2 : any;
-  
+  provaDomandeTOP = new Array();
   
 
   constructor(private dataService: DataService, private navCtrl: NavController,public apiService: ApiService) {
@@ -85,12 +86,29 @@ async visualizzaStatisticheDomanda(){
     (domande) => {
      console.log("consoleLOg1", domande);
 
-    this.domandeTOP = domande['Domande'];
-    console.log("consoleLOg2",this.domandeTOP['data'].num_domande);
+    this.domandeTOP = domande['Domande']['data'];
+    //console.log("consoleLOg2",this.domandeTOP['data'].num_domande);
 
-        this.num_domandeTOP=domande['Domande']['data']['0'].num_domande;
+        //this.num_domandeTOP=domande['Domande']['data']['0'].num_domande;
        /*  this.num_domandeTOP2=domande['Domande']['data']['1'].num_domande;
         this.num_domandeTOP3=domande['Domande']['data']['2'].num_domande; */
+      let i = 0;
+      this.domandeTOP.forEach(element => {
+          if(i === 0){
+            this.num_domandeTOP = element.num_domande;
+          }
+        
+          if(i === 1){
+            this.num_domandeTOP2 = element.num_domande;
+          }
+          
+          if(i === 2){         
+          this.num_domandeTOP3 = element.num_domande;
+        }  
+        i++;
+      });
+
+
         this.createBarChart();
 
       
