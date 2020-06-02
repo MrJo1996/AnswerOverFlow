@@ -95,7 +95,7 @@ export class ModificaPasswordPage implements OnInit {
       document.body.appendChild(toast);
    
       return toast.present();
-    }else if (this.password.length > 14){
+    }else if (this.password.length > 100){
       const toast = document.createElement('ion-toast');
       toast.message = 'password troppo lunga!';
       toast.duration = 2000;
