@@ -9,6 +9,7 @@ export class DataService {
   email;
   utente={};
 
+  session;
   codice_sondaggio;
   emailUtente;
   emailOthers: string;
@@ -57,8 +58,16 @@ export class DataService {
 
   setKeywordToSearch(key: string) {
     this.keywordToSearch = key;
+  
+  }
+  
+  setSession(session){
+    this.session = session;
   }
  
+  getSession(){
+    return this.session;
+  }
   getCod_domanda(){
     return this.codice_domanda;
   }

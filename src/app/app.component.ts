@@ -1,15 +1,12 @@
 import { Component, OnInit } from "@angular/core";
 
-import { Platform } from "@ionic/angular";
+import { Platform, MenuController, NavController } from "@ionic/angular";
 import { SplashScreen } from "@ionic-native/splash-screen/ngx";
 import { StatusBar } from "@ionic-native/status-bar/ngx";
 import { DataService } from "../app/services/data.service";
 import { Router } from "@angular/router";
-import { NavController } from "@ionic/angular";
 import { Storage } from "@ionic/storage";
 import { AlertController } from "@ionic/angular";
-
-
 
 import { timer } from "rxjs/observable/timer"; //splash
 
@@ -21,7 +18,13 @@ import { timer } from "rxjs/observable/timer"; //splash
 export class AppComponent implements OnInit {
   showSplash = true; //splash
 
-  public selectedIndex = 0;
+
+  public selectedIndex = -1;
+  public selectedIndexAccount = -1;
+  classItem = false;
+  accountMenu:any;
+
+
   public appPages = [
     {
       title: "Home",
@@ -34,79 +37,67 @@ export class AppComponent implements OnInit {
       url: "/inserisci-domanda",
       icon: "reader",
       view: true,
-
     },
     {
       title: "Nuovo sondaggio",
       url: "/inserimento-sondaggio",
       icon: "trail-sign",
       view: true,
-
     },
     {
       title: "Chat",
       url: "/visualizza-chats",
       icon: "chatbubble-ellipses",
       view: true,
-
     },
+  ];
+
+  public accountPages = [
     {
       title: "Visualizza profilo",
       url: "/visualizza-profilo",
       icon: "person",
       view: true,
-
     },
     {
       title: "Le mie attività?????",
       url: "/inserimento-sondaggio",
       icon: "swap-vertical",
       view: true,
-
-    },
-    {
-      title: "Info",
-      url: "/info",
-      icon: "information-circle",
-      view: true,
-
     },
     {
       title: "Logout",
       icon: "exit",
       url: "",
       view: true,
-
     },
     {
       title: "Login",
       icon: "exit",
       url: "/login",
       view: false,
-
     },
   ];
-
-  /* constructor(
-    private platform: Platform,
-    private splashScreen: SplashScreen,
-    private statusBar: StatusBar,
-    private storage: Storage,
-    private router: Router,
-    public alertController: AlertController
-  ) {
-    this.initializeApp();
-  } */
 
   nome = "Davide";
   cognome = "Russo";
   username = "username";
 
+
+
+  /* {
+    title: "Info",
+    url: "/info",
+    icon: "information-circle",
+    view: true,
+  },
+ */
+
   //ALERT E ROUTING LOGOUT---------------------------------------
 
   async alert() {
     const alert = await this.alertController.create({
-      header: 'Vuoi effettuare il logout?',
+      header: "Vuoi effettuare il logout?",
       buttons: [
         {
           text: "No",
@@ -119,18 +110,16 @@ export class AppComponent implements OnInit {
         {
           text: "Si",
           handler: () => {
-
-            this.storage.set('session', false);
-            this.storage.set('utente', null);
-            this.router.navigate(['login']);
+            this.storage.set("session", false);           
+            this.storage.set("utente", null);
+            this.dataService.setSession(false);           
+            this.router.navigate(["login"]);
 
             setTimeout(() => {
-              this.storage.get('session').then(data => {
-                console.log('SESSION:' + data)
+              this.storage.get("session").then((data) => {
+                console.log("SESSION:" + data);
               });
             }, 3000);
-            //console.log(this.selectedIndex);
-            //this.appPages[7].url = '/login';
           },
         },
       ],
@@ -138,35 +127,61 @@ export class AppComponent implements OnInit {
     await alert.present();
   }
 
-  switch(index) {
 
+
+
+
+  switch2 (index) {
+
+    //this.selectedIndexAccount = index;
     this.selectedIndex = index;
 
-    if (this.appPages[this.selectedIndex].title === "Logout") {
+    
+    if (this.appPages[index].title === "Logout") {
       this.alert();
-    } else if (this.appPages[this.selectedIndex].title === "Visualizza profilo") {
+    } else  if(this.appPages[index].title === "Visualizza profilo") {
       this.dataService.emailOthers = "undefined";
-      // this.navCtrl.navigateForward(this.appPages[index].url)
-      this.router.navigateByUrl(this.appPages[index].url)
-
-    } else
       this.router.navigateByUrl(this.appPages[index].url);
-
-
-    /* 
-  switch (this.appPages[this.selectedIndex].title) {
-    case "Logout":
-      this.alert();
-      break;
-    case "Visualizza profilo":
-      
-      this.router.navigateByUrl(this.appPages[index].url);
-      break;
-    default:
-      break;
-  } */
+    } else{
+        this.router.navigateByUrl(this.appPages[index].url);
+      }
 
   }
+
+
+
+  switch(index, page) {
+   
+
+    switch (page) {
+      case "app":
+        this.selectedIndex = index;
+        this.router.navigateByUrl(this.appPages[index].url);
+        this.selectedIndexAccount = -1; 
+        break;
+      case "account":
+        this.selectedIndexAccount = index;
+        
+
+        if (this.accountPages[index].title === "Logout") {
+          this.alert();
+        } else  if(this.accountPages[index].title === "Visualizza profilo") {
+          this.dataService.emailOthers = "undefined";
+          this.router.navigateByUrl(this.accountPages[index].url);
+        } else{
+            this.router.navigateByUrl(this.accountPages[index].url);
+          }
+          this.selectedIndex = -1; 
+
+        break;
+      default:
+        break;
+    }
+ 
+   
+  }
+  
+ 
 
   constructor(
     private platform: Platform,
@@ -176,29 +191,55 @@ export class AppComponent implements OnInit {
     private router: Router,
     public alertController: AlertController,
     public dataService: DataService,
-    public navCtrl: NavController
+    public navCtrl: NavController,
+    private menuCtrl: MenuController
   ) {
     this.initializeApp();
   }
 
   initializeApp() {
-
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide(); //////////////////////////
       timer(2000).subscribe(() => (this.showSplash = false)); //durata animazione definita in app.component.html -> 2s (era 3.5s)
     });
 
+
+    this.storage.get("session").then((data) => {
+      console.log("SESSION:" + data);
+      this.dataService.setSession(data);
+      
+    });
+
+
   }
 
   ngOnInit() {
 
     const path = window.location.pathname.split("folder/")[1];
+
     if (path !== undefined) {
       this.selectedIndex = this.appPages.findIndex(
         (page) => page.title.toLowerCase() === path.toLowerCase()
+      );     
+      this.selectedIndex = this.accountPages.findIndex(
+        (page) => page.title.toLowerCase() === path.toLowerCase()
       );
+      
     }
   }
+
+  goToProfile() {
+    this.dataService.emailOthers = "undefined";
+    this.router.navigate(["visualizza-profilo"]);
+    this.menuCtrl.close();
+  }
+
+
+  goToInfo(){
+    this.router.navigate(["info"])
+    this.menuCtrl.close();
+}
+
 
 }

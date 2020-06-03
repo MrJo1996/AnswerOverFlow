@@ -32,10 +32,17 @@ export class VisualizzaProfiloPage implements OnInit {
     
     ){
 
-      this.userProfileId = this.dataService.getEmailOthers()    
-      this.storage.get('utente').then(data => {
+      this.userProfileId = this.dataService.getEmailOthers();
+      this .userId = this.dataService.getEmail_Utente();
+      
+     /*  this.storage.get('utente').then(data => {
         this.userId = data.email;
-    });
+
+          #172c3d
+
+#15293a
+#19314A
+    }); */
    
      }
 
@@ -43,20 +50,18 @@ export class VisualizzaProfiloPage implements OnInit {
 
      
   ngOnInit() {
- 
-    this.userProfileId = this.dataService.getEmailOthers()
+    
+    //this.userProfileId = "email"  /* this.dataService.getEmailOthers() */
+
+    this.userProfileId = this.dataService.getEmailOthers();
+    this .userId = this.dataService.getEmail_Utente();
     setTimeout(() => {
-    if(this.userProfileId === "undefined"){
-     
-        this.selectProfile(this.userId);
-     
-    }else{
-     
-        this.selectProfile(this.userProfileId);
-    
-    }
-    
-  },1000)
+    if(this.userProfileId === "undefined"){    
+        this.selectProfile(this.userId);    
+    }else{    
+        this.selectProfile(this.userProfileId);  
+    }   
+  },800)
 }
 
   goBack(){
@@ -79,16 +84,15 @@ export class VisualizzaProfiloPage implements OnInit {
   segnalazione: string;
   selectedProfile:string;
   selectId
-  //note:string = "prova textx area"
   
   
   async selectProfile(id) { 
-    console.log(this.userProfileId+ "userIDProfilo");
-    console.log(this.userId + "userID");
 
-   
+    console.log(this.userProfileId+ " userIDProfilo");
+    console.log(this.userId + " userID");
+    console.log(id+" fiofifoifo");
 
-      console.log(id+" fiofifoifo");
+
      this.apiService.getProfilo(id).then(
       (data) => {
         console.log('Visualizzato con successo');
@@ -202,7 +206,6 @@ async confirmAboutAlert() {
 
 
 goToHome(){
-
   this.router.navigate(['/home'])
 }
 

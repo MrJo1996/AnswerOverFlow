@@ -8,7 +8,11 @@
     <ion-title style="font-size: 1.5rem; text-align: center;"><b>Visualizza profilo</b></ion-title>
 
     <!--   -->
-    <ion-button *ngIf="userId !== userProfileId" slot="end" expand="block" fill="clear" (click)="goToHome()" class="msg-btn" >  
+    <ion-button *ngIf="userProfileId !== 'undefined'" slot="end"  expand="block" fill="clear" class = "tool-btn" >
+      <ion-icon name="hammer-outline" slot="icon-only"></ion-icon>
+    </ion-button>
+   
+    <ion-button *ngIf="userProfileId === 'undefined'" slot="end" expand="block" fill="clear" (click)="goToHome()" class="msg-btn" >  
     <ion-img  slot="end" class = "logo-btn" src = "/assets/img/logo AnswerOverFlow.png"></ion-img>    
     </ion-button>
 
@@ -18,37 +22,37 @@
 
 <ion-content>
 
-  <ion-content *ngIf="profilo" class="backgrounds">
+  <ion-content *ngIf="profilo" class="backgrounds" >
 
 
     <ion-card>
       <ion-icon class="profilePicture" name="person-circle-outline"></ion-icon>
 
 
-      <ion-item color="light">
+      <ion-item color="light" >
         <ion-icon name="happy-outline" slot="start"></ion-icon>
         <ion-label position="stacked">Username</ion-label>
         <ion-text>{{profilo?.username}}</ion-text>
 
       </ion-item>
 
-      <ion-item color="light">
+     <!--  <ion-item color="light">
         <ion-icon name="pencil-outline" slot="start"></ion-icon>
         <ion-label position="stacked">Email</ion-label>
         <ion-text>{{profilo?.email}}</ion-text>
       </ion-item>
-
+ -->
       <ion-item color="light">
         <ion-icon name="create-outline" slot="start"></ion-icon>
-        <ion-label position="stacked">Nome</ion-label>
-        <ion-text>{{profilo?.nome}}</ion-text>
+        <ion-label position="stacked">Nome e Cognome</ion-label>
+        <p style="margin: 5px 0px;">{{profilo?.nome}} {{profilo?.cognome}}</p>
       </ion-item>
 
-      <ion-item color="light">
+    <!--   <ion-item color="light">
         <ion-icon name="create-outline" slot="start"></ion-icon>
         <ion-label position="stacked">Cognome</ion-label>
         <ion-text>{{profilo?.cognome}}</ion-text>
-      </ion-item>
+      </ion-item> -->
 
       <ion-item color="light">
         <ion-icon name="chatbox-outline" slot="start"></ion-icon>
@@ -58,13 +62,27 @@
 
     </ion-card>
 
-    <ion-button *ngIf="selectId === userProfileId" color="light" class="ion-button"  (click)="goToChat()">Invia messaggio</ion-button>
-    <ion-button color="primary" class="ion-button" (click)="stats()">Visualizza statistiche</ion-button>
-    <ion-button *ngIf="selectId === userProfileId" (click)="showAlertView()" color="danger" class="ion-button">Segnala
-      Utente</ion-button>
+
+    <ion-grid style="margin-top: 20px;">
+      <ion-row>
+        <ion-col style="align-items: center !important;">
+    <ion-button expand = "block" color="light"  (click)="goToChat()">
+      <ion-icon slot ="start" name="chatbubble-ellipses-outline"></ion-icon>
+      Invia messaggio</ion-button>
+        </ion-col>
+      <ion-col>
+    <ion-button  expand = "block" color="primary"  (click)="stats()">
+      <ion-icon  slot="start" name="analytics"></ion-icon>
+      Statistiche</ion-button>
+      </ion-col>
+    </ion-row>
+      <ion-row>
+        <ion-button size = "small" style="width: 100%;" (click)="showAlertView()" color="danger">Segnala
+          Utente</ion-button>
+      </ion-row>
+    </ion-grid>
 
 
-<!--       <ion-textarea  rows = 5 placeholder="Tap here"   [(ngModel)]="note" name="note" autocomplete="on" autocorrect="on"></ion-textarea>  --> 
   </ion-content>
 
 </ion-content>
