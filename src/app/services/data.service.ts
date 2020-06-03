@@ -18,8 +18,12 @@ export class DataService {
   selezione_cat;
   nuova_proposta;
 
-  keywordToSearch;
-
+  
+//Var Ricerca
+keywordToSearch;
+auxArraySearchDomande = {};
+auxArraySearchSondaggi = {};
+auxArraySearchUtenti = {}; //TODO
 
 
   constructor(private http: HttpClient) { }
@@ -56,11 +60,21 @@ export class DataService {
     this.nuova_proposta = proposta;
   }
 
+  //Ricerca
   setKeywordToSearch(key: string) {
     this.keywordToSearch = key;
-  
   }
-  
+
+  setSearchingResultsDomande(results) {
+    this.auxArraySearchDomande = results;
+  }
+
+  setSearchingResultsSondaggi(results) {
+    this.auxArraySearchSondaggi = results;
+  }
+
+  /* TODO AUX SEARCH UTENTI*/
+  //
   setSession(session){
     this.session = session;
   }
@@ -95,10 +109,20 @@ export class DataService {
 
     return this.codice_risposta;
   }
-
-  getKeywordToSearch(){
-    return this.keywordToSearch;
-  }
   
+//Ricerca
+getKeywordToSearch() {
+  return this.keywordToSearch;
+}
 
+getSearchingResultsDomande() {
+  /* console.log("aux: ", this.auxArray);
+  console.log("titolo 0: ", this.auxArray[0]['titolo']); */
+  return this.auxArraySearchDomande;
+}
+
+getSearchingResultsSondaggi() {
+  return this.auxArraySearchSondaggi;
+}
+//
 }

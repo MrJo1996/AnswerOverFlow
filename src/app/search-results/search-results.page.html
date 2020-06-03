@@ -15,34 +15,41 @@
 </ion-header>
 
 
-<ion-card>
-  <ion-grid>
-    <ion-row>
-      <ion-col>
-        <ion-icon name="reader"></ion-icon>
+<ion-grid>
+  <ion-row>
+    <ion-col size="4">
+      <ion-button expand="full" class="ion-text-wrap" (click)="viewDomande()">
         Domande
-        <ion-label class="colorBlu">
-          (11)
-        </ion-label>
-      </ion-col>
-      <ion-col>
-        <ion-icon name="trail-sign"></ion-icon>
+        <ion-text class="colorBlu">({{domandeSearched.length}})</ion-text>
+      </ion-button>
+    </ion-col>
+    <ion-col size="4">
+      <ion-button expand="full" class="ion-text-wrap" (click)="viewSondaggi()">
         Sondaggi
-        <ion-label class="colorBlu">
-          (77)
-        </ion-label>
-      </ion-col>
-      <ion-col>
-        <ion-icon name="person"></ion-icon>
+        <ion-text class="colorBlu">()</ion-text>
+      </ion-button>
+    </ion-col>
+    <ion-col size="4">
+      <ion-button expand="full" class="ion-text-wrap">
         Utenti
-        <ion-label class="colorBlu">
-          (55)
-        </ion-label>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-</ion-card>
+        <ion-text class="colorBlu">()</ion-text>
+      </ion-button>
+    </ion-col>
+  </ion-row>
+</ion-grid>
 
+<!-- 
+<div class='container'>
+  <ion-button color="medium" id="btn1" size="small">
+    <ion-icon slot="start" name="reader"></ion-icon>
+    Domande(35)</ion-button>
+  <ion-button id="btn2"size="small">
+    <ion-icon name="trail-sign"></ion-icon>
+    Sondaggi(31)</ion-button>
+  <ion-button id="btn3"size="small">
+    <ion-icon name="person"></ion-icon>
+    Utenti(23)</ion-button>
+</div>  -->
 
 <ion-content>
   <!-- 
