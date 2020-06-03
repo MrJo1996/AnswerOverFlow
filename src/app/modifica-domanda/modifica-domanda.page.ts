@@ -17,7 +17,9 @@ import { __await } from 'tslib';
   styleUrls: ['./modifica-domanda.page.scss'],
 })
 export class ModificaDomandaPage implements OnInit {
-  
+  urlCategorie = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaCategorie'
+
+
   codice_domanda: number;
   cod_preferita: number;
   cod_categoria: number;
@@ -26,16 +28,22 @@ export class ModificaDomandaPage implements OnInit {
   timerToPass: string;
   titoloToPass: string;
   descrizioneToPass: string;
+  categoriaToPass;
   
-
-
+  categoriaScelta;
+  categoriaSettings: any = [];
+  codCategoriaScelta;
+  codice_categoria;
   
+  cod_categoriaView;
+  categoriaView;
   dataeoraView;
   timerView;
   titoloView;
   descrizioneView;
 
   domanda = {};
+  categories = {};
 
   timerSettings: string[] = ["5 min", "15 min", "30 min", "1 ora", "3 ore", "6 ore", "12 ore", "1 giorno", "3 giorni"]; //scelte nel picker
 
@@ -45,10 +53,16 @@ export class ModificaDomandaPage implements OnInit {
     public navCtrl: NavController) { }
 
   ngOnInit() {
-    //this.cod_categoria = 1;
-    //this.codice_domanda = 33;
-    //this.cod_preferita = 0;
-
+    
+    this.apiService.prendiCategorie(this.urlCategorie).then(
+      (categories) => {
+        this.categoriaSettings = categories;
+        console.log('Categorie visualizzate con successo.', this.categoriaSettings);
+      },
+      (rej) => {
+        console.log("C'è stato un errore durante la visualizzazione delle categorie.");
+      }
+    );
     this.showSurvey();
   }
 
@@ -76,7 +90,7 @@ export class ModificaDomandaPage implements OnInit {
     } else if (this.deadlineCheck()) {
       this.popupDomandaScaduta();
     } else {
-    this.apiService.modificaDomanda(this.codice_domanda, this.dataeoraToPass, this.timerToPass, this.titoloToPass, this.descrizioneToPass, this.cod_categoria, this.cod_preferita).then(
+    this.apiService.modificaDomanda(this.codice_domanda, this.dataeoraToPass, this.timerToPass, this.titoloToPass, this.descrizioneToPass, this.categoriaToPass, this.cod_preferita).then(
       (result) => {  
         console.log('Modifica avvenuta con successo: ');
       },
@@ -89,7 +103,7 @@ export class ModificaDomandaPage implements OnInit {
   }
 
   async showSurvey() {
-    console.log(this.dataService.codice_domanda);
+    
     this.codice_domanda = this.dataService.codice_domanda;
     this.apiService.getDomanda(this.codice_domanda).then(
       (domanda) => {
@@ -103,7 +117,10 @@ export class ModificaDomandaPage implements OnInit {
         this.titoloView = this.domanda['0'].titolo;
         this.descrizioneView = this.domanda['0'].descrizione;
         this.cod_preferita = this.domanda['0'].cod_preferita;
-        this.cod_categoria = this.domanda['0'].cod_categoria;
+        this.cod_categoriaView = this.domanda['0'].cod_categoria;
+
+        this.getCategoriaView();
+        
         
         console.log('Domanda: ', this.domanda['0']);
       
@@ -127,7 +144,55 @@ export class ModificaDomandaPage implements OnInit {
     );
 
   }
-  
+
+  getCategoriaView() {
+    for (let j = 0; j < this.categoriaSettings.length; j++) {
+
+      if (this.cod_categoriaView == this.categoriaSettings[j].codice_categoria)
+        this.categoriaView = this.categoriaSettings[j].titolo;
+    }
+  }
+  async showCategoriaPicker() {
+
+    let options: PickerOptions = {
+      buttons: [
+        {
+          text: "Annulla",
+          role: 'cancel'
+        },
+        {
+          text: 'Ok',
+          handler: (value: any) => {
+            console.log(value);
+
+            this.categoriaView = value['ValoreCategoriaSettata'].text;
+            this.categoriaToPass = this.categoriaView;
+            this.cod_categoria = value['ValoreCategoriaSettata'].value;
+            this.codCategoriaScelta = this.cod_categoria;
+            console.log('Codice catgoria settata: ', this.codCategoriaScelta);
+
+          }
+        }
+      ],
+      columns: [{
+        name: 'ValoreCategoriaSettata', //nome intestazione json dato 
+        options: this.getCategorieOptions()
+      }]
+
+    };
+
+    let picker = await this.pickerController.create(options);
+    picker.present()
+  }
+
+  getCategorieOptions() {
+    let options = [];
+    this.categoriaSettings.forEach(x => {
+      options.push({ text: x.titolo, value: x.codice_categoria });
+    });
+    return options;
+  }
+
   stringDescriptionChecker():boolean {
     if ((this.descrizioneToPass.length > 1) || !(this.descrizioneToPass.match(/[a-zA-Z0-9_]+/))) {
       return true;
@@ -147,7 +212,7 @@ async popupInvalidDescription(){
   const toast = document.createElement('ion-toast');
   toast.message = 'ERRORE! Hai lasciato la descrizione vuota o hai superato la lunghezza massima!';
   toast.duration = 2000;
-  toast.position = "middle";
+  toast.position = "top";
   toast.style.fontSize = '20px';
   toast.color = 'danger';
   toast.style.textAlign = 'center';
@@ -158,7 +223,7 @@ async popupInvalidTitle(){
     const toast = document.createElement('ion-toast');
     toast.message = 'ERRORE! Hai lasciato il titolo vuoto o hai superato la lunghezza massima!';
     toast.duration = 2000;
-    toast.position = "middle";
+    toast.position = "top";
     toast.style.fontSize = '20px';
     toast.color = 'danger';
     toast.style.textAlign = 'center';

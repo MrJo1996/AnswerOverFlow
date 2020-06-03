@@ -5,6 +5,7 @@ import { ApiService } from 'src/app/providers/api.service';
 import { NavController } from '@ionic/angular';
 import { PickerController } from "@ionic/angular";
 import { PickerOptions } from "@ionic/core";
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-modifica-profilo',
@@ -35,7 +36,11 @@ export class ModificaProfiloPage implements OnInit {
 
   timerSettings: string[] = ["5 min", "15 min", "30 min", "1 ora", "3 ore", "6 ore", "12 ore", "1 giorno", "3 giorni"];
   
-  constructor( private dataService: DataService, public alertController: AlertController,public apiService: ApiService, private pickerController: PickerController) { }
+  constructor( private dataService: DataService, 
+    public alertController: AlertController,
+    public apiService: ApiService, 
+    private pickerController: PickerController,
+    public toastController: ToastController) { }
  
   ngOnInit() {
     //this.email = 'gmailverificata';
@@ -63,7 +68,15 @@ export class ModificaProfiloPage implements OnInit {
     if (this.bioToPass == null) {
       this.bioToPass = this.bioView;
     }
-
+    if (this.stringUsernameLengthChecker()) {
+      this.popupInvalidUsername();
+    } else if (this.stringNameLengthChecker()) {
+      this.popupInvalidName();
+    } else if (this.stringCognomeLengthChecker()) {
+      this.popupInvalidSurname();
+    } else if (this.stringBioLengthChecker()) {
+      this.popupInvalidBio();
+    } else {
     this.apiService.modificaProfilo(this.usernameToPass, this.password, this.nomeToPass, this.cognomeToPass, this.bioToPass, this.email).then(
       (result) => { 
         console.log('Modifica avvenuta con successo');
@@ -73,8 +86,87 @@ export class ModificaProfiloPage implements OnInit {
   
       }
     );
-
+    }
   }
+
+  stringUsernameLengthChecker():boolean {
+    if ((this.usernameToPass.length > 20) || !(this.usernameToPass.match(/[a-zA-Z0-9_]+/))) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  stringNameLengthChecker(): boolean {
+
+    if ((this.nomeToPass.length > 20) || !(this.nomeToPass.match(/[a-zA-Z0-9_]+/))) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  stringCognomeLengthChecker(): boolean {
+
+    if ((this.cognomeToPass.length > 20) || !(this.cognomeToPass.match(/[a-zA-Z0-9_]+/))) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  stringBioLengthChecker(): boolean {
+
+    if ((this.bioToPass.length > 200) || !(this.bioToPass.match(/[a-zA-Z0-9_]+/))) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  async popupInvalidUsername(){
+    const toast = document.createElement('ion-toast');
+    toast.message = 'ERRORE! Hai lasciato l username vuoto o hai superato la lunghezza massima!';
+    toast.duration = 2000;
+    toast.position = "top";
+    toast.style.fontSize = '20px';
+    toast.color = 'danger';
+    toast.style.textAlign = 'center';
+    document.body.appendChild(toast);
+    return toast.present();
+  }
+async popupInvalidName(){
+  const toast = document.createElement('ion-toast');
+  toast.message = 'ERRORE! Hai lasciato il nome vuoto o hai superato la lunghezza massima!';
+  toast.duration = 2000;
+  toast.position = "top";
+  toast.style.fontSize = '20px';
+  toast.color = 'danger';
+  toast.style.textAlign = 'center';
+  document.body.appendChild(toast);
+  return toast.present();
+}
+async popupInvalidSurname(){
+  const toast = document.createElement('ion-toast');
+  toast.message = 'ERRORE! Hai lasciato il cognome vuoto o hai superato la lunghezza massima!';
+  toast.duration = 2000;
+  toast.position = "top";
+  toast.style.fontSize = '20px';
+  toast.color = 'danger';
+  toast.style.textAlign = 'center';
+  document.body.appendChild(toast);
+  return toast.present();
+}
+async popupInvalidBio(){
+  const toast = document.createElement('ion-toast');
+  toast.message = 'ERRORE! Hai lasciato la bio vuota o hai superato la lunghezza massima!';
+  toast.duration = 2000;
+  toast.position = "top";
+  toast.style.fontSize = '20px';
+  toast.color = 'danger';
+  toast.style.textAlign = 'center';
+  document.body.appendChild(toast);
+  return toast.present();
+}
+
+
+
 
   async showSurvey() {
     this.email = this.dataService.email;
