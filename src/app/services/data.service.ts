@@ -65,13 +65,14 @@ auxArraySearchUtenti = {}; //TODO
     this.keywordToSearch = key;
   }
 
-  setSearchingResultsDomande(results) {
+  /* setSearchingResultsDomande(results) {
     this.auxArraySearchDomande = results;
   }
 
   setSearchingResultsSondaggi(results) {
     this.auxArraySearchSondaggi = results;
   }
+ */
 
   /* TODO AUX SEARCH UTENTI*/
   //
