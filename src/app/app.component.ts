@@ -145,7 +145,7 @@ export class AppComponent implements OnInit {
 
 
 
-  switch2 (index) {
+ /*  switch2 (index) {
 
     //this.selectedIndexAccount = index;
     this.selectedIndex = index;
@@ -160,7 +160,7 @@ export class AppComponent implements OnInit {
         this.router.navigateByUrl(this.appPages[index].url);
       }
 
-  }
+  } */
 
 
 
