@@ -10,6 +10,7 @@ import { DataService } from "../services/data.service";
 import { ToastController } from '@ionic/angular';
 import { ApiService } from 'src/app/providers/api.service';
 import { MenuController } from "@ionic/angular";
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -31,14 +32,14 @@ export class LoginPage implements OnInit {
   url = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/login'
 
   constructor(public apiService: ApiService,
-     public toastController: ToastController, 
-     private dataService: DataService, 
-     private service: PostServiceService, 
-     private router: Router, 
-     private navctrl: NavController, 
-     private storage: Storage,
-     private menuCtrl: MenuController
-     ) {  }
+    public toastController: ToastController,
+    private dataService: DataService,
+    private service: PostServiceService,
+    private router: Router,
+    private navctrl: NavController,
+    private storage: Storage,
+    private menuCtrl: MenuController
+  ) { }
 
   ngOnInit() {
     //disable scroll (anche su ios)
@@ -88,9 +89,7 @@ export class LoginPage implements OnInit {
         this.checkField(data);
         this.clickLogin(!data.error, data);
 
-
-
-
+        
       }, err => {
         console.log(err.message);
 
@@ -150,6 +149,10 @@ export class LoginPage implements OnInit {
   clickLogin(condizione, data) {
 
     if (condizione) {
+      //TODO SETTARE NOME E COGNOME COME USERNAME
+      this.dataService.setUsername(data.data[0]['username']); 
+      this.dataService.setNome(data.data[0]['nome']); 
+      this.dataService.setCognome(data.data[0]['cognome']); 
 
       this.storage.set('utente', data.data[0]);
       this.storage.set('session', true);
@@ -165,20 +168,17 @@ export class LoginPage implements OnInit {
 
         this.storage.get('utente').then(data => {
           this.dataService.emailUtente = data.email;
-      });
+        });
 
       }, 3000);
 
       this.storage.get('session').then(data => {
-          this.storage.set('session', true);
-          console.log('SESSION:' + data)
+        this.storage.set('session', true);
+        console.log('SESSION:' + data)
       });
       this.router.navigate(['home']);
     } else {
       console.log('error');
-
-
-
 
       /* this.dataService.setUtente(this.email, this.username, this.password, this.nome, this.cognome,this.bio);
        this.router.navigate(['home']);

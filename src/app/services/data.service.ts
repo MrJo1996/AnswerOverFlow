@@ -18,6 +18,9 @@ export class DataService {
   selezione_cat;
   nuova_proposta;
 
+  nome;
+  cognome;
+  username;
 
   //Var Ricerca
   keywordToSearch;
@@ -105,4 +108,31 @@ export class DataService {
   }
   //
 
+  getUtente() {
+    return this.utente;
+  }
+
+  setUsername(pUsername) {
+    this.username = pUsername;
+  }
+
+  getUsername() {
+    return this.username;
+  }
+
+  setNome(pNome) {
+    this.nome = pNome;
+  }
+
+  getNome() {
+    return this.nome;
+  }
+
+  setCognome(pCognome) {
+    this.cognome = pCognome;
+  }
+
+  getCognome() {
+    return this.cognome;
+  }
 }
