@@ -20,9 +20,21 @@ export class SearchResultsPage implements OnInit {
 
   categorie=[];
 
+  categorieSondaggi= [];
+
+
+  sondaggiButton;
+  domandeButton = true;
+  utentiButton;
+
+
   constructor(private dataService: DataService, private router: Router, private apiService: ApiService) { }
 
-  ngOnInit() { }
+  ngOnInit(){
+
+    
+  }
+   
 
   ionViewWillEnter() { //carica al rendering della page
     console.log("in ionViewCanEnter")
@@ -42,7 +54,7 @@ export class SearchResultsPage implements OnInit {
         var i;
         for (i = 0; i < this.numDomande; i++) {
            this.parseCodCat(this.domandeSearched[i].cod_categoria, i); 
-          console.log("Primo ciclo Categoria domanda",i," ", this.domandeSearched[i].cod_categoria);
+          //console.log("Primo ciclo Categoria domanda",i," ", this.domandeSearched[i].cod_categoria);
         }
 
       },
@@ -60,6 +72,12 @@ export class SearchResultsPage implements OnInit {
         console.log("sondaggi search-res: ", this.sondaggiSearched.length);
         this.numSondaggi = this.sondaggiSearched.length;
 
+        var i;
+
+        for(i=0; i< this.numSondaggi; i++){
+          this.parseCodCatSondaggi(this.sondaggiSearched[i].cod_categoria, i);
+      
+        }
 
       },
       (rej) => {// nel caso non vada a buon fine la chiamata
@@ -79,12 +97,29 @@ export class SearchResultsPage implements OnInit {
   }
 
   viewDomande() {
+
+    this.sondaggiButton = false;
+    this.domandeButton = true;
+    this.utentiButton = false;
     //TODO stampare a video ris domande
-    console.log("Domande Search: ", this.domandeSearched[0]['titolo']);
+  
   }
 
   viewSondaggi() {
-    //TODO stampare a video ris sondaggi
+
+    this.sondaggiButton = true;
+
+    console.log('bottone true');
+    this.domandeButton = false;
+    this.utentiButton = false;
+
+  }
+
+  viewUtenti(){
+
+    this.sondaggiButton = false;
+    this.domandeButton = false;
+    this.utentiButton = true;
 
   }
 
@@ -101,7 +136,21 @@ export class SearchResultsPage implements OnInit {
           console.log("C'è stato un errore durante la visualizzazione");
         }
       );
-    
+  }
+
+  async parseCodCatSondaggi(codice_cat, index) {
+    //set categorieToView
+    console.log("", codice_cat,index);
+
+      this.apiService.getCategoria(codice_cat).then(
+        (categoria) => {
+          this.categorieSondaggi[index] = categoria['Categoria']['data'][0].titolo;
+          console.log("COD parsato sondaggi",index," ", this.categorieSondaggi[index]);
+        },
+        (rej) => {
+          console.log("C'è stato un errore durante la visualizzazione");
+        }
+      );
   }
 
 
