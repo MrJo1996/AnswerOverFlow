@@ -9,6 +9,7 @@ import { NavController } from "@ionic/angular";
 import { DataService } from "../services/data.service";
 import { ToastController } from '@ionic/angular';
 import { ApiService } from 'src/app/providers/api.service';
+import { MenuController } from "@ionic/angular";
 
 @Component({
   selector: 'app-login',
@@ -29,9 +30,15 @@ export class LoginPage implements OnInit {
   result: Promise<any>;
   url = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/login'
 
-  constructor(public apiService: ApiService, public toastController: ToastController, private dataService: DataService, private service: PostServiceService, private router: Router, private navctrl: NavController, private storage: Storage) {
-
-  }
+  constructor(public apiService: ApiService,
+     public toastController: ToastController, 
+     private dataService: DataService, 
+     private service: PostServiceService, 
+     private router: Router, 
+     private navctrl: NavController, 
+     private storage: Storage,
+     private menuCtrl: MenuController
+     ) {  }
 
   ngOnInit() {
     //disable scroll (anche su ios)
@@ -42,6 +49,14 @@ export class LoginPage implements OnInit {
       e.preventDefault();
 
     }, false);
+  }
+
+  ionViewWillEnter() {
+    this.menuCtrl.enable(false);
+  }
+
+  ionViewWillLeave() {
+    this.menuCtrl.enable(true);
   }
 
   public reg() {

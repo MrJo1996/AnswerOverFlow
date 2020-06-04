@@ -17,7 +17,9 @@ import { __await } from 'tslib';
   styleUrls: ['./modifica-domanda.page.scss'],
 })
 export class ModificaDomandaPage implements OnInit {
-  
+  urlCategorie = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaCategorie'
+
+
   codice_domanda: number;
   cod_preferita: number;
   cod_categoria: number;
@@ -26,16 +28,22 @@ export class ModificaDomandaPage implements OnInit {
   timerToPass: string;
   titoloToPass: string;
   descrizioneToPass: string;
+  categoriaToPass;
   
-
-
+  categoriaScelta;
+  categoriaSettings: any = [];
+  codCategoriaScelta;
+  codice_categoria;
   
+  cod_categoriaView;
+  categoriaView;
   dataeoraView;
   timerView;
   titoloView;
   descrizioneView;
 
   domanda = {};
+  categories = {};
 
   timerSettings: string[] = ["5 min", "15 min", "30 min", "1 ora", "3 ore", "6 ore", "12 ore", "1 giorno", "3 giorni"]; //scelte nel picker
 
@@ -45,10 +53,16 @@ export class ModificaDomandaPage implements OnInit {
     public navCtrl: NavController) { }
 
   ngOnInit() {
-    //this.cod_categoria = 1;
-    //this.codice_domanda = 33;
-    //this.cod_preferita = 0;
-
+    
+    this.apiService.prendiCategorie(this.urlCategorie).then(
+      (categories) => {
+        this.categoriaSettings = categories;
+        console.log('Categorie visualizzate con successo.', this.categoriaSettings);
+      },
+      (rej) => {
+        console.log("C'è stato un errore durante la visualizzazione delle categorie.");
+      }
+    );
     this.showSurvey();
   }
 
@@ -69,8 +83,14 @@ export class ModificaDomandaPage implements OnInit {
       this.timerToPass = this.timerView;
     }
 
-
-    this.apiService.modificaDomanda(this.codice_domanda, this.dataeoraToPass, this.timerToPass, this.titoloToPass, this.descrizioneToPass, this.cod_categoria, this.cod_preferita).then(
+    if (this.stringDescriptionChecker()) {
+      this.popupInvalidDescription();
+    } else if (this.stringTitleLengthChecker()) {
+      this.popupInvalidTitle();
+    } else if (this.deadlineCheck()) {
+      this.popupDomandaScaduta();
+    } else {
+    this.apiService.modificaDomanda(this.codice_domanda, this.dataeoraToPass, this.timerToPass, this.titoloToPass, this.descrizioneToPass, this.categoriaToPass, this.cod_preferita).then(
       (result) => {  
         console.log('Modifica avvenuta con successo: ');
       },
@@ -79,11 +99,11 @@ export class ModificaDomandaPage implements OnInit {
         
       }
     );
-
+    }
   }
 
   async showSurvey() {
-    console.log(this.dataService.codice_domanda);
+    
     this.codice_domanda = this.dataService.codice_domanda;
     this.apiService.getDomanda(this.codice_domanda).then(
       (domanda) => {
@@ -97,7 +117,10 @@ export class ModificaDomandaPage implements OnInit {
         this.titoloView = this.domanda['0'].titolo;
         this.descrizioneView = this.domanda['0'].descrizione;
         this.cod_preferita = this.domanda['0'].cod_preferita;
-        this.cod_categoria = this.domanda['0'].cod_categoria;
+        this.cod_categoriaView = this.domanda['0'].cod_categoria;
+
+        this.getCategoriaView();
+        
         
         console.log('Domanda: ', this.domanda['0']);
       
@@ -122,6 +145,92 @@ export class ModificaDomandaPage implements OnInit {
 
   }
 
+  getCategoriaView() {
+    for (let j = 0; j < this.categoriaSettings.length; j++) {
+
+      if (this.cod_categoriaView == this.categoriaSettings[j].codice_categoria)
+        this.categoriaView = this.categoriaSettings[j].titolo;
+    }
+  }
+  async showCategoriaPicker() {
+
+    let options: PickerOptions = {
+      buttons: [
+        {
+          text: "Annulla",
+          role: 'cancel'
+        },
+        {
+          text: 'Ok',
+          handler: (value: any) => {
+            console.log(value);
+
+            this.categoriaView = value['ValoreCategoriaSettata'].text;
+            this.categoriaToPass = this.categoriaView;
+            this.cod_categoria = value['ValoreCategoriaSettata'].value;
+            this.codCategoriaScelta = this.cod_categoria;
+            console.log('Codice catgoria settata: ', this.codCategoriaScelta);
+
+          }
+        }
+      ],
+      columns: [{
+        name: 'ValoreCategoriaSettata', //nome intestazione json dato 
+        options: this.getCategorieOptions()
+      }]
+
+    };
+
+    let picker = await this.pickerController.create(options);
+    picker.present()
+  }
+
+  getCategorieOptions() {
+    let options = [];
+    this.categoriaSettings.forEach(x => {
+      options.push({ text: x.titolo, value: x.codice_categoria });
+    });
+    return options;
+  }
+
+  stringDescriptionChecker():boolean {
+    if ((this.descrizioneToPass.length > 1) || !(this.descrizioneToPass.match(/[a-zA-Z0-9_]+/))) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  stringTitleLengthChecker():boolean {
+
+    if ((this.titoloToPass.length > 1) || !(this.titoloToPass.match(/[a-zA-Z0-9_]+/))) {
+    return true;
+  } else {
+    return false;
+  }
+}
+async popupInvalidDescription(){
+  const toast = document.createElement('ion-toast');
+  toast.message = 'ERRORE! Hai lasciato la descrizione vuota o hai superato la lunghezza massima!';
+  toast.duration = 2000;
+  toast.position = "top";
+  toast.style.fontSize = '20px';
+  toast.color = 'danger';
+  toast.style.textAlign = 'center';
+  document.body.appendChild(toast);
+  return toast.present();
+}
+async popupInvalidTitle(){
+    const toast = document.createElement('ion-toast');
+    toast.message = 'ERRORE! Hai lasciato il titolo vuoto o hai superato la lunghezza massima!';
+    toast.duration = 2000;
+    toast.position = "top";
+    toast.style.fontSize = '20px';
+    toast.color = 'danger';
+    toast.style.textAlign = 'center';
+    document.body.appendChild(toast);
+    return toast.present();
+  }
+
   async popupModificaTitolo() {
     const alert = await this.alertController.create({
       header: 'Modifica titolo',
@@ -143,7 +252,8 @@ export class ModificaDomandaPage implements OnInit {
           }
         }, {
           text: 'Ok',
-          handler: insertedData => {
+
+            handler: insertedData => {
             console.log(JSON.stringify(insertedData)); //per vedere l'oggetto dell'handler
             this.titoloView = insertedData.titoloPopUp; 
             this.titoloToPass = insertedData.titoloPopUp;
@@ -162,6 +272,40 @@ export class ModificaDomandaPage implements OnInit {
     //this.titoloView = await (await alert.onDidDismiss()).data.values.titolo;
   }
 
+  async popupDomandaScaduta() {
+    const alert = await this.alertController.create({
+      header: 'ATTENZIONE',
+      subHeader: '',
+      message: 'Domanda scaduta! !mpossibile effettuare le modifiche!',
+      buttons: ['OK']
+    });
+
+    await alert.present();
+    let result = await alert.onDidDismiss();
+    console.log(result);
+  }
+
+  deadlineCheck(): boolean {
+    var date = new Date(this.domanda['0'].dataeora.toLocaleString());
+    console.log(date.getTime());
+    var timer = this.domanda['0'].timer;
+    console.log(timer);
+    var dateNow = new Date().getTime();
+
+
+    // Since the getTime function of the Date object gets the milliseconds since 1970/01/01, we can do this:
+    var time2 = date.getTime();
+    var seconds = new Date('1970-01-01T' + timer + 'Z').getTime();
+
+    var diff = dateNow - time2;
+
+    console.log(seconds);
+    console.log(time2);
+    console.log(diff);
+
+    return diff > seconds;
+  }
+  
   async popupModificaDescrizione() {
     const alert = await this.alertController.create({
       header: 'Modifica descrizione',
@@ -233,7 +377,9 @@ export class ModificaDomandaPage implements OnInit {
             this.modify();
 
           //TODO mostrare messaggio di avvenuta modifica e riportare alla home
-
+            if (this.deadlineCheck()) {
+              this.navCtrl.navigateRoot('/visualizza-domanda');
+            } else
             this.presentAlert();
 
           }

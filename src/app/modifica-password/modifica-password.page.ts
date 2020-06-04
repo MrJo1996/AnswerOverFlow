@@ -57,8 +57,8 @@ export class ModificaPasswordPage implements OnInit {
 
   ngOnInit() {
 
-    this.email = 'proviamo la mail'
-    this.password = 'password'
+    this.email = ''
+    this.password = ''
   }
 
   is_email_valid(email: string){
@@ -74,38 +74,38 @@ export class ModificaPasswordPage implements OnInit {
   async modify() {
 
     if(this.password.length < 8){
-      const alert = await this.alertController.create({
-        header: 'Password troppo corta. Utilizzare una password con almeno 8 caratteri',
-        buttons: [
-          {
-            text: 'Ok',
-            role: 'cancel',
-            cssClass: 'secondary',
-            handler: (blah) => {
-              console.log('Confirm Cancel: blah');
-            }
-          }
-        ]
-      });
-      await alert.present();
+      const toast = document.createElement('ion-toast');
+      toast.message = 'password troppo corta!';
+      toast.duration = 2000;
+      toast.position = "middle";
+      toast.style.fontSize = '20px';
+      toast.color = 'danger';
+      toast.style.textAlign = 'center';
+      document.body.appendChild(toast);
+      return toast.present();
     }
-     
-    
     else if (this.password != this.confermapassword){
-      const alert = await this.alertController.create({
-        header: 'Le password non coincidono',
-        buttons: [
-          {
-            text: 'Ok',
-            role: 'cancel',
-            cssClass: 'secondary',
-            handler: (blah) => {
-              console.log('Confirm Cancel: blah');
-            }
-          }
-        ]
-      });
-      await alert.present();
+      const toast = document.createElement('ion-toast');
+      toast.message = 'le password non coincidono!';
+      toast.duration = 2000;
+      toast.position = "middle";
+      toast.style.fontSize = '20px';
+      toast.color = 'danger';
+      toast.style.textAlign = 'center';
+      document.body.appendChild(toast);
+   
+      return toast.present();
+    }else if (this.password.length > 100){
+      const toast = document.createElement('ion-toast');
+      toast.message = 'password troppo lunga!';
+      toast.duration = 2000;
+      toast.position = "middle";
+      toast.style.fontSize = '20px';
+      toast.color = 'danger';
+      toast.style.textAlign = 'center';
+      document.body.appendChild(toast);
+   
+      return toast.present();
     }else{
       
       this.apiService.modificaPassword(this.password, this.email).then(
@@ -124,7 +124,7 @@ export class ModificaPasswordPage implements OnInit {
 }
 
 goback(){
-  this.router.navigate(['home']);
+  this.router.navigate(['modifica-profilo']);
 }
 
 }

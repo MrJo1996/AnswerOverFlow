@@ -4,22 +4,22 @@
     <div id='stars2'></div>
     <div id='stars3'></div>
 
-  <ion-grid fixed class="grid">
-    <ion-row>
-      <ion-col>
-        <div>
-          <div>
+ 
+        
+         
             <div class="logo"></div>
-            <div align="center">
+            <div style="text-align: center;">
               <p>
                 <ion-text class="textTitleBIG">Answer</ion-text>
                 <ion-text class="textTitleBIG">OverFlow</ion-text>
 
               </p>
             </div>
-          </div>
-
-
+          
+          <ion-grid fixed class="grid">
+            <ion-row>
+              <ion-col>
+          <div>
           <ion-item color="light" lines="none" class="email">
             <ion-input [(ngModel)]="username" placeholder="Username"></ion-input>
           </ion-item>
@@ -38,7 +38,7 @@
         <p></p>
         <ion-button color="light" (click)="postLogin()">Accedi</ion-button>
         <ion-button color="primary" (click)="reg()">Registrati</ion-button>
-        <ion-button color="secondary" (click)="postLogin()">Accedi come ospite</ion-button>
+        <ion-button color="secondary" (click)="postLogin()" fill ="outline">Accedi come ospite</ion-button>
 
         <p>
           <ion-col><a href="/recupera-password">Password dimenticata?</a></ion-col>

@@ -19,10 +19,10 @@ export class ApiService {
     return new Promise((resolve, reject) => {
       this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzadomanda', body).subscribe(
         data => {
-         
+
           let domanda = data['Domande'];
 
-          resolve(domanda); 
+          resolve(domanda);
           console.log(domanda);
 
         },
@@ -39,10 +39,10 @@ export class ApiService {
     return new Promise((resolve, reject) => {
       this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzadomandehome', body).subscribe(
         data => {
-         
+
           let domande = data['Domande']['data'];
 
-          resolve(domande); 
+          resolve(domande);
           console.log(domande);
         },
         (err) => {
@@ -58,10 +58,10 @@ export class ApiService {
     return new Promise((resolve, reject) => {
       this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzasondaggihome', body).subscribe(
         data => {
-         
+
           let sondaggi = data['Sondaggi']['data'];
 
-          resolve(sondaggi); 
+          resolve(sondaggi);
           console.log(sondaggi);
         },
         (err) => {
@@ -117,7 +117,7 @@ export class ApiService {
     });
   }
 
-  getProfilo(email: string){
+  getProfilo(email: string) {
     const body = {
       email: email
     };
@@ -167,7 +167,7 @@ export class ApiService {
         data => {
           let sondaggio = data['Sondaggio'];
           resolve(sondaggio); //restituirò al ts un oggetto di nome "sondaggio" con accesso già alla posizione "Sondaggio" avendo visto il json di data
-          console.log('ciao' ,sondaggio);
+          console.log('ciao', sondaggio);
 
         },
         (err) => {
@@ -197,7 +197,7 @@ export class ApiService {
     });
   }
 
- 
+
   getRisposta(codice_risposta: Number) {
     const body = {
       codice_risposta: codice_risposta
@@ -208,7 +208,7 @@ export class ApiService {
       this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzarisposta', body).subscribe(
         data => {
           let risposta = data['Risposte'];
-          resolve(risposta); 
+          resolve(risposta);
           console.log(risposta)//restituirò al ts un oggetto di nome "risposta" con accesso già alla posizione "Risposta" avendo visto il json di data
           // console.log('ciao' ,);
 
@@ -230,9 +230,9 @@ export class ApiService {
       this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzacategoria', body).subscribe(
         data => {
           let categoria = data;
-          resolve(categoria); 
+          resolve(categoria);
           console.log(categoria)
-  
+
         },
         (err) => {
           reject();
@@ -251,7 +251,7 @@ export class ApiService {
       this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/risposteperdomanda', body).subscribe(
         data => {
           let risposte = data;
-          resolve(risposte); 
+          resolve(risposte);
           console.log(risposte)
 
         },
@@ -279,8 +279,8 @@ export class ApiService {
     });
   }
 
-  rimuoviDomanda(cod_domanda: number){
-    
+  rimuoviDomanda(cod_domanda: number) {
+
     return new Promise((resolve, reject) => {
       var url = "http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/cancellaDomanda/";
       var urlAndCode = url.concat(cod_domanda.toString());
@@ -317,8 +317,8 @@ export class ApiService {
       );
     });
   }
-  
-  inserisciRisposta(descrizione: string, cod_utente: string, cod_domanda: Number ) {
+
+  inserisciRisposta(descrizione: string, cod_utente: string, cod_domanda: Number) {
     const body = {
       descrizione,
       cod_utente,
@@ -337,7 +337,7 @@ export class ApiService {
       );
     });
   }
-  
+
 
 
   prendiChats(codice_utente: string, url: string) {
@@ -350,7 +350,7 @@ export class ApiService {
         data => {
           console.log('Obj Chats', data);
           let chats = data['Chats']['data'];
-          resolve(chats); 
+          resolve(chats);
 
         },
         (err) => {
@@ -369,7 +369,7 @@ export class ApiService {
       this.http.post(URL, body).subscribe(
         data => {
           let messaggio = data;
-          resolve(messaggio); 
+          resolve(messaggio);
         },
         (err) => {
           reject("Non sono prensenti messaggi in questa chat");
@@ -395,7 +395,7 @@ export class ApiService {
     });
   }
 
-  inserisciSondaggio(URL: string, timer: string, dataeora: Data, cod_utente: string, titolo: string, cod_categoria: number ){
+  inserisciSondaggio(URL: string, timer: string, dataeora: Data, cod_utente: string, titolo: string, cod_categoria: number) {
     const body = {
       timer,
       dataeora,
@@ -421,7 +421,7 @@ export class ApiService {
 
 
 
-  inserisciSceltaSondaggio(URL: string, codice_sondaggio: number, descrizione: string){
+  inserisciSceltaSondaggio(URL: string, codice_sondaggio: number, descrizione: string) {
     const body = {
       codice_sondaggio,
       descrizione
@@ -465,7 +465,7 @@ export class ApiService {
   modificaPassword(password: string, email: string) {
     const body = {
 
-      
+
       password,
       email
     };
@@ -509,35 +509,35 @@ export class ApiService {
     });
   }
 
-  proponi_categoria(selezione, proposta){
-    const body ={
+  proponi_categoria(selezione, proposta) {
+    const body = {
       selezione,
       proposta
     };
-    return new Promise((resolve, reject)=>{
+    return new Promise((resolve, reject) => {
       this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/proponi_cat_o_sottocat', body).subscribe(
-        data =>{
+        data => {
           let esito = data['message'];
           resolve(esito);
-        }, (err)=>{
+        }, (err) => {
           reject();
         }
       );
     });
   }
 
-  segnala_utente(segnalazione: string ,utente_segnalato: string, email_utente_segnalato: string){
-    const body ={
+  segnala_utente(segnalazione: string, utente_segnalato: string, email_utente_segnalato: string) {
+    const body = {
       segnalazione,
       utente_segnalato,
       email_utente_segnalato
     };
-    return new Promise((resolve, reject)=>{
+    return new Promise((resolve, reject) => {
       this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/segnala_utente', body).subscribe(
-        data =>{
+        data => {
           let esito = data['message'];
           resolve(esito);
-        }, (err)=>{
+        }, (err) => {
           reject();
         }
       );
@@ -545,7 +545,7 @@ export class ApiService {
   }
 
 
-  votaSondaggio(codice_scelta: number, cod_sondaggio: number){
+  votaSondaggio(codice_scelta: number, cod_sondaggio: number) {
     const body = {
       codice_scelta,
       cod_sondaggio
@@ -575,9 +575,9 @@ export class ApiService {
       this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzastatistichedomanda', body).subscribe(
         data => {
           let domande = data;
-          resolve(domande); 
-        
-  
+          resolve(domande);
+
+
         },
         (err) => {
           reject();
@@ -597,9 +597,9 @@ export class ApiService {
       this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaTOTStatisticheDomanda', body).subscribe(
         data => {
           let domande = data;
-          resolve(domande); 
+          resolve(domande);
           console.log(domande)
-  
+
         },
         (err) => {
           reject();
@@ -618,9 +618,9 @@ export class ApiService {
       this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaStatisticherisposta', body).subscribe(
         data => {
           let risposte = data;
-          resolve(risposte); 
+          resolve(risposte);
           console.log(risposte)
-  
+
         },
         (err) => {
           reject();
@@ -639,9 +639,9 @@ export class ApiService {
       this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaStatisticheTOTrisposta', body).subscribe(
         data => {
           let risposte = data;
-          resolve(risposte); 
+          resolve(risposte);
           console.log(risposte)
-  
+
         },
         (err) => {
           reject();
@@ -668,6 +668,85 @@ export class ApiService {
     });
   }
 
+  getMieDomande(cod_utente: string) {
+    const body = {
+      cod_utente: cod_utente
+    };
 
+    return new Promise((resolve, reject) => {
+      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaDomandeMie', body).subscribe(
+        data => {
+         
+          let domande = data;['Domande']['data'];
+          console.log(domande);
+          resolve(domande); 
+        },
+        (err) => {
+          reject();
+        }
+      );
+    });
+  }
+
+  getMieiSondaggi(cod_utente: string) {
+    const body = {
+      cod_utente: cod_utente
+    };
+
+    return new Promise((resolve, reject) => {
+      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaSondaggiMiei', body).subscribe(
+        data => {
+         
+          let sondaggi = data['Sondaggi']['data'];
+          console.log(sondaggi);
+          resolve(sondaggi); 
+        },
+        (err) => {
+          reject();
+        }
+      );
+    });
+  }
+
+
+
+  //RICERCA
+  ricercaDomanda(keyword: string) {
+    const body = {
+      keyword
+    };
+    return new Promise((resolve, reject) => {
+      
+      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaDomandaKeyword', body).subscribe(
+        (data) => {
+          let esito = data['Domanda']['data'];
+          resolve(esito);
+        },
+        (err) => {
+          console.log(err);
+          reject();
+        }
+      );
+    });
+  }
+
+  ricercaSondaggio(keyword: string) {
+    const body = {
+      keyword
+    };
+    return new Promise((resolve, reject) => {
+      
+      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaSondaggioKeyword', body).subscribe(
+        (data) => {
+          let esito = data['Sondaggio']['data'];
+          resolve(esito);
+        },
+        (err) => {
+          console.log("Rej sond",err);
+          reject();
+        }
+      );
+    });
+  }
 
 }

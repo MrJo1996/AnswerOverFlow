@@ -110,7 +110,15 @@ const routes: Routes = [
   {
     path: 'conferma-invio-proposta',
     loadChildren: () => import('./conferma-invio-proposta/conferma-invio-proposta.module').then( m => m.ConfermaInvioPropostaPageModule)
+  },  {
+    path: 'search-results',
+    loadChildren: () => import('./search-results/search-results.module').then( m => m.SearchResultsPageModule)
+  },
+  {
+    path: 'mie-attivita',
+    loadChildren: () => import('./mie-attivita/mie-attivita.module').then( m => m.MieAttivitaPageModule)
   }
+
 
 
 

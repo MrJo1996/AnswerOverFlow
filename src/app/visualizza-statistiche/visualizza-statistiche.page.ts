@@ -3,6 +3,7 @@ import {Chart} from 'chart.js';
 import {NavController} from "@ionic/angular";
 import { ApiService } from '../providers/api.service';
 import { DataService } from "../services/data.service";
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-visualizza-statistiche',
@@ -32,15 +33,15 @@ export class VisualizzaStatistichePage {
   Domande = {};
   codice_categoria = 1;
   cod_utente = "gmailverificata";
-  domandeTOP = {};
+  domandeTOP = new Array();
+  risposteTOP = {};
   num_domandeTOP: any;
   num_domandeTOP2: any;
   num_domandeTOP3 : any;
   num_risposteTOP: any;
-  num_risposteTOP2: any;
-  num_risposteTOP3 : any;
-  risposteTOP: any;
-
+  num_risposteTOP1: any;
+  num_risposteTOP2 : any;
+  provaDomandeTOP = new Array();
   
 
   constructor(private dataService: DataService, private navCtrl: NavController,public apiService: ApiService) {
@@ -83,18 +84,31 @@ async visualizzaStatisticheDomanda(){
 
   this.apiService.get_top_Domande(this.cod_utente).then(
     (domande) => {
-     console.log(domande['Domande']['data']['0']['num_domande']);
+     console.log("consoleLOg1", domande);
 
-    this.domandeTOP = domande['Domande'];
-    console.log(this.domandeTOP['data']['0'].num_domande);
-    this.num_domandeTOP=this.domandeTOP['data']['0'].num_domande;
-       
+    this.domandeTOP = domande['Domande']['data'];
+    //console.log("consoleLOg2",this.domandeTOP['data'].num_domande);
 
-        this.num_domandeTOP2=this.domandeTOP['data']['1'].num_domande;
-        this.num_domandeTOP3=this.domandeTOP['data']['2'].num_domande;
+        //this.num_domandeTOP=domande['Domande']['data']['0'].num_domande;
+       /*  this.num_domandeTOP2=domande['Domande']['data']['1'].num_domande;
+        this.num_domandeTOP3=domande['Domande']['data']['2'].num_domande; */
+      let i = 0;
+      this.domandeTOP.forEach(element => {
+          if(i === 0){
+            this.num_domandeTOP = element.num_domande;
+          }
+        
+          if(i === 1){
+            this.num_domandeTOP2 = element.num_domande;
+          }
+          
+          if(i === 2){         
+          this.num_domandeTOP3 = element.num_domande;
+        }  
+        i++;
+      });
 
-        let numdomandeTOP = this.domandeTOP['data']['0'].num_domande;
-        console.log(numdomandeTOP);
+
         this.createBarChart();
 
       
@@ -104,6 +118,9 @@ async visualizzaStatisticheDomanda(){
     }
   )
 }
+
+
+
 
 async visualizzaTOTStatisticheDomanda(){
 
@@ -139,13 +156,15 @@ async visualizzaTOTStatisticheDomanda(){
    async visualizzaStatitischeRisposta(){
     this.apiService.get_top_Risposte(this.cod_utente).then(
       (risposte) => {
-       console.log(risposte['Risposte']['Data']);
+        
+       console.log(risposte['Risposte']['data']['0']['num_risposte']);
        this.risposteTOP = risposte['Risposte'];
-       this.num_risposteTOP=this.risposteTOP['data']['0'].Risposte;
+     
        
 
-       this.num_risposteTOP2=this.risposteTOP['data']['1'].Risposte;
-       this.num_risposteTOP3=this.risposteTOP['data']['2'].Risposte;
+       this.num_risposteTOP=this.risposteTOP['data']['0'].num_risposte;
+       this.num_risposteTOP1=this.risposteTOP['data']['1'].num_risposte;
+       this.num_risposteTOP2=this.risposteTOP['data']['2'].num_risposte;
        this.secondbars();
 
 
@@ -158,7 +177,7 @@ async visualizzaTOTStatisticheDomanda(){
    }
 
    async visualizzaTOTStatitischeRisposta(){
-    this.apiService.get_top_Risposte(this.cod_utente).then(
+    this.apiService.get_tot_Risposte(this.cod_utente).then(
       (risposteT) => {
        console.log(risposteT['Risposte']['Data']);
         
@@ -219,7 +238,7 @@ async visualizzaTOTStatisticheDomanda(){
         labels: ['Filosofia', 'Informatica', 'Geografia'],
           datasets: [{
             label: 'Numero di risposte',
-            data: [this.num_risposteTOP , this.num_risposteTOP2, this.num_risposteTOP3],
+            data: [this.num_risposteTOP , this.num_risposteTOP1, this.num_risposteTOP2],
             backgroundColor:this.colorArray , 
             borderColor: this.colorArray, 
             borderWidth: 1

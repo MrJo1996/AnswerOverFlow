@@ -1,0 +1,208 @@
+<ion-toolbar class="backgroundsSecondaryItem">
+
+  <ion-button slot="start" expand="block" fill="clear" class="msg-btn" (click)="goBack()">
+    <ion-icon slot="icon-only" name="arrow-back-outline" color="primary"></ion-icon>
+  </ion-button>
+
+  <ion-title class="textTitle" class="ion-text-center">Le mie attività</ion-title>
+
+  <ion-button slot="end" expand="block" fill="clear" class="msg-btn" (click)="presentAlertRadio()">
+    <ion-icon slot="icon-only" name="list-outline" color="primary"></ion-icon>
+  </ion-button>
+
+</ion-toolbar>
+
+<ion-toolbar class="backgroundsSecondaryItem">
+    <ion-list>
+
+      <ion-item>
+        <ion-range #range min="100" max="500" step="100" value="100" snaps color="primary" (ionChange)="checkDataeoraDomande()" (ionChange)="checkDataeoraSondaggi()">
+        </ion-range>
+        <ion-badge *ngIf="range.value===100" slot="start" color="primary">1g</ion-badge>
+          <ion-badge *ngIf="range.value===200" slot="start" color="primary">1s</ion-badge>
+          <ion-badge *ngIf="range.value===300" slot="start" color="primary">2s</ion-badge>
+          <ion-badge *ngIf="range.value===400" slot="start" color="primary">3s</ion-badge>
+          <ion-badge *ngIf="range.value===500" slot="start" color="primary">1m</ion-badge>
+      </ion-item>
+
+    </ion-list>
+
+</ion-toolbar>
+
+<ion-content class="backgrounds" *ngIf="check1">
+
+  <ion-card *ngIf="range.value===100" color="primary">
+    <ion-card *ngFor="let sondaggio of sondaggi1g" (click)="clickSondaggio(sondaggio.codice_sondaggio)">
+      <ion-item>
+       <ion-label lines="full" class = "textTitle">Titolo: {{sondaggio.titolo}}</ion-label>
+      </ion-item>
+      <ion-item>
+       <ion-label lines="full" class = "textTitle">Data e ora: {{sondaggio.dataeora}}</ion-label>
+      </ion-item>
+      <ion-item>
+       <ion-label lines="full" class = "textTitle">Timer: {{sondaggio.timer}}</ion-label>
+      </ion-item>
+    </ion-card>
+  </ion-card>
+
+  <ion-textarea readonly *ngIf="range.value===100 && sondaggi1g.length===0" class="ion-text-center">
+    Non hai postato nessun sondaggio nelle ultime 24h</ion-textarea>
+
+  <ion-card *ngIf="range.value===200" color="primary">
+    <ion-card *ngFor="let sondaggio of sondaggi1s" (click)="clickSondaggio(sondaggio.codice_sondaggio)">
+      <ion-item>
+       <ion-label lines="full" class = "textTitle">Titolo: {{sondaggio.titolo}}</ion-label>
+      </ion-item>
+      <ion-item>
+       <ion-label lines="full" class = "textTitle">Data e ora: {{sondaggio.dataeora}}</ion-label>
+      </ion-item>
+      <ion-item>
+       <ion-label lines="full" class = "textTitle">Timer: {{sondaggio.timer}}</ion-label>
+      </ion-item>
+    </ion-card>
+  </ion-card>
+
+  <ion-textarea readonly *ngIf="range.value===200 && sondaggi1s.length===0" class="ion-text-center">
+    Non hai postato nessun sondaggio nell'ultima settimana</ion-textarea>
+
+  <ion-card *ngIf="range.value===300" color="primary">
+    <ion-card *ngFor="let sondaggio of sondaggi2s" (click)="clickSondaggio(sondaggio.codice_sondaggio)">
+      <ion-item>
+       <ion-label lines="full" class = "textTitle">Titolo: {{sondaggio.titolo}}</ion-label>
+      </ion-item>
+      <ion-item>
+       <ion-label lines="full" class = "textTitle">Data e ora: {{sondaggio.dataeora}}</ion-label>
+      </ion-item>
+      <ion-item>
+       <ion-label lines="full" class = "textTitle">Timer: {{sondaggio.timer}}</ion-label>
+      </ion-item>
+    </ion-card>
+  </ion-card>
+
+  <ion-textarea readonly *ngIf="range.value===300 && sondaggi2s.length===0" class="ion-text-center">
+    Non hai postato nessun sondaggio nelle ultime 2 settimane</ion-textarea>
+
+  <ion-card *ngIf="range.value===400" color="primary">
+    <ion-card *ngFor="let sondaggio of sondaggi3s" (click)="clickSondaggio(sondaggio.codice_sondaggio)">
+      <ion-item>
+       <ion-label lines="full" class = "textTitle">Titolo: {{sondaggio.titolo}}</ion-label>
+      </ion-item>
+      <ion-item>
+       <ion-label lines="full" class = "textTitle">Data e ora: {{sondaggio.dataeora}}</ion-label>
+      </ion-item>
+      <ion-item>
+       <ion-label lines="full" class = "textTitle">Timer: {{sondaggio.timer}}</ion-label>
+      </ion-item>
+    </ion-card>
+  </ion-card>
+
+  <ion-textarea readonly *ngIf="range.value===400 && sondaggi3s.length===0" class="ion-text-center">
+    Non hai postato nessun sondaggio nelle ultime 3 settimane</ion-textarea>
+
+  <ion-card *ngIf="range.value===500" color="primary">
+    <ion-card *ngFor="let sondaggio of sondaggi1m" (click)="clickSondaggio(sondaggio.codice_sondaggio)">
+      <ion-item>
+       <ion-label lines="full" class = "textTitle">Titolo: {{sondaggio.titolo}}</ion-label>
+      </ion-item>
+      <ion-item>
+       <ion-label lines="full" class = "textTitle">Data e ora: {{sondaggio.dataeora}}</ion-label>
+      </ion-item>
+      <ion-item>
+       <ion-label lines="full" class = "textTitle">Timer: {{sondaggio.timer}}</ion-label>
+      </ion-item>
+    </ion-card>
+  </ion-card>
+
+  <ion-textarea readonly *ngIf="range.value===500 && sondaggi1m.length===0" class="ion-text-center">
+    Non hai postato nessun sondaggio nell'ultimo mese</ion-textarea>
+
+</ion-content>
+
+<ion-content class="backgrounds" *ngIf="check2">
+
+  <ion-card *ngIf="range.value===100" color="tertiary">
+    <ion-card *ngFor="let domanda of domande1g" (click)="clickDomanda(domanda.codice_domanda)">
+      <ion-item>
+       <ion-label lines="full" class = "textTitle">Titolo: {{domanda.titolo}}</ion-label>
+      </ion-item>
+      <ion-item>
+       <ion-label lines="full" class = "textTitle">Data e ora: {{domanda.dataeora}}</ion-label>
+      </ion-item>
+      <ion-item>
+       <ion-label lines="full" class = "textTitle">Timer: {{domanda.timer}}</ion-label>
+      </ion-item>
+    </ion-card>
+  </ion-card>
+
+  <ion-textarea readonly *ngIf="range.value===100 && domande1g===undefined" class="ion-text-center">
+    Non hai postato nessuna domanda nelle ultime 24h</ion-textarea>
+
+  <ion-card *ngIf="range.value===200" color="tertiary">
+    <ion-card *ngFor="let domanda of domande1s" (click)="clickDomanda(domanda.codice_domanda)">
+      <ion-item>
+       <ion-label lines="full" class = "textTitle">Titolo: {{domanda.titolo}}</ion-label>
+      </ion-item>
+      <ion-item>
+       <ion-label lines="full" class = "textTitle">Data e ora: {{domanda.dataeora}}</ion-label>
+      </ion-item>
+      <ion-item>
+       <ion-label lines="full" class = "textTitle">Timer: {{domanda.timer}}</ion-label>
+      </ion-item>
+    </ion-card>
+  </ion-card>
+
+  <ion-textarea readonly *ngIf="range.value===200 && domande1s.length===0" class="ion-text-center">
+    Non hai postato nessuna domanda nell'ultima settimana</ion-textarea>
+
+  <ion-card *ngIf="range.value===300" color="tertiary">
+    <ion-card *ngFor="let domanda of domande2s" (click)="clickDomanda(domanda.codice_domanda)">
+      <ion-item>
+       <ion-label lines="full" class = "textTitle">Titolo: {{domanda.titolo}}</ion-label>
+      </ion-item>
+      <ion-item>
+       <ion-label lines="full" class = "textTitle">Data e ora: {{domanda.dataeora}}</ion-label>
+      </ion-item>
+      <ion-item>
+       <ion-label lines="full" class = "textTitle">Timer: {{domanda.timer}}</ion-label>
+      </ion-item>
+    </ion-card>
+  </ion-card>
+
+  <ion-textarea readonly *ngIf="range.value===300 && domande2s.length===0" class="ion-text-center">
+    Non hai postato nessuna domanda nelle ultime 2 settimane</ion-textarea>
+
+  <ion-card *ngIf="range.value===400" color="tertiary">
+    <ion-card *ngFor="let domanda of domande3s" (click)="clickDomanda(domanda.codice_domanda)">
+      <ion-item>
+       <ion-label lines="full" class = "textTitle">Titolo: {{domanda.titolo}}</ion-label>
+      </ion-item>
+      <ion-item>
+       <ion-label lines="full" class = "textTitle">Data e ora: {{domanda.dataeora}}</ion-label>
+      </ion-item>
+      <ion-item>
+       <ion-label lines="full" class = "textTitle">Timer: {{domanda.timer}}</ion-label>
+      </ion-item>
+    </ion-card>
+  </ion-card>
+
+  <ion-textarea readonly *ngIf="range.value===400 && domande3s.length===0" class="ion-text-center">
+    Non hai postato nessuna domanda nelle ultime 3 settimane</ion-textarea>
+
+  <ion-card *ngIf="range.value===500" color="tertiary">
+    <ion-card *ngFor="let domanda of domande1m" (click)="clickDomanda(domanda.codice_domanda)">
+      <ion-item>
+       <ion-label lines="full" class = "textTitle">Titolo: {{domanda.titolo}}</ion-label>
+      </ion-item>
+      <ion-item>
+       <ion-label lines="full" class = "textTitle">Data e ora: {{domanda.dataeora}}</ion-label>
+      </ion-item>
+      <ion-item>
+       <ion-label lines="full" class = "textTitle">Timer: {{domanda.timer}}</ion-label>
+      </ion-item>
+    </ion-card>
+  </ion-card>
+
+  <ion-textarea readonly *ngIf="range.value===500 && domande1m.length===0" class="ion-text-center">
+    Non hai postato nessuna domanda nell'ultimo mese</ion-textarea>
+
+</ion-content>

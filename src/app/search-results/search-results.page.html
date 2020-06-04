@@ -1,58 +1,58 @@
 <ion-header>
-  <ion-toolbar class="backgroundsSecondaryItem">
-    <ion-searchbar placeholder="Ricerca..." animated="true"
-    [(ngModel)]="keywordToSearch"
-    (search)="ricerca($event)"
-    ></ion-searchbar>
+
+  <ion-toolbar>
+    <ion-button slot="start" fill="clear" ion-button icon-only (click)="backButton()">
+      <ion-icon name="arrow-back-outline"></ion-icon>
+    </ion-button>
+
+    <ion-title>Risultati della ricerca per</ion-title>
+    <ion-label>
+      <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<u><i>{{keyRicerca}}</i></u></p>
+    </ion-label>
+
   </ion-toolbar>
+
 </ion-header>
 
+
+<ion-grid>
+  <ion-row>
+    <ion-col size="4">
+      <ion-button expand="full" class="ion-text-wrap" (click)="viewDomande()">
+        Domande
+        <ion-text class="colorBlu">({{domandeSearched.length}})</ion-text>
+      </ion-button>
+    </ion-col>
+    <ion-col size="4">
+      <ion-button expand="full" class="ion-text-wrap" (click)="viewSondaggi()">
+        Sondaggi
+        <ion-text class="colorBlu">()</ion-text>
+      </ion-button>
+    </ion-col>
+    <ion-col size="4">
+      <ion-button expand="full" class="ion-text-wrap">
+        Utenti
+        <ion-text class="colorBlu">()</ion-text>
+      </ion-button>
+    </ion-col>
+  </ion-row>
+</ion-grid>
+
+<!-- 
+<div class='container'>
+  <ion-button color="medium" id="btn1" size="small">
+    <ion-icon slot="start" name="reader"></ion-icon>
+    Domande(35)</ion-button>
+  <ion-button id="btn2"size="small">
+    <ion-icon name="trail-sign"></ion-icon>
+    Sondaggi(31)</ion-button>
+  <ion-button id="btn3"size="small">
+    <ion-icon name="person"></ion-icon>
+    Utenti(23)</ion-button>
+</div>  -->
+
 <ion-content>
-  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
-    <ion-refresher-content></ion-refresher-content>
-  </ion-refresher>
-  <ion-card (click)="clickDomanda(domanda.codice_domanda)" class="backgrounds" *ngFor="let domanda of domande">
-    <ion-card-header>
-      <ion-toolbar class="backgrounds">
-
-        <ion-icon class="alarm_style" name="alarm-outline" slot="start"></ion-icon>
-        <ion-label class="textTitle">{{domanda.timer}}</ion-label>
-        <ion-button slot="end" expand="block" *ngIf="currentMailUser===domanda.cod_utente" (click)="cancellaDomanda()"
-          fill="clear">
-          <ion-icon name="trash-sharp" color="primary" class="icons_generic_style"></ion-icon>
-        </ion-button>
-        <ion-button slot="end" *ngIf="currentMailUser===domanda.cod_utente" (click)="  goModificaDomanda() "
-          expand="block" fill="clear">
-          <ion-icon name="hammer-sharp" color="primary" class="icons_generic_style"></ion-icon>
-        </ion-button>
-
-      </ion-toolbar>
-      <ion-toolbar class="backgrounds" *ngIf="currentMailUser!==domanda.cod_utente">
-        <ion-avatar slot="start" class="icon-avatar">
-          <img src="https://i.ytimg.com/vi/mCf6UGT3HrA/maxresdefault.jpg">
-        </ion-avatar>
-        <ion-label class="username_text_style"></ion-label>
-
-      </ion-toolbar>
-      <ion-card-title class="textTitleBIG"> {{domanda.titolo}}</ion-card-title>
-    </ion-card-header>
-
-
-
-    <ion-card-content>
-        <p class= "textSimple"></p>
-     
-          <ion-toolbar>
-              <ion-icon name="calendar-outline" slot = start class = "calendar_icon_style"></ion-icon>
-              <ion-label class= "description_text" slot = "start" ></ion-label>
-              <ion-icon name="list" slot = "start"  class = "icon_list_style"></ion-icon>
-              <ion-label class= "description_text" slot = "start" > {{categoria}}</ion-label>
-               
-
-          </ion-toolbar>
-    </ion-card-content>
-  </ion-card>
-
+  <!-- 
   <ion-card class="backgrounds" (click)="clickSondaggio(sondaggio.codice_sondaggio)" *ngFor="let sondaggio of sondaggi">
     <ion-card-header>
       <ion-toolbar class="backgrounds">
@@ -66,9 +66,6 @@
           fill="clear">
           <ion-icon name="hammer-sharp" color="primary" class="icons_generic_style"></ion-icon>
         </ion-button>
-        <!--    <ion-label slot="end" class="textTitleSMALL">  Risposte totali: 
-          <ion-label slot="end" class="textTitleSMALL">2</ion-label>
-        </ion-label> -->
 
       </ion-toolbar>
       <ion-toolbar class="backgrounds" *ngIf="currentUser!==sondaggioUser">
@@ -117,5 +114,6 @@
 
       </ion-toolbar>
     </ion-card-content>
-  </ion-card>
+  </ion-card> -->
+
 </ion-content>

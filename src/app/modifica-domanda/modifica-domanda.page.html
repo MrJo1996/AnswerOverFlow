@@ -42,12 +42,20 @@
       <ion-input readonly placeholder={{descrizioneView}} color="medium" (click)="popupModificaDescrizione()"></ion-input>
       </ion-item>
 
+      <ion-item color="light" (click)="showCategoriaPicker()" >
+        <ion-label>
+            <ion-icon name="file-tray-full-outline" slot="start"></ion-icon>
+        </ion-label>
+        <ion-text *ngIf="[categoriaView]==''" class="placeholder">Categoria</ion-text>
+        <ion-text *ngIf="[categoriaView]!=''" class="text">{{categoriaView}}</ion-text>
+        <ion-icon class="inner" name="chevron-down-outline"></ion-icon>
+      </ion-item>
+  
       <ion-item color="light">
         <ion-icon name="alert-outline" slot="start"></ion-icon>
         <ion-label position="stacked">La tua domanda scadrà tra</ion-label>
         <ion-input id="timeLeft" readonly placeholder=" " color="medium" ></ion-input>
       </ion-item>
-  
 
   </ion-card>
   

@@ -1,14 +1,9 @@
-.textButton {
-    color: #1b6dd8
-  }
-
 
 .textTitleMockUp {
     font-size: 1rem;
     color: #97a9c5;
     text-align: center;
 }
-
 
 .normalText {
     
@@ -17,8 +12,6 @@
     text-align: justify;
 
 } 
-
-
 .centro {
  
     width: 200px;
@@ -28,6 +21,13 @@
    
 }
 
+.immagine {
+ 
+    width: 120px;
+    height: 120px;
+    display:block;
+
+}
 
 .centerText{
 
@@ -36,22 +36,11 @@
 
 }
 
-    .teamTitle{
+.teamTitle{
         font-size: 2rem;
         color: #97a9c5;
         text-align: center
     }
 
-      
-ion-card{
 
-    align-content: center;
-    align-items: center;
-    text-align: center;
-    }
-    
-    a{
-
-      margin-top: 10px;}
-
-
+ 

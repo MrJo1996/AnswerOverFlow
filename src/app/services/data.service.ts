@@ -9,14 +9,21 @@ export class DataService {
   email;
   utente={};
 
+  session;
   codice_sondaggio;
   emailUtente;
   emailOthers: string;
   codice_chat=null;
   codice_risposta;
   selezione_cat;
-  nuova_proposta
+  nuova_proposta;
 
+  
+//Var Ricerca
+keywordToSearch;
+auxArraySearchDomande = {};
+auxArraySearchSondaggi = {};
+auxArraySearchUtenti = {}; //TODO
 
 
   constructor(private http: HttpClient) { }
@@ -52,7 +59,29 @@ export class DataService {
   setNuovaProposta(proposta){
     this.nuova_proposta = proposta;
   }
+
+  //Ricerca
+  setKeywordToSearch(key: string) {
+    this.keywordToSearch = key;
+  }
+
+  setSearchingResultsDomande(results) {
+    this.auxArraySearchDomande = results;
+  }
+
+  setSearchingResultsSondaggi(results) {
+    this.auxArraySearchSondaggi = results;
+  }
+
+  /* TODO AUX SEARCH UTENTI*/
+  //
+  setSession(session){
+    this.session = session;
+  }
  
+  getSession(){
+    return this.session;
+  }
   getCod_domanda(){
     return this.codice_domanda;
   }
@@ -81,5 +110,19 @@ export class DataService {
     return this.codice_risposta;
   }
   
+//Ricerca
+getKeywordToSearch() {
+  return this.keywordToSearch;
+}
 
+getSearchingResultsDomande() {
+  /* console.log("aux: ", this.auxArray);
+  console.log("titolo 0: ", this.auxArray[0]['titolo']); */
+  return this.auxArraySearchDomande;
+}
+
+getSearchingResultsSondaggi() {
+  return this.auxArraySearchSondaggi;
+}
+//
 }
