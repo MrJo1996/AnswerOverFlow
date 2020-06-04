@@ -19,16 +19,16 @@
                   src="https://i.guim.co.uk/img/static/sys-images/Media/Pix/pictures/2002/01/17/BinLaden1.jpg?width=300&quality=85&auto=format&fit=max&s=b17c1c5deb5f0b1f99e1149226e7ab8a">
               </ion-avatar>
 
-              <ion-label style="font-size: 1.2rem;">{{nome}} </ion-label>
-              <ion-label style="font-size: 1.2rem;">{{cognome}}</ion-label><br>
-              <ion-label style="padding-top: 5px;">{{username}}</ion-label>
+              <ion-label style="font-size: 1.2rem;">{{dataService.getNome()}} </ion-label>
+              <ion-label style="font-size: 1.2rem;">{{dataService.getCognome()}}</ion-label><br>
+              <ion-label style="padding-top: 5px;">{{dataService.getUsername()}}</ion-label>
 
             </ion-toolbar>
           </ion-card>
 
           <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
             <ion-item *ngIf="p.view" (click)="switch(i,'app')" routerDirection="root" lines="none" detail="false"
-            [class.selected]="selectedIndex === i">
+              [class.selected]="selectedIndex === i">
               <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
               <ion-label>{{ p.title }}</ion-label>
             </ion-item>
@@ -37,26 +37,28 @@
 
           </ion-menu-toggle>
 
-<div style="margin-top: 30px;">
-           <ion-menu-toggle  auto-hide="false" *ngFor="let page of accountPages; let id = index">
-            <ion-item *ngIf="page.view" (click)="switch(id,'account')" routerDirection="root" lines="none" detail="false"
-              [class.selected]="selectedIndexAccount == id">
-              <ion-icon slot="start" [ios]="page.icon + '-outline'" [md]="page.icon + '-sharp'"></ion-icon>
-              <ion-label>{{ page.title }}</ion-label>
-            </ion-item>
-          </ion-menu-toggle>
-</div>
+          <div style="margin-top: 30px;">
+            <ion-menu-toggle auto-hide="false" *ngFor="let page of accountPages; let id = index">
+              <ion-item *ngIf="page.view" (click)="switch(id,'account')" routerDirection="root" lines="none"
+                detail="false" [class.selected]="selectedIndexAccount == id">
+                <ion-icon slot="start" [ios]="page.icon + '-outline'" [md]="page.icon + '-sharp'"></ion-icon>
+                <ion-label>{{ page.title }}</ion-label>
+              </ion-item>
+            </ion-menu-toggle>
+          </div>
         </ion-list>
- 
 
-        <ion-button (click) = "goToInfo()" size = "small" expand="full" style="margin-top: 5rem; position: absolute; bottom:20px;" shape = "round" strong ="false" color ="light">
-          <ion-icon slot="start" [ios]="'information-circle' + '-outline'" [md]="'information-circle' + '-sharp'"></ion-icon>
+
+        <ion-button (click)="goToInfo()" size="small" expand="full"
+          style="margin-top: 5rem; position: absolute; bottom:20px;" shape="round" strong="false" color="light">
+          <ion-icon slot="start" [ios]="'information-circle' + '-outline'" [md]="'information-circle' + '-sharp'">
+          </ion-icon>
           Info
         </ion-button>
 
       </ion-content>
 
-      
+
 
 
     </ion-menu>

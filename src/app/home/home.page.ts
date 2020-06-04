@@ -100,28 +100,6 @@ export class HomePage implements OnInit {
  //RICERCA - Azioni SearchBar
  ricerca() {
   console.log("Input: ", this.keywordToSearch);
-  
-  this.apiService.ricercaDomanda(this.keywordToSearch).then(
-    (result) => { // nel caso in cui va a buon fine la chiamata
-      console.log("RICERCA: ", result);
-      //TODO avvalorare array nel dataservice così da poterlo richiamare nella page search-results
-      this.dataService.setSearchingResultsDomande(result);
-    },
-    (rej) => {// nel caso non vada a buon fine la chiamata
-      console.log('rej RICERCA');
-    }
-  );
-
-  this.apiService.ricercaSondaggio(this.keywordToSearch).then(
-    (result) => { // nel caso in cui va a buon fine la chiamata
-      console.log("Sondaggio: ", result);
-      this.dataService.setSearchingResultsSondaggi(result);
-
-    },
-    (rej) => {// nel caso non vada a buon fine la chiamata
-      console.log('rej sondaggio');
-    }
-  );
 
   this.dataService.setKeywordToSearch(this.keywordToSearch);
   this.router.navigate(['/search-results']);

@@ -199,7 +199,7 @@ export class MieAttivitaPage implements OnInit {
   }
 
   checkDataeoraSondaggi() {
-    this.sondaggi1g = [];
+    //this.sondaggi1g = [];
     this.sondaggi1s = [];
     this.sondaggi2s = [];
     this.sondaggi3s = [];

@@ -7,56 +7,57 @@ import { HttpClient } from '@angular/common/http';
 export class DataService {
   codice_domanda;
   email;
-  utente={};
+  utente = {};
 
   session;
   codice_sondaggio;
   emailUtente;
   emailOthers: string;
-  codice_chat=null;
+  codice_chat = null;
   codice_risposta;
   selezione_cat;
   nuova_proposta;
 
-  
-//Var Ricerca
-keywordToSearch;
-auxArraySearchDomande = {};
-auxArraySearchSondaggi = {};
-auxArraySearchUtenti = {}; //TODO
+  nome;
+  cognome;
+  username;
+
+  //Var Ricerca
+  keywordToSearch;
 
 
   constructor(private http: HttpClient) { }
-  setUtente(id:string, username:string,password:string, nome:string,cognome:string,bio:string){
-    this.utente['0']=id;
-    this.utente['1']=username;
-    this.utente['2']=password;
-    this.utente['3']=nome;
-    this.utente['4']=cognome;
-    this.utente['5']=bio;
+  setUtente(id: string, username: string, password: string, nome: string, cognome: string, bio: string) {
+    this.utente['0'] = id;
+    this.utente['1'] = username;
+    this.utente['2'] = password;
+    this.utente['3'] = nome;
+    this.utente['4'] = cognome;
+    this.utente['5'] = bio;
   }
-  setCod_domanda(id_domanda:number){
+  setCod_domanda(id_domanda: number) {
     this.codice_domanda = id_domanda;
   }
-  setEmail_utente(id_utente:string){
-    this.email = id_utente;}
-  setCod_sondaggio(id_sondaggio:number){
+  setEmail_utente(id_utente: string) {
+    this.email = id_utente;
+  }
+  setCod_sondaggio(id_sondaggio: number) {
     this.codice_sondaggio = id_sondaggio;
   }
-  setEmail_Utente(cod_utente:string) {
+  setEmail_Utente(cod_utente: string) {
     this.emailUtente = cod_utente;
   }
   setCodice_chat(cod_chat: number) {
     this.codice_chat = cod_chat;
   }
- 
+
   setEmailOthers(emailOthers) {
     this.emailOthers = emailOthers;
   }
-  setSelezioneCategoria(selezione){
+  setSelezioneCategoria(selezione) {
     this.selezione_cat = selezione;
   }
-  setNuovaProposta(proposta){
+  setNuovaProposta(proposta) {
     this.nuova_proposta = proposta;
   }
 
@@ -64,28 +65,19 @@ auxArraySearchUtenti = {}; //TODO
   setKeywordToSearch(key: string) {
     this.keywordToSearch = key;
   }
-
-  setSearchingResultsDomande(results) {
-    this.auxArraySearchDomande = results;
-  }
-
-  setSearchingResultsSondaggi(results) {
-    this.auxArraySearchSondaggi = results;
-  }
-
-  /* TODO AUX SEARCH UTENTI*/
   //
-  setSession(session){
+
+  setSession(session) {
     this.session = session;
   }
- 
-  getSession(){
+
+  getSession() {
     return this.session;
   }
-  getCod_domanda(){
+  getCod_domanda() {
     return this.codice_domanda;
   }
-  getCod_sondaggio(){
+  getCod_sondaggio() {
     return this.codice_sondaggio;
   }
   getEmail_Utente() {
@@ -94,35 +86,53 @@ auxArraySearchUtenti = {}; //TODO
   getCodice_chat() {
     return this.codice_chat;
   }
- 
+
   getEmailOthers() {
     return this.emailOthers;
   }
-  getCatSelezionata(){
+  getCatSelezionata() {
     return this.selezione_cat;
   }
-  getNuovaProposta(){
+  getNuovaProposta() {
     return this.nuova_proposta;
   }
-  
-  getCodiceRisposta(){
+
+  getCodiceRisposta() {
 
     return this.codice_risposta;
   }
-  
-//Ricerca
-getKeywordToSearch() {
-  return this.keywordToSearch;
-}
 
-getSearchingResultsDomande() {
-  /* console.log("aux: ", this.auxArray);
-  console.log("titolo 0: ", this.auxArray[0]['titolo']); */
-  return this.auxArraySearchDomande;
-}
+  //Ricerca
+  getKeywordToSearch() {
+    return this.keywordToSearch;
+  }
+  //
 
-getSearchingResultsSondaggi() {
-  return this.auxArraySearchSondaggi;
-}
-//
+  getUtente() {
+    return this.utente;
+  }
+
+  setUsername(pUsername) {
+    this.username = pUsername;
+  }
+
+  getUsername() {
+    return this.username;
+  }
+
+  setNome(pNome) {
+    this.nome = pNome;
+  }
+
+  getNome() {
+    return this.nome;
+  }
+
+  setCognome(pCognome) {
+    this.cognome = pCognome;
+  }
+
+  getCognome() {
+    return this.cognome;
+  }
 }

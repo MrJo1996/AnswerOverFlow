@@ -210,4 +210,10 @@ goToHome(){
 }
 
 
+goToSettingProfile(){
+
+  this.router.navigate(['/modifica-profilo '])
+}
+
+
 }

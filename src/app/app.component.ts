@@ -18,12 +18,10 @@ import { timer } from "rxjs/observable/timer"; //splash
 export class AppComponent implements OnInit {
   showSplash = true; //splash
 
-
   public selectedIndex = -1;
   public selectedIndexAccount = -1;
   classItem = false;
   accountMenu:any;
-
 
   public appPages = [
     {
@@ -78,12 +76,28 @@ export class AppComponent implements OnInit {
       view: false,
     },
   ];
+  constructor(
+    private platform: Platform,
+    private splashScreen: SplashScreen,
+    private statusBar: StatusBar,
+    private storage: Storage,
+    private router: Router,
+    public alertController: AlertController,
+    public dataService: DataService,
+    public navCtrl: NavController,
+    private menuCtrl: MenuController
+  ) {
+    this.initializeApp();
+    
+  }
+  
+  nome = "cacca";
+  cognome = "merda";
+  username = this.dataService.getUsername();
 
-  nome = "Davide";
-  cognome = "Russo";
-  username = "username";
-
-
+  ionViewWillEnter() {
+    
+  }
 
   /* {
     title: "Info",
@@ -131,7 +145,7 @@ export class AppComponent implements OnInit {
 
 
 
-  switch2 (index) {
+ /*  switch2 (index) {
 
     //this.selectedIndexAccount = index;
     this.selectedIndex = index;
@@ -146,7 +160,7 @@ export class AppComponent implements OnInit {
         this.router.navigateByUrl(this.appPages[index].url);
       }
 
-  }
+  } */
 
 
 
@@ -183,19 +197,7 @@ export class AppComponent implements OnInit {
   
  
 
-  constructor(
-    private platform: Platform,
-    private splashScreen: SplashScreen,
-    private statusBar: StatusBar,
-    private storage: Storage,
-    private router: Router,
-    public alertController: AlertController,
-    public dataService: DataService,
-    public navCtrl: NavController,
-    private menuCtrl: MenuController
-  ) {
-    this.initializeApp();
-  }
+  
 
   initializeApp() {
     this.platform.ready().then(() => {
