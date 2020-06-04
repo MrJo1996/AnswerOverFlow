@@ -10,6 +10,8 @@ import { resolve } from 'url';
 import { Storage } from "@ionic/storage";
 import { ToastController } from '@ionic/angular';
 import { element } from 'protractor';
+import { LoadingController } from '@ionic/angular';
+
 @Component({
   selector: 'app-visualizza-domanda',
   templateUrl: './visualizza-domanda.page.html',
@@ -17,8 +19,11 @@ import { element } from 'protractor';
 })
 export class VisualizzaDomandaPage implements OnInit {
   
-  codice_domanda ; 
 
+  allVisible: boolean = false;
+
+  codice_domanda ; 
+ 
   currentMailUser  ="";//mail dell'utente corrente
   userNameUserDomanda: string;
   domandaMailUser: string;//mail di chi ha fatto la domanda
@@ -44,16 +49,29 @@ export class VisualizzaDomandaPage implements OnInit {
   private buttonColorBest: string = "gold";
   descrizione_risposta = "";
 
+  likes = {};
+
 
   categoria = {};
 
-  constructor(private navCtrl:NavController, private dataService: DataService, public apiService: ApiService, private router: Router, public alertController: AlertController, private storage: Storage,
-    public toastController: ToastController) { }
+  constructor(
+    private navCtrl:NavController, 
+    private dataService: DataService, 
+    public apiService: ApiService, 
+    private router: Router, 
+    public alertController: 
+    AlertController, 
+    private storage: Storage,
+    public toastController: ToastController,
+    public loadingController: LoadingController
+    ) { }
 
   ngOnInit() {
+    
     this.visualizzaDomanda(); 
     this.showRisposte();
     this.storage.get('utente').then(data => { this.currentMailUser = data.email });
+    this.handleLoading();
   }
 
 
@@ -127,7 +145,7 @@ async showRisposte() {
       });
       let i = 0;
       this.risposte.forEach(element => {
-        
+        console.log('CHECK CONSOLE LOG', element);
         if(element.codice_risposta === this.cod_preferita)
         {
           let aux = this.risposte[0];
@@ -375,6 +393,17 @@ clickRisposta(risposta, i){
     }, 2000);
   }
 
+
+  async  handleLoading() {
+    const loading = await this.loadingController.create({
+      message: 'Stiamo risolvendo i tuoi dubbi...',
+      duration: 750
+    });
+   
+    await loading.present();
+    this.allVisible = true;
+  }
+
 /*   async showDescrizioneRisposta() {
     this.apiService.getRisposta(this.dataService.getCodiceRisposta()).then(
       resolve => {
@@ -387,4 +416,10 @@ clickRisposta(risposta, i){
     )
   } */
 
+
+
+
+
+
+  
 }

@@ -3,14 +3,17 @@
     <ion-button  (click)="goback()" slot="start" expand="block" fill="clear" class="msg-btn">
       <ion-icon  color="primary" slot="start" slot="icon-only" name="arrow-back-outline"></ion-icon>
     </ion-button>
-      <ion-title *ngIf="currentMailUser===domandaMailUser">Dettagli della tua domanda</ion-title>
+      <ion-title *ngIf="currentMailUser===domandaMailUser">La tua domanda</ion-title>
       <ion-title  *ngIf="currentMailUser!==domandaMailUser">Dettagli della domanda</ion-title>
   </ion-toolbar>
 </ion-header>
 
 
 
-<ion-content class = "backgrounds">
+<ion-content *ngIf="allVisible" >
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <ion-fab  *ngIf="currentMailUser !== domandaMailUser"  vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button  (click) = "setRispostaVisible()">
       <ion-icon *ngIf="rispostaVisible === false" name="add"></ion-icon>
@@ -19,9 +22,7 @@
   </ion-fab>
 
   <ion-card class = "backgrounds">    
-    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
-      <ion-refresher-content></ion-refresher-content>
-    </ion-refresher>
+ 
 
     <ion-card-header>
       <ion-toolbar class="backgrounds">
@@ -65,9 +66,26 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-label *ngIf="risposte.length === 0 && currentMailUser===domandaMailUser" class = "textSimple">Non ci sono ancora risposte alla tua domanda</ion-label>
-  <ion-label *ngIf="risposte.length === 0  && currentMailUser!==domandaMailUser" class = "textSimple">Non ci sono ancora risposte per questa domanda. Rispondi per primo!</ion-label>
 
+  
+
+
+  <ion-card *ngIf="risposte.length === 0" class = "backgrounds">    
+    <ion-card-header>
+      <ion-card-title class = "textTitleBIG"> 
+          <ion-label *ngIf="risposte.length === 0 && currentMailUser===domandaMailUser" class = "textSimple">Non ci sono ancora risposte alla tua domanda</ion-label>
+          <ion-label *ngIf="risposte.length === 0  && currentMailUser!==domandaMailUser" class = "textSimple">Non ci sono ancora risposte per questa domanda. Rispondi per primo!</ion-label>
+      </ion-card-title>
+    </ion-card-header>
+
+
+  </ion-card>
+
+     <ion-item-divider color = "none" *ngIf="risposte.length !== 0" class = "textTitle">
+      <ion-label  class = "textTitle"><b>Risposte ({{risposte.length}})</b></ion-label>
+     </ion-item-divider>
+        
+         
         <ion-card *ngFor="let risposta of risposte; let i = index" class = "backgrounds">    
           <ion-card-header>
             <ion-toolbar class="backgrounds">
@@ -77,10 +95,17 @@
               <ion-label *ngIf="currentMailUser!==risposta.cod_utente" class = "username_text_style">{{profiliUtentiRisposte[i]['0'].username}}</ion-label>
               <ion-label *ngIf="currentMailUser===risposta.cod_utente " class = "username_text_style">Tu</ion-label>
              
-              <ion-label slot = "end" class = "textTitleSMALL">{{risposta.num_like}}</ion-label>
-              <ion-icon name="chevron-up-circle-outline" class="thumb_up_style" slot= "end" ></ion-icon>
-             <ion-label slot = "end" class = "textTitleSMALL">{{risposta.num_dislike}}</ion-label>
-              <ion-icon name="chevron-down-circle-outline" class="thumb_down_style" slot= "end" ></ion-icon>
+             
+              <ion-button class= "buttonLikes"  slot="end" expand="block" fill = "clear">
+                <ion-label slot = "end" class = "textTitleSMALL">{{risposta.num_like}}</ion-label>
+                <ion-icon name="chevron-up-circle-outline" class="thumb_up_style" slot= "end" ></ion-icon>
+              </ion-button>
+
+             
+              <ion-button class= "buttonLikes"  slot="end" expand="block" fill = "clear">
+                <ion-label slot = "end" class = "textTitleSMALL">{{risposta.num_dislike}}</ion-label>
+                <ion-icon name="chevron-down-circle-outline" class="thumb_down_style" slot= "end" ></ion-icon>
+              </ion-button>
 
             </ion-toolbar>
           </ion-card-header>
@@ -123,4 +148,6 @@
     </ion-row>
   </ion-toolbar>
 </ion-footer>
+
+
 

@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { ApiService } from '../providers/api.service';
 import { DataService } from '../services/data.service';
 import {NavController} from "@ionic/angular";
+import { element } from 'protractor';
+import { Storage } from "@ionic/storage";
 
 enum scelteEnum{};
 
@@ -20,7 +22,7 @@ export class VisualizzaSondaggioPage implements OnInit {
   codice_sondaggio;
   sondaggio = {};
   scelte = new Array();
-  currentUser = "gmailverificata"
+  currentUser = " ";
   sondaggioUser;
   sceltaSelezionata = " ";
   thrashActive;
@@ -28,17 +30,27 @@ export class VisualizzaSondaggioPage implements OnInit {
   codici_scelte = new Array();
   index_scelta_selezionata: number;
   codice_scelta_selezionata;
+  voti_totali:  number = 0;
+  percentualiScelte = new Array();
 
 
   url = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/cancellaSondaggio/14'
   url2 = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaSondaggio'
   url3 = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaScelteSondaggio'
 
-  constructor(private navCtrl:NavController,private service: PostServiceService, private dataService: DataService,private router: Router, public apiService: ApiService, public alertController: AlertController) { }
+  constructor(private navCtrl:NavController,
+              private service: PostServiceService, 
+              private dataService: DataService,
+              private router: Router, 
+              public apiService: ApiService, 
+              private storage: Storage,
+              public alertController: AlertController) 
+              { }
 
   ngOnInit() {
     this.visualizzaSondaggioSelezionato();
     this.visualizzaScelte();
+    this.storage.get('utente').then(data => { this.currentUser = data.email });
 
   }
 
@@ -99,12 +111,34 @@ this.codice_sondaggio= this.dataService.codice_sondaggio;
       
 
         this.scelte = scelte['Scelte']['data'];
+        console.log("log riga 112 scelte sondaggi:", scelte);
+        console.log("log riga 113 scelte sondaggi:", this.scelte);
         
+        let i = 0;
+       this.scelte.forEach(element => {
+        var x = +element.num_favorevoli ;
+          this.voti_totali =  this.voti_totali + x ;
+      });
+      this.calcolaPercentualiScelte();
       },
       (rej) => {
         console.log("C'è stato un errore durante la visualizzazione");
       }
     );
+
+  }
+
+  calcolaPercentualiScelte(){
+
+    this.scelte.forEach(element => {
+        var x = +element.num_favorevoli ;
+        var nuovaPercentuale: number = (x)/this.voti_totali;
+        var nuovaPercentualeStringata = nuovaPercentuale.toFixed(1);
+        var nuovaPercentualeNum = +nuovaPercentualeStringata;
+        this.percentualiScelte.push(nuovaPercentualeNum);
+      
+    });
+    console.log("PERCENTUALI SCELTE:", this.percentualiScelte);
 
   }
 
@@ -116,6 +150,8 @@ this.codice_sondaggio= this.dataService.codice_sondaggio;
         console.log('Eliminato con successo');
 
         this.scelte = scelte['Scelte']['data'];
+        
+        
       },
       (rej) => {
         console.log("C'è stato un errore durante la visualizzazione");
@@ -141,7 +177,7 @@ this.codice_sondaggio= this.dataService.codice_sondaggio;
 
   }
 
- async goback(){
+ async goBack(){
     if(this.hasVoted === true){
     const alert = await this.alertController.create({
       header: 'Sei sicuro di voler uscire senza confermare il voto?',
@@ -163,7 +199,11 @@ this.codice_sondaggio= this.dataService.codice_sondaggio;
         }
       ]
     });
+    
     await alert.present();
+  }
+  else{
+    this.navCtrl.pop();
   }
 }
   

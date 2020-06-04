@@ -4,30 +4,25 @@
     <ion-button slot="start" expand="block" fill="clear" (click)="goBack()" class="msg-btn">
       <ion-icon color="primary" slot="start" slot="icon-only" name="arrow-back-outline"></ion-icon>
     </ion-button>
-
     <ion-title style="font-size: 1.5rem; text-align: center;"><b>Visualizza profilo</b></ion-title>
 
-    <!--   -->
-    <ion-button *ngIf="userProfileId !== 'undefined'" slot="end"  expand="block" fill="clear" class = "tool-btn" >
-      <ion-icon name="hammer-outline" slot="icon-only"></ion-icon>
+    
+    <ion-button *ngIf="userProfileId === 'undefined'" slot="end"  expand="block" fill="clear" (click)="goToSettingProfile()">
+      <ion-icon name="hammer" slot="icon-only"></ion-icon>
     </ion-button>
    
-    <ion-button *ngIf="userProfileId === 'undefined'" slot="end" expand="block" fill="clear" (click)="goToHome()" class="msg-btn" >  
+    <ion-button *ngIf="userProfileId !== 'undefined'" slot="end" expand="block" fill="clear" (click)="goToHome()" class="msg-btn" >  
     <ion-img  slot="end" class = "logo-btn" src = "/assets/img/logo AnswerOverFlow.png"></ion-img>    
     </ion-button>
-
   </ion-toolbar>
 </ion-header>
 
 
 <ion-content>
-
   <ion-content *ngIf="profilo" class="backgrounds" >
-
 
     <ion-card>
       <ion-icon class="profilePicture" name="person-circle-outline"></ion-icon>
-
 
       <ion-item color="light" >
         <ion-icon name="happy-outline" slot="start"></ion-icon>
@@ -57,13 +52,13 @@
       <ion-item color="light">
         <ion-icon name="chatbox-outline" slot="start"></ion-icon>
         <ion-label position="stacked">Bio</ion-label>
-        <ion-text>{{profilo?.bio}}</ion-text>
+        <ion-text style="margin: 5px 0px;">{{profilo?.bio}}</ion-text>
       </ion-item>
 
     </ion-card>
 
 
-    <ion-grid style="margin-top: 20px;">
+    <ion-grid style="margin-top: 20px;" *ngIf="userProfileId !== 'undefined'">
       <ion-row>
         <ion-col style="align-items: center !important;">
     <ion-button expand = "block" color="light"  (click)="goToChat()">
@@ -81,6 +76,11 @@
           Utente</ion-button>
       </ion-row>
     </ion-grid>
+
+    <ion-button  expand = "block" color="primary"  fill ="outline" (click)="stats()" style="margin-top: 20px;">
+      <ion-icon  slot="start" name="analytics"></ion-icon>
+      Statistiche</ion-button>
+
 
 
   </ion-content>
