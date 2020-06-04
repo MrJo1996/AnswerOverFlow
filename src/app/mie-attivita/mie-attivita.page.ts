@@ -4,6 +4,7 @@ import { ApiService } from '../providers/api.service';
 import { AlertController} from '@ionic/angular';
 import { DataService } from "../services/data.service";
 import {Router} from '@angular/router';
+import { Storage } from "@ionic/storage";
 
 @Component({
   selector: 'app-mie-attivita',
@@ -12,7 +13,7 @@ import {Router} from '@angular/router';
 })
 export class MieAttivitaPage implements OnInit {
 
-  currentUser = "gmailverificata";
+  currentUser = "";
   domande: any[];
   sondaggi: any;
   check1: boolean;
@@ -31,13 +32,15 @@ export class MieAttivitaPage implements OnInit {
   sondaggi1m: any[];
 
 
-  constructor(private navCtrl: NavController, private apiService: ApiService, private alertController: AlertController, private dataService: DataService, private router: Router) { }
+  constructor(private navCtrl: NavController, private apiService: ApiService, private alertController: AlertController, private dataService: DataService, private router: Router, private storage: Storage) { }
 
   ngOnInit() {
+    this.storage.get('utente').then(data => { this.currentUser = data.email });
     this.visualizzaMieDomande();
     this.visualizzaMieiSondaggi();
     this.check2 = true;
-    console.log(this.domande1g===undefined);
+    console.log(this.currentUser);
+    
   }
 
   goBack(){
