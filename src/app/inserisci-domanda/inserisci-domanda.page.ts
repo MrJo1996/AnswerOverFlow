@@ -89,7 +89,7 @@ export class InserisciDomandaPage implements OnInit {
 
       toast.message = 'Hai inserito una parola scorretta!';
       toast.duration = 2000;
-      toast.position = "middle";
+      toast.position = "top";
       toast.style.fontSize = '20px';
       toast.color = 'danger';
       toast.style.textAlign = 'center';
@@ -101,7 +101,7 @@ export class InserisciDomandaPage implements OnInit {
       const toast = document.createElement('ion-toast');
       toast.message = 'Devi inserire un titolo valido!';
       toast.duration = 2000;
-      toast.position = "middle";
+      toast.position = "top";
       toast.style.fontSize = '20px';
       toast.color = 'danger';
       toast.style.textAlign = 'center';
@@ -113,7 +113,7 @@ export class InserisciDomandaPage implements OnInit {
       const toast = document.createElement('ion-toast');
       toast.message = 'Descrizione troppo lunga!';
       toast.duration = 2000;
-      toast.position = "middle";
+      toast.position = "top";
       toast.style.fontSize = '20px';
       toast.color = 'danger';
       toast.style.textAlign = 'center';
@@ -125,7 +125,7 @@ export class InserisciDomandaPage implements OnInit {
       const toast = document.createElement('ion-toast');
       toast.message = 'Devi selezionare una categoria!';
       toast.duration = 2000;
-      toast.position = "middle";
+      toast.position = "top";
       toast.style.fontSize = '20px';
       toast.color = 'danger';
       toast.style.textAlign = 'center';
@@ -137,7 +137,7 @@ export class InserisciDomandaPage implements OnInit {
       const toast = document.createElement('ion-toast');
       toast.message = 'Devi impostare un timer!';
       toast.duration = 2000;
-      toast.position = "middle";
+      toast.position = "top";
       toast.style.fontSize = '20px';
       toast.color = 'danger';
       toast.style.textAlign = 'center';
