@@ -4,6 +4,7 @@ import { ApiService } from 'src/app/providers/api.service';
 import { AlertController } from '@ionic/angular';
 import { PickerController } from "@ionic/angular";
 import { DataService } from "../services/data.service";
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'app-registrazione',
@@ -23,7 +24,7 @@ export class RegistrazionePage implements OnInit {
   url = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/registrazione'
 
 
-  constructor(private dataService: DataService, public apiService: ApiService, public alertController: AlertController, private pickerController: PickerController, private router: Router) { }
+  constructor(private storage: Storage,private dataService: DataService, public apiService: ApiService, public alertController: AlertController, private pickerController: PickerController, private router: Router) { }
   ngOnInit() {
     //disable scroll (anche su ios)
     var fixed = document.getElementById('fixed');
@@ -156,7 +157,29 @@ export class RegistrazionePage implements OnInit {
           await alert.present();
         }
   }
+  
+  clickstorage(){
+    this.storage.set('utente',this.username);
+    this.storage.set('session', true);
+    this.storage.set('session', true);
 
+    setTimeout(() => {
+      this.storage.get('session').then(data => {
+        console.log('SESSION:' + data)
+      });
+
+      this.storage.get('utente').then(data => {
+        this.dataService.emailUtente = data.email;
+    });
+
+    }, 3000);
+
+    this.storage.get('session').then(data => {
+        this.storage.set('session', true);
+        console.log('SESSION:' + data)
+    });
+    this.router.navigate(['home']);
+  }
 
   clickRegistrazione() {
     this.dataService.setUtente(this.email, this.username, this.password, this.nome, this.cognome, this.bio);

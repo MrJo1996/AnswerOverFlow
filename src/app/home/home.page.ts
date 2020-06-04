@@ -12,7 +12,9 @@ import { Storage } from "@ionic/storage";
 })
 export class HomePage implements OnInit {
   codice_domanda;
-  codice_sondaggio
+  codice_sondaggio;
+  codice_categoria;
+  categoria;
   currentMailUser = ""//mail dell'utente corrente
   domande;
   sondaggi;
@@ -33,7 +35,7 @@ export class HomePage implements OnInit {
         console.log('Visualizzato con successo');
         
         this.domande = domande; //assegno alla variabile locale il risultato della chiamata. la variabile sarà utilizzata nella stampa in HTML
-        
+        this.visualizzaCategoria();
         console.log('Domanda: ', this.domande);
       
       },
@@ -42,6 +44,19 @@ export class HomePage implements OnInit {
       }
     );
   
+  }
+  async visualizzaCategoria() {
+  
+    this.apiService.getCategoria(this.codice_categoria).then(
+      (categoria) => {
+        this.categoria = categoria['Categoria']['data']['0'].titolo;
+       console.log("questa è datacategoria",categoria['Categoria']['data']['0'].titolo );
+       console.log(this.categoria );
+      },
+      (rej) => {
+        console.log("C'è stato un errore durante la visualizzazione");
+      }
+    );
   }
   async visualizzaSondaggiHome() {
     this.apiService.getSondaggioHome().then(
