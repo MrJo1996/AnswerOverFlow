@@ -36,19 +36,16 @@ export class ModificaProfiloPage implements OnInit {
 
   timerSettings: string[] = ["5 min", "15 min", "30 min", "1 ora", "3 ore", "6 ore", "12 ore", "1 giorno", "3 giorni"];
   
-  constructor( private dataService: DataService, 
+  
+    constructor( private dataService: DataService, 
     public alertController: AlertController,
     public apiService: ApiService, 
     private pickerController: PickerController,
+    public navCtrl: NavController,
     public toastController: ToastController) { }
- 
+
   ngOnInit() {
-    //this.email = 'gmailverificata';
-    //this.username = 'prova modifica';
-    //this.password = 'prova modifica'
-    //this.nome = 'prova modifica';
-    //this.cognome = 'prova modifica';
-    //this.bio = 'prova modifica';
+    
     this.showSurvey();
   }
 
@@ -68,6 +65,7 @@ export class ModificaProfiloPage implements OnInit {
     if (this.bioToPass == null) {
       this.bioToPass = this.bioView;
     }
+    
     if (this.stringUsernameLengthChecker()) {
       this.popupInvalidUsername();
     } else if (this.stringNameLengthChecker()) {
@@ -188,6 +186,15 @@ async popupInvalidBio(){
         console.log("C'è stato un errore durante la visualizzazione");
       }
     );
+  }
+
+   checkAlert(): boolean {
+    if (!((this.stringUsernameLengthChecker() 
+     && this.stringNameLengthChecker() 
+     && this.stringCognomeLengthChecker()
+     && this.stringBioLengthChecker()))) {
+    return false;
+     } else return true;
   }
 
   async popupModificaUsername() {
@@ -368,9 +375,9 @@ async popupInvalidBio(){
             this.modify();
 
           //TODO mostrare messaggio di avvenuta modifica e riportare alla home
-
-            this.presentAlert();
-
+            if ((this.checkAlert)){
+                this.presentAlert();
+            }
           }
         }
       ],
@@ -389,6 +396,7 @@ async popupInvalidBio(){
         {
           text: 'Ok',
           handler: (value: any) => {
+            this.navCtrl.navigateRoot('/visualizza-profilo');
 
           }
         }

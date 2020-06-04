@@ -63,6 +63,7 @@ export class ModificaDomandaPage implements OnInit {
         console.log("C'è stato un errore durante la visualizzazione delle categorie.");
       }
     );
+
     this.showSurvey();
   }
 
@@ -93,6 +94,7 @@ export class ModificaDomandaPage implements OnInit {
     this.apiService.modificaDomanda(this.codice_domanda, this.dataeoraToPass, this.timerToPass, this.titoloToPass, this.descrizioneToPass, this.categoriaToPass, this.cod_preferita).then(
       (result) => {  
         console.log('Modifica avvenuta con successo: ');
+        
       },
       (rej) => {// nel caso non vada a buon fine la chiamata
         console.log('Modifica non effetutata');
@@ -105,6 +107,7 @@ export class ModificaDomandaPage implements OnInit {
   async showSurvey() {
     
     this.codice_domanda = this.dataService.codice_domanda;
+
     this.apiService.getDomanda(this.codice_domanda).then(
       (domanda) => {
         console.log('Visualizzato con successo');
@@ -194,7 +197,7 @@ export class ModificaDomandaPage implements OnInit {
   }
 
   stringDescriptionChecker():boolean {
-    if ((this.descrizioneToPass.length > 1) || !(this.descrizioneToPass.match(/[a-zA-Z0-9_]+/))) {
+    if ((this.descrizioneToPass.length > 200) || !(this.descrizioneToPass.match(/[a-zA-Z0-9_]+/))) {
       return true;
     } else {
       return false;
@@ -202,7 +205,7 @@ export class ModificaDomandaPage implements OnInit {
   }
   stringTitleLengthChecker():boolean {
 
-    if ((this.titoloToPass.length > 1) || !(this.titoloToPass.match(/[a-zA-Z0-9_]+/))) {
+    if ((this.titoloToPass.length > 200) || !(this.titoloToPass.match(/[a-zA-Z0-9_]+/))) {
     return true;
   } else {
     return false;
