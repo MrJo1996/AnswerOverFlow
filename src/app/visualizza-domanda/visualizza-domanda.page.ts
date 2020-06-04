@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { ApiService } from '../providers/api.service';
 import { AlertController } from '@ionic/angular';
 import { DataService } from "../services/data.service";
-import {NavController} from "@ionic/angular";
+import { NavController } from "@ionic/angular";
 import { resolve } from 'url';
 import { Storage } from "@ionic/storage";
 import { ToastController } from '@ionic/angular';
@@ -18,13 +18,13 @@ import { LoadingController } from '@ionic/angular';
   styleUrls: ['./visualizza-domanda.page.scss'],
 })
 export class VisualizzaDomandaPage implements OnInit {
-  
+
 
   allVisible: boolean = false;
 
-  codice_domanda ; 
- 
-  currentMailUser  ="";//mail dell'utente corrente
+  codice_domanda;
+
+  currentMailUser = "";//mail dell'utente corrente
   userNameUserDomanda: string;
   domandaMailUser: string;//mail di chi ha fatto la domanda
 
@@ -55,295 +55,303 @@ export class VisualizzaDomandaPage implements OnInit {
   categoria = {};
 
   constructor(
-    private navCtrl:NavController, 
-    private dataService: DataService, 
-    public apiService: ApiService, 
-    private router: Router, 
-    public alertController: 
-    AlertController, 
+    private navCtrl: NavController,
+    private dataService: DataService,
+    public apiService: ApiService,
+    private router: Router,
+    public alertController:
+      AlertController,
     private storage: Storage,
     public toastController: ToastController,
     public loadingController: LoadingController
-    ) { }
+  ) { }
 
   ngOnInit() {
     this.handleLoading();
-    this.visualizzaDomanda(); 
+    this.visualizzaDomanda();
     this.showRisposte();
     this.storage.get('utente').then(data => { this.currentMailUser = data.email });
-    this.allVisible = true; 
-    
+    this.allVisible = true;
+
+  }
+
+                                                                                                  //TOASTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+
+  goModificaDomanda() {
+    if (this.risposte.length > 0)
+      this.showErrorToast();
+    else
+      this.router.navigate(['modifica-domanda']);
   }
 
 
-  goModificaDomanda(){
-    this.router.navigate(['modifica-domanda']);
-    }
-  
+  async visualizzaDomanda() {
+    console.log(this.dataService.codice_domanda);
+    this.codice_domanda = this.dataService.codice_domanda;
+    this.apiService.getDomanda(this.codice_domanda).then(
+      (domanda) => {
 
-async visualizzaDomanda() {
-  console.log(this.dataService.codice_domanda);
-  this.codice_domanda = this.dataService.codice_domanda;
-  this.apiService.getDomanda(this.codice_domanda).then(
-    (domanda) => {
 
-      
-      this.domanda = domanda['data']; 
-      
-      
-      this.dataeoraView = this.domanda['0'].dataeora;  
-      this.timerView = this.domanda['0'].timer;
-      this.titoloView = this.domanda['0'].titolo;
-      this.descrizioneView = this.domanda['0'].descrizione;
-      this.domandaMailUser = this.domanda['0'].cod_utente;
-      this.cod_preferita = this.domanda['0'].cod_preferita;
-      console.log('Domanda: ', this.domanda['0']);
-      this.getUserDomanda();
-      this.visualizzaCategoria();
-      
-  
-    },
-    (rej) => {
-      console.log("C'è stato un errore durante la visualizzazione");
-    }
-  );
+        this.domanda = domanda['data'];
 
-}
 
-async popUpEliminaDomanda(){
-  const alert = await this.alertController.create({
-    header: 'Sei sicuro di voler eliminare questa domanda?',
-    buttons: [
-       {
-        text: 'Si',
-        handler: () => {
-          console.log('domanda eliminata');
-        this.cancellaDomanda();
-        }
+        this.dataeoraView = this.domanda['0'].dataeora;
+        this.timerView = this.domanda['0'].timer;
+        this.titoloView = this.domanda['0'].titolo;
+        this.descrizioneView = this.domanda['0'].descrizione;
+        this.domandaMailUser = this.domanda['0'].cod_utente;
+        this.cod_preferita = this.domanda['0'].cod_preferita;
+        console.log('Domanda: ', this.domanda['0']);
+        this.getUserDomanda();
+        this.visualizzaCategoria();
+
+
       },
-      {
-        text: 'No',
-        role: 'cancel',
-        //cssClass: 'secondary',
-        handler: () => {
-          console.log('eliminazione annullata');
-        }
+      (rej) => {
+        console.log("C'è stato un errore durante la visualizzazione");
       }
-    ]
-  });
-  await alert.present();
-}
+    );
 
-async showRisposte() {
-  this.codice_domanda = this.dataService.codice_domanda;
-  this.apiService.getRispostePerDomanda(this.codice_domanda).then(
-    (risposte) => {
-      console.log('Visualizzato con successo');
+  }
 
-      this.risposte = risposte['Risposte']['data'];
-      this.risposte.forEach(element => {
-        this.trovaProfiliUtentiRisposte(element.cod_utente);
-      });
-      let i = 0;
-      this.risposte.forEach(element => {
-        console.log('CHECK CONSOLE LOG', element);
-        if(element.codice_risposta === this.cod_preferita)
+  async popUpEliminaDomanda() {                                                        
+    const alert = await this.alertController.create({
+      header: 'Sei sicuro di voler eliminare questa domanda?',
+      buttons: [
         {
-          let aux = this.risposte[0];
-          this.risposte[0] = this.risposte[i];
-          this.risposte[i] = aux;
-          for(let j = 1; j<i; j++) {
-            let aux = this.risposte[j];
-            this.risposte[j] = this.risposte[i];
-            this.risposte[i] = aux;
+          text: 'Si',
+          handler: () => {
+            console.log('domanda eliminata');
+            this.showDeleteToast();
+            this.cancellaDomanda();
+            this.router.navigate(['home']);                                         
+          }
+        },
+        {
+          text: 'No',
+          role: 'cancel',
+          //cssClass: 'secondary',
+          handler: () => {
+            console.log('eliminazione annullata');
           }
         }
-        
-        i++;
-      
-      });
-       
-      console.log(risposte) 
-    },
-    (rej) => {
-      console.log("C'è stato un errore durante la visualizzazione");
-    }
-  );
-}
-
-async trovaProfiliUtentiRisposte(mailUtenteRisposta){
-  this.apiService.getProfilo(mailUtenteRisposta).then(
-    (profilo) => {
-      this.profiliUtentiRisposte.push(profilo['data']);
-      console.log('profilo trovato con successo', this.profiliUtentiRisposte);
-
-    },
-    (rej) => {
-      console.log("C'è stato un errore durante la visualizzazione del profilo");
-    }
-  );
-
-}
-
-
-
-async visualizzaCategoria() {
-  
-  this.apiService.getCategoria(this.codice_categoria).then(
-    (categoria) => {
-      this.categoria = categoria['Categoria']['data']['0'].titolo;
-     console.log("questa è datacategoria",categoria['Categoria']['data']['0'].titolo );
-     console.log(this.categoria );
-    },
-    (rej) => {
-      console.log("C'è stato un errore durante la visualizzazione");
-    }
-  );
-}
-
-async cancellaDomanda() {
-  this.apiService.rimuoviDomanda(this.codice_domanda).then(
-    (risultato) => {
-      //console.log('eliminata');
-
-    },
-    (rej) => {
-      //console.log("C'è stato un errore durante l'eliminazione");
-    }
-  );
-}
-
-async getUserDomanda(){
-  this.apiService.getProfilo(this.domandaMailUser).then(
-    (profilo) => {
-      this.profiloUserDomanda = profilo['data']['0'];
-      //console.log('profilo trovato con successo', this.profiloUserDomanda);
-
-    },
-    (rej) => {
-      //console.log("C'è stato un errore durante la visualizzazione del profilo");
-    }
-  );
-
-}
-
-goback() {
-  this.navCtrl.pop();
-}
-
-async modify() {
-
-  if (!this.checkIfThereAreEnglishBadWords(this.descrizioneRispostaView) && !this.checkIfThereAreItalianBadWords(this.descrizioneRispostaView)) {
-  this.apiService.modificaRisposta(this.dataService.codice_risposta, this.descrizioneRispostaToPass).then(
-    (result) => { // nel caso in cui va a buon fine la chiamata
-    },
-    (rej) => {// nel caso non vada a buon fine la chiamata
-      console.log('Modifica non effetutata'); //anche se va nel rej va bene, modifiche effettive nel db
-    }
-  );
-  } else {
-    this.popupParolaScorretta();
+      ]
+    });
+    await alert.present();
   }
 
-}
+  async showRisposte() {
+    this.codice_domanda = this.dataService.codice_domanda;
+    this.apiService.getRispostePerDomanda(this.codice_domanda).then(
+      (risposte) => {
+        console.log('Visualizzato con successo');
 
-async scegliPreferita(){
-  this.apiService.scegliRispostaPreferita(this.codice_domanda, this.cod_preferita).then(
-    (result) => { // nel caso in cui va a buon fine la chiamata
-    },
-    (rej) => {// nel caso non vada a buon fine la chiamata
-      console.log('Modifica non effetutata'); //anche se va nel rej va bene, modifiche effettive nel db
-    }
-  );
-}
+        this.risposte = risposte['Risposte']['data'];
+        this.risposte.forEach(element => {
+          this.trovaProfiliUtentiRisposte(element.cod_utente);
+        });
+        let i = 0;
+        this.risposte.forEach(element => {
+          console.log('CHECK CONSOLE LOG', element);
+          if (element.codice_risposta === this.cod_preferita) {
+            let aux = this.risposte[0];
+            this.risposte[0] = this.risposte[i];
+            this.risposte[i] = aux;
+            for (let j = 1; j < i; j++) {
+              let aux = this.risposte[j];
+              this.risposte[j] = this.risposte[i];
+              this.risposte[i] = aux;
+            }
+          }
 
+          i++;
 
-clickInviaRisposta(){
+        });
 
-  this.inserisciRisposta();
-  this.rispostaVisible = false;
-  this.doRefresh(event);
-
-}
-
-
-
-async inserisciRisposta() {  
-  this.apiService.inserisciRisposta(this.descrizione_risposta, this.currentMailUser, this.codice_domanda).then(
-    (result) => { // nel caso in cui va a buon fine la chiamata
-    },
-    (rej) => {// nel caso non vada a buon fine la chiamata
-      console.log('Modifica non effetutata'); //anche se va nel rej va bene, modifiche effettive nel db
-    }
-  );
-
-}
-
-
-
-async popupModificaDescrizioneRisposta() {
-
-  const alert = await this.alertController.create({
-    header: 'Modifica',
-    inputs: [
-      {
-        name: 'descrizionePopUp',
-        type: 'text',
-        placeholder: this.rispostaCliccata.descrizione
+        console.log(risposte)
+      },
+      (rej) => {
+        console.log("C'è stato un errore durante la visualizzazione");
       }
-    ],
-    buttons: [
-      {
-        text: 'Annulla',
-        role: 'cancel',
-        cssClass: 'secondary',
-        handler: () => {
-          console.log('Confirm cancel');
-        }
-      }, {
-        text: 'Ok',
-        handler: insertedData => {
-          console.log(JSON.stringify(insertedData)); //per vedere l'oggetto dell'handler
-          this.descrizioneRispostaView = insertedData.descrizionePopUp; //setto descrizioneView al valore inserito nel popUp una volta premuto ok così viene visualizzato
-          this.descrizioneRispostaToPass = insertedData.descrizionePopUp; //setto descrizioneToPass al valore inserito nel popUp una volta premuto ok
+    );
+  }
 
-          this.modify();
-        }
+  async trovaProfiliUtentiRisposte(mailUtenteRisposta) {
+    this.apiService.getProfilo(mailUtenteRisposta).then(
+      (profilo) => {
+        this.profiliUtentiRisposte.push(profilo['data']);
+        console.log('profilo trovato con successo', this.profiliUtentiRisposte);
+
+      },
+      (rej) => {
+        console.log("C'è stato un errore durante la visualizzazione del profilo");
       }
-    ]
-  });
-
-  await alert.present();
-  //View Dati inseriti dopo click sul popup di modifica descrizione. Dal console log ho visto come accedere ai dati ricevuti.
-  //this.descrizioneView = await (await alert.onDidDismiss()).data.values.descrizione;
-  }
-
-clickRisposta(risposta, i){
-  if(this.risposte[i]['cod_utente'] === this.currentMailUser){
-
-  this.dataService.codice_risposta = risposta.codice_risposta;
- 
-
-  this.rispostaCliccata = risposta;
-
-  this.popupModificaDescrizioneRisposta();
+    );
 
   }
+
+
+
+  async visualizzaCategoria() {
+
+    this.apiService.getCategoria(this.codice_categoria).then(
+      (categoria) => {
+        this.categoria = categoria['Categoria']['data']['0'].titolo;
+        console.log("questa è datacategoria", categoria['Categoria']['data']['0'].titolo);
+        console.log(this.categoria);
+      },
+      (rej) => {
+        console.log("C'è stato un errore durante la visualizzazione");
+      }
+    );
+  }
+
+  async cancellaDomanda() {
+    this.apiService.rimuoviDomanda(this.codice_domanda).then(
+      (risultato) => {
+        //console.log('eliminata');
+
+      },
+      (rej) => {
+        //console.log("C'è stato un errore durante l'eliminazione");
+      }
+    );
+  }
+
+  async getUserDomanda() {
+    this.apiService.getProfilo(this.domandaMailUser).then(
+      (profilo) => {
+        this.profiloUserDomanda = profilo['data']['0'];
+        //console.log('profilo trovato con successo', this.profiloUserDomanda);
+
+      },
+      (rej) => {
+        //console.log("C'è stato un errore durante la visualizzazione del profilo");
+      }
+    );
+
+  }
+
+  goback() {
+    this.navCtrl.pop();
+  }
+
+  async modify() {
+
+    if (!this.checkIfThereAreEnglishBadWords(this.descrizioneRispostaView) && !this.checkIfThereAreItalianBadWords(this.descrizioneRispostaView)) {
+      this.apiService.modificaRisposta(this.dataService.codice_risposta, this.descrizioneRispostaToPass).then(
+        (result) => { // nel caso in cui va a buon fine la chiamata
+        },
+        (rej) => {// nel caso non vada a buon fine la chiamata
+          console.log('Modifica non effetutata'); //anche se va nel rej va bene, modifiche effettive nel db
+        }
+      );
+    } else {
+      this.popupParolaScorretta();
+    }
+
+  }
+
+  async scegliPreferita() {
+    this.apiService.scegliRispostaPreferita(this.codice_domanda, this.cod_preferita).then(
+      (result) => { // nel caso in cui va a buon fine la chiamata
+      },
+      (rej) => {// nel caso non vada a buon fine la chiamata
+        console.log('Modifica non effetutata'); //anche se va nel rej va bene, modifiche effettive nel db
+      }
+    );
+  }
+
+
+  clickInviaRisposta() {
+
+    this.inserisciRisposta();
+    this.rispostaVisible = false;
+    this.doRefresh(event);
+
+  }
+
+
+
+  async inserisciRisposta() {
+    this.apiService.inserisciRisposta(this.descrizione_risposta, this.currentMailUser, this.codice_domanda).then(
+      (result) => { // nel caso in cui va a buon fine la chiamata
+      },
+      (rej) => {// nel caso non vada a buon fine la chiamata
+        console.log('Modifica non effetutata'); //anche se va nel rej va bene, modifiche effettive nel db
+      }
+    );
+
+  }
+
+
+
+  async popupModificaDescrizioneRisposta() {
+
+    const alert = await this.alertController.create({
+      header: 'Modifica',
+      inputs: [
+        {
+          name: 'descrizionePopUp',
+          type: 'text',
+          placeholder: this.rispostaCliccata.descrizione
+        }
+      ],
+      buttons: [
+        {
+          text: 'Annulla',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm cancel');
+          }
+        }, {
+          text: 'Ok',
+          handler: insertedData => {
+            console.log(JSON.stringify(insertedData)); //per vedere l'oggetto dell'handler
+            this.descrizioneRispostaView = insertedData.descrizionePopUp; //setto descrizioneView al valore inserito nel popUp una volta premuto ok così viene visualizzato
+            this.descrizioneRispostaToPass = insertedData.descrizionePopUp; //setto descrizioneToPass al valore inserito nel popUp una volta premuto ok
+            
+            this.showModifyToast();
+            this.modify();
+           
+                                                                                   //TOASTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+    //View Dati inseriti dopo click sul popup di modifica descrizione. Dal console log ho visto come accedere ai dati ricevuti.
+    //this.descrizioneView = await (await alert.onDidDismiss()).data.values.descrizione;
+  }
+
+  clickRisposta(risposta, i) {
+    if (this.risposte[i]['cod_utente'] === this.currentMailUser) {
+
+      this.dataService.codice_risposta = risposta.codice_risposta;
+
+
+      this.rispostaCliccata = risposta;
+
+      this.popupModificaDescrizioneRisposta();
+
+    }
   }
 
   checkIfThereAreEnglishBadWords(string: string): boolean {
 
     var Filter = require('bad-words'),
-    filter = new Filter();
-  
+      filter = new Filter();
+
     return filter.isProfane(string)
-  
-    }
+
+  }
 
   checkIfThereAreItalianBadWords(string: string): boolean {
 
     let list = require('italian-badwords-list');
-    
+
     let array = list.array
 
     return array.includes(string);
@@ -363,33 +371,33 @@ clickRisposta(risposta, i){
     console.log(result);
   }
 
-  changeColor(cod_nuova_preferita){
-    if(this.cod_preferita === cod_nuova_preferita){
-        this.cod_preferita = " ";
-        this.scegliPreferita();
+  changeColor(cod_nuova_preferita) {
+    if (this.cod_preferita === cod_nuova_preferita) {
+      this.cod_preferita = " ";
+      this.scegliPreferita();
 
     }
-    else{
-    this.cod_preferita = cod_nuova_preferita;
-    this.scegliPreferita();  
-  }
+    else {
+      this.cod_preferita = cod_nuova_preferita;
+      this.scegliPreferita();
+    }
 
   }
 
-  setRispostaVisible(){
-    if(this.rispostaVisible === false)
-        this.rispostaVisible = true;
+  setRispostaVisible() {
+    if (this.rispostaVisible === false)
+      this.rispostaVisible = true;
     else
-        this.rispostaVisible = false;
+      this.rispostaVisible = false;
 
   }
 
   doRefresh(event) {
-    this.visualizzaDomanda(); 
+    this.visualizzaDomanda();
     this.showRisposte();
 
     setTimeout(() => {
-     
+
       event.target.complete();
     }, 2000);
   }
@@ -400,33 +408,67 @@ clickRisposta(risposta, i){
       message: 'Stiamo risolvendo i tuoi dubbi...',
       duration: 750
     });
-   
-        {
-          
-          await loading.present();
-         
-          
+
+    {
+
+      await loading.present();
+
+
     }
-   
-   
+
+
   }
 
-/*   async showDescrizioneRisposta() {
-    this.apiService.getRisposta(this.dataService.getCodiceRisposta()).then(
-      resolve => {
-        this.descrizioneRispostaView = resolve['data']['0'].descrizione;
-        console.log(this.descrizioneRispostaView);
-      },
-      (rej) => {
-        console.log("C'è stato un errore durante il recupero dei dati");
-      }
-    )
-  } */
+  /*   async showDescrizioneRisposta() {
+      this.apiService.getRisposta(this.dataService.getCodiceRisposta()).then(
+        resolve => {
+          this.descrizioneRispostaView = resolve['data']['0'].descrizione;
+          console.log(this.descrizioneRispostaView);
+        },
+        (rej) => {
+          console.log("C'è stato un errore durante il recupero dei dati");
+        }
+      )
+    } */
 
 
 
+  //TOAST----------------------------------------
 
+  async showDeleteToast() {
+    const toast = document.createElement('ion-toast');
+    toast.message = 'Domanda eliminata con successo!';
+    toast.duration = 2000;
+    toast.position = "top";
+    toast.style.fontSize = '20px';
+    toast.color = 'success';
+    toast.style.textAlign = 'center';
+    document.body.appendChild(toast);
+    return toast.present();
+  }
 
+  async showErrorToast() {
+    const toast = document.createElement('ion-toast');
+    toast.message = 'Operazione non consentita!';
+    toast.duration = 2000;
+    toast.position = "top";
+    toast.style.fontSize = '20px';
+    toast.color = 'danger';
+    toast.style.textAlign = 'center';
+    document.body.appendChild(toast);
+    return toast.present();
+  }
 
-  
+  async showModifyToast() {
+    const toast = document.createElement('ion-toast');
+    toast.message = 'Modifica avvenuta con successo!';
+    toast.duration = 2000;
+    toast.position = "top";
+    toast.style.fontSize = '20px';
+    toast.color = 'success';
+    toast.style.textAlign = 'center';
+    document.body.appendChild(toast);
+    return toast.present();
+  }
+
 }

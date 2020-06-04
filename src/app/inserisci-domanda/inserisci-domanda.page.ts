@@ -84,7 +84,7 @@ export class InserisciDomandaPage implements OnInit {
 
   async checkField() {
 
-    if ((this.italian_bad_words_check(this.titolo) || this.italian_bad_words_check(this.descrizione))) {
+    if ((this.checkIfThereAreItalianBadWords(this.titolo) || this.checkIfThereAreEnglishBadWords(this.titolo)) || (this.checkIfThereAreItalianBadWords(this.descrizione) || this.checkIfThereAreEnglishBadWords(this.descrizione))) {
       const toast = document.createElement('ion-toast');
 
       toast.message = 'Hai inserito una parola scorretta!';
@@ -171,19 +171,42 @@ export class InserisciDomandaPage implements OnInit {
     }
   }
 
-  italian_bad_words_check(input: string) {
+ checkIfThereAreItalianBadWords(string: string): boolean {
+
     let list = require('italian-badwords-list');
-    let array = list.array;
-    return array.includes(input);
+
+    let array = list.array
+
+    console.log(array);
+
+    let stringArray = [];
+    let stringPassed = string.split(' ');
+    stringArray = stringArray.concat(stringPassed);
+
+    console.log(stringArray);
+
+    var check;
+
+    stringArray.forEach(element => {
+      if (array.includes(element))
+        check = true;
+    });
+
+    console.log(check);
+
+    return check;
+
   }
 
-  english_bad_words_check(input: string) {
+  checkIfThereAreEnglishBadWords(string: string): boolean {
+
     var Filter = require('bad-words'),
       filter = new Filter();
-    filter.addWords('cazzi');
-    return filter.isProfane(input);
-  }
 
+    return filter.isProfane(string)
+
+  }
+ 
 
   //CATEGORIA PICKER
 
