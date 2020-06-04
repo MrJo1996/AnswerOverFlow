@@ -32,6 +32,10 @@
 
 <ion-content class="backgrounds" *ngIf="check1">
 
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
   <ion-card-title class="textTitle" class="ion-text-center">Sondaggi</ion-card-title>
 
   <ion-card *ngIf="range.value===100" color="primary">
@@ -122,6 +126,10 @@
 </ion-content>
 
 <ion-content class="backgrounds" *ngIf="check2">
+
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
 
   <ion-card-title class="textTitle" class="ion-text-center">Domande</ion-card-title>
 

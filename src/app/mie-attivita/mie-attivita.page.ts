@@ -249,4 +249,12 @@ export class MieAttivitaPage implements OnInit {
     this.router.navigate(['/visualizza-sondaggio']);
   }
 
+  doRefresh(event) {
+    this.visualizzaMieDomande();
+    this.visualizzaMieiSondaggi();
+    setTimeout(() => {
+      event.target.complete();
+    }, 2000);
+  }
+
 }
