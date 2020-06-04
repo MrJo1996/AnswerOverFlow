@@ -59,7 +59,7 @@ export class AppComponent implements OnInit {
     },
     {
       title: "Le mie attività",
-      url: "/inserimento-sondaggio",
+      url: "/mie-attivita",
       icon: "swap-vertical",
       view: true,
     },
