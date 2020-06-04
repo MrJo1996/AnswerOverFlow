@@ -3,8 +3,8 @@
     <ion-button  slot="start" expand="block" fill="clear" (click)="goBack()" class="msg-btn">
       <ion-icon color="primary" slot="start" slot="icon-only" name="arrow-back-outline"></ion-icon>
     </ion-button>
-      <ion-title *ngIf="currentUser===sondaggioUser">Dettagli del tuo sondaggio</ion-title>
-      <ion-title  *ngIf="currentUser!==sondaggioUser">Dettagli del sondaggio</ion-title>
+      <ion-title *ngIf="currentUser===sondaggio.cod_utente">Dettagli del tuo sondaggio</ion-title>
+      <ion-title  *ngIf="currentUser!==sondaggio.cod_utente">Dettagli del sondaggio</ion-title>
       <ion-button *ngIf="hasVoted === true" slot="end" expand="block" fill="clear" (click)="confermaVoto()" class="msg-btn">
         <ion-icon color="success" slot="end" slot="icon-only" name="checkmark-sharp"></ion-icon>
     </ion-button>
@@ -20,16 +20,16 @@
       <ion-toolbar class="backgrounds">
           <ion-icon   class = "alarm_style" name="alarm-outline" slot= "start"></ion-icon>
            <ion-label class = "textTitle">{{sondaggio.timer}}</ion-label>
-          <ion-button slot="end" expand="block" *ngIf="currentUser===sondaggioUser" (click) = "popUpEliminaSondaggio()" fill="clear">
+          <ion-button slot="end" expand="block" *ngIf="currentUser===sondaggio.cod_utente" (click) = "popUpEliminaSondaggio()" fill="clear">
             <ion-icon name="trash-sharp" color="primary" class = "icons_generic_style"></ion-icon>
           </ion-button>
-          <ion-button slot="end" *ngIf="currentUser===sondaggioUser" (click) ="goModificaDomanda()" expand="block" fill="clear">
+          <ion-button slot="end" *ngIf="currentUser===sondaggio.cod_utente" (click) ="goModificaDomanda()" expand="block" fill="clear">
             <ion-icon name="hammer-sharp" color="primary" class = "icons_generic_style"></ion-icon>
           </ion-button>
 
         
         </ion-toolbar>
-        <ion-toolbar class="backgrounds" *ngIf="currentUser!==sondaggioUser">
+        <ion-toolbar class="backgrounds" *ngIf="currentUser!==sondaggio.cod_utente">
           <ion-avatar  slot="start" class="icon-avatar" >
             <img src="https://i.ytimg.com/vi/mCf6UGT3HrA/maxresdefault.jpg">
           </ion-avatar>
@@ -52,15 +52,13 @@
             <div class = "backgrounds">
           
             <ion-item *ngFor="let scelta of scelte, let i = index">    
-                <ion-radio *ngIf="currentUser!==sondaggioUser" value = "{{scelta.descrizione}}" (click) = "getScelta(scelta.descrizione, i)" slot = "start" ></ion-radio>
+                <ion-radio *ngIf="currentUser!==sondaggio.cod_utente" value = "{{scelta.descrizione}}" (click) = "getScelta(scelta.descrizione, i)" slot = "start" ></ion-radio>
                 
-                <ion-label *ngIf="currentUser===sondaggioUser" slot = "start" >{{scelta.num_favorevoli}}</ion-label>
+                <ion-label *ngIf="currentUser===sondaggio.cod_utente" slot = "start" >{{scelta.num_favorevoli}}</ion-label>
                 <ion-text  class="textSimple" slot = "start" >{{scelta.descrizione}}</ion-text>
-                <ion-progress-bar slot = "start" *ngIf="currentUser===sondaggioUser" [value]="percentualiScelte[i]" ></ion-progress-bar>
+                <ion-progress-bar slot = "start" *ngIf="currentUser===sondaggio.cod_utente" [value]="percentualiScelte[i]" ></ion-progress-bar>
               </ion-item>
-  
-            
-  
+
           </div>
 
         </ion-radio-group>

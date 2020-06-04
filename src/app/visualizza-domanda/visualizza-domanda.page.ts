@@ -67,11 +67,12 @@ export class VisualizzaDomandaPage implements OnInit {
     ) { }
 
   ngOnInit() {
-    
+    this.handleLoading();
     this.visualizzaDomanda(); 
     this.showRisposte();
     this.storage.get('utente').then(data => { this.currentMailUser = data.email });
-    this.handleLoading();
+    this.allVisible = true; 
+    
   }
 
 
@@ -400,8 +401,14 @@ clickRisposta(risposta, i){
       duration: 750
     });
    
-    await loading.present();
-    this.allVisible = true;
+        {
+          
+          await loading.present();
+         
+          
+    }
+   
+   
   }
 
 /*   async showDescrizioneRisposta() {
