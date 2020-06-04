@@ -13,6 +13,7 @@
 </ion-toolbar>
 
 <ion-toolbar class="backgroundsSecondaryItem">
+
     <ion-list>
 
       <ion-item>
@@ -30,6 +31,8 @@
 </ion-toolbar>
 
 <ion-content class="backgrounds" *ngIf="check1">
+
+  <ion-card-title class="textTitle" class="ion-text-center">Sondaggi</ion-card-title>
 
   <ion-card *ngIf="range.value===100" color="primary">
     <ion-card *ngFor="let sondaggio of sondaggi1g" (click)="clickSondaggio(sondaggio.codice_sondaggio)">
@@ -120,6 +123,8 @@
 
 <ion-content class="backgrounds" *ngIf="check2">
 
+  <ion-card-title class="textTitle" class="ion-text-center">Domande</ion-card-title>
+
   <ion-card *ngIf="range.value===100" color="tertiary">
     <ion-card *ngFor="let domanda of domande1g" (click)="clickDomanda(domanda.codice_domanda)">
       <ion-item>
@@ -134,7 +139,7 @@
     </ion-card>
   </ion-card>
 
-  <ion-textarea readonly *ngIf="range.value===100 && domande1g===undefined" class="ion-text-center">
+  <ion-textarea readonly *ngIf="range.value===100 && (domande1g===undefined || domande1g.length===0)" class="ion-text-center">
     Non hai postato nessuna domanda nelle ultime 24h</ion-textarea>
 
   <ion-card *ngIf="range.value===200" color="tertiary">

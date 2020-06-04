@@ -13,7 +13,7 @@ import { Storage } from "@ionic/storage";
 })
 export class MieAttivitaPage implements OnInit {
 
-  currentUser = "";
+  currentUser = "gmailverificata";
   domande: any[];
   sondaggi: any;
   check1: boolean;
@@ -35,12 +35,11 @@ export class MieAttivitaPage implements OnInit {
   constructor(private navCtrl: NavController, private apiService: ApiService, private alertController: AlertController, private dataService: DataService, private router: Router, private storage: Storage) { }
 
   ngOnInit() {
-    this.storage.get('utente').then(data => { this.currentUser = data.email });
+    //this.storage.get('utente').then(data => { this.currentUser = data.email });
     this.visualizzaMieDomande();
     this.visualizzaMieiSondaggi();
     this.check2 = true;
     console.log(this.currentUser);
-    
   }
 
   goBack(){
