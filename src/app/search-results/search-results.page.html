@@ -39,6 +39,8 @@
 
 <ion-content>
 
+  <div *ngIf="domandeButton == true">
+
   <ion-list *ngFor="let domanda of domandeSearched; let i = index">
 
     <ion-card>
@@ -64,5 +66,30 @@
     </ion-card>
 
   </ion-list>
+</div>
+
+  <div *ngIf="sondaggiButton == true">
+
+    <ion-list *ngFor="let sondaggio of sondaggiSearched; let i = index">
+
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>{{sondaggio.titolo}}</ion-card-title>
+          <ion-card-subtitle>{{categorieSondaggi[i]}}</ion-card-subtitle>
+  
+        </ion-card-header>
+  
+        
+      </ion-card>
+  
+    </ion-list>
+
+
+
+
+
+    
+   </div>
+
 
 </ion-content>
