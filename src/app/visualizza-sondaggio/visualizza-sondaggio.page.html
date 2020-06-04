@@ -56,7 +56,7 @@
                 
                 <ion-label *ngIf="currentUser===sondaggioUser" slot = "start" >{{scelta.num_favorevoli}}</ion-label>
                 <ion-text  class="textSimple" slot = "start" >{{scelta.descrizione}}</ion-text>
-                <ion-progress-bar slot = "start" *ngIf="currentUser!==sondaggioUser" [value]="percentualiScelte[i]" ></ion-progress-bar>
+                <ion-progress-bar slot = "start" *ngIf="currentUser===sondaggioUser" [value]="percentualiScelte[i]" ></ion-progress-bar>
               </ion-item>
   
             
