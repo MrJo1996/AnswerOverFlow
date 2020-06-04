@@ -48,7 +48,7 @@
     </ion-card>
   </ion-card>
 
-  <ion-textarea readonly *ngIf="range.value===100 && sondaggi1g.length===0" class="ion-text-center">
+  <ion-textarea readonly *ngIf="range.value===100 && (sondaggi1g===undefined || sondaggi1g.length===0)" class="ion-text-center">
     Non hai postato nessun sondaggio nelle ultime 24h</ion-textarea>
 
   <ion-card *ngIf="range.value===200" color="primary">
@@ -65,7 +65,7 @@
     </ion-card>
   </ion-card>
 
-  <ion-textarea readonly *ngIf="range.value===200 && sondaggi1s.length===0" class="ion-text-center">
+  <ion-textarea readonly *ngIf="range.value===200 && (sondaggi1s===undefined || sondaggi1s.length===0)" class="ion-text-center">
     Non hai postato nessun sondaggio nell'ultima settimana</ion-textarea>
 
   <ion-card *ngIf="range.value===300" color="primary">
@@ -82,7 +82,7 @@
     </ion-card>
   </ion-card>
 
-  <ion-textarea readonly *ngIf="range.value===300 && sondaggi2s.length===0" class="ion-text-center">
+  <ion-textarea readonly *ngIf="range.value===300 && (sondaggi2s===undefined || sondaggi2s.length===0)" class="ion-text-center">
     Non hai postato nessun sondaggio nelle ultime 2 settimane</ion-textarea>
 
   <ion-card *ngIf="range.value===400" color="primary">
@@ -99,7 +99,7 @@
     </ion-card>
   </ion-card>
 
-  <ion-textarea readonly *ngIf="range.value===400 && sondaggi3s.length===0" class="ion-text-center">
+  <ion-textarea readonly *ngIf="range.value===400 && (sondaggi3s===undefined || sondaggi3s.length===0)" class="ion-text-center">
     Non hai postato nessun sondaggio nelle ultime 3 settimane</ion-textarea>
 
   <ion-card *ngIf="range.value===500" color="primary">
@@ -116,7 +116,7 @@
     </ion-card>
   </ion-card>
 
-  <ion-textarea readonly *ngIf="range.value===500 && sondaggi1m.length===0" class="ion-text-center">
+  <ion-textarea readonly *ngIf="range.value===500 && (sondaggi1m===undefined || sondaggi1m.length===0)" class="ion-text-center">
     Non hai postato nessun sondaggio nell'ultimo mese</ion-textarea>
 
 </ion-content>
@@ -156,7 +156,7 @@
     </ion-card>
   </ion-card>
 
-  <ion-textarea readonly *ngIf="range.value===200 && domande1s.length===0" class="ion-text-center">
+  <ion-textarea readonly *ngIf="range.value===200 && (domande1s===undefined || domande1s.length===0)" class="ion-text-center">
     Non hai postato nessuna domanda nell'ultima settimana</ion-textarea>
 
   <ion-card *ngIf="range.value===300" color="tertiary">
@@ -173,7 +173,7 @@
     </ion-card>
   </ion-card>
 
-  <ion-textarea readonly *ngIf="range.value===300 && domande2s.length===0" class="ion-text-center">
+  <ion-textarea readonly *ngIf="range.value===300 && (domande2s===undefined || domande2s.length===0)" class="ion-text-center">
     Non hai postato nessuna domanda nelle ultime 2 settimane</ion-textarea>
 
   <ion-card *ngIf="range.value===400" color="tertiary">
@@ -190,7 +190,7 @@
     </ion-card>
   </ion-card>
 
-  <ion-textarea readonly *ngIf="range.value===400 && domande3s.length===0" class="ion-text-center">
+  <ion-textarea readonly *ngIf="range.value===400 && (domande3s===undefined || domande3s.length===0)" class="ion-text-center">
     Non hai postato nessuna domanda nelle ultime 3 settimane</ion-textarea>
 
   <ion-card *ngIf="range.value===500" color="tertiary">
@@ -207,7 +207,7 @@
     </ion-card>
   </ion-card>
 
-  <ion-textarea readonly *ngIf="range.value===500 && domande1m.length===0" class="ion-text-center">
+  <ion-textarea readonly *ngIf="range.value===500 && (domande1m===undefined || domande1m.length===0)" class="ion-text-center">
     Non hai postato nessuna domanda nell'ultimo mese</ion-textarea>
 
 </ion-content>
