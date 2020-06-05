@@ -6,9 +6,9 @@
 
   <ion-title class="textTitle" class="ion-text-center">Le mie attività</ion-title>
 
-  <ion-button slot="end" expand="block" fill="clear" class="msg-btn" (click)="presentAlertRadio()">
+  <!-- <ion-button slot="end" expand="block" fill="clear" class="msg-btn" (click)="presentAlertRadio()">
     <ion-icon slot="icon-only" name="list-circle-outline" color="primary"></ion-icon>
-  </ion-button>
+  </ion-button> -->
 
 </ion-toolbar>
 
@@ -32,11 +32,15 @@
 
 <ion-content class="backgrounds" *ngIf="check1">
 
-  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
-    <ion-refresher-content></ion-refresher-content>
-  </ion-refresher>
+  <ion-segment [(ngModel)]="sezione" (ionChange)="segmentChanged($event)" value="Domande" scrollable>
+    <ion-segment-button value="Domande" (click)="caricaDomande()">
+      <ion-label>Domande</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="Sondaggi" (click)="caricaSondaggi()">
+      <ion-label>Sondaggi</ion-label>
+    </ion-segment-button>
+  </ion-segment>
 
-  <ion-card-title class="textTitle" class="ion-text-center">Sondaggi</ion-card-title>
 
   <ion-card *ngIf="range.value===100" color="primary">
     <ion-card *ngFor="let sondaggio of sondaggi1g" (click)="clickSondaggio(sondaggio.codice_sondaggio)">
@@ -127,11 +131,15 @@
 
 <ion-content class="backgrounds" *ngIf="check2">
 
-  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
-    <ion-refresher-content></ion-refresher-content>
-  </ion-refresher>
+  <ion-segment [(ngModel)]="sezione" (ionChange)="segmentChanged($event)" value="Domande" scrollable>
+    <ion-segment-button value="Domande" (click)="caricaDomande()">
+      <ion-label>Domande</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="Sondaggi" (click)="caricaSondaggi()">
+      <ion-label>Sondaggi</ion-label>
+    </ion-segment-button>
+  </ion-segment>
 
-  <ion-card-title class="textTitle" class="ion-text-center">Domande</ion-card-title>
 
   <ion-card *ngIf="range.value===100" color="tertiary">
     <ion-card *ngFor="let domanda of domande1g" (click)="clickDomanda(domanda.codice_domanda)">

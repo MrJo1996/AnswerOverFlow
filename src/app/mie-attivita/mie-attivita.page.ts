@@ -28,6 +28,7 @@ export class MieAttivitaPage implements OnInit {
   sondaggi2s: any[];
   sondaggi3s: any[];
   sondaggi1m: any[];
+  sezione = 'Domande';
 
 
   constructor(private navCtrl: NavController, private apiService: ApiService, private alertController: AlertController, private dataService: DataService, private router: Router, private storage: Storage) { }
@@ -105,7 +106,7 @@ export class MieAttivitaPage implements OnInit {
   
   }
 
-  async presentAlertRadio() {
+  /* async presentAlertRadio() {
     const alert = await this.alertController.create({
       header: 'Vista',
       inputs: [
@@ -150,7 +151,7 @@ export class MieAttivitaPage implements OnInit {
     await alert.present();
     let result = await alert.onDidDismiss();
     console.log(result);
-  }
+  } */
 
   checkDataeoraDomande() {
     this.domande1g = [];
@@ -286,17 +287,21 @@ export class MieAttivitaPage implements OnInit {
     this.router.navigate(['/visualizza-sondaggio']);
   }
 
-  doRefresh(event) {
-    this.visualizzaMieDomande();
-    this.visualizzaMieiSondaggi();
-    setTimeout(() => {
-      event.target.complete();
-    }, 2000);
+  segmentChanged(ev: any) {
+    console.log('Segment changed', ev);
+    console.log('Sezione: ',this.sezione, 'Check1: ', this.check1, 'Check2: ', this.check2);
   }
 
-  refresh() {
-    this.visualizzaMieDomande();
-    this.visualizzaMieiSondaggi();
+  caricaDomande() {
+    this.sezione = 'Domande';
+    this.check1 = false;
+    this.check2 = true;
+  }
+
+  caricaSondaggi() {
+    this.sezione = 'Sondaggi';
+    this.check2 = false;
+    this.check1 = true;
   }
 
 }
