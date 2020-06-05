@@ -4,7 +4,8 @@ import { DataService } from "../services/data.service";
 import { ApiService } from '../providers/api.service';
 import { Router } from '@angular/router';
 import { Storage } from "@ionic/storage";
-import { IonInfiniteScroll } from '@ionic/angular';
+import { PopoverController, iosTransitionAnimation } from '@ionic/angular';
+import { PopoverComponent } from '../popover/popover.component';
 
 @Component({
   selector: 'app-home',
@@ -12,6 +13,7 @@ import { IonInfiniteScroll } from '@ionic/angular';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
+  scelte = Array(2);
   indice_domande;
   codice_domanda;
   codice_sondaggio;
@@ -25,12 +27,28 @@ export class HomePage implements OnInit {
   keywordToSearch;
   searchingResults;
   request: Promise<any>;
-  constructor(private storage: Storage, private apiService: ApiService, private service: PostServiceService, private dataService: DataService, private router: Router) { }
+  constructor(public popoverController: PopoverController, private storage: Storage, private apiService: ApiService, private service: PostServiceService, private dataService: DataService, private router: Router) { }
 
   ngOnInit() {
     this.visualizzaDomandaHome();
     this.visualizzaSondaggiHome();
     this.storage.get('utente').then(data => { this.currentMailUser = data.email });
+  }
+  async presentPopover(ev) {
+    const popover = await this.popoverController.create({
+      component: PopoverComponent,
+      event: ev,
+      translucent: true,
+      mode:'md',
+      cssClass: 'popOver'
+    });
+    await popover.present();
+    const { data } = await popover.onDidDismiss();
+    let i = data.item;
+    console.log('num',i);
+    if(i == 2){
+      this.clickDomanda(this.codice_domanda);
+    }
   }
 
   loadMore(event) {
@@ -100,7 +118,12 @@ export class HomePage implements OnInit {
   this.router.navigate(['/search-results']);
 }
 
+clickProfilo(cod_utente){
+  this.dataService.setEmailOthers = cod_utente;
+  console.log(this.dataService.setEmailOthers);
+  this.router.navigate(['/visualizza-profilo']);
 
+}
 
 }
 
