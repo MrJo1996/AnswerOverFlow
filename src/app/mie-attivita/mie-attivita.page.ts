@@ -13,13 +13,11 @@ import { Storage } from "@ionic/storage";
 })
 export class MieAttivitaPage implements OnInit {
 
-  currentUser = "gmailverificata";
+  currentUser;
   domande: any[];
   sondaggi: any;
   check1: boolean;
   check2: boolean;
-  codice_domanda = 105;
-  risposte: any;
   domande1g: any[];
   domande1s: any[];
   domande2s: any[];
@@ -35,11 +33,36 @@ export class MieAttivitaPage implements OnInit {
   constructor(private navCtrl: NavController, private apiService: ApiService, private alertController: AlertController, private dataService: DataService, private router: Router, private storage: Storage) { }
 
   ngOnInit() {
-    //this.storage.get('utente').then(data => { this.currentUser = data.email });
-    this.visualizzaMieDomande();
-    this.visualizzaMieiSondaggi();
+    this.storage.get('utente').then( 
+      data => { 
+        this.currentUser = data.email
+       }).then(() => {
+        this.visualizzaMieDomande();
+        this.visualizzaMieiSondaggi();
+       }).then(() => {
+        this.check1 = false;
+      this.check2 = true;
+       })
+  }
+
+  ionViewDidEnter() {
+  this.storage.get('utente').then( 
+    data => { 
+      this.currentUser = data.email
+     }).then(() => {
+      this.visualizzaMieDomande();
+      this.visualizzaMieiSondaggi();
+     }).then(() => {
+      this.check1 = false;
     this.check2 = true;
-    console.log(this.currentUser);
+     })
+  }
+
+  ionViewDidLeave() {
+    this.currentUser = null;
+    this.domande = [];
+    this.sondaggi = [];
+    console.log('Distrutto');
   }
 
   goBack(){
@@ -135,6 +158,11 @@ export class MieAttivitaPage implements OnInit {
     this.domande2s = [];
     this.domande3s = [];
     this.domande1m = [];
+
+    if (this.domande===undefined) {
+      console.log('Non ci sono domande per questo utente');
+    } else {
+
     for (var i = 0; i < this.domande.length; i++) {
       var data = new Date(this.domande[i].dataeora.toLocaleString());
       var data2 = new Date();
@@ -160,6 +188,8 @@ export class MieAttivitaPage implements OnInit {
         this.domande1m.push(this.domande[i]);
       }
     }
+
+  }
    
     console.log(this.domande1g.length);
     console.log(this.domande1s.length);
@@ -199,11 +229,16 @@ export class MieAttivitaPage implements OnInit {
   }
 
   checkDataeoraSondaggi() {
-    //this.sondaggi1g = [];
+    this.sondaggi1g = [];
     this.sondaggi1s = [];
     this.sondaggi2s = [];
     this.sondaggi3s = [];
     this.sondaggi1m = [];
+
+    if (this.sondaggi===undefined) {
+      console.log('Non ci sono sondaggi per questo utente');
+    } else {
+
     for (var i = 0; i < this.sondaggi.length; i++) {
       var data = new Date(this.sondaggi[i].dataeora.toLocaleString());
       var data2 = new Date();
@@ -229,6 +264,8 @@ export class MieAttivitaPage implements OnInit {
         this.sondaggi1m.push(this.sondaggi[i]);
       }
     }
+
+  }
    
     console.log(this.sondaggi1g.length);
     console.log(this.sondaggi1s.length);
@@ -255,6 +292,11 @@ export class MieAttivitaPage implements OnInit {
     setTimeout(() => {
       event.target.complete();
     }, 2000);
+  }
+
+  refresh() {
+    this.visualizzaMieDomande();
+    this.visualizzaMieiSondaggi();
   }
 
 }
