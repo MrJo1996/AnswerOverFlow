@@ -28,17 +28,25 @@ export class ProponiCategoriaPage implements OnInit {
     }
 
   italian_bad_words_check(input: string){
+    var check;
+    
     let list = require('italian-badwords-list');
     let array = list.array;
-    return array.includes(input);
+    let stringArray = [];
+    let stringPassed = input.split(' ');
+    stringArray = stringArray.concat(stringPassed);
+
+    stringArray.forEach(element =>{
+      if (array.includes(element)){
+        check = true;
+      }
+    });
+    return check;
   }
 
   english_bad_words_check(input: string){
     var Filter = require('bad-words'),
     filter = new Filter();
-
-    
-    filter.addWords('cazzi');
     
     return filter.isProfane(input);
   }
