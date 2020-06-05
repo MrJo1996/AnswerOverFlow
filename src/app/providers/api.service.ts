@@ -854,7 +854,28 @@ export class ApiService {
 
   
 
-
+  ContaValutazioni(email: string, codice_categoria: number) {
+    const body = {
+      email, 
+      codice_categoria
   
+    };
+  
+    return new Promise((resolve, reject) => {
+      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/contaValutazioni', body).subscribe(
+        data => {
+          let valutazioni = (data);
+          resolve(valutazioni)
+          console.log(valutazioni);
+  
+  
+        },
+        (err) => {
+          reject();
+        }
+      );
+    });
+
+}
 
 }

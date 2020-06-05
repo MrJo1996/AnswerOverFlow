@@ -6,16 +6,18 @@ import { DataService } from "../services/data.service";
 import { element } from 'protractor';
 import { computeStackId } from '@ionic/angular/directives/navigation/stack-utils';
 import { Storage } from "@ionic/storage";
+
 @Component({
   selector: 'app-visualizza-statistiche',
   templateUrl: './visualizza-statistiche.page.html',
   styleUrls: ['./visualizza-statistiche.page.scss'],
-
 })
 
 export class VisualizzaStatistichePage {
 
-
+  segmentChanged(ev: any) {
+    console.log('Segment changed', ev);
+  }
 
   @ViewChild('barChart', {static:false}) barChart;
   @ViewChild('doughnutCanvas', {static:false}) doughnutCanvas;
@@ -23,11 +25,6 @@ export class VisualizzaStatistichePage {
   @ViewChild('doughnutCanvas2', {static:false}) doughnutCanvas2;
   @ViewChild('lineCanvas', {static:false}) lineCanvas;
 
-
-
-
-
-  cod_utente = "";
   colorArray: any;
 
   bars: any;
@@ -37,16 +34,23 @@ export class VisualizzaStatistichePage {
   lineChart: any;
   num_domande: any;
   num_domandeTot: any = [];
+  num_risposteTot: any = [];
 
   Domande = {};
   
-  
+  cod_utente;
   domandeTOP = new Array();
   risposteTOP = new Array();
   categorieTOP = new Array();
   CategorieA = new Array();
   Dlabels = {};
-  DlabelsTitle: any = [];  
+  DlabelsTitle: any = [];
+  LabelRisposte = {};
+  RisposteDlabelsTitle: any = [];
+  categoriaxLtitle: any = [];
+  numLIKE: any = [];
+  numDISLIKE: any = [];
+
   num_domandeTOP: any;
   num_domandeTOP2: any;
   num_domandeTOP3 : any;
@@ -59,21 +63,23 @@ export class VisualizzaStatistichePage {
   categoriaText1: any;
   categoriaText2: any;
   categoriaText3: any;
+  categoriaxL = {};
+ 
   provaDomandeTOP = new Array();
   
 
-  constructor( private storage: Storage, private dataService: DataService, private navCtrl: NavController,public apiService: ApiService) {
+  constructor(private storage: Storage,private dataService: DataService, private navCtrl: NavController,public apiService: ApiService) {
     
    }
-
-
+   
    ngOnInit() {
-
-  this.storage.get('utente').then(data => { this.cod_utente = data.email});
-    
-  }
-
+     
+    this.storage.get('utente').then(data => { this.cod_utente = data.email });
+   }
   ionViewDidEnter() {
+
+    
+
     this.visualizzaStatisticheDomanda();
     this.visualizzaCategoria();
     this.visualizzaTOTStatisticheDomanda();
@@ -85,8 +91,33 @@ export class VisualizzaStatistichePage {
     this.secondbars();
     this.sdoughnutChartMethod();
     this.lineChartMethod();
+    this.Valutazioni();
+    this.carica();
+    this.caricaR();
+    this.caricaLD();
 
+  
+    
   }
+
+  
+carica(){
+  this.createBarChart();
+  this.doughnutChartMethod();
+  
+}
+
+caricaR(){
+  this.secondbars();
+    this.sdoughnutChartMethod();
+}
+
+caricaLD(){
+   
+    this.lineChartMethod();
+    this.Valutazioni();
+} 
+
   goBack(){
     this.navCtrl.back();
   }
@@ -97,25 +128,61 @@ export class VisualizzaStatistichePage {
         this.colorArray.push('#' + Math.floor(Math.random() * 16777215).toString(16));
       }
     }
+
+//------------------------valutaioni----------------
+
+
+async Valutazioni(){
+  this.apiService.get_tot_Risposte(this.cod_utente).then(
+    (risposte) => {
+      for (let j = 0; j < risposte['Risposte']['data'].length; j++){
+        this.categoriaxL[j] = risposte['Risposte']['data'][j].cod_categoria;
+        this.apiService.getCategoria(this.categoriaxL[j]).then(
+          (categorie) => {
+            this.categoriaxLtitle[j]= categorie['Categoria']['data']['0'].titolo;
+          
+  
+  this.apiService.ContaValutazioni(this.cod_utente, this.categoriaxL[j]).then(
+  (valutazioni) => {
+      console.log("Valutazioni ssssssssssssssssss:",valutazioni['Numero risposte']['data']);
+      this.numLIKE[j] = valutazioni['Numero risposte']['data'].num_like;
+      
+     
+      this.numDISLIKE[j] =valutazioni['Numero risposte']['data'].num_dislike;
+
+      this.lineChartMethod();
+
+ 
+  }, 
+  (rej) => {
+    console.log("C'è stato un errore durante la visualizzazione");
+  }
+  
+);
+}
+        )
+
+  }  
+
+},
+(rej) => {
+  console.log("C'è stato un errore durante la visualizzazione");
+}
+)
+}
+
+
+//__________________________________________________________________
+
 //--------------domande TOP 3-----------------------------------------------
 async visualizzaStatisticheDomanda(){
 
   this.apiService.get_top_Domande(this.cod_utente).then(
     (domande) => {
      console.log("CLOG domande ", domande);
-
-    // this.categoriaTOP = domande['Domande']['data']['0'].cod_categoria ;
-    // this.categoriaTOP2 = domande['Domande']['data']['1'].cod_categoria ;
-    // this.categoriaTOP2 = domande['Domande']['data']['2'].cod_categoria ;
-
+  
     this.domandeTOP = domande['Domande']['data'];
-    
-    
-    //console.log("consoleLOg2",this.domandeTOP['data'].num_domande);
-
-        //this.num_domandeTOP=domande['Domande']['data']['0'].num_domande;
-       /*  this.num_domandeTOP2=domande['Domande']['data']['1'].num_domande;
-        this.num_domandeTOP3=domande['Domande']['data']['2'].num_domande; */
+  
       let i = 0;
       this.domandeTOP.forEach(element => {
           if(i === 0){
@@ -161,13 +228,6 @@ async visualizzaStatisticheDomanda(){
 }
 
 
-
-
-
-
-
-      
-  
 
 
 
@@ -302,13 +362,6 @@ async visualizzaStatisticheDomanda(){
     }
   )
 }
-    
-      // getCategoriaArray(){
-      //   for (let j = 0; j <= domande; j++){
-      //     this.Dlabels[j] = this.CategorieA[j].cod_categoria;
-      //   }
-      //   console.log("speriamo", this.Dlabels);
-      // }
 
       
     //----------------------Risposte top 3-------------------------------------
@@ -356,6 +409,7 @@ async visualizzaStatisticheDomanda(){
         k++;
       });
 
+
       this.visualizzaCategoriaR();
       this.visualizzaCategoriaR1();
       this.visualizzaCategoriaR2();
@@ -373,17 +427,40 @@ async visualizzaStatisticheDomanda(){
     )
    }
 
+
    async visualizzaTOTStatitischeRisposta(){
     this.apiService.get_tot_Risposte(this.cod_utente).then(
-      (risposteT) => {
-       console.log(risposteT['Risposte']['Data']);
+      (risposte) => {
+       console.log(risposte['Risposte']['Data']);
+       for (let j = 0; j < risposte['Risposte']['data'].length; j++){
+           
+        this.LabelRisposte[j] = risposte['Risposte']['data'][j].cod_categoria;
+        this.num_risposteTot[j] = risposte['Risposte']['data'][j].num_risposte;
+       // console.log('Il codice è', this.LabelRisposte[j]);
+      
         
-      },
-      (rej) => {
-        console.log("C'è stato un errore durante la visualizzazione");
-      }
-    )
-   }
+        this.apiService.getCategoria(this.LabelRisposte[j]).then(
+          (categoria) => {
+            
+            //console.log("ciaoOoooOOooO", categoria['Categoria']['data']['0'].titolo) ;
+            this.RisposteDlabelsTitle[j]= categoria['Categoria']['data']['0'].titolo;
+            //console.log('Il titolo è',this.RisposteDlabelsTitle[j]);
+            this. sdoughnutChartMethod()
+          },
+          (rej) => {
+            console.log("C'è stato un errore durante la visualizzazione");
+          }
+        );
+        
+       
+       }
+     
+},
+(rej) => {
+  console.log("C'è stato un errore durante la visualizzazione");
+}
+)
+} 
 
 
   
@@ -457,10 +534,10 @@ async visualizzaStatisticheDomanda(){
     this.sdoughnutChart = new Chart(this.doughnutCanvas2.nativeElement, {
       type: 'doughnut',
       data: {
-        labels:['Filosofia', 'Informatica', 'Geografia', 'Scienze', 'Filosofia'] ,
+        labels: this.RisposteDlabelsTitle ,
         datasets: [{
           
-          data: [8],
+          data: this.num_risposteTot ,
           backgroundColor: this.colorArray,
           hoverBackgroundColor: this.colorArray
         }]
@@ -471,40 +548,47 @@ async visualizzaStatisticheDomanda(){
 
 
 
-  lineChartMethod() {
+lineChartMethod(){
+    
     this.lineChart = new Chart(this.lineCanvas.nativeElement, {
-      type: 'line',
+      type: 'horizontalBar',
       data: {
-        labels: ['Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio'],
-        datasets: [
-          {
-            label: 'Attività Totale Utente',
-            fill: false,
-            lineTension: 0.1,
-            backgroundColor: 'rgba(75,192,192,0.4)',
-            borderColor: 'rgba(75,192,192,1)',
-            borderCapStyle: 'butt',
-            borderDash: [],
-            borderDashOffset: 0.0,
-            borderJoinStyle: 'miter',
-            pointBorderColor: 'rgba(75,192,192,1)',
-            pointBackgroundColor: '#fff',
-            pointBorderWidth: 1,
-            pointHoverRadius: 5,
-            pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-            pointHoverBorderColor: 'rgba(220,220,220,1)',
-            pointHoverBorderWidth: 2,
-            pointRadius: 1,
-            pointHitRadius: 10,
-            data: [],
-            spanGaps: false,
-          }
-        ]
+        labels:  this.categoriaxLtitle ,
+        datasets: [{
+          label: 'LIKE ▲',
+          data: this.numLIKE,
+          backgroundColor: '#008000', // array should have same number of elements as number of dataset
+          borderColor: '#008000',// array should have same number of elements as number of dataset
+          borderWidth: 1
+        },
+        {
+          label: 'DISLIKE ▼',
+          data: this.numDISLIKE,
+          backgroundColor: '#dd1144', // array should have same number of elements as number of dataset
+          borderColor: '#dd1144',// array should have same number of elements as number of dataset
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            }
+          }]
+        }
       }
+      
     });
   }
 
-
-
   
 }
+
+
+
+
+
+
+
+

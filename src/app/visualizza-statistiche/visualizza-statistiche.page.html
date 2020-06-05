@@ -10,9 +10,31 @@
    
   </ion-toolbar>
 </ion-header>
+<ion-content class="ion-padding">
 
-<ion-content class="padding">
+<ion-segment [(ngModel)]="segment">
+  <ion-segment-button value="Domande" (click)="carica()">
+    <ion-label>Domande</ion-label>
 
+
+    
+  </ion-segment-button>
+  <ion-segment-button value="Risposte" (click)="caricaR()">
+    <ion-label>Risposte</ion-label>
+  </ion-segment-button>
+  <ion-segment-button value="LikeDislike" (click)="caricaLD()">
+    <ion-label>Like&Dislike</ion-label>
+  </ion-segment-button>
+</ion-segment>
+
+
+
+
+
+
+
+<div [ngSwitch]="segment" (ionChange)=" segmentChanged($event)">
+  <div *ngSwitchCase= "'Domande'">
   <ion-card>
     <ion-card-header>
       <ion-card-subtitle>Domande</ion-card-subtitle>
@@ -32,7 +54,9 @@
         <canvas #doughnutCanvas></canvas>
       </ion-card-content>
     </ion-card>
-
+</div>
+   
+<div *ngSwitchCase= "'Risposte'">
     <ion-card>
       <ion-card-header>
         <ion-card-subtitle>Risposte</ion-card-subtitle>
@@ -43,6 +67,7 @@
       </ion-card-content>
     </ion-card>
   
+   
     <ion-card>
         <ion-card-header>
           <ion-card-subtitle>Risposte</ion-card-subtitle>
@@ -52,19 +77,22 @@
           <canvas #doughnutCanvas2></canvas>
         </ion-card-content>
       </ion-card>
-  
+  </div>
 
 
 
-
+    <div *ngSwitchCase= "'LikeDislike'">
     <ion-card>
         <ion-card-header>
-          <ion-card-subtitle>Domande e Risposte</ion-card-subtitle>
-          <ion-card-title>Attività totale ultimi 12  mesi</ion-card-title>
+          
+          <ion-card-title>Like & Dislike</ion-card-title>
         </ion-card-header>
         <ion-card-content>
           <canvas #lineCanvas></canvas>
         </ion-card-content>
       </ion-card>
-  
+    </div>
+  </div>
+
 </ion-content>
+
