@@ -55,6 +55,10 @@ export class InserimentoSondaggioPage implements OnInit {
         console.log("C'è stato un errore");
       }
     );
+    
+    //Inizializzo le scelte alla lunghezza di 2
+    this.Add();
+    this.Add();
   }
 
 
@@ -77,29 +81,37 @@ export class InserimentoSondaggioPage implements OnInit {
   //----------------Controllo Valori ----------------
   checkField() {
     let datoMancante = false;
+    let troppoLungo = false;
     let scelteVuote = false;
     let scelteScorrette = false;
-    let errMex = "Hey, hai dimenticato di inserire";
+    let errMex = "Non hai inserito";
+    let errLunghezza = ""
 
     var today = new Date();
     var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
     var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
     this.dataeora = date + ' ' + time;
 
-    if (this.titolo === "") {
+    if (this.stringDescriptionChecker(this.titolo)) {
       datoMancante = true;
       errMex = errMex + " il titolo"
+    }
+    if(this.titolo.length > 299){
+      troppoLungo = true;
     }
 
     for (let scelta of this.scelte) {
       if (this.italian_bad_words_check(scelta['value'])){
         scelteScorrette = true;
       }
-      if (scelta['value'] == "") {
+      if (this.stringDescriptionChecker(scelta['value'])) {
         scelteVuote = true;
       }
+      if(scelta.length > 99){
+        troppoLungo = true;
+      }
     }
-    if (this.scelte.length < 2 || scelteVuote) {
+    if (scelteVuote) {
       if (datoMancante) {
         errMex = errMex + ", le scelte"
       }
@@ -128,43 +140,51 @@ export class InserimentoSondaggioPage implements OnInit {
         errMex = errMex + " la categoria"
       }
     }
-    this.inserisciSondaggio(datoMancante,scelteScorrette, errMex)
+    this.inserisciSondaggio(datoMancante, troppoLungo, scelteScorrette, errMex)
+  }
+
+  stringDescriptionChecker(field: any):boolean {
+    if ((field.length < 1) || !(field.match(/[a-zA-Z0-9_]+/))) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   //----------------Alert----------------
-  async inserisciSondaggio(datiMancanti: Boolean, scelteScorrette, textAlert: string) {
-    if ((this.italian_bad_words_check(this.titolo) || scelteScorrette)) {
-      const alert = await this.alertController.create({
-        header: 'ATTENZIONE!',
-        subHeader: 'Hai inserito una o più parole non consentite. Rimuoverle per andare avanti',
-        buttons: [
-          {
-            text: 'Ok',
-            role: 'cancel',
-            cssClass: 'secondary',
-            handler: (blah) => {
-              console.log('Confirm Cancel');
-            }
-          }
-        ]
-      });
-      await alert.present();
+  async inserisciSondaggio(datiMancanti: Boolean, troppoLungo: Boolean, scelteScorrette, textAlert: string) {
+    if ((this.italian_bad_words_check(this.titolo)) || (scelteScorrette)) {
+      const toast = document.createElement('ion-toast');
+      toast.message = 'ERRORE! Hai inserito una o più parole non consentite. Rimuoverle per andare avanti!';
+      toast.duration = 2000;
+      toast.position = "middle";
+      toast.style.fontSize = '20px';
+      toast.color = 'danger';
+      toast.style.textAlign = 'center';
+      document.body.appendChild(toast);
+      return toast.present();
+
     } else if (datiMancanti) {
-      const alert = await this.alertController.create({
-        header: 'Errore',
-        message: textAlert,
-        buttons: [
-          {
-            text: 'Ok',
-            role: 'cancel',
-            cssClass: 'secondary',
-            handler: (blah) => {
-              console.log('Confirm Cancel');
-            }
-          }
-        ]
-      });
-      await alert.present();
+      const toast = document.createElement('ion-toast');
+      toast.message = 'ERRORE! ' + textAlert + '!';
+      toast.duration = 2000;
+      toast.position = "middle";
+      toast.style.fontSize = '20px';
+      toast.color = 'danger';
+      toast.style.textAlign = 'center';
+      document.body.appendChild(toast);
+      return toast.present();
+
+    } else if (troppoLungo) {
+      const toast = document.createElement('ion-toast');
+      toast.message = 'ERRORE! Uno dei campi inseriti è troppo lungo, eliminare dei caratteri per inserire il sondaggio!';
+      toast.duration = 2000;
+      toast.position = "middle";
+      toast.style.fontSize = '20px';
+      toast.color = 'danger';
+      toast.style.textAlign = 'center';
+      document.body.appendChild(toast);
+      return toast.present();
     } else {
       const alert = await this.alertController.create({
         header: 'Confermi il sondaggio?',
