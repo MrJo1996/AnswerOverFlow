@@ -19,21 +19,28 @@ enum scelteEnum{};
 })
 export class VisualizzaSondaggioPage implements OnInit {
 
+  currentUser = " ";
+ 
+
   codice_sondaggio;
   sondaggio = {};
-  scelte = new Array();
-  currentUser = " ";
   sondaggioUser;
-  sceltaSelezionata = " ";
+ 
   thrashActive;
-  hasVoted = false;
-  codici_scelte = new Array();
-  index_scelta_selezionata: number;
-  codice_scelta_selezionata;
-  voti_totali:  number = 0;
-  percentualiScelte = new Array();
+
+  codice_categoria;
+  categoria;
 
   votato;
+  voti_totali:  number = 0;
+  hasVoted = false;
+
+  scelte = new Array();
+  codici_scelte = new Array();
+  sceltaSelezionata = " ";
+  index_scelta_selezionata: number;
+  codice_scelta_selezionata;
+  percentualiScelte = new Array();
 
   url = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/cancellaSondaggio/14'
   url2 = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaSondaggio'
@@ -96,7 +103,9 @@ this.codice_sondaggio= this.dataService.codice_sondaggio;
      
         this.sondaggio = sondaggio['data']['0']; 
         this.sondaggioUser = sondaggio['data']['0'].cod_utente;
-        
+        this.codice_categoria = sondaggio['data']['0'].cod_categoria;
+        console.log('CODICE CATEGORIA: ', this.sondaggio);
+        this.visualizzaCategoria();
       },
       (rej) => {
         console.log("C'è stato un errore durante la visualizzazione");
@@ -107,7 +116,7 @@ this.codice_sondaggio= this.dataService.codice_sondaggio;
 
   }
 
-  visualizzaScelte() {
+  async visualizzaScelte() {
 
     this.apiService.getScelteSondaggio(this.codice_sondaggio).then(
       (scelte) => {
@@ -145,7 +154,7 @@ this.codice_sondaggio= this.dataService.codice_sondaggio;
 
   }
 
-  cancellaSondaggio() {
+  async cancellaSondaggio() {
 
     this.apiService.rimuoviSondaggio(this.codice_sondaggio).then(
       (scelte) => {
@@ -163,7 +172,7 @@ this.codice_sondaggio= this.dataService.codice_sondaggio;
 
   }
 
-  giaVotato() {
+  async giaVotato() {
     
 
     this.currentUser = this.dataService.emailUtente;
@@ -187,7 +196,7 @@ this.codice_sondaggio= this.dataService.codice_sondaggio;
 
   }
 
-  inviaVoto(){
+  async inviaVoto(){
         this.codice_scelta_selezionata = this.scelte[this.index_scelta_selezionata]['codice_scelta'];
         console.log('codice scelta ->', this.codice_scelta_selezionata);
         console.log('codice sondaggio ->', this.codice_sondaggio);
@@ -304,6 +313,37 @@ this.codice_sondaggio= this.dataService.codice_sondaggio;
       event.target.complete();
     }, 1000);
   }
+
+
+  doNormalRefresh(event) {
+    this.voti_totali = 0;
+    this.votato = false;
+    //this.visualizzaSondaggioSelezionato();
+    this.visualizzaScelte();
+    //this.giaVotato();
+    this.hasVoted = false;
+    setTimeout(() => {
+
+      event.target.complete();
+    }, 1000);
+  }
+
+
+
+  async visualizzaCategoria() {
+
+    this.apiService.getCategoria(this.codice_categoria).then(
+      (categoria) => {
+        this.categoria = categoria['Categoria']['data']['0'].titolo;
+        console.log("questa è datacategoria", categoria['Categoria']['data']['0'].titolo);
+        console.log(this.categoria);
+      },
+      (rej) => {
+        console.log("C'è stato un errore durante la visualizzazione");
+      }
+    );
+  }
+
 
 }
 

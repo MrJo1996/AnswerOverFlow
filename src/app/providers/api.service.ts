@@ -794,5 +794,67 @@ export class ApiService {
     });
   }
 
+  inserisciValutazione(cod_risposta: number, cod_utente: string, tipo_like: number) {
+    const body = {
+      cod_risposta,
+      cod_utente,
+      tipo_like
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/inserisci_valutazione', body).subscribe(
+        data => {
+          let esito = data['message'];
+          console.log('esito inserisci risposta: ', esito);
+          resolve(esito);
+        },
+        (err) => {
+          reject();
+        }
+      );
+    });
+  }
+
+
+
+  modificaNumLike(codice_risposta: number) {
+    const body = {
+      codice_risposta
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/modifica_num_like', body).subscribe(
+        data => {
+          let esito = data;
+          console.log('esito modifica num like: ', esito);
+          resolve(esito);
+        },
+        (err) => {
+          reject();
+        }
+      );
+    });
+  }
+
+  modificaNumDislike(codice_risposta: number) {
+    const body = {
+      codice_risposta
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/modifica_num_dislike', body).subscribe(
+        data => {
+          let esito = data;
+          console.log('esito modifica num dislike: ', esito);
+          resolve(esito);
+        },
+        (err) => {
+          reject();
+        }
+      );
+    });
+  }
+
+  
+
+
+  
 
 }

@@ -471,4 +471,26 @@ export class VisualizzaDomandaPage implements OnInit {
     return toast.present();
   }
 
+  modificaLike(codice_risposta){
+    this.apiService.modificaNumLike(codice_risposta).then(
+      (result) => { // nel caso in cui va a buon fine la chiamata
+      },
+      (rej) => {// nel caso non vada a buon fine la chiamata
+        console.log('Modifica non effetutata'); //anche se va nel rej va bene, modifiche effettive nel db
+      }
+    );
+
+  }
+
+  modificaDislike(codice_risposta){
+    this.apiService.modificaNumDislike(codice_risposta).then(
+      (result) => { // nel caso in cui va a buon fine la chiamata
+      },
+      (rej) => {// nel caso non vada a buon fine la chiamata
+        console.log('Modifica non effetutata'); //anche se va nel rej va bene, modifiche effettive nel db
+      }
+    );
+
+  }
+
 }
