@@ -52,6 +52,10 @@ const routes: Routes = [
     loadChildren: () => import('./visualizza-profilo/visualizza-profilo.module').then(m => m.VisualizzaProfiloPageModule)
   },
   {
+    path: 'visualizza-profiloutente',
+    loadChildren: () => import('./visualizza-profilo/visualizza-profilo.module').then(m => m.VisualizzaProfiloPageModule)
+  },
+  {
     path: 'home',
     loadChildren: () => import('./home/home.module').then(m => m.HomePageModule)
   },
@@ -110,7 +114,8 @@ const routes: Routes = [
   {
     path: 'conferma-invio-proposta',
     loadChildren: () => import('./conferma-invio-proposta/conferma-invio-proposta.module').then( m => m.ConfermaInvioPropostaPageModule)
-  },  {
+  },
+  {
     path: 'search-results',
     loadChildren: () => import('./search-results/search-results.module').then( m => m.SearchResultsPageModule)
   },
