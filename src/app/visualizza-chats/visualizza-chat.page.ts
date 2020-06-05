@@ -6,7 +6,7 @@ import { Router } from "@angular/router";
 import { NavController } from "@ionic/angular";
 import { Storage } from "@ionic/storage";
 import { PostServiceService } from "../services/post-service.service";
-import * as $ from 'jquery';
+import * as $ from "jquery";
 
 @Component({
   selector: "app-visualizza-chat",
@@ -14,11 +14,8 @@ import * as $ from 'jquery';
   styleUrls: ["./visualizza-chat.page.scss"],
 })
 export class VisualizzaChatPage implements OnInit {
-
-
   thereAreChats = false;
-  loading = true;
-  
+
   chat: any = [];
   testoRicercato = "";
   user;
@@ -39,23 +36,45 @@ export class VisualizzaChatPage implements OnInit {
     private storage: Storage
   ) {}
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  //Quando si è cliccato sul pulsante delle chat
+  ionViewWillEnter() {
     this.storage.get("utente").then((data) => {
       this.user = data.email;
       this.caricaChat();
     });
   }
-  ionViewWillEnter() {
-    $(window).on('load', function(){
-      setTimeout(removeLoader, 2000); //wait for page load PLUS two seconds.
-    });
-    function removeLoader(){
-        $( "#loader" ).fadeOut(500, function() {
-          // fadeOut complete. Remove the loading div
-          $( "#loader" ).remove(); //makes page more lightweight 
-          $('#ionCard').show();
-      });  
+
+  //Quando è stata caricata la page, si possono usare le funzioni JQuery, perchè gli "#id" vengono trovati
+  ionViewDidEnter() {
+    setTimeout(removeLoader, 1000); //wait for page load PLUS two seconds.
+    function removeLoader() {
+      $("#loader").fadeOut(500, function () {
+        // fadeOut complete. Remove the loading div
+        $("#loader").remove(); //makes page more lightweight
+        $("#ionCard").show();
+      });
     }
+  }
+
+  //Quando si sta lasciando la pagina si elimina la roba superflua e si resettano le view
+  ionViewWillLeave() {
+    this.user = null;
+    this.chat.length = 0;
+    resetLoader;
+    function resetLoader() {
+      $("#loader").show(); //makes page more lightweight
+      $("#ionCard").remove();
+    }
+  }
+
+  //ricarica l'array delle chat e le ordina
+  doRefresh(event) {
+    this.caricaChat();
+    setTimeout(() => {
+      event.target.complete();
+    }, 2000);
   }
 
   //--------------------Caricamento delle chat
@@ -75,8 +94,7 @@ export class VisualizzaChatPage implements OnInit {
           for (let i = 0; i < this.chat.length; i++) {
             this.selectChatUsername(i);
           }
-        } //se false il caricamento finisce
-        else this.loading = false;
+        }
       },
       (err) => {
         console.log(err.message);
@@ -128,8 +146,6 @@ export class VisualizzaChatPage implements OnInit {
             return dateB - dateA;
           });
           console.log("Chat ordinate", this.chat);
-          this.loading = false;
-          console.log(this.loading);
         }
       },
       (err) => {
