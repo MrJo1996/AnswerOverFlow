@@ -804,7 +804,7 @@ export class ApiService {
       this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/inserisci_valutazione', body).subscribe(
         data => {
           let esito = data['message'];
-          console.log('esito inserisci risposta: ', esito);
+          console.log('esito inserimento valutazione: ', esito);
           resolve(esito);
         },
         (err) => {
@@ -851,6 +851,52 @@ export class ApiService {
       );
     });
   }
+
+
+  controllaGiaValutatoRisposta(cod_utente: string, cod_risposta: number) {
+    const body = {
+      cod_utente: cod_utente,
+      cod_risposta: cod_risposta
+    };
+
+    return new Promise((resolve, reject) => {
+      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/controllogiavalutatorisposta', body).subscribe(
+        (data) => {
+          let risultato = data;
+          
+          console.log("API SERVICE GIA VALUTATA RISPOSTA: ", body, data)
+          resolve(risultato); 
+
+
+        },
+        (err) => {
+          reject();
+        }
+      );
+    });
+  }
+
+
+  rimuoviValutazione(cod_risposta: Number, cod_utente: string) {
+    return new Promise((resolve, reject) => {
+      var url = "http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/cancella_valutazione/";
+      var urlAndCode = url.concat(cod_risposta.toString());
+      var urlAlmostComplete = urlAndCode.concat(",");
+      var urlComplete = urlAlmostComplete.concat(cod_utente.toString());
+      this.http.delete(urlComplete).subscribe(
+        data => {
+          let esito = data['message'];
+          console.log('esito: ', esito, url);
+          resolve(esito);
+        },
+        (err) => {
+          reject();
+          console.log('esito andato a : ', urlComplete, err);
+        }
+      );
+    });
+  }
+
 
   
 

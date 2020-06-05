@@ -49,8 +49,8 @@ export class VisualizzaDomandaPage implements OnInit {
   private buttonColorBest: string = "gold";
   descrizione_risposta = "";
 
-  likes = {};
-
+  likes = new Array();
+  coloriLikeDislike = new Array();
 
   categoria = {};
 
@@ -168,7 +168,22 @@ export class VisualizzaDomandaPage implements OnInit {
 
         });
 
-        console.log(risposte)
+        let j = 0;
+        this.likes.forEach(element =>
+          {
+              this.likes[j] = null;
+
+              j++;
+          });
+
+        this.risposte.forEach(element => {
+          console.log("CONSOLE LOG PER VEDERE cod risposta: ", element.codice_risposta);
+            this.cercaValutazione(this.currentMailUser, element.codice_risposta);
+
+        });
+
+
+        console.log("CONSOLE LOG PER VEDERE DOVE STANNO I LIKES: ", this.likes);
       },
       (rej) => {
         console.log("C'è stato un errore durante la visualizzazione");
@@ -471,26 +486,86 @@ export class VisualizzaDomandaPage implements OnInit {
     return toast.present();
   }
 
-  modificaLike(codice_risposta){
-    this.apiService.modificaNumLike(codice_risposta).then(
-      (result) => { // nel caso in cui va a buon fine la chiamata
-      },
-      (rej) => {// nel caso non vada a buon fine la chiamata
-        console.log('Modifica non effetutata'); //anche se va nel rej va bene, modifiche effettive nel db
-      }
-    );
+  async modificaLike(codice_risposta, i){
+    if(this.likes[i]===1 ||this.likes[i]===2 ){
+      this.cancellaValutazione(codice_risposta);
+    }
+    else{ 
+      
+      this.inserisciValutazione(codice_risposta, 1);
+      this.apiService.modificaNumLike(codice_risposta).then(
+        (result) => {
+          
+        },
+        (rej) => {
+          console.log('like non effetutata', codice_risposta, this.currentMailUser); 
+        }
+      );}
 
   }
 
-  modificaDislike(codice_risposta){
+ async modificaDislike(codice_risposta, i){
+  if(this.likes[i]===1 ||this.likes[i]===2){
+    this.cancellaValutazione(codice_risposta);
+  }
+  else{
+    
+    this.inserisciValutazione(codice_risposta, 2);
     this.apiService.modificaNumDislike(codice_risposta).then(
-      (result) => { // nel caso in cui va a buon fine la chiamata
+      (result) => { 
+        
       },
-      (rej) => {// nel caso non vada a buon fine la chiamata
-        console.log('Modifica non effetutata'); //anche se va nel rej va bene, modifiche effettive nel db
+      (rej) => {
+        console.log('dislike non effetutata', codice_risposta, this.currentMailUser); 
+      }
+    );}
+  
+
+  }
+
+  async inserisciValutazione(cod_risposta, tipo_like){
+    this.apiService.inserisciValutazione(cod_risposta, this.currentMailUser, tipo_like).then(
+      (result) => { 
+      },
+      (rej) => {
+        console.log('Modifica non effetutata'); 
       }
     );
 
   }
+
+
+  async cercaValutazione(cod_utente, cod_risposta){
+    this.apiService.controllaGiaValutatoRisposta(cod_utente, cod_risposta).then(
+      (result) => { 
+        if(result["0"]["data"] === null){
+          this.likes.push(-1);
+        }
+         else if(result["0"]["data"]["0"]["tipo_like"] === 1)
+             this.likes.push(1);
+
+        else if(result["0"]["data"]["0"]["tipo_like"] === 2)
+              this.likes.push(2);
+      },
+      (rej) => {
+        console.log("Non c'è valutazione"); 
+      }
+    );
+
+  }
+
+
+  async cancellaValutazione(cod_risposta) {
+    this.apiService.rimuoviValutazione(cod_risposta, this.currentMailUser).then(
+      (risultato) => {
+        console.log('eliminata');
+
+      },
+      (rej) => {
+        console.log("C'è stato un errore durante l'eliminazione", rej);
+      }
+    );
+  }
+
 
 }
