@@ -75,7 +75,7 @@ export class InserimentoSondaggioPage implements OnInit {
     this.router.navigate(['proponi-categoria']);
   }
   backButton() {
-    this.router.navigate(['home']);
+    this.navCtrl.back();
   }
 
   //----------------Controllo Valori ----------------
