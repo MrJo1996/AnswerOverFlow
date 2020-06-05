@@ -33,6 +33,7 @@ export class VisualizzaSondaggioPage implements OnInit {
   voti_totali:  number = 0;
   percentualiScelte = new Array();
 
+  votato;
 
   url = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/cancellaSondaggio/14'
   url2 = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaSondaggio'
@@ -48,9 +49,11 @@ export class VisualizzaSondaggioPage implements OnInit {
               { }
 
   ngOnInit() {
+    //this.storage.get('utente').then(data => { this.currentUser = data.email });
+
     this.visualizzaSondaggioSelezionato();
     this.visualizzaScelte();
-    this.storage.get('utente').then(data => { this.currentUser = data.email });
+    this.giaVotato();
 
   }
 
@@ -160,22 +163,63 @@ this.codice_sondaggio= this.dataService.codice_sondaggio;
 
   }
 
-  inviaVoto(){
- this.codice_scelta_selezionata = this.scelte[this.index_scelta_selezionata]['codice_scelta'];
- console.log('codice scelta ->', this.codice_scelta_selezionata);
- console.log('codice sondaggio ->', this.codice_sondaggio);
-   this.apiService.votaSondaggio(this.codice_scelta_selezionata, this.codice_sondaggio).then(
-      (scelte) => {
-      
-        console.log('Votato con successo');
+  giaVotato() {
+    
 
+    this.currentUser = this.dataService.emailUtente;
+    this.codice_sondaggio= this.dataService.codice_sondaggio;
+
+    console.log("CONTROLLO MAIL: ", this.currentUser);
+
+    this.apiService.controllaGiaVotato(this.currentUser, this.codice_sondaggio).then(
+      (risultato) => {
+      
+        
+        this.votato = risultato["0"]["data"];
+        console.log("HA GIA VOTATO:", risultato);
+        
+        
       },
       (rej) => {
-        console.log("C'è stato un errore durante il voto");
+        console.log("C'è stato un errore durante la visualizzazione");
       }
-    );  
+    );
 
   }
+
+  inviaVoto(){
+        this.codice_scelta_selezionata = this.scelte[this.index_scelta_selezionata]['codice_scelta'];
+        console.log('codice scelta ->', this.codice_scelta_selezionata);
+        console.log('codice sondaggio ->', this.codice_sondaggio);
+          this.apiService.votaSondaggio(this.codice_scelta_selezionata, this.codice_sondaggio).then(
+              (scelte) => {
+              
+                console.log('Votato con successo');
+
+              },
+              (rej) => {
+                console.log("C'è stato un errore durante il voto");
+              }
+            );  
+
+
+            this.apiService.inserisciVotante(this.codice_scelta_selezionata, this.currentUser, this.codice_sondaggio).then(
+              (scelte) => {
+              
+                console.log('Votante inserito con successo');
+
+              },
+              (rej) => {
+                console.log("C'è stato un errore durante l'inserimento");
+              }
+            );  
+
+          }
+
+          
+
+
+          
 
  async goBack(){
     if(this.hasVoted === true){
@@ -230,7 +274,8 @@ this.codice_sondaggio= this.dataService.codice_sondaggio;
           handler: () => {
             console.log('scelta confermata');
             this.inviaVoto();
-            this.router.navigate(['home']);
+            this.doRefresh(event);
+            //this.router.navigate(['home']);
             
           }
         },
@@ -247,7 +292,18 @@ this.codice_sondaggio= this.dataService.codice_sondaggio;
     await alert.present();
   }
 
+  doRefresh(event) {
+    this.voti_totali = 0;
+    this.votato = true;
+    //this.visualizzaSondaggioSelezionato();
+    this.visualizzaScelte();
+    //this.giaVotato();
+    this.hasVoted = false;
+    setTimeout(() => {
 
+      event.target.complete();
+    }, 1000);
+  }
 
 }
 

@@ -52,11 +52,11 @@
             <div class = "backgrounds">
           
             <ion-item *ngFor="let scelta of scelte, let i = index">    
-                <ion-radio *ngIf="currentUser!==sondaggio.cod_utente" value = "{{scelta.descrizione}}" (click) = "getScelta(scelta.descrizione, i)" slot = "start" ></ion-radio>
+                <ion-radio *ngIf="currentUser!==sondaggio.cod_utente && votato === false" value = "{{scelta.descrizione}}" (click) = "getScelta(scelta.descrizione, i)" slot = "start" ></ion-radio>
                 
                 <ion-label *ngIf="currentUser===sondaggio.cod_utente" slot = "start" >{{scelta.num_favorevoli}}</ion-label>
                 <ion-text  class="textSimple" slot = "start" >{{scelta.descrizione}}</ion-text>
-                <ion-progress-bar slot = "start" *ngIf="currentUser===sondaggio.cod_utente" [value]="percentualiScelte[i]" ></ion-progress-bar>
+                <ion-progress-bar slot = "start" *ngIf="currentUser===sondaggio.cod_utente || votato === true" [value]="percentualiScelte[i]" ></ion-progress-bar>
               </ion-item>
 
           </div>

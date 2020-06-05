@@ -564,6 +564,27 @@ export class ApiService {
     })
   }
 
+  inserisciVotante(cod_scelta: number, cod_utente: String, cod_sondaggio: number) {
+    const body = {
+      cod_scelta,
+      cod_utente, 
+      cod_sondaggio
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post('//answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/inserisciVotante', body).subscribe(
+        data => {
+          let esitoInserimentoVotante = data
+       
+          resolve(esitoInserimentoVotante);
+        },
+        (err) => {
+          reject();
+        }
+      )
+    })
+  }
+
+
 
   get_top_Domande(cod_utente: string) {
     const body = {
@@ -748,5 +769,30 @@ export class ApiService {
       );
     });
   }
+
+  
+  controllaGiaVotato(cod_utente: string, cod_sondaggio: number) {
+    const body = {
+      cod_utente: cod_utente,
+      cod_sondaggio: cod_sondaggio
+    };
+
+    return new Promise((resolve, reject) => {
+      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/controllogiavotato', body).subscribe(
+        (data) => {
+          let risultato = data;
+          
+          console.log("API SERVICE GIA VOTATO: ", body, data)
+          resolve(risultato); 
+
+
+        },
+        (err) => {
+          reject();
+        }
+      );
+    });
+  }
+
 
 }
