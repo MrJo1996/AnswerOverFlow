@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import {Router} from "@angular/router";
-import { AlertController} from '@ionic/angular';
+import { AlertController,MenuController} from '@ionic/angular';
 import { ApiService } from 'src/app/providers/api.service'; 
 import { Chart } from 'chart.js';
 import {NavController} from "@ionic/angular";
@@ -28,7 +28,8 @@ export class VisualizzaProfiloPage implements OnInit {
     private apiService: ApiService,
     private navCtrl: NavController,
     private dataService: DataService,
-    private storage: Storage
+    private storage: Storage,
+    private menuCrtl: MenuController
     
     ){
 
@@ -42,11 +43,9 @@ export class VisualizzaProfiloPage implements OnInit {
 
 #15293a
 #19314A
-    }); */
-   
+    }); */ 
      }
 
-     
 
      
   ngOnInit() {
@@ -211,9 +210,16 @@ goToHome(){
 
 
 goToSettingProfile(){
-
-  this.router.navigate(['/modifica-profilo '])
+  this.router.navigate(['/modifica-profilo'])
 }
+
+
+openMenu(){
+ this.menuCrtl.open()
+ console.log(this.menuCrtl.swipeGesture.length  )
+}
+
+
 
 
 }
