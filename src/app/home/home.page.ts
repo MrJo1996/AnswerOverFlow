@@ -4,6 +4,7 @@ import { DataService } from "../services/data.service";
 import { ApiService } from '../providers/api.service';
 import { Router } from '@angular/router';
 import { Storage } from "@ionic/storage";
+import { IonInfiniteScroll } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
@@ -11,6 +12,7 @@ import { Storage } from "@ionic/storage";
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
+  indice_domande;
   codice_domanda;
   codice_sondaggio;
   codice_categoria;
@@ -31,13 +33,19 @@ export class HomePage implements OnInit {
     this.storage.get('utente').then(data => { this.currentMailUser = data.email });
   }
 
+  loadMore(event) {
+    setTimeout(() => {
+      console.log('Done');
+      event.target.complete();
+    }, 500);
+  }
+
   async visualizzaDomandaHome() {
     this.apiService.getDomandaHome().then(
       (domande) => {
         console.log('Visualizzato con successo');
 
         this.domande = domande; //assegno alla variabile locale il risultato della chiamata. la variabile sarà utilizzata nella stampa in HTML
-        this.visualizzaCategoria();
         console.log('Domanda: ', this.domande);
 
       },
@@ -46,19 +54,6 @@ export class HomePage implements OnInit {
       }
     );
 
-  }
-  async visualizzaCategoria() {
-  
-    this.apiService.getCategoria(this.codice_categoria).then(
-      (categoria) => {
-        this.categoria = categoria['Categoria']['data']['0'].titolo;
-       console.log("questa è datacategoria",categoria['Categoria']['data']['0'].titolo );
-       console.log(this.categoria );
-      },
-      (rej) => {
-        console.log("C'è stato un errore durante la visualizzazione");
-      }
-    );
   }
   async visualizzaSondaggiHome() {
     this.apiService.getSondaggioHome().then(

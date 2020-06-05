@@ -1,9 +1,11 @@
 <ion-header>
   <ion-toolbar class="backgroundsSecondaryItem">
-    <ion-searchbar placeholder="Ricerca..." animated="true"
-    [(ngModel)]="keywordToSearch"
-    (search)="ricerca($event)"
+    <ion-icon expand="block" fill="clear" class="msg-btn" color="grey" slot="end" [name]="isActive?'close':'search'" item-right (click)="isActive=!isActive;"
+    isActive=true></ion-icon>
+    <ion-searchbar *ngIf="isActive===true" placeholder="Ricerca..."
+    [(ngModel)]="keywordToSearch" (search)="ricerca($event)"
     ></ion-searchbar>
+    <ion-title *ngIf="isActive!==true">ANSWER OVERFLOW</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -11,7 +13,7 @@
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  <ion-card (click)="clickDomanda(domanda.codice_domanda)" class="backgrounds" *ngFor="let domanda of domande">
+  <ion-card (click)="clickDomanda(domanda.codice_domanda)" class="backgrounds" *ngFor="let domanda of domande, let i = index">
     <ion-card-header>
       <ion-toolbar class="backgrounds">
 
@@ -118,4 +120,10 @@
       </ion-toolbar>
     </ion-card-content>
   </ion-card>
+  <ion-infinite-scroll threshold="5%" (ionInfinite)="loadMore($event)">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>
