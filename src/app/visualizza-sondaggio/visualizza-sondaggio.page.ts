@@ -24,7 +24,7 @@ export class VisualizzaSondaggioPage implements OnInit {
 
   codice_sondaggio;
   sondaggio = {};
-  sondaggioUser;
+  sondaggioUser: string;
  
   thrashActive;
 
@@ -41,6 +41,8 @@ export class VisualizzaSondaggioPage implements OnInit {
   index_scelta_selezionata: number;
   codice_scelta_selezionata;
   percentualiScelte = new Array();
+
+  profiloUserSondaggio = {};
 
   url = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/cancellaSondaggio/14'
   url2 = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaSondaggio'
@@ -61,6 +63,7 @@ export class VisualizzaSondaggioPage implements OnInit {
     this.visualizzaSondaggioSelezionato();
     this.visualizzaScelte();
     this.giaVotato();
+    this.getUserSondaggio();
 
   }
 
@@ -344,6 +347,21 @@ this.codice_sondaggio= this.dataService.codice_sondaggio;
     );
   }
 
+  async getUserSondaggio() {
+    this.apiService.getProfilo(this.sondaggioUser).then(
+      (profilo) => {
+        
+        this.profiloUserSondaggio = profilo;
+        
+        console.log('profilo trovato con successo', this.sondaggioUser, profilo);
+
+      },
+      (rej) => {
+        //console.log("C'è stato un errore durante la visualizzazione del profilo");
+      }
+    );
+
+  }
 
 }
 

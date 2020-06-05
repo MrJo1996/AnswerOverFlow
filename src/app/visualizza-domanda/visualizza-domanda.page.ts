@@ -35,7 +35,7 @@ export class VisualizzaDomandaPage implements OnInit {
   titoloView: any;
   descrizioneView: any;
   cod_preferita: any;
-  codice_categoria = 1;
+ 
 
   risposte = new Array();
   profiliUtentiRisposte = new Array();
@@ -53,6 +53,7 @@ export class VisualizzaDomandaPage implements OnInit {
   coloriLikeDislike = new Array();
 
   categoria = {};
+  codice_categoria: number;
 
   constructor(
     private navCtrl: NavController,
@@ -101,6 +102,7 @@ export class VisualizzaDomandaPage implements OnInit {
         this.descrizioneView = this.domanda['0'].descrizione;
         this.domandaMailUser = this.domanda['0'].cod_utente;
         this.cod_preferita = this.domanda['0'].cod_preferita;
+        this.codice_categoria = this.domanda['0'].cod_categoria;
         console.log('Domanda: ', this.domanda['0']);
         this.getUserDomanda();
         this.visualizzaCategoria();
