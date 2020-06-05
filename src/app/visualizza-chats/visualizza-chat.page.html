@@ -1,8 +1,8 @@
 <ion-header no-border>
   <ion-toolbar no-border>
 
-    <ion-button slot="start" fill="clear" ion-button icon-only (click)="goBack">
-      <ion-icon name="arrow-back-outline"></ion-icon>
+    <ion-button slot="start" fill="clear" ion-button icon-only (click)="goBack()">
+      <ion-icon slot="start" slot="icon-only" name="arrow-back-outline"></ion-icon>
     </ion-button>
 
     <ion-title>Chat</ion-title>
@@ -16,39 +16,37 @@
 
 <ion-content>
 
-  <ion-spinner *ngIf="loading" 
-               style="margin-top: 20%; 
-                      margin-left: 45%; 
-                      font-size: 5rem;"></ion-spinner>
+  <ion-spinner id="loader" name="dots" color="primary"></ion-spinner>
 
-  <ion-card *ngIf="thereAreChats && !loading" style="margin-top: -10px;">
+  <ion-card *ngIf="thereAreChats" id="ionCard" style="margin-top: -10px;">
     <ion-list>
-      <ion-item *ngFor="let singleChat of chat | filtro: testoRicercato: 'cod_utente0' "
+      <ion-item *ngFor="let singleChat of chat | filtro: testoRicercato: 'username' "
         (click)="mostraMessaggi(singleChat.codice_chat, singleChat.cod_utente0)" button="true">
         <ion-avatar item-start>
           <img src="../../assets/img/avatar2.png">
         </ion-avatar>
         <ion-label>
-          <h2>{{singleChat.cod_utente0}}</h2>
-          <p>{{singleChat.data.testo}}</p>
-          <p>{{singleChat.data.dataeora | date: "fullDate"}}</p>
+          <h2>{{singleChat.username}}</h2>
+          <p style="font-style: italic;">
+            {{singleChat.message.testo}}</p>
+          <p>{{singleChat.message.dataeora | date: 'dd/MM/yy H:mm' }}</p>
         </ion-label>
       </ion-item>
     </ion-list>
   </ion-card>
 
-  <ion-card *ngIf="!thereAreChats && !loading" style="
+  <ion-card *ngIf="!thereAreChats" id="ionCard" style="
   position:absolute; 
   top: 30%;
   margin-top: -25%;
   text-align: center">
-    <ion-icon name="chatbubble-ellipses-outline" style="font-size:5rem; margin-top:8%"></ion-icon>
+    <ion-icon name="chatbubble-ellipses-outline" style="font-size:5rem; margin-top:8%; color:rgb(255, 208, 208)"></ion-icon>
     <ion-text>
       <h1 style="margin-bottom:20px;
              margin-left: 10px;
              margin-right: 10px">
         La tua lista delle chat è vuota, per iniziare a messaggiare
-        naviga nel profilo di un utente e clicca nel pulsante per messagiare!</h1>
+        naviga nel profilo di un utente e clicca nel pulsante apposito!</h1>
     </ion-text>
   </ion-card>
 

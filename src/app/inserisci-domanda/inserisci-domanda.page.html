@@ -5,7 +5,7 @@
             <ion-icon color="primary" slot="start" slot="icon-only" name="arrow-back-outline"></ion-icon>
         </ion-button>
 
-        <ion-title class="textTitle">NUOVA DOMANDA</ion-title>
+        <ion-title style="text-align: center;" class="textTitle">Nuova Domanda</ion-title>
 
         <ion-button slot="end" expand="block" fill="clear" (click)="checkField()" class="btnClass">
             <ion-icon color="success" slot="end" slot="icon-only" name="checkmark-sharp"></ion-icon>
@@ -21,14 +21,14 @@
 
             <ion-card-title class="textTitleBIG">Titolo:</ion-card-title>
             <ion-textarea [(ngModel)]="titolo" style="border-radius: 7px; padding-left: 5px;"
-                placeholder="  Perchè i cani si mordono la coda?" rows="3" class="backgroundsSecondaryItem textSimple">
+                placeholder="  Inserisci qui un titolo.." rows="3" class="backgroundsSecondaryItem textSimple">
             </ion-textarea>
 
             <br>
 
             <ion-card-title class="textTitleBIG">Descrizione:</ion-card-title>
             <ion-textarea [(ngModel)]="descrizione" style="border-radius: 7px; padding-left: 5px;"
-                placeholder="  Perchè lo fanno così spesso?" rows="9" class="backgroundsSecondaryItem textSimple">
+                placeholder="  Inserisci qui una descrizione.." rows="9" class="backgroundsSecondaryItem textSimple">
             </ion-textarea>
 
             <br>
@@ -52,7 +52,7 @@
                         </ion-label>
                         <ion-text *ngIf="[timerView]==''" class="placeholder">Timer</ion-text>
                         {{timerView}}
-                        <ion-icon class="inner" name="caret-down-outline"></ion-icon>
+                        <ion-icon class="inner" name="chevron-down-outline"></ion-icon>
 
                     </ion-item>
                 </div>

@@ -28,17 +28,25 @@ export class ProponiCategoriaPage implements OnInit {
     }
 
   italian_bad_words_check(input: string){
+    var check;
+    
     let list = require('italian-badwords-list');
     let array = list.array;
-    return array.includes(input);
+    let stringArray = [];
+    let stringPassed = input.split(' ');
+    stringArray = stringArray.concat(stringPassed);
+
+    stringArray.forEach(element =>{
+      if (array.includes(element)){
+        check = true;
+      }
+    });
+    return check;
   }
 
   english_bad_words_check(input: string){
     var Filter = require('bad-words'),
     filter = new Filter();
-
-    
-    filter.addWords('cazzi');
     
     return filter.isProfane(input);
   }
@@ -47,8 +55,8 @@ export class ProponiCategoriaPage implements OnInit {
     const toast = document.createElement('ion-toast');
     toast.message = 'Hai inserito una o più parole non consentite!';
     toast.duration = 2000;
-    toast.position = "middle";
-    toast.style.fontSize = '20px';
+    toast.position = "top";
+    toast.style.fontSize = '15px';
     toast.color = 'danger';
     toast.style.textAlign = 'center';
     document.body.appendChild(toast);
@@ -59,8 +67,8 @@ export class ProponiCategoriaPage implements OnInit {
     const toast = document.createElement('ion-toast');
     toast.message = 'Il nome inserito per la nuova categoria o sottocategoria è troppo lungo!';
     toast.duration = 2000;
-    toast.position = "middle";
-    toast.style.fontSize = '20px';
+    toast.position = "top";
+    toast.style.fontSize = '15px';
     toast.color = 'danger';
     toast.style.textAlign = 'center';
     document.body.appendChild(toast);

@@ -1,3 +1,14 @@
+ion-title {
+    text-align: center;
+    margin-left: -15%;
+}
+
+ion-spinner{
+    text-align: center;
+    width: 100%;
+    height: 35px;
+}
+
 ion-button{
     color: var(--ion-toolbar-color);
     ion-icon{
@@ -37,6 +48,12 @@ ion-searchbar {
         }   
 }
 
+#ionCard{
+    display: none;
+}
+#loader{
+    display: block
+}
 
 ion-avatar{
     background-color: var(--ion-text-color);
