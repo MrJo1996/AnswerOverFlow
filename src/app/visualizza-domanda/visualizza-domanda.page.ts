@@ -72,6 +72,7 @@ export class VisualizzaDomandaPage implements OnInit {
     this.visualizzaDomanda();
     this.showRisposte();
     this.storage.get('utente').then(data => { this.currentMailUser = data.email });
+    console.log(this.currentMailUser);
     this.allVisible = true;
 
   }
@@ -209,6 +210,7 @@ export class VisualizzaDomandaPage implements OnInit {
     this.apiService.getCategoria(this.codice_categoria).then(
       (categoria) => {
         this.categoria = categoria['Categoria']['data']['0'].titolo;
+        console.log(categoria);
         console.log("questa è datacategoria", categoria['Categoria']['data']['0'].titolo);
         console.log(this.categoria);
       },
@@ -234,8 +236,7 @@ export class VisualizzaDomandaPage implements OnInit {
     this.apiService.getProfilo(this.domandaMailUser).then(
       (profilo) => {
         this.profiloUserDomanda = profilo['data']['0'];
-        //console.log('profilo trovato con successo', this.profiloUserDomanda);
-
+        console.log(profilo['data']['0'])
       },
       (rej) => {
         //console.log("C'è stato un errore durante la visualizzazione del profilo");
