@@ -15,6 +15,8 @@ import { IonicStorageModule } from '@ionic/storage';
 
 import { PopoverComponent } from "./popover/popover.component"
 
+import { FCM } from '@ionic-native/fcm/ngx'
+
 @NgModule({
   declarations: [AppComponent,PopoverComponent],
   entryComponents: [PopoverComponent],
@@ -29,6 +31,7 @@ import { PopoverComponent } from "./popover/popover.component"
   providers: [
     StatusBar,
     SplashScreen,
+    FCM,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

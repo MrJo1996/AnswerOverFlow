@@ -7,7 +7,7 @@ import { DataService } from "../app/services/data.service";
 import { Router } from "@angular/router";
 import { Storage } from "@ionic/storage";
 import { AlertController } from "@ionic/angular";
-
+import { FCM } from '@ionic-native/fcm/ngx';
 import { timer } from "rxjs/observable/timer"; //splash
 
 @Component({
@@ -85,7 +85,8 @@ export class AppComponent implements OnInit {
     public alertController: AlertController,
     public dataService: DataService,
     public navCtrl: NavController,
-    private menuCtrl: MenuController
+    private menuCtrl: MenuController,
+    private fcm: FCM
   ) {
     this.initializeApp();
     
@@ -97,13 +98,7 @@ export class AppComponent implements OnInit {
     
   }
 
-  /* {
-    title: "Info",
-    url: "/info",
-    icon: "information-circle",
-    view: true,
-  },
- */
+
 
   //ALERT E ROUTING LOGOUT---------------------------------------
 
@@ -200,6 +195,13 @@ export class AppComponent implements OnInit {
       this.statusBar.styleDefault();
       this.splashScreen.hide(); //////////////////////////
       timer(2000).subscribe(() => (this.showSplash = false)); //durata animazione definita in app.component.html -> 2s (era 3.5s)
+
+
+      this.fcm.getToken().then(token => {
+        console.log(token);
+      });
+
+
     });
 
 
