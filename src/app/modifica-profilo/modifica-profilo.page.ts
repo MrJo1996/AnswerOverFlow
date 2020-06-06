@@ -74,7 +74,15 @@ export class ModificaProfiloPage implements OnInit {
       this.popupInvalidSurname();
     } else if (this.stringBioLengthChecker()) {
       this.popupInvalidBio();
-    } else {
+    } else if (this.checkIfThereAreEnglishBadWords(this.usernameToPass) 
+    || this.checkIfThereAreItalianBadWords(this.usernameToPass) 
+    || this.checkIfThereAreEnglishBadWords(this.nomeToPass)
+    || this.checkIfThereAreItalianBadWords(this.nomeToPass)
+    || this.checkIfThereAreEnglishBadWords(this.bioToPass)
+    || this.checkIfThereAreItalianBadWords(this.bioToPass)) {
+      this.toastParolaScoretta();
+    }
+    else {
     this.apiService.modificaProfilo(this.usernameToPass, this.password, this.nomeToPass, this.cognomeToPass, this.bioToPass, this.email).then(
       (result) => { 
         console.log('Modifica avvenuta con successo');
@@ -188,14 +196,53 @@ async popupInvalidBio(){
     );
   }
 
-   checkAlert(): boolean {
-    if (!((this.stringUsernameLengthChecker() 
-     && this.stringNameLengthChecker() 
-     && this.stringCognomeLengthChecker()
-     && this.stringBioLengthChecker()))) {
-    return false;
-     } else return true;
+  checkIfThereAreEnglishBadWords(string: string): boolean {
+
+    var Filter = require('bad-words'),
+    filter = new Filter();
+
+    return filter.isProfane(string)
+  
+    }
+
+  checkIfThereAreItalianBadWords(string: string): boolean {
+
+    let list = require('italian-badwords-list');
+
+    let array = list.array
+
+    console.log(array);
+
+    let stringArray = [];
+    let stringPassed = string.split(' ');
+    stringArray = stringArray.concat(stringPassed);
+
+    console.log(stringArray);
+
+    var check;
+
+    stringArray.forEach( element => {
+      if (array.includes(element))
+      check = true; 
+    });
+
+    console.log(check);
+
+    return check;
+
   }
+
+    async toastParolaScoretta() {
+      const toast = await this.toastController.create({
+        message: 'Hai inserito una parola scorretta!',
+        duration: 2000
+      });
+      toast.color = 'danger';
+      toast.position = "top";
+      toast.style.fontSize = '20px';
+      toast.style.textAlign = 'center';
+      toast.present();
+    }
 
   async popupModificaUsername() {
     const alert = await this.alertController.create({
@@ -375,9 +422,9 @@ async popupInvalidBio(){
             this.modify();
 
           //TODO mostrare messaggio di avvenuta modifica e riportare alla home
-            if ((this.checkAlert)){
+            
                 this.presentAlert();
-            }
+            
           }
         }
       ],

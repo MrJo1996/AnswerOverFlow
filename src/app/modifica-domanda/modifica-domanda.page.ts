@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController} from '@ionic/angular';
+import { AlertController, ToastController} from '@ionic/angular';
 import { Router } from "@angular/router";
 import { ApiService } from 'src/app/providers/api.service';
 import { DataService } from "../services/data.service";
@@ -49,7 +49,11 @@ export class ModificaDomandaPage implements OnInit {
 
 
   
-  constructor( private dataService: DataService, public alertController: AlertController, public apiService: ApiService,private pickerController: PickerController,
+  constructor( private dataService: DataService, 
+    public alertController: AlertController, 
+    public apiService: ApiService,
+    private pickerController: PickerController,
+    public toastController: ToastController,
     public navCtrl: NavController) { }
 
   ngOnInit() {
@@ -90,7 +94,13 @@ export class ModificaDomandaPage implements OnInit {
       this.popupInvalidTitle();
     } else if (this.deadlineCheck()) {
       this.popupDomandaScaduta();
-    } else {
+    } else if (this.checkIfThereAreEnglishBadWords(this.descrizioneToPass)
+    || this.checkIfThereAreItalianBadWords(this.descrizioneToPass)
+    || this.checkIfThereAreEnglishBadWords(this.titoloToPass)
+    || this.checkIfThereAreItalianBadWords(this.titoloToPass)) {
+      this.toastParolaScoretta();
+    }
+    else {
     this.apiService.modificaDomanda(this.codice_domanda, this.dataeoraToPass, this.timerToPass, this.titoloToPass, this.descrizioneToPass, this.categoriaToPass, this.cod_preferita).then(
       (result) => {  
         console.log('Modifica avvenuta con successo: ');
@@ -655,5 +665,53 @@ async popupInvalidTitle(){
   goBack() {
     this.navCtrl.navigateRoot(['/visualizza-domanda']);
   }
+
+  checkIfThereAreEnglishBadWords(string: string): boolean {
+
+    var Filter = require('bad-words'),
+    filter = new Filter();
+
+    return filter.isProfane(string)
+  
+    }
+
+  checkIfThereAreItalianBadWords(string: string): boolean {
+
+    let list = require('italian-badwords-list');
+
+    let array = list.array
+
+    console.log(array);
+
+    let stringArray = [];
+    let stringPassed = string.split(' ');
+    stringArray = stringArray.concat(stringPassed);
+
+    console.log(stringArray);
+
+    var check;
+
+    stringArray.forEach( element => {
+      if (array.includes(element))
+      check = true; 
+    });
+
+    console.log(check);
+
+    return check;
+
+  }
+
+    async toastParolaScoretta() {
+      const toast = await this.toastController.create({
+        message: 'Hai inserito una parola scorretta!',
+        duration: 2000
+      });
+      toast.color = 'danger';
+      toast.position = "top";
+      toast.style.fontSize = '20px';
+      toast.style.textAlign = 'center';
+      toast.present();
+    }
 
 }
