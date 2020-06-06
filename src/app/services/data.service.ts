@@ -8,7 +8,7 @@ export class DataService {
   codice_domanda;
   email;
   utente = {};
-
+  popover_modifica;
   session;
   codice_sondaggio;
   emailUtente;
@@ -34,6 +34,9 @@ export class DataService {
     this.utente['3'] = nome;
     this.utente['4'] = cognome;
     this.utente['5'] = bio;
+  }
+  setPopoverModifica(index: boolean){
+    this.popover_modifica = index;
   }
   setCod_domanda(id_domanda: number) {
     this.codice_domanda = id_domanda;

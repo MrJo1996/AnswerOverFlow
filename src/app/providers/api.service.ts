@@ -43,7 +43,6 @@ export class ApiService {
           let domande = data['Domande']['data'];
 
           resolve(domande);
-          console.log(domande);
         },
         (err) => {
           reject();
@@ -62,7 +61,6 @@ export class ApiService {
           let sondaggi = data['Sondaggi']['data'];
 
           resolve(sondaggi);
-          console.log(sondaggi);
         },
         (err) => {
           reject();

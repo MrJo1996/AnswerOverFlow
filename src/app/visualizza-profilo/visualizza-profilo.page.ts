@@ -54,6 +54,7 @@ export class VisualizzaProfiloPage implements OnInit {
 
     this.userProfileId = this.dataService.getEmailOthers();
     this .userId = this.dataService.getEmail_Utente();
+    console.log(this.userProfileId);
     setTimeout(() => {
     if(this.userProfileId === "undefined"){    
         this.selectProfile(this.userId);    
@@ -90,15 +91,13 @@ export class VisualizzaProfiloPage implements OnInit {
     console.log(this.userProfileId+ " userIDProfilo");
     console.log(this.userId + " userID");
     console.log(id+" fiofifoifo");
-
-
      this.apiService.getProfilo(id).then(
       (data) => {
         console.log('Visualizzato con successo');
         this.profilo = data['data'][0];
         this.selectId = this.profilo.email
         //console.log(this.profilo.bio);
-
+        
       },
       (rej) => {
         console.log("C'è stato un errore durante la visualizzazione");
