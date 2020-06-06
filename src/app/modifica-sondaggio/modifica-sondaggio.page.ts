@@ -467,7 +467,7 @@ export class ModificaSondaggioPage implements OnInit {
         duration: 2000
       });
       toast.color = 'danger';
-      toast.position = "middle";
+      toast.position = "top";
       toast.style.fontSize = '20px';
       toast.style.textAlign = 'center';
       toast.present();
@@ -484,7 +484,7 @@ export class ModificaSondaggioPage implements OnInit {
         duration: 2000
       });
       toast.color = 'danger';
-      toast.position = "middle";
+      toast.position = "top";
       toast.style.fontSize = '20px';
       toast.style.textAlign = 'center';
       toast.present();
@@ -526,7 +526,7 @@ export class ModificaSondaggioPage implements OnInit {
       duration: 2000
     });
     toast.color = 'danger';
-    toast.position = "middle";
+    toast.position = "top";
     toast.style.fontSize = '20px';
     toast.style.textAlign = 'center';
     toast.present();
