@@ -14,9 +14,15 @@
 
 
 <ion-content class = "backgrounds">
-  <ion-refresher slot="fixed" (ionRefresh)="doNormalRefresh($event)">
+  <ion-refresher *ngIf="votato === false" slot="fixed" (ionRefresh)="doNormalRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
+
+  <ion-refresher *ngIf="votato === true" slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+
   <ion-card class = "backgrounds">    
     <ion-card-header>
       <ion-toolbar class="backgrounds">
@@ -35,7 +41,7 @@
           <ion-avatar  slot="start" class="icon-avatar" >
             <img src="https://i.ytimg.com/vi/mCf6UGT3HrA/maxresdefault.jpg">
           </ion-avatar>
-          <ion-label class = "username_text_style">{{profiloUserSondaggio.username}}</ion-label>
+          <ion-label class = "username_text_style">{{username}}</ion-label>
 
         </ion-toolbar>
 
@@ -58,7 +64,7 @@
                 
                 <ion-label *ngIf="currentUser===sondaggio.cod_utente" slot = "start" >{{scelta.num_favorevoli}}</ion-label>
                 <ion-text  class="textSimple" slot = "start" >{{scelta.descrizione}}</ion-text>
-                <ion-progress-bar slot = "start" *ngIf="currentUser===sondaggio.cod_utente || votato === true" [value]="percentualiScelte[i]" ></ion-progress-bar>
+                <ion-progress-bar slot = "start" *ngIf="currentUser===sondaggio.cod_utente || votato === true && voti_totali!==0" [value]="percentualiScelte[i]" ></ion-progress-bar>
               </ion-item>
 
           </div>
@@ -80,4 +86,8 @@
     </ion-card-content>
   </ion-card>
 </ion-content>    
+
+
+
+
 
