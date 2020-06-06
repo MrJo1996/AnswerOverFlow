@@ -64,3 +64,12 @@
 
 
 }
+.searchbar-search-icon { display:none; width:0; height:0; }
+
+ion-title {
+    text-align: center;
+}
+.msg-btn{
+    --padding-start: 0.5em;
+    --padding-end: 0.5em
+}

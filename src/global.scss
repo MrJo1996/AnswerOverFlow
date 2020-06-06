@@ -86,6 +86,12 @@
     background: url("src/assets/img/logo AnswerOverFlow.png") no-repeat;
     background-size: 100%;
   }
+  .popOver{
+    ion-backdrop{
+      background-color:grey;
+    }
+    
+  }
 /* 
   //Per ora non serve //
   // MENU //

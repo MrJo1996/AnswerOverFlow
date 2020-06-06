@@ -30,6 +30,7 @@
     "core-js": "^2.5.4",
     "italian-badwords-list": "^1.0.3",
     "jquery": "^3.5.1",
+    "module": "^1.2.5",
     "ng2-charts": "^2.3.2",
     "pexels-api-wrapper": "^1.1.1",
     "rxjs": "~6.5.1",

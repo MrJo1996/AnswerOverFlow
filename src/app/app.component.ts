@@ -91,8 +91,6 @@ export class AppComponent implements OnInit {
     
   }
   
-  nome = "cacca";
-  cognome = "merda";
   username = this.dataService.getUsername();
 
   ionViewWillEnter() {
@@ -166,7 +164,6 @@ export class AppComponent implements OnInit {
 
   switch(index, page) {
    
-
     switch (page) {
       case "app":
         this.selectedIndex = index;
@@ -174,14 +171,16 @@ export class AppComponent implements OnInit {
         this.selectedIndexAccount = -1; 
         break;
       case "account":
-        this.selectedIndexAccount = index;
-        
+        this.selectedIndexAccount = index;       
 
         if (this.accountPages[index].title === "Logout") {
           this.alert();
         } else  if(this.accountPages[index].title === "Visualizza profilo") {
+         //console.log(window.location.pathname)
           this.dataService.emailOthers = "undefined";
-          this.router.navigateByUrl(this.accountPages[index].url);
+          this.router.navigateByUrl("/visualizza-profiloutente")
+         
+          //this.router.navigateByUrl(this.accountPages[index].url);
         } else{
             this.router.navigateByUrl(this.accountPages[index].url);
           }
@@ -190,14 +189,11 @@ export class AppComponent implements OnInit {
         break;
       default:
         break;
-    }
- 
-   
+    }  
   }
   
- 
 
-  
+ 
 
   initializeApp() {
     this.platform.ready().then(() => {
@@ -219,7 +215,6 @@ export class AppComponent implements OnInit {
   ngOnInit() {
 
     const path = window.location.pathname.split("folder/")[1];
-
     if (path !== undefined) {
       this.selectedIndex = this.appPages.findIndex(
         (page) => page.title.toLowerCase() === path.toLowerCase()
@@ -233,7 +228,7 @@ export class AppComponent implements OnInit {
 
   goToProfile() {
     this.dataService.emailOthers = "undefined";
-    this.router.navigate(["visualizza-profilo"]);
+    this.router.navigate(["visualizza-profiloutente"]);
     this.menuCtrl.close();
   }
 

@@ -1,10 +1,14 @@
 <ion-header>
+
+ 
+
+
   <ion-toolbar class="backgroundsSecondaryItem">
 
     <ion-button slot="start" expand="block" fill="clear" (click)="goBack()" class="msg-btn">
       <ion-icon color="primary" slot="start" slot="icon-only" name="arrow-back-outline"></ion-icon>
     </ion-button>
-    <ion-title style="font-size: 1.5rem; text-align: center;"><b>Visualizza profilo</b></ion-title>
+    <ion-title style="font-size: 1.5rem; text-align: center;"><b>Account</b></ion-title>
 
     
     <ion-button *ngIf="userProfileId === 'undefined'" slot="end"  expand="block" fill="clear" (click)="goToSettingProfile()">
@@ -18,8 +22,8 @@
 </ion-header>
 
 
-<ion-content>
-  <ion-content *ngIf="profilo" class="backgrounds" >
+<ion-content >
+  <ion-content *ngIf="profilo" style="--background: var(--ion-menumod-background);">
 
     <ion-card>
       <ion-icon class="profilePicture" name="person-circle-outline"></ion-icon>
@@ -39,15 +43,15 @@
  -->
       <ion-item color="light">
         <ion-icon name="create-outline" slot="start"></ion-icon>
-        <ion-label position="stacked">Nome e Cognome</ion-label>
-        <p style="margin: 5px 0px;">{{profilo?.nome}} {{profilo?.cognome}}</p>
+        <ion-label position="stacked">Nome</ion-label>
+        <ion-text style="margin: 5px 0px;">{{profilo?.nome}}</ion-text>
       </ion-item>
 
-    <!--   <ion-item color="light">
+      <ion-item color="light">
         <ion-icon name="create-outline" slot="start"></ion-icon>
         <ion-label position="stacked">Cognome</ion-label>
         <ion-text>{{profilo?.cognome}}</ion-text>
-      </ion-item> -->
+      </ion-item>
 
       <ion-item color="light">
         <ion-icon name="chatbox-outline" slot="start"></ion-icon>
@@ -81,6 +85,12 @@
       <ion-icon  slot="start" name="analytics"></ion-icon>
       Statistiche</ion-button>
 
+
+      <ion-fab vertical="bottom" horizontal="start"   slot="fixed" style="opacity: 70%; ">
+        <ion-fab-button  size="small" (click)="openMenu()"  color="light">
+          <ion-icon name="arrow-forward-circle-outline" style="opacity: 100%; "></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
 
 
   </ion-content>
