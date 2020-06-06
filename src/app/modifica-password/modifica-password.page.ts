@@ -42,6 +42,8 @@ export class ModificaPasswordPage implements OnInit {
           text: 'Ok',
           handler: () => {
             console.log('Confirm Ok');
+            this.modify();
+
           }
         }
       ]
@@ -50,15 +52,16 @@ export class ModificaPasswordPage implements OnInit {
     await alert.present();
     let result = await alert.onDidDismiss();
    
-    this.modify();
+   
   }
 
 
 
   ngOnInit() {
 
-    this.email = ''
-    this.password = ''
+    this.email = 'giovanni@gmail.com'
+    this.password = 'passwords'
+    this.confermapassword = 'passwords'
   }
 
   is_email_valid(email: string){
