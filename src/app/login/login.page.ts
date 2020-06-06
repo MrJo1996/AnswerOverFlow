@@ -68,9 +68,9 @@ export class LoginPage implements OnInit {
   postLogin() {
     if (this.password.length < 8) {
       const toast = document.createElement('ion-toast');
-      toast.message = 'password troppo corta o non valida!';
+      toast.message = 'Password troppo corta o non valida!';
       toast.duration = 2000;
-      toast.position = "middle";
+      toast.position = "top";
       toast.style.fontSize = '20px';
       toast.color = 'danger';
       toast.style.textAlign = 'center';
