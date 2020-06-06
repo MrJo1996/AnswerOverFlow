@@ -12,10 +12,13 @@
 <ion-content>
   <ion-card class="backgrounds">
     <ion-card-content>
-      <ion-card-title class="titleSize">Hai una nuova categoria o sottocategoria da proporre?</ion-card-title>
-      <ion-card-subtitle class="normalText"><br>- Seleziona dalla lista la categoria per la quale proporre una nuova sottocategoria.<br>
-        - Per proporre una nuova categoria selezionare l'opzione "Nuova Categoria".<br>
-        - Scrivi nel box di testo il nome della nuova categoria o sottocategoria.
+      <ion-card-title class="titleSize">Hai una nuova categoria o sottocategoria da proporre?</ion-card-title><p style="line-height:1rem;"><br></p>
+      <ion-card-subtitle class="normalText">
+        1. Seleziona dalla lista la categoria per la quale proporre una nuova sottocategoria.<ion-text class="RnormalText">*</ion-text>
+        <p style="line-height:0.5rem;"><br></p>
+        2. Scrivi nel box di testo il nome della nuova categoria o sottocategoria.
+        <p style="line-height:0.5rem;"><br></p>
+        3. Premi invio per confermare e inviare la proposta ai nostri sviluppatori.
       </ion-card-subtitle>
     </ion-card-content>
   </ion-card>
@@ -41,4 +44,11 @@
   <ion-button class="btnInvio" expand="block" [disabled]="proposta === ''" (click)="post_invio()">
     <ion-text> INVIO </ion-text>
   </ion-button>
+
+  <ion-card class="backgrounds">
+    <ion-card-content>
+      <ion-text class="rboxText">*</ion-text>
+      <ion-text class="boxText">Per proporre una categoria selezionare l'opzione "Nuova categoria" tra le scelte disponibili</ion-text>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
