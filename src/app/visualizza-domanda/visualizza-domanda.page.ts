@@ -171,12 +171,7 @@ export class VisualizzaDomandaPage implements OnInit {
         });
 
         let j = 0;
-        this.likes.forEach(element =>
-          {
-              this.likes[j] = null;
-
-              j++;
-          });
+        this.likes = new Array();
 
         this.risposte.forEach(element => {
           console.log("CONSOLE LOG PER VEDERE cod risposta: ", element.codice_risposta);

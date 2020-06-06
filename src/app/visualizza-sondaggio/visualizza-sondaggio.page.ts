@@ -43,6 +43,9 @@ export class VisualizzaSondaggioPage implements OnInit {
   percentualiScelte = new Array();
 
   profiloUserSondaggio = {};
+  distanceTimer;
+
+  isSondaggioActive: boolean;
 
   url = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/cancellaSondaggio/14'
   url2 = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaSondaggio'
@@ -64,6 +67,11 @@ export class VisualizzaSondaggioPage implements OnInit {
     this.visualizzaScelte();
     this.giaVotato();
     this.getUserSondaggio();
+    if(this.distanceTimer === 0)
+      this.isSondaggioActive = false;
+
+    else
+      this.isSondaggioActive = true;
 
   }
 
@@ -107,6 +115,7 @@ this.codice_sondaggio= this.dataService.codice_sondaggio;
         this.sondaggio = sondaggio['data']['0']; 
         this.sondaggioUser = sondaggio['data']['0'].cod_utente;
         this.codice_categoria = sondaggio['data']['0'].cod_categoria;
+        this.mappingIncrement(sondaggio['data']['0'].timer);
         console.log('CODICE CATEGORIA: ', this.sondaggio);
         this.visualizzaCategoria();
       },
@@ -361,9 +370,115 @@ this.codice_sondaggio= this.dataService.codice_sondaggio;
       }
     );
 
+
   }
 
+  mappingIncrement(valueToMapp) {
+    //creo nuova data di scadenza settata in base al timer impostato
+    //case in base a timerToPass -> hh:mm (ossia la selezione dell'utente)
+  
+    switch (valueToMapp) {
+      case ("00:05:00"):
+        this.countDown(0, 0, 0, 0, 5);
+  
+        break;
+      case ("00:15:00"):
+  
+        this.countDown(0, 0, 0, 0, 15);
+  
+        break;
+      case ("00:30:00"):
+  
+        this.countDown(0, 0, 0, 0, 30);
+  
+        break;
+      case ("01:00:00"):
+  
+        this.countDown(0, 0, 0, 1, 0);
+  
+        break;
+      case ("03:00:00"):
+  
+        this.countDown(0, 0, 0, 3, 0);
+  
+        break;
+      case ("06:00:00"):
+  
+        this.countDown(0, 0, 0, 6, 0);
+  
+        break;
+      case ("12:00:00"):
+  
+        this.countDown(0, 0, 0, 12, 0);
+  
+        break;
+      case ("24:00:00"):
+  
+        this.countDown(0, 0, 1, 0, 0);
+  
+        break;
+      case ("72:00:00"):
+  
+        this.countDown(0, 0, 3, 0, 0);
+  
+        break;
+    }
+  }
+  
+  
+  countDown(incAnno, incMese, incGG, incHH, incMM) {
+  
+    var auxData = []; //get dati dal sondaggio
+    auxData['0'] = (this.sondaggio['dataeora'].substring(0, 10).split("-")[0]); //anno
+    auxData['1'] = this.sondaggio['dataeora'].substring(0, 10).split("-")[1]; //mese [0]=gennaio
+    auxData['2'] = this.sondaggio['dataeora'].substring(0, 10).split("-")[2]; //gg
+    auxData['3'] = this.sondaggio['dataeora'].substring(11, 18).split(":")[0]; //hh
+    auxData['4'] = this.sondaggio['dataeora'].substring(11, 18).split(":")[1]; //mm
+  
+    // Setto data scadenza aggiungendo l'incremento stabilito da mappingInc al momento del confermaModifiche
+    var countDownDate = new Date(parseInt(auxData['0'], 10) + incAnno, parseInt(auxData['1'], 10) - 1 + incMese, parseInt(auxData['2'], 10) + incGG, parseInt(auxData['3'], 10) + incHH, parseInt(auxData['4'], 10) + incMM).getTime();
+    // var countDownDateTEST = new Date(parseInt(auxData['0'], 10) + 1, parseInt(auxData['1'], 10) - 1, parseInt(auxData['2'], 10), parseInt(auxData['3'], 10), parseInt(auxData['4'], 10))/* .getTime() */;
+  
+    // Aggiorno timer ogni 1000ms (1000ms==1s)
+    var x = setInterval(function () {
+  
+      //Timestamp Attuale (data + orario)
+      var now = new Date().getTime();
+  
+      // Calcolo differenza, tempo mancante
+      this.distanceTimer = countDownDate - now;
+  
+      // conversioni
+      var days = Math.floor(this.distanceTimer / (1000 * 60 * 60 * 24));
+      var hours = Math.floor((this.distanceTimer % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      var minutes = Math.floor((this.distanceTimer % (1000 * 60 * 60)) / (1000 * 60));
+      var seconds = Math.floor((this.distanceTimer % (1000 * 60)) / 1000);
+  
+      // Risultato delle conversioni messo nell'elemento con id="timeLeft"
+      //TODO non mostrare valori se non avvalorati o pari a zero
+      document.getElementById("timeLeft").innerHTML = days + "giorni " + hours + "ore "
+        + minutes + "min " + seconds + "s ";
+      console.log(this.distanceTimer);
+  
+      // Se finisce il countDown viene mostrato "Sondaggio scaduto."
+      if (this.distanceTimer < 0) {
+        /* this.SCAD = true;
+        console.log("SCAD in countdown() ", this.SCAD); */
+        clearInterval(x);
+        document.getElementById("timeLeft").innerHTML = "Sondaggio scaduto.";
+  
+        //TODO Provare generazione allert da qui che al conferma riporta al visualizza
+        //TODO se non va sol. di sopra METTERE ROUTE AL VISUALIZZA
+      }
+    }, 1000);
+  
+  }
+  
+  
+  
+  
+  
+  
+
 }
-
-
 
