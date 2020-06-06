@@ -35,7 +35,8 @@
 
 <div [ngSwitch]="segment" (ionChange)=" segmentChanged($event)">
   <div *ngSwitchCase= "'Domande'">
-  <ion-card>
+  <ion-card color="primary">
+    <ion-card>
     <ion-card-header>
       <ion-card-subtitle>Domande</ion-card-subtitle>
       <ion-card-title>Categorie con maggiore attività di domande</ion-card-title>
@@ -44,8 +45,11 @@
       <canvas #barChart></canvas>
     </ion-card-content>
   </ion-card>
+  </ion-card>
+  
 
-  <ion-card>
+  <ion-card color="primary">
+    <ion-card>
       <ion-card-header>
         <ion-card-subtitle>Domande</ion-card-subtitle>
         <ion-card-title>Domande totali</ion-card-title>
@@ -54,10 +58,12 @@
         <canvas #doughnutCanvas></canvas>
       </ion-card-content>
     </ion-card>
+    </ion-card>
 </div>
    
 <div *ngSwitchCase= "'Risposte'">
-    <ion-card>
+    <ion-card  color="primary">
+      <ion-card>
       <ion-card-header>
         <ion-card-subtitle>Risposte</ion-card-subtitle>
         <ion-card-title>Categorie con maggiore attività di risposte</ion-card-title>
@@ -66,9 +72,11 @@
         <canvas #barChart2></canvas>
       </ion-card-content>
     </ion-card>
+    </ion-card>
   
    
-    <ion-card>
+    <ion-card color="primary">
+      <ion-card>
         <ion-card-header>
           <ion-card-subtitle>Risposte</ion-card-subtitle>
           <ion-card-title>Risposte totali</ion-card-title>
@@ -77,11 +85,13 @@
           <canvas #doughnutCanvas2></canvas>
         </ion-card-content>
       </ion-card>
+      </ion-card>
   </div>
 
 
 
     <div *ngSwitchCase= "'LikeDislike'">
+    <ion-card color="primary">
     <ion-card>
         <ion-card-header>
           
@@ -90,6 +100,7 @@
         <ion-card-content>
           <canvas #lineCanvas></canvas>
         </ion-card-content>
+    </ion-card>
       </ion-card>
     </div>
   </div>
