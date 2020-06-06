@@ -5,7 +5,7 @@
       <ion-icon color="primary" slot="start" slot="icon-only" name="arrow-back-outline"></ion-icon>
     </ion-button>
     
-    <ion-title class="textTitle">CONFERMA INVIO PROPOSTA</ion-title>
+    <ion-title class="textTitle">Proposta inviata con successo!</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -14,9 +14,9 @@
   
   <ion-card class="backgrounds">
     <ion-card-content>
-      <ion-card-title class="titleSize">GRAZIE!</ion-card-title>
-      <ion-card-subtitle class="normalText">I nostri sviluppatori valuteranno al più presto la tua proposta.
-        <div class="riepText"><br>Riepilogo dati inseriti</div>
+      <ion-card-title class="titleSize">GRAZIE!</ion-card-title><p style="line-height: 0.5rem;"><br></p>
+      <ion-card-subtitle class="normalText">I nostri sviluppatori valuteranno al più presto la tua proposta.<p style="line-height: 0.8rem;"><br></p>
+        <div class="riepText">Riepilogo dati inseriti</div>
         <div class="propText">Categoria selezionata: <span>{{cat_selezionata}}</span><br>
           La tua proposta: <span>{{proposta_confermata}}</span>
         </div>
@@ -26,10 +26,10 @@
 
   <ion-card class="backgrounds">
     <ion-card-content>
-      <ion-card-title class="normalTextbold">Vuoi inserire comunque la tua domanda o il tuo sondaggio?</ion-card-title>
-      <ion-card-subtitle class="propText"><br>Seleziona nella sidebar l'opzione che ti interessa oppure clicca su uno dei link sottostanti per essere reindirizzato!<br>
-      - <ion-text (click)="goTo_insDomanda()" color="primary">Inserisci domanda</ion-text><br>
-      - <ion-text (click)="goTo_insSondaggio()" color="primary">Inserisci sondaggio</ion-text><br>
+      <ion-card-title class="normalTextbold">Vuoi inserire comunque la tua domanda o il tuo sondaggio?</ion-card-title><p style="line-height: 0.5rem;"><br></p>
+      <ion-card-subtitle class="propText">Seleziona nella sidebar l'opzione che ti interessa oppure clicca su uno dei link sottostanti per essere reindirizzato!<p style="line-height: 0.5rem;"><br></p>
+      - <ion-text (click)="goTo_insDomanda()" color="primary">Inserisci domanda</ion-text><p style="line-height: 0.3rem;"><br></p>
+      - <ion-text (click)="goTo_insSondaggio()" color="primary">Inserisci sondaggio</ion-text><p style="line-height: 0.3rem;"><br></p>
       - <ion-text (click)="goTo_Home()" color="primary">Home</ion-text>   
       </ion-card-subtitle>
     </ion-card-content>
