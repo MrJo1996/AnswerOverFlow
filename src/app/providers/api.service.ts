@@ -125,8 +125,6 @@ export class ApiService {
         data => {
           let profilo = data['Profilo'];
           resolve(profilo); //restituirò al ts un oggetto di nome "profilo" con accesso già alla posizione "Profilo" avendo visto il json di data
-          console.log(profilo);
-
         },
         (err) => {
           reject();
@@ -229,8 +227,6 @@ export class ApiService {
         data => {
           let categoria = data;
           resolve(categoria);
-          console.log(categoria)
-
         },
         (err) => {
           reject();

@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar class="backgroundsSecondaryItem">
-    <ion-icon expand="block" fill="clear" class="msg-btn" color="grey" slot="end" [name]="isActive?'close':'search'"
+    <ion-icon expand="block" fill="clear" class="alarm_style" color="grey" slot="end" [name]="isActive?'close':'search'"
       item-right (click)="isActive=!isActive;" isActive=true></ion-icon>
     <ion-searchbar *ngIf="isActive===true" placeholder="Ricerca..." [(ngModel)]="keywordToSearch"
       (search)="ricerca($event)"></ion-searchbar>
@@ -12,46 +12,43 @@
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
+  <div *ngIf="switch === true">
   <ion-row>
     <ion-col>
-  <ion-button fill ="outline" expand="block" color="black" *ngIf="switch === true" (click)="switch1_(switch)">Domande</ion-button>
+  <ion-button fill ="outline" expand="block" color="black"  (click)="switch1_(switch)">Domande</ion-button>
     </ion-col>
     <ion-col>
-  <ion-button fill ="outline" expand="block" color="light" *ngIf="switch === true" (click)="switch2_(switch)">sondaggi</ion-button>
+  <ion-button fill ="outline" expand="block" color="light" (click)="switch2_(switch)">sondaggi</ion-button>
     </ion-col>
   </ion-row>
+</div> 
+<div *ngIf="switch !== true">
+
       <ion-row>
     <ion-col>
-  <ion-button fill ="outline" expand="block" color="light" *ngIf="switch !== true" (click)="switch1_(switch)">domande</ion-button>
+  <ion-button fill ="outline" expand="block" color="light" (click)="switch1_(switch)">domande</ion-button>
     </ion-col>
     <ion-col>
-  <ion-button fill ="outline" expand="block" color="black" *ngIf="switch !== true" (click)="switch2_(switch)">sondaggi</ion-button>
+  <ion-button fill ="outline" expand="block" color="black" (click)="switch2_(switch)">sondaggi</ion-button>
     </ion-col>
 </ion-row>
+</div> 
+
   <div *ngIf="switch === true">
-          <ion-card class="backgrounds" *ngFor="let domanda of domande_regolate,let profilo of profili_user_domande, let i = index">
-            <ion-text>Dmanda</ion-text>
+    <ion-title>Ultime domande inserite</ion-title>
+          <ion-card class="backgrounds" *ngFor="let domanda of domande_regolate, let i = index">
             <ion-card-header>
               <ion-toolbar class="backgrounds">
 
                 <ion-icon class="alarm_style" name="alarm-outline" slot="start"></ion-icon>
-                <ion-icon slot="end" name="ellipsis-vertical" (click)="presentPopover($event,domanda)"></ion-icon>
+                <ion-icon class="alarm_style" slot="end" name="ellipsis-vertical" (click)="presentPopover($event,domanda)"></ion-icon>
                 <ion-label class="textTitle">{{domanda.timer}}</ion-label>
-                <ion-button slot="end" expand="block" *ngIf="currentMailUser===domanda.cod_utente"
-                  (click)="cancellaDomanda()" fill="clear">
-                  <ion-icon name="trash-sharp" color="primary" class="icons_generic_style"></ion-icon>
-                </ion-button>
-                <ion-button slot="end" *ngIf="currentMailUser===domanda.cod_utente" (click)="  goModificaDomanda() "
-                  expand="block" fill="clear">
-                  <ion-icon name="hammer-sharp" color="primary" class="icons_generic_style"></ion-icon>
-                </ion-button>
-
               </ion-toolbar>
               <ion-toolbar class="backgrounds" *ngIf="currentMailUser!==domanda.cod_utente">
                 <ion-avatar slot="start" class="icon-avatar">
                   <img src="https://i.ytimg.com/vi/mCf6UGT3HrA/maxresdefault.jpg">
                 </ion-avatar>
-                <ion-label class="username_text_style" (click)="clickProfilo(domanda.cod_utente)">{{profilo.username}}
+                <ion-label class="username_text_style" (click)="clickProfilo(domanda.cod_utente)">{{profili_user_domande[i]}}
                 </ion-label>
 
               </ion-toolbar>
@@ -67,7 +64,7 @@
                 <ion-icon name="calendar-outline" slot=start class="calendar_icon_style"></ion-icon>
                 <ion-label class="description_text" slot="start">{{domanda.dataeora}}</ion-label>
                 <ion-icon name="list" slot="start" class="icon_list_style"></ion-icon>
-                <ion-label class="description_text" slot="start"> {{domanda.cod_categoria}}</ion-label>
+                <ion-label class="description_text" slot="start"> {{categorie_domande[i]}}</ion-label>
 
 
               </ion-toolbar>
@@ -75,10 +72,10 @@
           </ion-card>
         </div>
         <div *ngIf="switch !== true">
+          <ion-title>Ultimi sondaggi inseriti</ion-title>
 
         <ion-card class="backgrounds" (click)="clickSondaggio(sondaggio.codice_sondaggio)"
           *ngFor="let sondaggio of sondaggi_regolati">
-          <ion-text>Sondaggio</ion-text>
           <ion-card-header>
             <ion-toolbar class="backgrounds">
               <ion-icon class="alarm_style" name="alarm-outline" slot="start"></ion-icon>

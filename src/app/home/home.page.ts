@@ -24,13 +24,14 @@ export class HomePage implements OnInit {
   codice_sondaggio;
   codice_categoria;
   categoria;
-  currentMailUser = ""//mail dell'utente corrente
+  currentMailUser;//mail dell'utente corrente
   domande;
   domande_regolate = Array();
   sondaggi_regolati = Array();
-  profili_user_domande : any;
+  profili_user_domande = Array();
   profili_user_sondaggio = Array();
   profilo = Array();
+  categorie_domande = Array();
   sondaggi;
   domandaMailUser;//mail dell'utente che ha fatto la domanda
   domandaNomeUser = " ";//nome e cognome dell'utente che ha fatto la domanda
@@ -43,6 +44,7 @@ export class HomePage implements OnInit {
     this.visualizzaDomandaHome();
     this.visualizzaSondaggiHome();
     this.storage.get('utente').then(data => { this.currentMailUser = data.email });
+    console.log(this.currentMailUser);
   }
   switch1_(switch_){
     if(switch_==true)
@@ -108,6 +110,10 @@ export class HomePage implements OnInit {
           this.getUserDomanda(element.cod_utente);
         });
         console.log("profili",this.profili_user_domande);
+        this.domande.forEach(element => {
+          this.getCategoriaDomande(element.cod_categoria);
+        });
+        console.log(this.categorie_domande);
         this.regola_domande();
       },
       (rej) => {
@@ -120,14 +126,24 @@ export class HomePage implements OnInit {
   async getUserDomanda(mail) {
     this.apiService.getProfilo(mail).then(
       (profilo) => {
-        this.profili_user_domande.push(profilo["data"][0]);
+        this.profili_user_domande.push(profilo['data']['0'].username);
       },
       (rej) => {
-        //console.log("C'è stato un errore durante la visualizzazione del profilo");
+        console.log("C'è stato un errore durante la visualizzazione del profilo");
       }
     );
-
   }
+  async getCategoriaDomande(id_categoria) {
+    this.apiService.getCategoria(id_categoria).then(
+      (categoria) => {
+        this.categorie_domande.push(categoria['Categoria']['data']['0'].titolo);
+      },
+      (rej) => {
+        console.log("C'è stato un errore durante la visualizzazione");
+      }
+    );
+  }
+
 
   regolatore_infinite_scroll(){
     for (this.i_domande = 0; this.i_domande < 3; this.i_domande++) {
@@ -150,7 +166,7 @@ export class HomePage implements OnInit {
   }
 
   regola_sondaggi() {
-    for (this.i_sondaggi = 0; this.i_sondaggi < 2; this.i_sondaggi++) {
+    for (this.i_sondaggi = 0; this.i_sondaggi < 3; this.i_sondaggi++) {
       this.sondaggi_regolati[this.y_sondaggi] = this.sondaggi[this.y_sondaggi];
       this.y_sondaggi++;
     }
