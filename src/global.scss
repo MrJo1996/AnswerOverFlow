@@ -90,8 +90,19 @@
     ion-backdrop{
       background-color:grey;
     }
-    
   }
+//TOAST
+ion-toast{
+  font-size:14px !important;
+  position: absolute;
+  margin: 20% auto auto auto;
+  right: 0;
+  left: 0;
+  z-index: 10;
+  width: 50%;
+  max-width: 700px;
+  text-align: center;
+}
 /* 
   //Per ora non serve //
   // MENU //

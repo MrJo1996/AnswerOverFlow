@@ -35,7 +35,18 @@ ion-input {
         color: var(--ion-color-primary);
     }
 }
-
+ion-toast .customToast{
+    position: absolute;
+    right: 0;
+    left: 0;
+    z-index: 10;
+    display: block;
+    margin: auto;
+    width: 40%;
+    max-width: 700px;
+    border-radius: 35px;
+    /* color: black; */
+}
 .inner {
     opacity: 0.6;
     font-size: 0.8rem;
