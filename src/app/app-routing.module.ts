@@ -122,7 +122,12 @@ const routes: Routes = [
   {
     path: 'mie-attivita',
     loadChildren: () => import('./mie-attivita/mie-attivita.module').then( m => m.MieAttivitaPageModule)
+  },
+  {
+    path: 'scegli-avatar',
+    loadChildren: () => import('./scegli-avatar/scegli-avatar.module').then( m => m.ScegliAvatarPageModule)
   }
+
 
 
 

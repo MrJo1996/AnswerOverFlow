@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>scegli_avatar</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="wrapper">
+    <ion-avatar *ngFor="let colored of colorFullfilled; index as i" id="coloredAvatar{{i}}" (click)="stampaUrl(colored, 'colored', i)">
+      <img src={{colored}}>
+    </ion-avatar>
+  </div>
+
+  <p>Separatore</p>
+
+  <div class="wrapper">
+    <ion-avatar *ngFor="let lined of linesFilled; index as i" id="linedAvatar{{i}}" (click)="stampaUrl(lined, 'lined', i)">
+      <img src={{lined}}>
+    </ion-avatar>
+  </div>
+</ion-content>
