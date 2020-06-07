@@ -94,7 +94,7 @@ export class AppComponent implements OnInit {
 
   username = this.dataService.getUsername();
 
-  ionViewWillEnter() {}
+  ionViewWillEnter() { }
 
   /* {
     title: "Info",
@@ -141,7 +141,8 @@ export class AppComponent implements OnInit {
   async alertOspite() {
     const alert = await this.alertController.create({
       header: "Ospite",
-      message: "Per accedere a questa funzionalità devi accedere, vuoi continuare?",
+      message:
+        "Per accedere a questa funzionalità devi accedere, vuoi continuare?",
       buttons: [
         {
           text: "No",
@@ -179,6 +180,11 @@ export class AppComponent implements OnInit {
         this.accountPages[3].view = true;
 
         this.utenteLogged = false;
+      } else {
+        this.accountPages[2].view = true;
+        this.accountPages[3].view = false;
+
+        this.utenteLogged = true;
       }
     });
   }
@@ -201,7 +207,7 @@ export class AppComponent implements OnInit {
   } */
 
   switch(index, page) {
-    if(this.utenteLogged){
+    if (this.utenteLogged) {
       switch (page) {
         case "app":
           this.selectedIndex = index;
@@ -210,20 +216,20 @@ export class AppComponent implements OnInit {
           break;
         case "account":
           this.selectedIndexAccount = index;
-  
+
           if (this.accountPages[index].title === "Logout") {
             this.alert();
           } else if (this.accountPages[index].title === "Visualizza profilo") {
             //console.log(window.location.pathname)
             this.dataService.emailOthers = "undefined";
             this.router.navigateByUrl("/visualizza-profiloutente");
-  
+
             //this.router.navigateByUrl(this.accountPages[index].url);
           } else {
             this.router.navigateByUrl(this.accountPages[index].url);
           }
           this.selectedIndex = -1;
-  
+
           break;
         default:
           break;
@@ -242,20 +248,20 @@ export class AppComponent implements OnInit {
 
         case "account":
           this.selectedIndexAccount = index;
-  
+
           if (this.accountPages[index].title === "Login") {
             this.router.navigateByUrl(this.accountPages[index].url);
           } else {
             this.alertOspite();
           }
           this.selectedIndex = -1;
-  
+
           break;
         default:
           break;
+      }
     }
   }
-}
 
   initializeApp() {
     this.platform.ready().then(() => {
@@ -283,9 +289,13 @@ export class AppComponent implements OnInit {
   }
 
   goToProfile() {
-    this.dataService.emailOthers = "undefined";
-    this.router.navigate(["visualizza-profiloutente"]);
-    this.menuCtrl.close();
+    if (this.utenteLogged) {
+      this.dataService.emailOthers = "undefined";
+      this.router.navigate(["visualizza-profiloutente"]);
+      this.menuCtrl.close();
+    } else {
+      this.alertOspite();
+    }
   }
 
   goToInfo() {
