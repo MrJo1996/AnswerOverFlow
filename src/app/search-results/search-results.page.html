@@ -26,11 +26,12 @@
         </ion-button>
       </ion-col>
       <ion-col size="4">
-        <ion-button expand="full" class="ion-text-wrap">
+        <ion-button expand="full" class="ion-text-wrap" (click) = "viewUtenti()">
           Utenti
-          <ion-text class="colorBlack">()</ion-text>
+          <ion-text class="colorBlack">({{numUtenti}})</ion-text>
         </ion-button>
       </ion-col>
+      <ion-col size="4"></ion-col>
     </ion-row>
   </ion-grid>
 
@@ -84,12 +85,28 @@
   
     </ion-list>
 
-
-
-
-
     
+   </div>
+
+   <div *ngIf="utentiButton == true">
+    <ion-list *ngFor="let utente of utentiSearched; let i = index" >
+
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>{{utente.username}}</ion-card-title>
+          <ion-card-subtitle>{{utente.bio}}</ion-card-subtitle>
+  
+        </ion-card-header>
+  
+        
+      </ion-card>
+  
+    </ion-list>
    </div>
 
 
 </ion-content>
+
+
+
+}

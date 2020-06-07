@@ -764,6 +764,29 @@ export class ApiService {
     });
   }
 
+  ricercaUtente(keyword: string) {
+
+    
+    const body = {
+      keyword
+    };
+    return new Promise((resolve, reject) => {
+      
+      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaUserKeyword', body).subscribe(
+        (data) => {
+          let esito = data['utente']['data'];
+          console.log(data);
+
+          resolve(esito);
+        },
+        (err) => {
+          console.log("Rej utente",err);
+          reject();
+        }
+      );
+    });
+  }
+
   
   controllaGiaVotato(cod_utente: string, cod_sondaggio: number) {
     const body = {
