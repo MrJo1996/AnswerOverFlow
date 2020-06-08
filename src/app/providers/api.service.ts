@@ -852,12 +852,48 @@ export class ApiService {
     });
   }
 
+  togliLike(codice_risposta: number) {
+    const body = {
+      codice_risposta
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/togli_like', body).subscribe(
+        data => {
+          let esito = data;
+          console.log('esito modifica num like: ', esito);
+          resolve(esito);
+        },
+        (err) => {
+          reject();
+        }
+      );
+    });
+  }
+
   modificaNumDislike(codice_risposta: number) {
     const body = {
       codice_risposta
     };
     return new Promise((resolve, reject) => {
       this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/modifica_num_dislike', body).subscribe(
+        data => {
+          let esito = data;
+          console.log('esito modifica num dislike: ', esito);
+          resolve(esito);
+        },
+        (err) => {
+          reject();
+        }
+      );
+    });
+  }
+
+  togliDislike(codice_risposta: number) {
+    const body = {
+      codice_risposta
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/togli_dislike', body).subscribe(
         data => {
           let esito = data;
           console.log('esito modifica num dislike: ', esito);
