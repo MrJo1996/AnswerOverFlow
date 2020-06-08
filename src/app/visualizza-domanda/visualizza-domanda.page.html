@@ -96,6 +96,7 @@
               <ion-label *ngIf="currentMailUser===risposta.cod_utente " class = "username_text_style">Tu</ion-label>
              
              
+               <!--pulsante del like disattivato -->
               <ion-button *ngIf="likes[i] === -1 || likes[i] === 2" class= "buttonLikes" (click)="modificaLike(risposta.codice_risposta, i)"  slot="end" expand="block" fill = "clear">
                 <ion-label slot = "end" class = "textTitleSMALL">{{risposta.num_like}}</ion-label>
                 <ion-icon name="chevron-up-circle-outline" class="thumb_up_style" slot= "end" ></ion-icon>
@@ -109,11 +110,14 @@
               </ion-button>
 
              
+              <!--pulsante del dislike disattivato -->
               <ion-button *ngIf="likes[i] === -1 || likes[i] === 1" class= "buttonLikes" (click)="modificaDislike(risposta.codice_risposta, i)"  slot="end" expand="block" fill = "clear">
                 <ion-label slot = "end" class = "textTitleSMALL">{{risposta.num_dislike}}</ion-label>
                 <ion-icon name="chevron-down-circle-outline" class="thumb_down_style" slot= "end" ></ion-icon>
               </ion-button>
 
+
+              <!--pulsante del dislike attivato -->
               <ion-button *ngIf="likes[i] === 2" class= "buttonLikes" (click)="modificaDislike(risposta.codice_risposta, i)"  slot="end" expand="block" fill = "outline">
                 <ion-label slot = "end" class = "textTitleSMALL">{{risposta.num_dislike}}</ion-label>
                 <ion-icon name="chevron-down-circle-outline" class="thumb_down_style" slot= "end" ></ion-icon>

@@ -95,8 +95,6 @@ export class VisualizzaDomandaPage implements OnInit {
 
 
         this.domanda = domanda['data'];
-
-
         this.dataeoraView = this.domanda['0'].dataeora;
         this.timerView = this.domanda['0'].timer;
         this.titoloView = this.domanda['0'].titolo;
@@ -220,17 +218,20 @@ export class VisualizzaDomandaPage implements OnInit {
     );
   }
 
+
+  
   async cancellaDomanda() {
     this.apiService.rimuoviDomanda(this.codice_domanda).then(
       (risultato) => {
         //console.log('eliminata');
-
       },
       (rej) => {
         //console.log("C'è stato un errore durante l'eliminazione");
       }
     );
   }
+
+
 
   async getUserDomanda() {
     this.apiService.getProfilo(this.domandaMailUser).then(
@@ -484,12 +485,38 @@ export class VisualizzaDomandaPage implements OnInit {
     return toast.present();
   }
 
+
+  //AZIONI CHE RIGUARDANO I LIKE
   async modificaLike(codice_risposta, i){
-    if(this.likes[i]===1 ||this.likes[i]===2 ){
+    // L'UTENTE VUOLE TOGLIERE IL LIKE
+    if(this.likes[i]===1  ){
+      this.risposte[i].num_like = this.risposte[i].num_like - 1;
+      this.likes[i] = -1;
       this.cancellaValutazione(codice_risposta);
+      this.togliLike(codice_risposta);
+    }
+    // VUOLE METTERE IL LIKE MA GIA' C'E' IL DISLIKE
+    else if(this.likes[i]===2){
+      this.risposte[i].num_like = this.risposte[i].num_like + 1;
+      this.risposte[i].num_dislike = this.risposte[i].num_dislike - 1;
+      this.likes[i] = 1;
+      this.cancellaValutazione(codice_risposta);
+      this.togliDislike(codice_risposta);
+      this.inserisciValutazione(codice_risposta, 1);
+      this.apiService.modificaNumLike(codice_risposta).then(
+        (result) => {
+          
+        },
+        (rej) => {
+          console.log('like non effetutata', codice_risposta, this.currentMailUser); 
+        }
+      );
+
     }
     else{ 
-      
+      // VUOLE METTERE IL LIKE E ANCORA NON HA MESSO NULLA
+      this.risposte[i].num_like = this.risposte[i].num_like + 1;
+      this.likes[i] = 1;
       this.inserisciValutazione(codice_risposta, 1);
       this.apiService.modificaNumLike(codice_risposta).then(
         (result) => {
@@ -502,12 +529,39 @@ export class VisualizzaDomandaPage implements OnInit {
 
   }
 
+
+
+//AZIONI CHE RIGUARDANO I DISLIKE
  async modificaDislike(codice_risposta, i){
-  if(this.likes[i]===1 ||this.likes[i]===2){
+   // L'UTENTE VUOLE TOGLIERE IL DISLIKE
+  if(this.likes[i]===2){
+    this.risposte[i].num_dislike = this.risposte[i].num_dislike - 1;
+    this.likes[i] = -1;
     this.cancellaValutazione(codice_risposta);
+    this.togliDislike(codice_risposta);
+
+  } 
+  // VUOLE METTERE IL DISLIKE MA GIA' C'E' IL LIKE
+  else if(this.likes[i]===1){
+    this.risposte[i].num_like = this.risposte[i].num_like - 1;
+    this.risposte[i].num_dislike = this.risposte[i].num_dislike + 1;
+    this.likes[i] = 2;
+    this.cancellaValutazione(codice_risposta);
+    this.togliLike(codice_risposta);
+    this.inserisciValutazione(codice_risposta, 2);
+    this.apiService.modificaNumDislike(codice_risposta).then(
+      (result) => { 
+        
+      },
+      (rej) => {
+        console.log('dislike non effetutata', codice_risposta, this.currentMailUser); 
+      }
+    );
   }
   else{
-    
+     // VUOLE METTERE IL DISLIKE E ANCORA NON HA MESSO NULLA
+    this.risposte[i].num_dislike = this.risposte[i].num_dislike + 1;
+    this.likes[i] = 2;
     this.inserisciValutazione(codice_risposta, 2);
     this.apiService.modificaNumDislike(codice_risposta).then(
       (result) => { 
@@ -517,9 +571,9 @@ export class VisualizzaDomandaPage implements OnInit {
         console.log('dislike non effetutata', codice_risposta, this.currentMailUser); 
       }
     );}
-  
-
   }
+
+
 
   async inserisciValutazione(cod_risposta, tipo_like){
     this.apiService.inserisciValutazione(cod_risposta, this.currentMailUser, tipo_like).then(
@@ -531,6 +585,7 @@ export class VisualizzaDomandaPage implements OnInit {
     );
 
   }
+
 
 
   async cercaValutazione(cod_utente, cod_risposta){
@@ -553,6 +608,7 @@ export class VisualizzaDomandaPage implements OnInit {
   }
 
 
+
   async cancellaValutazione(cod_risposta) {
     this.apiService.rimuoviValutazione(cod_risposta, this.currentMailUser).then(
       (risultato) => {
@@ -566,4 +622,30 @@ export class VisualizzaDomandaPage implements OnInit {
   }
 
 
+
+  async togliLike(codice_risposta){
+    this.apiService.togliLike(codice_risposta).then(
+      (risultato) => {
+        console.log('eliminata');
+
+      },
+      (rej) => {
+        console.log("C'è stato un errore durante l'eliminazione", rej);
+      }
+    );
+  }
+
+
+
+  async togliDislike(codice_risposta){
+    this.apiService.togliDislike(codice_risposta).then(
+      (risultato) => {
+        console.log('eliminata');
+
+      },
+      (rej) => {
+        console.log("C'è stato un errore durante l'eliminazione", rej);
+      }
+    );
+  }
 }
