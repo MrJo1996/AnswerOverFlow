@@ -144,8 +144,19 @@ export class AdvancedSearchPage implements OnInit {
         break;
     }
 
+    if (this.statusClosed && this.statusOpen) {
+      var status = "both";
+    }
+    if (this.statusClosed && !this.statusOpen) {
+      var status = "closed";
+    }
+    if (!this.statusClosed && this.statusOpen) {
+      var status = "open";
+    }
+
+    this.dataService.setFilters(this.tipoFilter, this.codCategoriaFilter, status);
     this.dataService.setKeywordToSearch(this.keywordToSearch);
-    
+
     console.log("Input: ", this.keywordToSearch);
     this.router.navigate(['/search-results']);
   }

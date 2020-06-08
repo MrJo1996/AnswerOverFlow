@@ -103,7 +103,6 @@ keywordToSearch;
         console.log("utente: ", this.utentiSearched[0].nome);
 
         /*var i;
-
         for(i=0; i< this.numUtenti; i++){
           this.parseCodCatSondaggi(this.sondaggiSearched[i].cod_categoria, i);
       
@@ -194,4 +193,3 @@ keywordToSearch;
 
   
 }
-
