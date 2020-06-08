@@ -172,4 +172,13 @@ export class AdvancedSearchPage implements OnInit {
     this.statusClosed = false;
     this.isFiltered = false
   }
+  goBack() {
+
+    this.router.navigate(['/home']);
+  }
+
+  ionViewDidLeave() {
+    //reset
+    this.initFilters();
+  }
 }
