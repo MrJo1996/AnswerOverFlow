@@ -1,4 +1,6 @@
-
+.segmentBG{
+  --background:#121212;
+}
 //sfondo gradiente
 .bg-class{
     --background: linear-gradient(250deg, rgba(100,100,100,1) 0%, rgba(63,63,63,1) 13.5%, rgba(29,29,29,1) 33.33%, rgba(0,0,0,1) 100%) !important;

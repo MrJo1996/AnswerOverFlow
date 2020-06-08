@@ -24,5 +24,8 @@ export class BenvenutoPage implements OnInit {
     this.router.navigate(['modifica-profilo']);
   }
 
+  sondaggio() {
+    this.router.navigate(['inserimento-sondaggio']);
+  }
 
 }
