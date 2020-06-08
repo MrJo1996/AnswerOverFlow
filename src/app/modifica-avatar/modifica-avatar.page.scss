@@ -1,0 +1,25 @@
+.wrapper {
+    margin-left: 1em;
+    margin-right: 1em;
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: repeat(4, 1fr);
+    grid-row-gap: 1em;
+    grid-column-gap: 1em;
+}
+
+p{
+    text-align: center;
+}
+
+.grid{
+    height: 70%;
+    width: 70%;
+    text-align: center;
+  }
+
+ion-avatar {
+    right: 0;
+    left: 0;
+    margin:auto;
+}
