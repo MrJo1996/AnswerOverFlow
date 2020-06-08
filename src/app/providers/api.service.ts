@@ -897,7 +897,7 @@ export class ApiService {
 
   rimuoviValutazione(cod_risposta: Number, cod_utente: string) {
     return new Promise((resolve, reject) => {
-      var url = "http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/cancella_valutazione/";
+      var url = "http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/eliminaVal/";
       var urlAndCode = url.concat(cod_risposta.toString());
       var urlAlmostComplete = urlAndCode.concat(",");
       var urlComplete = urlAlmostComplete.concat(cod_utente.toString());
