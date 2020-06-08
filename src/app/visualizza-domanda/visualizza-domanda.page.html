@@ -101,8 +101,10 @@
                 <ion-icon name="chevron-up-circle-outline" class="thumb_up_style" slot= "end" ></ion-icon>
               </ion-button>
 
+
+              <!--pulsante del like attivato -->
               <ion-button *ngIf="likes[i] === 1"  class= "buttonLikes" (click)="modificaLike(risposta.codice_risposta, i)"  slot="end" expand="block" fill = "outline">
-                <ion-label slot = "end" class = "textTitleSMALL">{{risposta.num_like}}</ion-label>
+                <ion-label slot = "end" class = "textTitleSMALL" >{{risposta.num_like}}</ion-label>
                 <ion-icon name="chevron-up-circle-outline" class="thumb_up_style" slot= "end" ></ion-icon>
               </ion-button>
 
