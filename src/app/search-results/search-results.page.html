@@ -88,36 +88,38 @@
 
 <ion-content>
 
-  <div *ngIf="domandeButton == true">
+  <div *ngIf="domandeButton == true || filters['tipo'] == 'domanda'">
 
     <ion-list *ngFor="let domanda of domandeSearched; let i = index">
 
-      <ion-card>
-        <ion-card-header>
-          <ion-card-title>{{domanda.titolo}}</ion-card-title>
-          <ion-card-subtitle>{{categorie[i]}}</ion-card-subtitle>
+    <!--   <div *ngIf="categorie[i] == filters['categoria']"> -->
 
-        </ion-card-header>
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>{{domanda.titolo}}</ion-card-title>
+            <ion-card-subtitle>{{categorie[i]}}</ion-card-subtitle>
 
-        <ion-card-content>
-          <div *ngIf="domanda.descrizione.length>80; else noLongerThan80">
-            {{domanda.descrizione.substring(0,80)}}...
-          </div>
+          </ion-card-header>
 
-          <!-- ELSE -->
-          <ng-template #noLongerThan80>
-            <div>
-              {{domanda.descrizione}}
+          <ion-card-content>
+            <div *ngIf="domanda.descrizione.length>80; else noLongerThan80">
+              {{domanda.descrizione.substring(0,80)}}...
             </div>
-          </ng-template>
 
-        </ion-card-content>
-      </ion-card>
+            <!-- ELSE -->
+            <ng-template #noLongerThan80>
+              <div>
+                {{domanda.descrizione}}
+              </div>
+            </ng-template>
 
-    </ion-list>
+          </ion-card-content>
+        </ion-card>
+<!--       </div>
+ -->    </ion-list>
   </div>
 
-  <div *ngIf="sondaggiButton == true">
+  <div *ngIf="sondaggiButton == true || filters['tipo'] == 'sondaggio'">
 
     <ion-list *ngFor="let sondaggio of sondaggiSearched; let i = index">
 
@@ -136,7 +138,7 @@
 
   </div>
 
-  <div *ngIf="utentiButton == true">
+  <div *ngIf="utentiButton == true || filters['tipo'] == 'utente'">
     <ion-list *ngFor="let utente of utentiSearched; let i = index">
 
       <ion-card>

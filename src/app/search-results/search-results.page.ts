@@ -35,20 +35,18 @@ export class SearchResultsPage implements OnInit {
 
   constructor(private dataService: DataService, private router: Router, private apiService: ApiService) { }
 
-  ngOnInit() {
-
-
-  }
+  ngOnInit() { }
 
 
   ionViewWillEnter() { //carica al rendering della page
-    console.log("in ionViewCanEnter")
+    console.log("in ionViewCanEnter");
 
     this.keyRicerca = this.dataService.getKeywordToSearch();
 
     //check presenza filtri
     this.filters = this.dataService.getFilters();
     if (this.filters['isFiltered']) {
+      this.domandeButton = false;
       this.apiService.getCategoria(this.filters['codCategoria']).then(
         (categoria) => {
           this.filters['categoria'] = categoria['Categoria']['data'][0].titolo;
@@ -76,7 +74,6 @@ export class SearchResultsPage implements OnInit {
         var i;
         for (i = 0; i < this.numDomande; i++) {
           this.parseCodCat(this.domandeSearched[i].cod_categoria, i);
-          //console.log("Primo ciclo Categoria domanda",i," ", this.domandeSearched[i].cod_categoria);
         }
 
       },
@@ -119,17 +116,15 @@ export class SearchResultsPage implements OnInit {
 
         console.log("utente: ", this.utentiSearched[0].nome);
 
-        /*var i;
-        for(i=0; i< this.numUtenti; i++){
-          this.parseCodCatSondaggi(this.sondaggiSearched[i].cod_categoria, i);
-      
-        } */
-
       },
       (rej) => {// nel caso non vada a buon fine la chiamata
         console.log('rej utenti search-res');
       }
     );
+
+    if (this.isFiltered) {
+      this.filters();
+    }
   }
 
   ionViewDidEnter() {
@@ -204,4 +199,7 @@ export class SearchResultsPage implements OnInit {
     this.dataService.setFilters("", "", "", false);
     console.log("ionViewDidLeave");
   }
+
+  //TODO ARRAY FILTERED
+
 }
