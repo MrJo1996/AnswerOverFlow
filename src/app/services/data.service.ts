@@ -21,6 +21,7 @@ export class DataService {
   nome;
   cognome;
   username;
+  avatar;
 
   //Var Ricerca
   keywordToSearch;
@@ -37,7 +38,7 @@ export class DataService {
   }
   setRefreshIndex(refresh_index: boolean){
     this.refresh_index = refresh_index;}
-  setAvatarUtente(avatar: string) {
+  setAvatar(avatar: string) {
     this.utente['6'] = avatar;
   }
   setPopoverModifica(index: boolean){
@@ -57,6 +58,9 @@ export class DataService {
   }
   setCodice_chat(cod_chat: number) {
     this.codice_chat = cod_chat;
+  }
+  setAvatarUtente(avatar: string){
+    this.avatar = avatar;
   }
 
   setEmailOthers(emailOthers) {
@@ -96,6 +100,9 @@ export class DataService {
   }
   getCodice_chat() {
     return this.codice_chat;
+  }
+  getAvatar() {
+    return this.avatar;
   }
 
   getEmailOthers() {
