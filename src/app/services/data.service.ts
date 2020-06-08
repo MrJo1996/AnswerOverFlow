@@ -21,7 +21,9 @@ export class DataService {
   nome;
   cognome;
   username;
-
+  domanda;
+  user_domanda;
+  cod_domanda;
   //Var Ricerca
   keywordToSearch;
 
@@ -77,6 +79,11 @@ export class DataService {
 
   setSession(session) {
     this.session = session;
+  }
+
+  setDomanda(domanda){
+    this.cod_domanda = domanda.codice_domanda;
+    this.user_domanda = domanda.cod_utente;
   }
 
   getSession() {
@@ -145,5 +152,11 @@ export class DataService {
 
   getCognome() {
     return this.cognome;
+  }
+  getUserDomanda(){
+    return this.user_domanda;
+  }
+  getCodDomanda(){
+    return this.cod_domanda;
   }
 }

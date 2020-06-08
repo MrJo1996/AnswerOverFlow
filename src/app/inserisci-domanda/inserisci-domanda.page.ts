@@ -59,7 +59,7 @@ export class InserisciDomandaPage implements OnInit {
     );
 
     this.storage.get('utente').then(data => { this.cod_utente = data.email });
-
+      console.log(this.cod_utente);
   }
 
 

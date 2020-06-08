@@ -42,7 +42,7 @@
 
                 <ion-icon class="alarm_style" name="lock-open-outline" ></ion-icon>
                 <ion-label class="textTitle2" >Domanda aperta</ion-label>
-                <ion-icon class="alarm_style" slot="end" name="ellipsis-vertical" (click)="presentPopover($event,domanda)"></ion-icon>
+                <ion-icon class="alarm_style" slot="end" name="ellipsis-vertical" (click)="presentPopover($event,domanda.cod_utente,domanda.codice_domanda)"></ion-icon>
               </ion-item>
               <ion-item class="backgrounds" *ngIf="currentMailUser!==domanda.cod_utente">
                 <ion-avatar slot="start" class="icon-avatar">

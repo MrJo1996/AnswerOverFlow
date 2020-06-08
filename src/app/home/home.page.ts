@@ -19,6 +19,7 @@ export class HomePage implements OnInit {
   y_domande = 0;
   i_sondaggi = 0;
   y_sondaggi = 0;
+  session;
   refresh_index;
   switch = true;
   scelte = Array(2);
@@ -27,7 +28,7 @@ export class HomePage implements OnInit {
   codice_sondaggio;
   codice_categoria;
   categoria;
-  currentMailUser="";;//mail dell'utente corrente
+  currentMailUser;;//mail dell'utente corrente
   domande;
   domande_regolate = Array();
   sondaggi_regolati = Array();
@@ -64,10 +65,8 @@ export class HomePage implements OnInit {
   }
 
   ngOnInit(){
-    this.dataService.setRefreshIndex(false);   
-    this.currentMailUser = this.dataService.emailUtente;
-    console.log('Session',this.dataService.emailUtente);
-    console.log('Session',this.currentMailUser);
+    this.storage.get('utente').then(data => { this.currentMailUser = data.email });
+    console.log(this.refresh_index);
     this.visualizzaDomandaHome();
     this.visualizzaSondaggiHome();
   }
@@ -84,8 +83,8 @@ export class HomePage implements OnInit {
     this.switch = !(this.switch);
   }
   //POPOVER
-  async presentPopover(ev, domanda_completa) {
-    if (domanda_completa.cod_utente == this.currentMailUser) {
+  async presentPopover(ev,domanda_user,domanda_cod) {
+    if (domanda_user == this.currentMailUser) {
       this.dataService.setPopoverModifica(true);
     }
     else {
@@ -103,10 +102,10 @@ export class HomePage implements OnInit {
     console.log('dati', data);
     if (data != undefined) {
       if (data.item == 2) {
-        this.clickDomanda(domanda_completa.codice_domanda);
+        this.clickDomanda(domanda_cod);
       }
       if (data.item == 3) {
-        this.clickModificaDomanda(domanda_completa.codice_domanda);
+        this.clickModificaDomanda(domanda_user);
       }
     }
   }
@@ -134,6 +133,7 @@ export class HomePage implements OnInit {
         this.domande.forEach(element => {
           this.getUserDomanda(element.cod_utente);
         });
+        console.log('Profili',this.profili_user_domande);
         this.domande.forEach(element => {
           this.getCategoriaDomande(element.cod_categoria);
         });
@@ -143,7 +143,6 @@ export class HomePage implements OnInit {
         console.log("C'è stato un errore durante la visualizzazione");
       }
     );
-
   }
 
   async getUserDomanda(mail) {
@@ -235,26 +234,24 @@ export class HomePage implements OnInit {
 
   //LINK ALLE PAGINE
   //link a visualizza domanda
-  clickDomanda(codice_domanda) {
-    this.dataService.codice_domanda = codice_domanda;
+  clickDomanda(domanda_codice) {
+    this.dataService.setCod_domanda(domanda_codice);
     console.log(this.dataService.codice_domanda);
     this.router.navigate(['/visualizza-domanda']);
   }
   //link a viualizza sondaggio
   clickSondaggio(codice_sondaggio) {
     this.dataService.codice_sondaggio = codice_sondaggio;
-    console.log(this.dataService.codice_sondaggio);
     this.router.navigate(['/visualizza-sondaggio']);
   }
   //link a visualizza profilo
-  clickProfilo(cod_utente) {
-    this.dataService.setEmailOthers = cod_utente;
-    console.log(this.dataService.setEmailOthers);
+  clickProfilo(domanda_user) {
+    this.dataService.setEmailOthers = domanda_user;
     this.router.navigate(['/visualizza-profilo']);
   }
   //link a modifica domanda
-  clickModificaDomanda(codice_domanda) {
-    this.dataService.setCod_domanda(codice_domanda);
+  clickModificaDomanda(domanda_codice) {
+    this.dataService.setCod_domanda(domanda_codice);
     this.router.navigate(['/modifica-domanda']);
   }
 
