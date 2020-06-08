@@ -3,6 +3,10 @@
     font-size: 1.5rem;
     color: #97a9c5
 }
+.textTitle2 {
+    font-size: 1rem;
+    color: #97a9c5
+  }
 
 .thumb_up_style{
     padding-right: 0.5rem;
@@ -75,4 +79,9 @@ ion-title {
 }
 ion-slides{
     overflow-y: scroll;
+  }
+  ion-item{
+    --border-width:0px;
+    --border-color:transparent;
+    background-color: transparent;
   }

@@ -7,6 +7,7 @@ import { Storage } from "@ionic/storage";
 import { PopoverController, iosTransitionAnimation, MenuController } from '@ionic/angular';
 import { PopoverComponent } from '../popover/popover.component';
 import { AppComponent } from "../app.component";
+import { NgZone } from '@angular/core';
 
 @Component({
   selector: 'app-home',
@@ -18,6 +19,7 @@ export class HomePage implements OnInit {
   y_domande = 0;
   i_sondaggi = 0;
   y_sondaggi = 0;
+  refresh_index;
   switch = true;
   scelte = Array(2);
   indice_domande;
@@ -25,7 +27,7 @@ export class HomePage implements OnInit {
   codice_sondaggio;
   codice_categoria;
   categoria;
-  currentMailUser;//mail dell'utente corrente
+  currentMailUser="";;//mail dell'utente corrente
   domande;
   domande_regolate = Array();
   sondaggi_regolati = Array();
@@ -40,18 +42,34 @@ export class HomePage implements OnInit {
   keywordToSearch;
   searchingResults;
   request: Promise<any>;
-  constructor(public popoverController: PopoverController,private menuSet: AppComponent, private menuCtrl: MenuController, private storage: Storage, private apiService: ApiService, private service: PostServiceService, private dataService: DataService, private router: Router) { }
+  constructor(public popoverController: PopoverController,
+    private menuSet: AppComponent,
+    private menuCtrl: MenuController,
+    private storage: Storage,
+    private apiService: ApiService,
+    private service: PostServiceService,
+    private dataService: DataService,
+    private router: Router,
+    private zone: NgZone) { }
 
   ionViewWillEnter() {
     this.menuCtrl.enable(true);
     this.menuSet.checkUserLogged();
+    this.refresh_index=this.dataService.getRefreshIndex();
+    console.log(this.refresh_index);
+    if(this.refresh_index == true){
+    this.ngOnInit();
+    this.doRefresh2();
+  }
   }
 
-  ngOnInit() {
+  ngOnInit(){
+    this.dataService.setRefreshIndex(false);   
+    this.currentMailUser = this.dataService.emailUtente;
+    console.log('Session',this.dataService.emailUtente);
+    console.log('Session',this.currentMailUser);
     this.visualizzaDomandaHome();
     this.visualizzaSondaggiHome();
-    this.storage.get('utente').then(data => { this.currentMailUser = data.email });
-    console.log(this.currentMailUser);
   }
   switch1_(switch_){
     if(switch_==true)
@@ -111,16 +129,14 @@ export class HomePage implements OnInit {
   async visualizzaDomandaHome() {
     this.apiService.getDomandaHome().then(
       (domande) => {
-        console.log('Visualizzato con successo');
+        console.log('Domande caricate',domande);
         this.domande = domande; //assegno alla variabile locale il risultato della chiamata. la variabile sarà utilizzata nella stampa in HTML
         this.domande.forEach(element => {
           this.getUserDomanda(element.cod_utente);
         });
-        console.log("profili",this.profili_user_domande);
         this.domande.forEach(element => {
           this.getCategoriaDomande(element.cod_categoria);
         });
-        console.log(this.categorie_domande);
         this.regola_domande();
       },
       (rej) => {
@@ -154,7 +170,6 @@ export class HomePage implements OnInit {
 
   regolatore_infinite_scroll(){
     for (this.i_domande = 0; this.i_domande < 3; this.i_domande++) {
-      console.log(this.y_domande);
       this.domande_regolate[this.y_domande] = this.domande[this.y_domande];
       this.y_domande++;
     }
@@ -166,7 +181,6 @@ export class HomePage implements OnInit {
 
   regola_domande() {
     for (this.i_domande = 0; this.i_domande < 3; this.i_domande++) {
-      console.log(this.y_domande);
       this.domande_regolate[this.y_domande] = this.domande[this.y_domande];
       this.y_domande++;
     }
@@ -183,17 +197,14 @@ export class HomePage implements OnInit {
   async visualizzaSondaggiHome() {
     this.apiService.getSondaggioHome().then(
       (sondaggi) => {
-        console.log('Visualizzato con successo');
+        console.log('Sondaggi caricati');
         this.sondaggi = sondaggi; //assegno alla variabile locale il risultato della chiamata. la variabile sarà utilizzata nella stampa in HTML
-        console.log('sonndaggi',this.sondaggi['0']);
         this.sondaggi.forEach(element => {
           this.getUserSondaggio(element.cod_utente);
         });
         this.sondaggi.forEach(element => {
           this.getCategoriaSondaggio(element.cod_categoria);
         });
-        console.log(this.profili_user_sondaggi);
-        console.log(this.categoria_sondaggi);
         this.regola_sondaggi();
       },
       (rej) => {
@@ -249,13 +260,21 @@ export class HomePage implements OnInit {
 
   //REFRESH
   doRefresh(event) {
-    this.visualizzaDomandaHome();
-    this.visualizzaSondaggiHome();
+    this.ngOnInit();
     setTimeout(() => {
       event.target.complete();
     }, 2000);
   }
 
+  doRefresh2(){
+    window.location.reload();
+    this.dataService.setRefreshIndex(false);
+  }
+  refresh() {
+    this.zone.run(() => {
+      console.log('force update the screen');
+    });
+  }
   //RICERCA - Azioni SearchBar
   ricerca() {
     console.log("Input: ", this.keywordToSearch);

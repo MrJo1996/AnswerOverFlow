@@ -4,7 +4,7 @@
       item-right (click)="isActive=!isActive;" isActive=true></ion-icon>
     <ion-searchbar *ngIf="isActive===true" placeholder="Ricerca..." [(ngModel)]="keywordToSearch"
       (search)="ricerca($event)"></ion-searchbar>
-    <ion-title *ngIf="isActive!==true">ANSWER OVERFLOW</ion-title>
+    <ion-title *ngIf="isActive!==true">ANSWEROVERFLOW</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -36,22 +36,22 @@
 
   <div *ngIf="switch === true">
     <ion-title>Ultime domande inserite</ion-title>
-          <ion-card class="backgrounds" *ngFor="let domanda of domande_regolate, let i = index">
+          <ion-card *ngFor="let domanda of domande_regolate, let i = index">
             <ion-card-header>
-              <div class="backgrounds">
+              <ion-item class="backgrounds">
 
-                <ion-icon class="alarm_style" name="alarm-outline" slot="start"></ion-icon>
-                <ion-label class="textTitle">{{domanda.timer}}</ion-label>
+                <ion-icon class="alarm_style" name="lock-open-outline" ></ion-icon>
+                <ion-label class="textTitle2" >Domanda aperta</ion-label>
                 <ion-icon class="alarm_style" slot="end" name="ellipsis-vertical" (click)="presentPopover($event,domanda)"></ion-icon>
-              </div>
-              <ion-toolbar class="backgrounds" *ngIf="currentMailUser!==domanda.cod_utente">
+              </ion-item>
+              <ion-item class="backgrounds" *ngIf="currentMailUser!==domanda.cod_utente">
                 <ion-avatar slot="start" class="icon-avatar">
                   <img src="https://i.ytimg.com/vi/mCf6UGT3HrA/maxresdefault.jpg">
                 </ion-avatar>
                 <ion-label class="username_text_style" (click)="clickProfilo(domanda.cod_utente)">{{profili_user_domande[i]}}
                 </ion-label>
 
-              </ion-toolbar>
+              </ion-item>
               <ion-card-title class="textTitleBIG"> {{domanda.titolo}}</ion-card-title>
             </ion-card-header>
 

@@ -162,6 +162,7 @@ export class InserisciDomandaPage implements OnInit {
               console.log('Confirm Okay');
               this.showOKToast();
               this.postInvio();
+              this.dataService.setRefreshIndex(true);
               this.goHome();
             }
           }

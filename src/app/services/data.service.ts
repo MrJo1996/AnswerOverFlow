@@ -17,7 +17,7 @@ export class DataService {
   codice_risposta;
   selezione_cat;
   nuova_proposta;
-
+  refresh_index;
   nome;
   cognome;
   username;
@@ -34,6 +34,9 @@ export class DataService {
     this.utente['3'] = nome;
     this.utente['4'] = cognome;
     this.utente['5'] = bio;
+  }
+  setRefreshIndex(refresh_index: boolean){
+    this.refresh_index = refresh_index;
   }
   setPopoverModifica(index: boolean){
     this.popover_modifica = index;
@@ -76,6 +79,9 @@ export class DataService {
 
   getSession() {
     return this.session;
+  }
+  getRefreshIndex(){
+    return this.refresh_index;
   }
   getCod_domanda() {
     return this.codice_domanda;
