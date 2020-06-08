@@ -1,59 +1,125 @@
 <ion-header>
 
-  <ion-searchbar placeholder={{keyRicerca}} [(ngModel)]="keywordToSearch"
-      (search)="ricerca($event)"></ion-searchbar>
+  <ion-searchbar placeholder={{keyRicerca}} [(ngModel)]="keywordToSearch" (search)="ricerca($event)"></ion-searchbar>
 
-
-      <ion-segment  value="domande">
+  <div *ngIf="!isFiltered">
+    <div *ngIf="filters['tipo'] != 'utente'">
+      <ion-segment value="domande">
         <ion-segment-button value="domande" (click)="viewDomande()">
-          <ion-label>Domandee({{numDomande}})</ion-label>
+          <ion-label>Domande({{numDomande}})</ion-label>
         </ion-segment-button>
         <ion-segment-button value="sondaggi" (click)="viewSondaggi()">
           <ion-label>Sondaggi({{numSondaggi}})</ion-label>
         </ion-segment-button>
-        <ion-segment-button value="utenti" (click) = "viewUtenti()">
+        <ion-segment-button value="utenti" (click)="viewUtenti()">
           <ion-label>Utenti({{numUtenti}})</ion-label>
         </ion-segment-button>
       </ion-segment>
-  
+    </div>
+  </div>
 
 
+  <div *ngIf="isFiltered">
+    <ion-grid>
+      <ion-row>
+        <div *ngIf="filters['tipo'] != '' ">
+          <div *ngIf="filters['tipo'] == 'domanda' ">
+            <ion-chip color="primary">
+              <ion-icon name="reader"></ion-icon>
+              <ion-label>{{filters['tipo']}}</ion-label>
+            </ion-chip>
+          </div>
+          <div *ngIf="filters['tipo'] == 'sondaggio' ">
+            <ion-chip color="primary">
+              <ion-icon name="trail-sign"></ion-icon>
+              <ion-label>{{filters['tipo']}}</ion-label>
+            </ion-chip>
+          </div>
+          <div *ngIf="filters['tipo'] == 'utente' ">
+            <ion-chip color="primary">
+              <ion-icon name="person"></ion-icon>
+              <ion-label>{{filters['tipo']}}</ion-label>
+            </ion-chip>
+          </div>
+        </div>
+        &nbsp;
+
+        <div *ngIf="filters['categoria'] != '' ">
+          <ion-chip color="secondary">
+            <ion-icon name="file-tray-full-outline"></ion-icon>
+            <ion-label>{{filters['categoria']}}</ion-label>
+          </ion-chip>
+        </div>
+        &nbsp;
+
+        <div *ngIf="filters['status'] == 'both' ">
+          <ion-chip color="tertiary">
+            <ion-icon name="repeat-outline"></ion-icon>
+            <ion-label>aperti/chiusi</ion-label>
+          </ion-chip>
+        </div>
+
+        <div *ngIf="filters['status'] == 'closed' ">
+          <ion-chip color="tertiary">
+            <ion-icon name="lock-closed-outline"></ion-icon>
+            <ion-label>chiusi</ion-label>
+          </ion-chip>
+        </div>
+
+        <div *ngIf="filters['status'] == 'open' ">
+          <ion-chip color="tertiary">
+            <ion-icon name="lock-open-outline"></ion-icon>
+            <ion-label>aperti</ion-label>
+          </ion-chip>
+        </div>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <div *ngIf="filters['tipo'] == 'utente'">
+    <ion-chip color="primary">
+      <ion-icon name="person"></ion-icon>
+      <ion-label>{{filters['tipo']}}</ion-label>
+    </ion-chip>
+  </div>
 
 </ion-header>
 
 
 <ion-content>
 
-  <div *ngIf="domandeButton == true">
+  <div *ngIf="domandeButton == true || filters['tipo'] == 'domanda'">
 
-  <ion-list *ngFor="let domanda of domandeSearched; let i = index">
+    <ion-list *ngFor="let domanda of domandeSearched; let i = index">
 
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>{{domanda.titolo}}</ion-card-title>
-        <ion-card-subtitle>{{categorie[i]}}</ion-card-subtitle>
+    <!--   <div *ngIf="categorie[i] == filters['categoria']"> -->
 
-      </ion-card-header>
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>{{domanda.titolo}}</ion-card-title>
+            <ion-card-subtitle>{{categorie[i]}}</ion-card-subtitle>
 
-      <ion-card-content>
-       <div *ngIf="domanda.descrizione.length>80; else noLongerThan80">
-        {{domanda.descrizione.substring(0,80)}}...
-       </div>
+          </ion-card-header>
 
-       <!-- ELSE -->
-       <ng-template #noLongerThan80>
-        <div>
-          {{domanda.descrizione}}
-        </div>
-      </ng-template>
+          <ion-card-content>
+            <div *ngIf="domanda.descrizione.length>80; else noLongerThan80">
+              {{domanda.descrizione.substring(0,80)}}...
+            </div>
 
-      </ion-card-content>
-    </ion-card>
+            <!-- ELSE -->
+            <ng-template #noLongerThan80>
+              <div>
+                {{domanda.descrizione}}
+              </div>
+            </ng-template>
 
-  </ion-list>
-</div>
+          </ion-card-content>
+        </ion-card>
+<!--       </div>
+ -->    </ion-list>
+  </div>
 
-  <div *ngIf="sondaggiButton == true">
+  <div *ngIf="sondaggiButton == true || filters['tipo'] == 'sondaggio'">
 
     <ion-list *ngFor="let sondaggio of sondaggiSearched; let i = index">
 
@@ -61,32 +127,32 @@
         <ion-card-header>
           <ion-card-title>{{sondaggio.titolo}}</ion-card-title>
           <ion-card-subtitle>{{categorieSondaggi[i]}}</ion-card-subtitle>
-  
+
         </ion-card-header>
-  
-        
+
+
       </ion-card>
-  
+
     </ion-list>
 
-    
-   </div>
 
-   <div *ngIf="utentiButton == true">
-    <ion-list *ngFor="let utente of utentiSearched; let i = index" >
+  </div>
+
+  <div *ngIf="utentiButton == true || filters['tipo'] == 'utente'">
+    <ion-list *ngFor="let utente of utentiSearched; let i = index">
 
       <ion-card>
         <ion-card-header>
           <ion-card-title>{{utente.username}}</ion-card-title>
           <ion-card-subtitle>{{utente.bio}}</ion-card-subtitle>
-  
+
         </ion-card-header>
-  
-        
+
+
       </ion-card>
-  
+
     </ion-list>
-   </div>
+  </div>
 
 
 </ion-content>
