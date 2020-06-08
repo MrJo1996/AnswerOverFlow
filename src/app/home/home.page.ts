@@ -4,8 +4,9 @@ import { DataService } from "../services/data.service";
 import { ApiService } from '../providers/api.service';
 import { Router } from '@angular/router';
 import { Storage } from "@ionic/storage";
-import { PopoverController, iosTransitionAnimation } from '@ionic/angular';
+import { PopoverController, iosTransitionAnimation, MenuController } from '@ionic/angular';
 import { PopoverComponent } from '../popover/popover.component';
+import { AppComponent } from "../app.component";
 
 @Component({
   selector: 'app-home',
@@ -39,7 +40,12 @@ export class HomePage implements OnInit {
   keywordToSearch;
   searchingResults;
   request: Promise<any>;
-  constructor(public popoverController: PopoverController, private storage: Storage, private apiService: ApiService, private service: PostServiceService, private dataService: DataService, private router: Router) { }
+  constructor(public popoverController: PopoverController,private menuSet: AppComponent, private menuCtrl: MenuController, private storage: Storage, private apiService: ApiService, private service: PostServiceService, private dataService: DataService, private router: Router) { }
+
+  ionViewWillEnter() {
+    this.menuCtrl.enable(true);
+    this.menuSet.checkUserLogged();
+  }
 
   ngOnInit() {
     this.visualizzaDomandaHome();

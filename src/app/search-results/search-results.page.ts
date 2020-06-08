@@ -14,9 +14,11 @@ export class SearchResultsPage implements OnInit {
 
   domandeSearched;
   sondaggiSearched;
+  utentiSearched;
 
   numDomande;
   numSondaggi;
+  numUtenti;
 
   categorie=[];
 
@@ -85,6 +87,32 @@ export class SearchResultsPage implements OnInit {
       }
     );
 
+    //UTENTI
+
+    this.apiService.ricercaUtente(this.keyRicerca).then(
+      (result) => { // nel caso in cui va a buon fine la chiamata
+        console.log("Utenti chiamata: ", result);
+
+        this.utentiSearched = result;
+        console.log("Utenti search-res: ", this.utentiSearched.length);
+        this.numUtenti = this.utentiSearched.length;
+
+        console.log("utente: ", this.utentiSearched[0].nome);
+
+        /*var i;
+
+        for(i=0; i< this.numUtenti; i++){
+          this.parseCodCatSondaggi(this.sondaggiSearched[i].cod_categoria, i);
+      
+        } */
+
+      },
+      (rej) => {// nel caso non vada a buon fine la chiamata
+        console.log('rej utenti search-res');
+      }
+    );
+
+
 
   }
 
@@ -109,7 +137,7 @@ export class SearchResultsPage implements OnInit {
 
     this.sondaggiButton = true;
 
-    console.log('bottone true');
+    //console.log('bottone true');
     this.domandeButton = false;
     this.utentiButton = false;
 
@@ -120,6 +148,7 @@ export class SearchResultsPage implements OnInit {
     this.sondaggiButton = false;
     this.domandeButton = false;
     this.utentiButton = true;
+    console.log('bottone true')
 
   }
 
@@ -152,6 +181,4 @@ export class SearchResultsPage implements OnInit {
         }
       );
   }
-
-
 }

@@ -1,0 +1,18 @@
+.wrapper {
+    margin-left: 1em;
+    margin-right: 1em;
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: repeat(4, 1fr);
+    grid-row-gap: 1em;
+    grid-column-gap: 1em;
+}
+
+ion-avatar {
+    right: 0;
+    left: 0;
+    margin:auto;
+}
+.avatarindex1{
+    background-color: #ffffff;
+}

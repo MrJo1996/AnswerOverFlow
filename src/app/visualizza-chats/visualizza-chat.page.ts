@@ -48,12 +48,12 @@ export class VisualizzaChatPage implements OnInit {
 
   //Quando è stata caricata la page, si possono usare le funzioni JQuery, perchè gli "#id" vengono trovati
   ionViewDidEnter() {
-    setTimeout(removeLoader, 1000); //wait for page load PLUS two seconds.
+    setTimeout(removeLoader, 500); //wait for page load PLUS two seconds.
     function removeLoader() {
       $("#loader").fadeOut(500, function () {
         // fadeOut complete. Remove the loading div
-        $("#loader").remove(); //makes page more lightweight
-        $("#ionCard").show();
+        $("#loader").css("display", "none"); //makes page more lightweight
+        $("#ionCard").css("display", "block");
       });
     }
   }
@@ -62,10 +62,10 @@ export class VisualizzaChatPage implements OnInit {
   ionViewWillLeave() {
     this.user = null;
     this.chat.length = 0;
-    resetLoader;
+    resetLoader();
     function resetLoader() {
-      $("#loader").show(); //makes page more lightweight
-      $("#ionCard").remove();
+      $("#loader").css("display", "block"); //makes page more lightweight
+      $("#ionCard").css("display", "none");
     }
   }
 

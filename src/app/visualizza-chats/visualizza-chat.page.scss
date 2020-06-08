@@ -1,6 +1,6 @@
 ion-title {
     text-align: center;
-    margin-left: -15%;
+    margin-right: 15%;
 }
 
 ion-spinner{
@@ -17,8 +17,8 @@ ion-button{
 
 ion-searchbar {
     margin-top: 10px;
-    margin-bottom: 10px;
     height: 45px !important;
+    z-index: 10;
     // --height: 40px;
     // max-width: 400px;
     font-size: 1.25em !important;
@@ -41,7 +41,6 @@ ion-searchbar {
             .searchbar-input-container{          
                 .searchbar-input{ 
                     border-radius: 30px;
-                    //any style that you want to implement on your searchbar
                 }
             }
         }   

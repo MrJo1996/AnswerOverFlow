@@ -25,9 +25,7 @@
 
   <ion-spinner id="loader" name="dots" color="primary"></ion-spinner>
 
-  <ion-card *ngIf="thereAreChats" id="ionCard" 
-  style="
-  margin-top: -10px;">
+  <ion-card *ngIf="thereAreChats" id="ionCard">
     <ion-list 
     style="
     padding: 0px 0px;
@@ -36,7 +34,7 @@
       <ion-item *ngFor="let singleChat of chat | filtro: testoRicercato: 'username' "
         (click)="mostraMessaggi(singleChat.codice_chat, singleChat.cod_utente0)" button="true">
         <ion-avatar item-start>
-          <img src="../../assets/img/avatar2.png">
+          <img src="https://drive.google.com/uc?export=view&id=1hGJ_kVaCUVE2iv50bYQXFlMzrNzPk9Gb"/>
         </ion-avatar>
         <ion-label>
           <h2>{{singleChat?.username}}</h2>
