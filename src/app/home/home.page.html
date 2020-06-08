@@ -38,12 +38,12 @@
     <ion-title>Ultime domande inserite</ion-title>
           <ion-card class="backgrounds" *ngFor="let domanda of domande_regolate, let i = index">
             <ion-card-header>
-              <ion-toolbar class="backgrounds">
+              <div class="backgrounds">
 
                 <ion-icon class="alarm_style" name="alarm-outline" slot="start"></ion-icon>
-                <ion-icon class="alarm_style" slot="end" name="ellipsis-vertical" (click)="presentPopover($event,domanda)"></ion-icon>
                 <ion-label class="textTitle">{{domanda.timer}}</ion-label>
-              </ion-toolbar>
+                <ion-icon class="alarm_style" slot="end" name="ellipsis-vertical" (click)="presentPopover($event,domanda)"></ion-icon>
+              </div>
               <ion-toolbar class="backgrounds" *ngIf="currentMailUser!==domanda.cod_utente">
                 <ion-avatar slot="start" class="icon-avatar">
                   <img src="https://i.ytimg.com/vi/mCf6UGT3HrA/maxresdefault.jpg">
@@ -71,33 +71,25 @@
             </ion-card-content>
           </ion-card>
         </div>
+
+
+
         <div *ngIf="switch !== true">
           <ion-title>Ultimi sondaggi inseriti</ion-title>
 
         <ion-card class="backgrounds" (click)="clickSondaggio(sondaggio.codice_sondaggio)"
-          *ngFor="let sondaggio of sondaggi_regolati">
+          *ngFor="let sondaggio of sondaggi_regolati, let i = index">
           <ion-card-header>
             <ion-toolbar class="backgrounds">
               <ion-icon class="alarm_style" name="alarm-outline" slot="start"></ion-icon>
               <ion-label class="textTitle">{{sondaggio.timer}}</ion-label>
-              <ion-button slot="end" expand="block" *ngIf="currentUser===sondaggioUser"
-                (click)="popUpEliminaSondaggio()" fill="clear">
-                <ion-icon name="trash-sharp" color="primary" class="icons_generic_style"></ion-icon>
-              </ion-button>
-              <ion-button slot="end" *ngIf="currentUser===sondaggioUser" (click)="goModificaDomanda()" expand="block"
-                fill="clear">
-                <ion-icon name="hammer-sharp" color="primary" class="icons_generic_style"></ion-icon>
-              </ion-button>
-              <!--    <ion-label slot="end" class="textTitleSMALL">  Risposte totali: 
-          <ion-label slot="end" class="textTitleSMALL">2</ion-label>
-        </ion-label> -->
-
             </ion-toolbar>
-            <ion-toolbar class="backgrounds" *ngIf="currentUser!==sondaggioUser">
+            <ion-toolbar class="backgrounds" >
               <ion-avatar slot="start" class="icon-avatar">
                 <img src="https://i.ytimg.com/vi/mCf6UGT3HrA/maxresdefault.jpg">
               </ion-avatar>
-              <ion-label class="username_text_style">{{sondaggioUser}}</ion-label>
+              <ion-label class="username_text_style" >{{profili_user_sondaggi[i]}}
+              </ion-label>
 
             </ion-toolbar>
 
@@ -107,34 +99,12 @@
 
 
           <ion-card-content>
-            <p class="textSimple">{{descrizione}}</p>
-
-            <ion-list class="backgrounds">
-              <ion-list-header>
-                <ion-label *ngIf="currentUser===sondaggioUser">Voti totali: </ion-label>
-              </ion-list-header>
-
-              <div class="backgrounds">
-
-                <ion-item *ngFor="let scelta of scelte">
-
-                  <ion-checkbox *ngIf="currentUser!==sondaggioUser" slot="start"></ion-checkbox>
-                  <ion-label *ngIf="currentUser===sondaggioUser" slot="start"></ion-label>
-                  <ion-text class="textSimple" slot="start"></ion-text>
-                </ion-item>
-
-
-
-              </div>
-            </ion-list>
-
-
-
+            <p class="textSimple">{{sondaggio.descrizione}}</p>
             <ion-toolbar>
               <ion-icon name="calendar-outline" slot=start class="calendar_icon_style"></ion-icon>
               <ion-label class="description_text" slot="start">{{sondaggio.dataeora}}</ion-label>
               <ion-icon name="list" slot="start" class="icon_list_style"></ion-icon>
-              <ion-label class="description_text" slot="start"></ion-label>
+              <ion-label class="description_text" slot="start">{{categoria_sondaggi[i]}}</ion-label>
 
 
             </ion-toolbar>

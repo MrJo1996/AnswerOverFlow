@@ -29,9 +29,10 @@ export class HomePage implements OnInit {
   domande_regolate = Array();
   sondaggi_regolati = Array();
   profili_user_domande = Array();
-  profili_user_sondaggio = Array();
+  profili_user_sondaggi = Array();
   profilo = Array();
   categorie_domande = Array();
+  categoria_sondaggi = Array();
   sondaggi;
   domandaMailUser;//mail dell'utente che ha fatto la domanda
   domandaNomeUser = " ";//nome e cognome dell'utente che ha fatto la domanda
@@ -177,10 +178,37 @@ export class HomePage implements OnInit {
     this.apiService.getSondaggioHome().then(
       (sondaggi) => {
         console.log('Visualizzato con successo');
-
         this.sondaggi = sondaggi; //assegno alla variabile locale il risultato della chiamata. la variabile sarà utilizzata nella stampa in HTML
+        console.log('sonndaggi',this.sondaggi['0']);
+        this.sondaggi.forEach(element => {
+          this.getUserSondaggio(element.cod_utente);
+        });
+        this.sondaggi.forEach(element => {
+          this.getCategoriaSondaggio(element.cod_categoria);
+        });
+        console.log(this.profili_user_sondaggi);
+        console.log(this.categoria_sondaggi);
         this.regola_sondaggi();
-
+      },
+      (rej) => {
+        console.log("C'è stato un errore durante la visualizzazione");
+      }
+    );
+  }
+  async getUserSondaggio(mail) {
+    this.apiService.getProfilo(mail).then(
+      (profilo) => {
+        this.profili_user_sondaggi.push(profilo['data']['0'].username);
+      },
+      (rej) => {
+        console.log("C'è stato un errore durante la visualizzazione del profilo");
+      }
+    );
+  }
+  async getCategoriaSondaggio(id_categoria) {
+    this.apiService.getCategoria(id_categoria).then(
+      (categoria) => {
+        this.categoria_sondaggi.push(categoria['Categoria']['data']['0'].titolo);
       },
       (rej) => {
         console.log("C'è stato un errore durante la visualizzazione");
