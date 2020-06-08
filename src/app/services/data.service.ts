@@ -35,6 +35,9 @@ export class DataService {
     this.utente['4'] = cognome;
     this.utente['5'] = bio;
   }
+  setAvatarUtente(avatar: string) {
+    this.utente['6'] = avatar;
+  }
   setPopoverModifica(index: boolean){
     this.popover_modifica = index;
   }

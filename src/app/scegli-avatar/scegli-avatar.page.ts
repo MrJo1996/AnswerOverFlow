@@ -1,15 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
+import { AlertController } from "@ionic/angular";
+import { DataService } from "../services/data.service";
 
 @Component({
-  selector: 'app-scegli-avatar',
-  templateUrl: './scegli-avatar.page.html',
-  styleUrls: ['./scegli-avatar.page.scss'],
+  selector: "app-scegli-avatar",
+  templateUrl: "./scegli-avatar.page.html",
+  styleUrls: ["./scegli-avatar.page.scss"],
 })
 export class ScegliAvatarPage implements OnInit {
+  constructor(
+    private router: Router,
+    private alertController: AlertController,
+    private dataService: DataService
+  ) {}
 
-  constructor() { }
-
-  colorFullfilled: string [] = [
+  colorFullfilled: string[] = [
     "https://drive.google.com/uc?export=view&id=1ZD-1DVtsR-8RAb1TgLW7G9Wj2lMVXC58",
     "https://drive.google.com/uc?export=view&id=13-i6kq5sqX_Ry4KZIK54qBH3lToIZrO4",
     "https://drive.google.com/uc?export=view&id=1EIUym1roTs4jzWhQrzCnGjSjogl1KvWg",
@@ -43,8 +49,8 @@ export class ScegliAvatarPage implements OnInit {
     "https://drive.google.com/uc?export=view&id=1kTsuivRdiw85NFYdnK-ys9-Vj3rYUo0U",
     "https://drive.google.com/uc?export=view&id=1_yqrO94W4CgmrgrGynBIkdeSJEDcD1_q",
     "https://drive.google.com/uc?export=view&id=1Utru6l6o4MrypLH6EuuGwBuWzPhSh_72",
-    "https://drive.google.com/uc?export=view&id=1L55PcXxSUkf3TQ2olud3FmVDuFC-1Frl"
-  ]
+    "https://drive.google.com/uc?export=view&id=1L55PcXxSUkf3TQ2olud3FmVDuFC-1Frl",
+  ];
 
   linesFilled: string[] = [
     "https://drive.google.com/uc?export=view&id=127UyyM2iiOlz_KxgMI6GPmdbQiPvHMld",
@@ -67,38 +73,112 @@ export class ScegliAvatarPage implements OnInit {
     "https://drive.google.com/uc?export=view&id=13HnOq3kXq8Ekd9YC8ZpsR1AA07Zb0jbs",
     "https://drive.google.com/uc?export=view&id=14YKguR4ArX40sRBKxpf46S7o7iwzjB9C",
     "https://drive.google.com/uc?export=view&id=1vb3TfHpR5XvcKjSSiwRHSfZ4p9a-Foob",
-    "https://drive.google.com/uc?export=view&id=1jRg9McPyMPV9bTDCBrVPHoDNWsotwZrU"
-  ]
+    "https://drive.google.com/uc?export=view&id=1jRg9McPyMPV9bTDCBrVPHoDNWsotwZrU",
+  ];
 
   elementID: string;
+  avatar: string;
 
-  ngOnInit() {
+  ngOnInit() {}
 
+  routeToBio() {
+    this.alertSalta();
   }
 
-  
+  async alertSalta() {
+    const alert = await this.alertController.create({
+      header:
+        "Sicuro di voler saltare?",
+        message:'Ti verrà dato un avatar generico, potrai modificarlo dal tuo profilo',
+      buttons: [
+        {
+          text: "No",
+          role: "cancel",
+          cssClass: "secondary",
+          handler: (blah) => {
+            console.log("Confirm Cancel");
+          },
+        },
+        {
+          text: "Si",
+          handler: () => {
+            let avatar = "https://drive.google.com/uc?export=view&id=19uMcjLvtO81SAQOcd2_qSTsDE5Mn6led";
+            console.log("Confirm Okay");
+            this.dataService.setAvatarUtente(avatar);
+            this.router.navigate(["bio"]);
+          },
+        },
+      ],
+    });
+    await alert.present();
+  }
 
-  stampaUrl(Url, tipo, index){
-    //Controllo i valori
-    console.log(Url, index)
-    if(this.elementID !== undefined) { //Rimuovo lo stile se applicato ad un altro ion avatar
-      let old = document.getElementById(this.elementID)
-      old.style.backgroundColor = ""
-    }
-    if(tipo === "colored"){
-      this.elementID = 'coloredAvatar' + index;
-      //Prendo la classe relativa all'avata cliccato
-      let elem = document.getElementById(this.elementID)
-      //Styling dell'elemento selezionato
-      elem.style.backgroundColor = "#ffffff"
+  avatarScelto() {
+    if (this.avatar === "" || this.avatar === undefined) {
+      this.toastUnsuccess();
     } else {
-      this.elementID = 'linedAvatar' + index;
-      //Prendo la classe relativa all'avata cliccato
-      let elem = document.getElementById(this.elementID)
-      //Styling dell'elemento selezionato
-      elem.style.backgroundColor = "#ffffff"
+      this.dataService.setAvatarUtente(this.avatar);
+      console.log(this.dataService.utente);
+      this.router.navigate(["bio"]);
+      this.toastSuccess();
     }
-
   }
 
+  toastSuccess() {
+    const toast = document.createElement("ion-toast");
+    toast.message = "Avatar scelto!";
+    toast.duration = 2000;
+    toast.position = "top";
+    toast.style.fontSize = "20px";
+    toast.color = "success";
+    toast.style.textAlign = "center";
+    document.body.appendChild(toast);
+    return toast.present();
+  }
+
+  toastUnsuccess() {
+    const toast = document.createElement("ion-toast");
+    toast.message = "Non hai selezionato alcun avatar!";
+    toast.duration = 2000;
+    toast.position = "top";
+    toast.style.fontSize = "20px";
+    toast.color = "danger";
+    toast.style.textAlign = "center";
+    document.body.appendChild(toast);
+    return toast.present();
+  }
+
+  stampaUrl(Url, tipo, index) {
+    //Controllo i valori
+    console.log(Url, index);
+    this.avatar = Url;
+    if (this.elementID !== undefined) {
+      //Rimuovo lo stile se applicato ad un altro ion avatar
+      let old = document.getElementById(this.elementID);
+      old.style.backgroundColor = "";
+    }
+    if (tipo === "colored") {
+      if (this.elementID !== "coloredAvatar" + index) {
+        this.elementID = "coloredAvatar" + index;
+        //Prendo la classe relativa all'avata cliccato
+        let elem = document.getElementById(this.elementID);
+        //Styling dell'elemento selezionato
+        elem.style.backgroundColor = "#ffffff";
+      } else {
+        this.elementID = undefined;
+        this.avatar = "";
+      }
+    } else {
+      if (this.elementID !== "linedAvatar" + index) {
+        this.elementID = "linedAvatar" + index;
+        //Prendo la classe relativa all'avata cliccato
+        let elem = document.getElementById(this.elementID);
+        //Styling dell'elemento selezionato
+        elem.style.backgroundColor = "#ffffff";
+      } else {
+        this.elementID = undefined;
+        this.avatar = "";
+      }
+    }
+  }
 }

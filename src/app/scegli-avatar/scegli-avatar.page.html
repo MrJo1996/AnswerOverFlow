@@ -1,21 +1,37 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>scegli_avatar</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content padding fixed class="bg-class" id="fixed">
+  <!--  <era div class='background-container'></div> -->
+  <div id='stars'></div>
+  <div id='stars2'></div>
+  <div id='stars3'></div>
 
-<ion-content>
+  <p>
+    <ion-text class="textTitleBIG">Avatar disponibili</ion-text>
+  </p>
+<div style="text-align: center">
+  <ion-button color="light" style="margin:auto" (click)="routeToBio()">Salta</ion-button>
+</div>
+
+  <p>Normali</p>
   <div class="wrapper">
-    <ion-avatar *ngFor="let colored of colorFullfilled; index as i" id="coloredAvatar{{i}}" (click)="stampaUrl(colored, 'colored', i)">
+    <ion-avatar *ngFor="let colored of colorFullfilled; index as i" id="coloredAvatar{{i}}"
+      (click)="stampaUrl(colored, 'colored', i)">
       <img src={{colored}}>
     </ion-avatar>
   </div>
 
-  <p>Separatore</p>
-
+  <p>Blue</p>
   <div class="wrapper">
-    <ion-avatar *ngFor="let lined of linesFilled; index as i" id="linedAvatar{{i}}" (click)="stampaUrl(lined, 'lined', i)">
+    <ion-avatar *ngFor="let lined of linesFilled; index as i" id="linedAvatar{{i}}"
+      (click)="stampaUrl(lined, 'lined', i)">
       <img src={{lined}}>
     </ion-avatar>
   </div>
+  <ion-grid fixed class="grid">
+    <div>
+      <ion-button expand="block" slot="start" color="primary" size="large" (click)="avatarScelto()">
+        Prosegui
+      </ion-button>
+    </div>
+    </ion-grid>
+  
 </ion-content>

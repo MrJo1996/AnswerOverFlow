@@ -68,9 +68,10 @@ export class BioPage implements OnInit {
   }
   async postRegistrazione() {
     this.utente=this.dataService.utente;
-    this.apiService.registrazione(this.utente['0'],this.utente['1'],this.utente['2'],this.utente['3'],this.utente['4'],this.utente['5']).then(
+    this.apiService.registrazione(this.utente['0'],this.utente['1'],this.utente['2'],this.utente['3'],this.utente['4'],this.utente['5'],this.utente['6']).then(
       (result) => {
-        console.log('Inserimento avvenuto con successo:', this.utente['0'],this.utente['1'],this.utente['2'],this.utente['3'],this.utente['4'],this.utente['5']);
+        console.log('Inserimento avvenuto con successo:', this.utente['0'],this.utente['1'],this.utente['2'],this.utente['3'],this.utente['4'],this.utente['5']
+        , this.utente['6']);
         this.router.navigate(['/benvenuto']);
       },
       (rej) => {
