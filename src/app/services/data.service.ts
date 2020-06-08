@@ -36,7 +36,9 @@ export class DataService {
     this.utente['5'] = bio;
   }
   setRefreshIndex(refresh_index: boolean){
-    this.refresh_index = refresh_index;
+    this.refresh_index = refresh_index;}
+  setAvatarUtente(avatar: string) {
+    this.utente['6'] = avatar;
   }
   setPopoverModifica(index: boolean){
     this.popover_modifica = index;

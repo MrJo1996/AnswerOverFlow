@@ -183,7 +183,7 @@ export class RegistrazionePage implements OnInit {
 
   clickRegistrazione() {
     this.dataService.setUtente(this.email, this.username, this.password, this.nome, this.cognome, this.bio);
-    this.router.navigate(['bio']);
+    this.router.navigate(['scegli-avatar']);
     console.log(this.dataService.utente);
 
   }

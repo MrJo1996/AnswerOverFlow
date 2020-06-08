@@ -480,14 +480,15 @@ export class ApiService {
 
   }
 
-  registrazione(email: string, username: string, password: string, nome: string, cognome: string, bio: string) {
+  registrazione(email: string, username: string, password: string, nome: string, cognome: string, bio: string, avatar:string) {
     const body = {
       email,
       username,
       password,
       nome,
       cognome,
-      bio
+      bio,
+      avatar
     };
     return new Promise((resolve, reject) => {
       this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/registrazione', body).subscribe(
