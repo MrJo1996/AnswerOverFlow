@@ -1,35 +1,40 @@
- 
-<ion-content padding class="background">
-  <div align="right">
-    <ion-button (click)="buttonsaltaClick()" color="primary">
-    <ion-text >Salta</ion-text>
-   </ion-button>
+<ion-content padding fixed class="bg-class" id="fixed">
+  <!--  <era div class='background-container'></div> -->
+  <div id='stars'></div>
+  <div id='stars2'></div>
+  <div id='stars3'></div>
+
+  <div align="center" style="margin-top:10px; margin-bottom:10px">
+    <ion-text class="textTitleBIG">
+      Biografia
+    </ion-text>
   </div>
   <div align="center">
-  <ion-text class="textTitleBIG">
-    Inserisci una biografia
-  </ion-text>
+    <ion-text class="textTitle">
+      Inizia subito a farti conoscere alla community inserendo una biografia, potrai modificarla in qualunque momento.
+    </ion-text>
   </div>
-  <div align="center">
-  <ion-text class="textTitle">
-  Inizia subito a farti conoscere alla community inserendo una biografia, potrai modificarla in qualunque momento.  
-  </ion-text>
-</div>
   <ion-card>
     <div class="bio">
-      <ion-textarea [(ngModel)]="bio" placeholder="es. Sono laureato in scienze geopolitiche (MAX 200 caratteri)"></ion-textarea>
+      <ion-textarea [(ngModel)]="bio" placeholder="es. Sono laureato in scienze geopolitiche (MAX 200 caratteri)">
+      </ion-textarea>
     </div>
   </ion-card>
+  <div style="text-align: center; margin-top:10px">
+    <ion-button color="light" style="margin:auto" (click)="buttonsaltaClick()">Salta</ion-button>
+  </div>
+  <ion-grid fixed class="grid">
     <div>
       <ion-button expand="block" slot="start" color="primary" size="large" (click)="buttonClick()">
         Registrati
       </ion-button>
     </div>
-    <div align="center">
-      <ion-text (click)="goback()" color="primary">
-        <u>
-          Vuoi modificare i tuoi dati?
-        </u>
-      </ion-text>
-    </div>
+  </ion-grid>
+  <div align="center">
+    <ion-text (click)="goback()" color="primary">
+      <u>
+        Vuoi modificare i tuoi dati?
+      </u>
+    </ion-text>
+  </div>
 </ion-content>

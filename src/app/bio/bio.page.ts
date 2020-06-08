@@ -14,7 +14,7 @@ import {NavController} from "@ionic/angular";
 export class BioPage implements OnInit {
   bio;
   utente = {};
-  constructor(private navCtrl:NavController,private dataService: DataService,public apiService: ApiService, public alertController: AlertController, private pickerController: PickerController, private router: Router) { }
+  constructor(private navCtrl:NavController,private storage: Storage,private dataService: DataService,public apiService: ApiService, public alertController: AlertController, private pickerController: PickerController, private router: Router) { }
   ngOnInit() {
     this.utente = this.dataService.utente;
   }
@@ -68,10 +68,13 @@ export class BioPage implements OnInit {
   }
   async postRegistrazione() {
     this.utente=this.dataService.utente;
+    console.log(this.utente)
     this.apiService.registrazione(this.utente['0'],this.utente['1'],this.utente['2'],this.utente['3'],this.utente['4'],this.utente['5'],this.utente['6']).then(
       (result) => {
         console.log('Inserimento avvenuto con successo:', this.utente['0'],this.utente['1'],this.utente['2'],this.utente['3'],this.utente['4'],this.utente['5']
         , this.utente['6']);
+        this.storage.set("utente", this.utente[0]);
+        this.storage.set("session", true);
         this.router.navigate(['/benvenuto']);
       },
       (rej) => {
