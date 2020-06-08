@@ -19,6 +19,7 @@ export class AppComponent implements OnInit {
   showSplash = true; //splash
 
   utenteLogged = true;
+  avatar: string;
 
   public selectedIndex = -1;
   public selectedIndexAccount = -1;
@@ -178,12 +179,12 @@ export class AppComponent implements OnInit {
       if (!data) {
         this.accountPages[2].view = false;
         this.accountPages[3].view = true;
-
+        this.avatar = ""
         this.utenteLogged = false;
       } else {
         this.accountPages[2].view = true;
         this.accountPages[3].view = false;
-
+        this.avatar = this.dataService.getAvatar()
         this.utenteLogged = true;
       }
     });
