@@ -24,10 +24,13 @@ export class SearchResultsPage implements OnInit {
 
   categorieSondaggi= [];
 
+keywordToSearch;
 
   sondaggiButton;
   domandeButton = true;
   utentiButton;
+
+  
 
 
   constructor(private dataService: DataService, private router: Router, private apiService: ApiService) { }
@@ -129,15 +132,12 @@ export class SearchResultsPage implements OnInit {
     this.sondaggiButton = false;
     this.domandeButton = true;
     this.utentiButton = false;
-    //TODO stampare a video ris domande
   
   }
 
   viewSondaggi() {
 
     this.sondaggiButton = true;
-
-    //console.log('bottone true');
     this.domandeButton = false;
     this.utentiButton = false;
 
@@ -181,4 +181,16 @@ export class SearchResultsPage implements OnInit {
         }
       );
   }
+
+  ricerca() {
+    console.log("Input: ", this.keywordToSearch);
+
+    this.dataService.setKeywordToSearch(this.keywordToSearch);
+    this.ionViewWillEnter();
+
+  }
+
+
+  
 }
+

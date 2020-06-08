@@ -1,39 +1,22 @@
 <ion-header>
 
-  <ion-toolbar>
-    <ion-button slot="start" fill="clear" ion-button icon-only (click)="backButton()">
-      <ion-icon name="arrow-back-outline"></ion-icon>
-    </ion-button>
+  <ion-searchbar placeholder={{keyRicerca}} [(ngModel)]="keywordToSearch"
+      (search)="ricerca($event)"></ion-searchbar>
 
-    <ion-title>Risultati della ricerca per</ion-title>
-    <ion-label>
-      <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<u><i>{{keyRicerca}}</i></u></p>
-    </ion-label>
 
-  </ion-toolbar>
-  <ion-grid>
-    <ion-row>
-      <ion-col size="4">
-        <ion-button expand="full" class="ion-text-wrap" (click)="viewDomande()">
-          Domande
-          <ion-text class="colorBlack">({{numDomande}})</ion-text>
-        </ion-button>
-      </ion-col>
-      <ion-col size="4">
-        <ion-button expand="full" class="ion-text-wrap" (click)="viewSondaggi()">
-          Sondaggi
-          <ion-text class="colorBlack">({{numSondaggi}})</ion-text>
-        </ion-button>
-      </ion-col>
-      <ion-col size="4">
-        <ion-button expand="full" class="ion-text-wrap" (click) = "viewUtenti()">
-          Utenti
-          <ion-text class="colorBlack">({{numUtenti}})</ion-text>
-        </ion-button>
-      </ion-col>
-      <ion-col size="4"></ion-col>
-    </ion-row>
-  </ion-grid>
+      <ion-segment (ionChange)="segmentChanged($event)" value="domande">
+        <ion-segment-button value="domande" (click)="viewDomande()">
+          <ion-label>Domande({{numDomande}})</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="sondaggi" (click)="viewSondaggi()">
+          <ion-label>Sondaggi({{numSondaggi}})</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="utenti" (click) = "viewUtenti()">
+          <ion-label>Utenti({{numUtenti}})</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+
+
 
 </ion-header>
 
@@ -106,7 +89,3 @@
 
 
 </ion-content>
-
-
-
-}
