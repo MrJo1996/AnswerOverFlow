@@ -187,6 +187,7 @@ keywordToSearch;
 
     this.dataService.setKeywordToSearch(this.keywordToSearch);
     this.ionViewWillEnter();
+    console.log("aa");
 
   }
 
