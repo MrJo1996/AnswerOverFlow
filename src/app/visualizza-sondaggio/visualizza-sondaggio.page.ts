@@ -9,9 +9,6 @@ import {NavController} from "@ionic/angular";
 import { element } from 'protractor';
 import { Storage } from "@ionic/storage";
 
-enum scelteEnum{};
-
-
 @Component({
   selector: 'app-visualizza-sondaggio',
   templateUrl: './visualizza-sondaggio.page.html',
@@ -67,6 +64,9 @@ export class VisualizzaSondaggioPage implements OnInit {
     this.visualizzaScelte();
     this.giaVotato();
     this.getUserSondaggio();
+    console.log("mail utente corrente: ", this.currentUser);
+    
+
     if(this.distanceTimer === 0)
       this.isSondaggioActive = false;
 
@@ -117,6 +117,7 @@ this.codice_sondaggio= this.dataService.codice_sondaggio;
         this.codice_categoria = sondaggio['data']['0'].cod_categoria;
         this.mappingIncrement(sondaggio['data']['0'].timer);
         console.log('CODICE CATEGORIA: ', this.sondaggio);
+        console.log("Email utente del sondaggio: ", this.sondaggioUser);
         this.visualizzaCategoria();
       },
       (rej) => {
@@ -186,7 +187,6 @@ this.codice_sondaggio= this.dataService.codice_sondaggio;
 
   async giaVotato() {
     
-
     this.currentUser = this.dataService.emailUtente;
     this.codice_sondaggio= this.dataService.codice_sondaggio;
 
@@ -207,6 +207,7 @@ this.codice_sondaggio= this.dataService.codice_sondaggio;
     );
 
   }
+
 
   async inviaVoto(){
         this.codice_scelta_selezionata = this.scelte[this.index_scelta_selezionata]['codice_scelta'];
@@ -237,10 +238,7 @@ this.codice_sondaggio= this.dataService.codice_sondaggio;
 
           }
 
-          
-
-
-          
+        
 
  async goBack(){
     if(this.hasVoted === true){
@@ -281,9 +279,6 @@ this.codice_sondaggio= this.dataService.codice_sondaggio;
     this.hasVoted = true;
     this.index_scelta_selezionata = i;
     console.log();
-
- 
-   
   }
 
   async confermaVoto(scelta){
@@ -473,12 +468,6 @@ this.codice_sondaggio= this.dataService.codice_sondaggio;
     }, 1000);
   
   }
-  
-  
-  
-  
-  
-  
 
 }
 

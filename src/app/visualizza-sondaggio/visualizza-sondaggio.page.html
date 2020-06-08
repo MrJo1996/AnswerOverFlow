@@ -25,16 +25,18 @@
 
   <ion-card class = "backgrounds">    
     <ion-card-header>
-      <ion-toolbar class="backgrounds">
-          <ion-icon   class = "alarm_style" name="alarm-outline" slot= "start"></ion-icon>
-       <!--     <ion-label class = "textTitle">{{sondaggio.timer}}</ion-label> -->
-           <ion-input id="timeLeft" readonly placeholder=" " color="medium"></ion-input>
-          <ion-button slot="end" expand="block" *ngIf="currentUser===sondaggio.cod_utente" (click) = "popUpEliminaSondaggio()" fill="clear">
-            <ion-icon name="trash-sharp" color="primary" class = "icons_generic_style"></ion-icon>
-          </ion-button>
-          <ion-button slot="end" *ngIf="currentUser===sondaggio.cod_utente" (click) ="goModificaDomanda()" expand="block" fill="clear">
-            <ion-icon name="hammer-sharp" color="primary" class = "icons_generic_style"></ion-icon>
-          </ion-button>
+
+      <!--
+        <ion-toolbar class="backgrounds">
+              <ion-icon   class = "alarm_style" name="alarm-outline" slot= "start"></ion-icon>
+     
+              <ion-input id="timeLeft" readonly placeholder=" " color="medium"></ion-input>
+              <ion-button slot="end" expand="block" *ngIf="currentUser===sondaggio.cod_utente" (click) = "popUpEliminaSondaggio()" fill="clear">
+                <ion-icon name="trash-sharp" color="primary" class = "icons_generic_style"></ion-icon>
+              </ion-button>
+              <ion-button slot="end" *ngIf="currentUser===sondaggio.cod_utente" (click) ="goModificaDomanda()" expand="block" fill="clear">
+                <ion-icon name="hammer-sharp" color="primary" class = "icons_generic_style"></ion-icon>
+              </ion-button>
 
         
         </ion-toolbar>
@@ -44,12 +46,30 @@
           </ion-avatar>
           <ion-label class = "username_text_style">{{username}}</ion-label>
 
-        </ion-toolbar>
+        </ion-toolbar> -->
+
+        <ion-row>
+          <ion-icon   class = "alarm_style" name="alarm-outline" slot= "start"></ion-icon>
+     
+              <ion-input id="timeLeft" readonly placeholder=" " color="medium"></ion-input>
+              <ion-button slot="end" expand="block" *ngIf="currentUser===sondaggio.cod_utente" (click) = "popUpEliminaSondaggio()" fill="clear">
+                <ion-icon name="trash-sharp" color="primary" class = "icons_generic_style"></ion-icon>
+              </ion-button>
+              <ion-button slot="end" *ngIf="currentUser===sondaggio.cod_utente" (click) ="goModificaDomanda()" expand="block" fill="clear">
+                <ion-icon name="hammer-sharp" color="primary" class = "icons_generic_style"></ion-icon>
+              </ion-button>
+        </ion-row>
+        
+        <ion-row *ngIf="currentUser!==sondaggio.cod_utente">
+          <ion-avatar  slot="start" class="icon-avatar" >
+            <img src="https://i.ytimg.com/vi/mCf6UGT3HrA/maxresdefault.jpg">
+          </ion-avatar>
+          <ion-label class = "username_text_style">{{username}}</ion-label>
+
+        </ion-row>
 
       <ion-card-title class = "textTitleBIG">{{sondaggio.titolo}}</ion-card-title>
     </ion-card-header>
-
-
 
     <ion-card-content>
         <p class= "textSimple">{{descrizione}}</p>

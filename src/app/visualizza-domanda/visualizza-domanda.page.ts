@@ -55,6 +55,8 @@ export class VisualizzaDomandaPage implements OnInit {
   categoria = {};
   codice_categoria: number;
 
+  codice_valutazione;
+
   constructor(
     private navCtrl: NavController,
     private dataService: DataService,
@@ -492,7 +494,10 @@ export class VisualizzaDomandaPage implements OnInit {
     if(this.likes[i]===1  ){
       this.risposte[i].num_like = this.risposte[i].num_like - 1;
       this.likes[i] = -1;
-      this.cancellaValutazione(codice_risposta);
+      this.cancellaValutazione(this.codice_valutazione);
+      
+      console.log(this.codice_valutazione);
+
       this.togliLike(codice_risposta);
     }
     // VUOLE METTERE IL LIKE MA GIA' C'E' IL DISLIKE
@@ -500,9 +505,12 @@ export class VisualizzaDomandaPage implements OnInit {
       this.risposte[i].num_like = this.risposte[i].num_like + 1;
       this.risposte[i].num_dislike = this.risposte[i].num_dislike - 1;
       this.likes[i] = 1;
-      this.cancellaValutazione(codice_risposta);
+      this.cancellaValutazione(this.codice_valutazione);
       this.togliDislike(codice_risposta);
       this.inserisciValutazione(codice_risposta, 1);
+      this.cercaValutazione(this.currentMailUser, codice_risposta);
+      console.log(this.codice_valutazione);
+
       this.apiService.modificaNumLike(codice_risposta).then(
         (result) => {
           
@@ -518,6 +526,8 @@ export class VisualizzaDomandaPage implements OnInit {
       this.risposte[i].num_like = this.risposte[i].num_like + 1;
       this.likes[i] = 1;
       this.inserisciValutazione(codice_risposta, 1);
+      this.cercaValutazione(this.currentMailUser, codice_risposta);
+      console.log(this.codice_valutazione);
       this.apiService.modificaNumLike(codice_risposta).then(
         (result) => {
           
@@ -537,8 +547,10 @@ export class VisualizzaDomandaPage implements OnInit {
   if(this.likes[i]===2){
     this.risposte[i].num_dislike = this.risposte[i].num_dislike - 1;
     this.likes[i] = -1;
-    this.cancellaValutazione(codice_risposta);
+    this.cancellaValutazione(this.codice_valutazione);
     this.togliDislike(codice_risposta);
+
+    console.log(this.codice_valutazione);
 
   } 
   // VUOLE METTERE IL DISLIKE MA GIA' C'E' IL LIKE
@@ -546,9 +558,12 @@ export class VisualizzaDomandaPage implements OnInit {
     this.risposte[i].num_like = this.risposte[i].num_like - 1;
     this.risposte[i].num_dislike = this.risposte[i].num_dislike + 1;
     this.likes[i] = 2;
-    this.cancellaValutazione(codice_risposta);
+    this.cancellaValutazione(this.codice_valutazione);
     this.togliLike(codice_risposta);
     this.inserisciValutazione(codice_risposta, 2);
+    this.cercaValutazione(this.currentMailUser, codice_risposta);
+
+    console.log(this.codice_valutazione);
     this.apiService.modificaNumDislike(codice_risposta).then(
       (result) => { 
         
@@ -563,6 +578,9 @@ export class VisualizzaDomandaPage implements OnInit {
     this.risposte[i].num_dislike = this.risposte[i].num_dislike + 1;
     this.likes[i] = 2;
     this.inserisciValutazione(codice_risposta, 2);
+    this.cercaValutazione(this.currentMailUser, codice_risposta);
+
+    console.log(this.codice_valutazione);
     this.apiService.modificaNumDislike(codice_risposta).then(
       (result) => { 
         
@@ -575,9 +593,11 @@ export class VisualizzaDomandaPage implements OnInit {
 
 
 
-  async inserisciValutazione(cod_risposta, tipo_like){
+   inserisciValutazione(cod_risposta, tipo_like){
     this.apiService.inserisciValutazione(cod_risposta, this.currentMailUser, tipo_like).then(
       (result) => { 
+
+       
       },
       (rej) => {
         console.log('Modifica non effetutata'); 
@@ -588,9 +608,16 @@ export class VisualizzaDomandaPage implements OnInit {
 
 
 
-  async cercaValutazione(cod_utente, cod_risposta){
+   cercaValutazione(cod_utente, cod_risposta){
     this.apiService.controllaGiaValutatoRisposta(cod_utente, cod_risposta).then(
       (result) => { 
+       
+        if(result["0"]["data"] !== null){
+          this.codice_valutazione =  result["0"]["data"]["0"]["codice_valutazione"];      
+          console.log("valutazione effettuata: ", result);
+          console.log("codice valutazione", this.codice_valutazione)  ;
+                }
+
         if(result["0"]["data"] === null){
           this.likes.push(-1);
         }
@@ -609,8 +636,8 @@ export class VisualizzaDomandaPage implements OnInit {
 
 
 
-  async cancellaValutazione(cod_risposta) {
-    this.apiService.rimuoviValutazione(cod_risposta, this.currentMailUser).then(
+   cancellaValutazione(codice_valutazione) {
+    this.apiService.rimuoviValutazione(codice_valutazione).then(
       (risultato) => {
         console.log('eliminata');
 
@@ -623,7 +650,7 @@ export class VisualizzaDomandaPage implements OnInit {
 
 
 
-  async togliLike(codice_risposta){
+   togliLike(codice_risposta){
     this.apiService.togliLike(codice_risposta).then(
       (risultato) => {
         console.log('eliminata');
@@ -637,7 +664,7 @@ export class VisualizzaDomandaPage implements OnInit {
 
 
 
-  async togliDislike(codice_risposta){
+   togliDislike(codice_risposta){
     this.apiService.togliDislike(codice_risposta).then(
       (risultato) => {
         console.log('eliminata');

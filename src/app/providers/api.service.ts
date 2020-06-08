@@ -931,6 +931,25 @@ export class ApiService {
   }
 
 
+  rimuoviValutazione(codice_valutazione: Number) {
+    return new Promise((resolve, reject) => {
+      var url = "http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/eliminaVal/";
+      var urlAndCode = url.concat(codice_valutazione.toString());
+      this.http.delete(urlAndCode).subscribe(
+        data => {
+          let esito = data['message'];
+          console.log('esito cancella valutazione: ', esito, urlAndCode);
+          resolve(esito);
+        },
+        (err) => {
+          reject();
+          console.log('esito andato a : ', urlAndCode, err);
+        }
+      );
+    });
+  }
+
+/*
   rimuoviValutazione(cod_risposta: Number, cod_utente: string) {
     return new Promise((resolve, reject) => {
       var url = "http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/eliminaVal/";
@@ -949,8 +968,7 @@ export class ApiService {
         }
       );
     });
-  }
-
+  }*/
 
   
 
