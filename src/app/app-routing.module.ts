@@ -126,7 +126,11 @@ const routes: Routes = [
   {
     path: 'scegli-avatar',
     loadChildren: () => import('./scegli-avatar/scegli-avatar.module').then( m => m.ScegliAvatarPageModule)
+  },  {
+    path: 'modifica-avatar',
+    loadChildren: () => import('./modifica-avatar/modifica-avatar.module').then( m => m.ModificaAvatarPageModule)
   }
+
 
 
 

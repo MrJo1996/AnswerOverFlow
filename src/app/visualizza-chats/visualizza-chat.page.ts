@@ -48,7 +48,7 @@ export class VisualizzaChatPage implements OnInit {
 
   //Quando è stata caricata la page, si possono usare le funzioni JQuery, perchè gli "#id" vengono trovati
   ionViewDidEnter() {
-    setTimeout(removeLoader, 500); //wait for page load PLUS two seconds.
+    setTimeout(removeLoader, 2000); //wait for page load PLUS two seconds.
     function removeLoader() {
       $("#loader").fadeOut(500, function () {
         // fadeOut complete. Remove the loading div
@@ -120,6 +120,7 @@ export class VisualizzaChatPage implements OnInit {
     this.servicePost.postService(postData, this.viewUserUrl).then(
       (data) => {
         this.chat[i]["username"] = data.Profilo.data[0].username;
+        this.chat[i]["avatar"] = data.Profilo.data[0].avatar;
         this.selectChatMessage(i);
       },
       (err) => {
