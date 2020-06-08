@@ -54,7 +54,7 @@ export class AppComponent implements OnInit {
 
   public accountPages = [
     {
-      title: "Visualizza profilo",
+      title: "Profilo",
       url: "/visualizza-profilo",
       icon: "person",
       view: true,
