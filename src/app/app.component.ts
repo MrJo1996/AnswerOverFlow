@@ -51,6 +51,12 @@ export class AppComponent implements OnInit {
       icon: "chatbubble-ellipses",
       view: true,
     },
+    {
+      title: "Ricerca",
+      url: "/advanced-search",
+      icon: "search",
+      view: true,
+    },
   ];
 
   public accountPages = [
