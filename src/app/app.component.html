@@ -10,20 +10,21 @@
   <ion-split-pane contentId="main-content">
    
     <ion-menu contentId="main-content" type="overlay">
-      
+
+     
       <ion-content>
-<div style="background-color: var(--ion-background-color);  width: 100%; height: 90px; border-radius: 0px 0px 144px 144px; padding-top: 5px;" >
-          <ion-img id=logo src = "/assets/img/logo AnswerOverFlow.png" style="height: 80px; width: 80px; margin:0% 35% ;" class="ion-align-self-center"></ion-img>
-</div>
 
-        <ion-list id="inbox-list">
-          
+        <div style="position: -webkit-sticky; position: sticky; top: 0; background-color: var(--ion-item-background);  width: 100%; height: 144px; border-radius: 0px 0px 144px 144px; padding-top: 10px;" >
+          <ion-img id=logo src = "/assets/img/logo AnswerOverFlow.png" style="height: 100px; width: 100px; margin:0px 94px ;" class="ion-align-self-center"></ion-img>
+        </div>
 
-          <ion-card style="border-radius: 27px; margin-bottom: 10%;">
+      <ion-card style="border-radius: 27px; margin-bottom: 10%;">
             <ion-toolbar style="align-items: center;">
               <ion-avatar style="width: 50px; height: 50px; margin-left: 5px;  margin-right: 10px;" slot="start"
                 (click)="goToProfile()">
-                <img
+
+                <ion-icon  *ngIf="!avatar" name="person-circle-outline" style="width: 100%; height: 100%;"></ion-icon>
+                <img *ngIf="avatar"
                   src={{avatar}}>
               </ion-avatar>
 
@@ -33,6 +34,7 @@
 
             </ion-toolbar>
           </ion-card>
+          <ion-list id="inbox-list">
 
           <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
             <ion-item *ngIf="p.view" (click)="switch(i,'app')" routerDirection="root" lines="none" detail="false"
@@ -54,11 +56,12 @@
               </ion-item>
             </ion-menu-toggle>
           </div>
+          
         </ion-list>
 
 
         <ion-button (click)="goToInfo()" size="small" expand="full"
-          style="margin-top: 5rem; position: absolute; bottom: 20px;" shape="round" strong="false" color="light">
+          style="margin-top: 5rem; position: fixed; bottom: 20px;" shape="round" strong="false" color="light">
           <ion-icon slot="start" [ios]="'information-circle' + '-outline'" [md]="'information-circle' + '-sharp'">
           </ion-icon>
           Info
