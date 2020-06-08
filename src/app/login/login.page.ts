@@ -35,7 +35,7 @@ export class LoginPage implements OnInit {
   constructor(
     public apiService: ApiService,
     public toastController: ToastController,
-    private dataService: DataService,
+    public dataService: DataService,
     private service: PostServiceService,
     private router: Router,
     private navctrl: NavController,
@@ -158,6 +158,8 @@ export class LoginPage implements OnInit {
       this.dataService.setUsername(data.data[0]["username"]);
       this.dataService.setNome(data.data[0]["nome"]);
       this.dataService.setCognome(data.data[0]["cognome"]);
+      this.dataService.setAvatarUtente(data.data[0]["avatar"]);
+      console.log(this.dataService.getAvatar())
 
       this.storage.set("utente", data.data[0]);
       this.storage.set("session", true);

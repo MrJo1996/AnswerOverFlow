@@ -245,8 +245,9 @@ export class HomePage implements OnInit {
     this.router.navigate(['/visualizza-sondaggio']);
   }
   //link a visualizza profilo
-  clickProfilo(domanda_user) {
-    this.dataService.setEmailOthers = domanda_user;
+  clickProfilo(cod_utente) {
+    this.dataService.setEmailOthers(cod_utente);
+    console.log(this.dataService.setEmailOthers);
     this.router.navigate(['/visualizza-profilo']);
   }
   //link a modifica domanda

@@ -129,6 +129,10 @@ const routes: Routes = [
   },  {
     path: 'modifica-avatar',
     loadChildren: () => import('./modifica-avatar/modifica-avatar.module').then( m => m.ModificaAvatarPageModule)
+  },
+  {
+    path: 'advanced-search',
+    loadChildren: () => import('./advanced-search/advanced-search.module').then( m => m.AdvancedSearchPageModule)
   }
 
 

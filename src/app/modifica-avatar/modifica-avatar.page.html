@@ -1,9 +1,36 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>modifica-avatar</ion-title>
-  </ion-toolbar>
+  <ion-toolbar class="backgroundsSecondaryItem">
+   
+      <ion-button  slot="start" expand="block" fill="clear" (click)="goBack()" class="msg-btn">
+        <ion-icon color="primary" slot="start" slot="icon-only" name="arrow-back-outline"></ion-icon>
+        </ion-button>
+     
+      <ion-title style="font-size: x-large; text-align: center;"><b>Modifica avatar</b></ion-title>
+      
+      <ion-button  slot="end" expand="block" fill="clear" (click)="avatarScelto()">
+        <ion-icon color="primary" slot="end" slot="icon-only" name="checkmark-sharp"></ion-icon>
+        </ion-button>
+     
+    </ion-toolbar>
 </ion-header>
 
 <ion-content>
+
+  <p>Normali</p>
+  <div class="wrapper">
+    <ion-avatar *ngFor="let colored of colorFullfilled; index as i" id="coloredAvatar{{i}}"
+      (click)="stampaUrl(colored, 'colored', i)">
+      <img src={{colored}}>
+    </ion-avatar>
+  </div>
+
+  <p>Blue</p>
+  <div class="wrapper">
+    <ion-avatar *ngFor="let lined of linesFilled; index as i" id="linedAvatar{{i}}"
+      (click)="stampaUrl(lined, 'lined', i)">
+      <img src={{lined}}>
+    </ion-avatar>
+  </div>
+  
 
 </ion-content>

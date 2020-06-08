@@ -4,43 +4,51 @@
   <div id='stars2'></div>
   <div id='stars3'></div>
 
-    <div>
-      <div class="logo"></div>
-      <div align="center">
-        <h1 class="textTitleBIG">
-          {{codice_utente}} benvenuto nella community di AnswerOverFLow!
-        </h1>
-        <h2 class="textTitle">
-          La registrazione è avvenuta con successo.
-        </h2>
-        <p class="textSimple">
-          Inizia subito ad interagire con la community!
-        </p>
-      </div>
-        <ion-row>
-          <ion-col>
-      <div>
-        <ion-button expand="block" slot="start" color="light" size="large" (click)="home()">
-          <ion-icon name="home" color="primary"></ion-icon>
-          <ion-text color="primary">Vai alla Home</ion-text>
-        </ion-button>
-      </div>
-    </ion-col>
-    <ion-col>
-      <div>
-        <ion-button expand="block" slot="start" color="light" size="large" (click)="domanda()">
-          <ion-icon name="add" color="primary"></ion-icon>
-          <ion-text color="primary">Inserisci una domanda</ion-text>
-        </ion-button>
-      </div>
-    </ion-col>
-  </ion-row>
-    </div>
+  <div>
+    <div class="logo"></div>
     <div align="center">
-    <h3 class="textTitle" (click)="modificaProfilo()">
-      <u>
-      Vuoi modificare il tuo profilo?
-    </u>
-    </h3>
+      <h1 class="textTitleBIG">
+        {{codice_utente}} Benvenuto!
+      </h1>
+      <h2 class="textTitle">
+        La registrazione è avvenuta con successo.
+      </h2>
+      <p class="textSimple">
+        Inizia subito ad interagire con la community!
+      </p>
+    </div>
+
+
+    <ion-card>
+      <ion-segment class="segmentBG">
+        <ion-segment-button (click)="domanda()">
+          <ion-label>
+            <ion-icon name="add" color="primary"></ion-icon>
+            Nuova Domanda
+          </ion-label>
+        </ion-segment-button>
+        <ion-segment-button (click)="sondaggio()">
+          <ion-label>
+            <ion-icon name="add" color="primary"></ion-icon>
+            Nuovo Sondaggio
+          </ion-label>
+        </ion-segment-button>
+      </ion-segment>
+      <ion-segment class="segmentBG">
+        <ion-segment-button (click)="home()">
+          <ion-label>
+            <ion-icon name="home" color="primary"></ion-icon>
+            Vai alla Home
+          </ion-label>
+        </ion-segment-button>
+      </ion-segment>
+      <div style="bottom:0;" align="center">
+        <h3 class="textTitle" (click)="modificaProfilo()">
+          <u>
+            Vuoi modificare il tuo profilo?
+          </u>
+        </h3>
+      </div>
+    </ion-card>
   </div>
 </ion-content>

@@ -104,7 +104,7 @@ export class ScegliAvatarPage implements OnInit {
           handler: () => {
             let avatar = "https://drive.google.com/uc?export=view&id=19uMcjLvtO81SAQOcd2_qSTsDE5Mn6led";
             console.log("Confirm Okay");
-            this.dataService.setAvatarUtente(avatar);
+            this.dataService.setAvatar(avatar);
             this.router.navigate(["bio"]);
           },
         },
@@ -117,7 +117,7 @@ export class ScegliAvatarPage implements OnInit {
     if (this.avatar === "" || this.avatar === undefined) {
       this.toastUnsuccess();
     } else {
-      this.dataService.setAvatarUtente(this.avatar);
+      this.dataService.setAvatar(this.avatar);
       console.log(this.dataService.utente);
       this.router.navigate(["bio"]);
       this.toastSuccess();

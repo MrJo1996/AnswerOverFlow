@@ -1,14 +1,13 @@
 <ion-header>
 
  
-
-
   <ion-toolbar class="backgroundsSecondaryItem">
 
     <ion-button slot="start" expand="block" fill="clear" (click)="goBack()" class="msg-btn">
       <ion-icon color="primary" slot="start" slot="icon-only" name="arrow-back-outline"></ion-icon>
     </ion-button>
-    <ion-title style="font-size: 1.5rem; text-align: center;"><b>Account</b></ion-title>
+    <ion-title  *ngIf="userProfileId === 'undefined'" style="font-size: 1.5rem; text-align: center;"><b>Account</b></ion-title>
+    <ion-title  *ngIf="userProfileId !== 'undefined'" style="font-size: 1.5rem; text-align: center;"><b>Profilo utente</b></ion-title>
 
     
     <ion-button *ngIf="userProfileId === 'undefined'" slot="end"  expand="block" fill="clear" (click)="goToSettingProfile()">
@@ -21,18 +20,17 @@
   </ion-toolbar>
 </ion-header>
 
-
 <ion-content >
-  <ion-content *ngIf="profilo" style="--background: var(--ion-menumod-background);">
+  <ion-content *ngIf="profilo" style="--background: url('/assets/img/provaBack.png') no-repeat center center / cover;">
 
     <ion-card>
       <ion-icon class="profilePicture" name="person-circle-outline"></ion-icon>
-
+      
       <ion-item color="light" >
         <ion-icon name="happy-outline" slot="start"></ion-icon>
         <ion-label position="stacked">Username</ion-label>
         <ion-text>{{profilo?.username}}</ion-text>
-
+        <ion-button *ngIf="userProfileId !== 'undefined'" fill="clear" slot="end" (click)="showAlertView()"><ion-icon style="width: 25px; height: 25px;" name="alert-circle-outline" color="danger"></ion-icon> </ion-button>
       </ion-item>
 
      <!--  <ion-item color="light">
@@ -75,15 +73,15 @@
       Statistiche</ion-button>
       </ion-col>
     </ion-row>
-      <ion-row>
+     <!--  <ion-row>
         <ion-button size = "small" style="width: 100%;" (click)="showAlertView()" color="danger">Segnala
           Utente</ion-button>
-      </ion-row>
+      </ion-row> -->
     </ion-grid>
 
-    <ion-button  expand = "block" color="primary"  fill ="outline" (click)="stats()" style="margin-top: 20px;">
-      <ion-icon  slot="start" name="analytics"></ion-icon>
-      Statistiche</ion-button>
+    <ion-button  *ngIf="userProfileId === 'undefined'"  expand = "block" color="primary"  fill ="outline" (click)="stats()" style="margin-top: 20px;">
+      <ion-icon  slot="start" name="analytics"></ion-icon><b>
+      Statistiche</b></ion-button>
 
 
       <ion-fab vertical="bottom" horizontal="start"   slot="fixed" style="opacity: 70%; ">
