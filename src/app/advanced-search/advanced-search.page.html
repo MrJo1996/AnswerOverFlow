@@ -1,9 +1,82 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>advancedSearch</ion-title>
+  <ion-toolbar class="backgroundsSecondaryItem">
+
+    <ion-button slot="start" expand="block" fill="clear" (click)="goBack()" class="btnClass">
+      <ion-icon color="primary" slot="start" slot="icon-only" name="arrow-back-outline"></ion-icon>
+    </ion-button>
+
+    <ion-searchbar show-cancel-button="never" placeholder="Ricerca..." [(ngModel)]="keywordToSearch"
+      (search)="ricerca($event)">
+    </ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <ion-grid>
+    <!-- TIPO -->
+    <ion-card class="backgrounds">
+      <ion-list>
+        <ion-radio-group value="biff">
+          <ion-list-header>
+            <ion-label><u><strong>Tipo</strong></u></ion-label>
+          </ion-list-header>
 
+          <ion-item>
+            <ion-label>Domande</ion-label>
+            <ion-radio slot="start" (click)="clickDomanda()" checked="true"></ion-radio>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>Sondaggi</ion-label>
+            <ion-radio slot="start" (click)="clickSondaggio()"></ion-radio>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>Utenti</ion-label>
+            <ion-radio slot="start" (click)="clickUtente()"></ion-radio>
+          </ion-item>
+        </ion-radio-group>
+      </ion-list>
+    </ion-card>
+
+    <div *ngIf="!utentiBtn">
+
+      <!-- CATEGORIA -->
+      <ion-card class="backgrounds">
+        <ion-list>
+          <ion-list-header>
+            <ion-label><u><strong>Categoria</strong></u></ion-label>
+          </ion-list-header>
+          <ion-item lines="none" (click)="showCategoriaPicker()" class="itemClass">
+            <ion-label>
+              <ion-icon name="file-tray-full-outline" slot="start" style="width: 25px; height: 25px;"></ion-icon>
+            </ion-label>
+            <ion-text *ngIf="[categoriaView]==''" class="placeholder">Categoria</ion-text>
+            <ion-text *ngIf="[categoriaView]!=''" class="text">{{categoriaView}}</ion-text>
+            <ion-icon class="inner" name="chevron-down-outline"></ion-icon>
+          </ion-item>
+        </ion-list>
+      </ion-card>
+
+      <!-- STATO -->
+      <ion-card class="backgrounds">
+        <ion-list>
+          <ion-list-header>
+            <ion-label><u><strong>Stato</strong></u></ion-label>
+          </ion-list-header>
+          <ion-item>
+            <ion-label>Chiuso</ion-label>
+            <ion-checkbox (click)="toggleClose($event)" slot="end"></ion-checkbox >
+          </ion-item>
+
+          <ion-item>
+            <ion-label>Aperto</ion-label>
+            <ion-checkbox  (click)="toggleOpen($event)" slot="end"></ion-checkbox >
+          </ion-item>
+        </ion-list>
+      </ion-card>
+
+    </div>
+
+  </ion-grid>
 </ion-content>
