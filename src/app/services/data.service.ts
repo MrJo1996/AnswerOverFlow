@@ -41,10 +41,12 @@ export class DataService {
     this.utente['5'] = bio;
   }
 
-  setFilters(tipo: string, codCategoria: string, status: string) {
+  setFilters(tipo: string, codCategoria: string, status: string, filtered: boolean) {
     this.filters['tipo'] = tipo;
     this.filters['codCategoria'] = codCategoria;
     this.filters['status'] = status;
+    this.filters['isFiltered'] = filtered; //bool
+
   }
 
   setRefreshIndex(refresh_index: boolean) {

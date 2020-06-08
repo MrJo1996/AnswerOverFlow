@@ -22,7 +22,7 @@ export class AdvancedSearchPage implements OnInit {
   codCategoriaFilter;
   statusOpen: boolean = false;
   statusClosed: boolean = false;
-
+  isFiltered: boolean = false;
 
   constructor(
     private router: Router,
@@ -89,7 +89,7 @@ export class AdvancedSearchPage implements OnInit {
     console.log("CLICK Utente RADIO BTN")
     this.catFilter = "utente";
 
-    this.tipoFilter = "";
+    this.tipoFilter = "utente";
     this.codCategoriaFilter = "";
     this.statusOpen = false;
     this.statusClosed = false;
@@ -98,52 +98,46 @@ export class AdvancedSearchPage implements OnInit {
   clickDomanda() {
     this.utentiBtn = false;
     console.log("CLICK Domanda RADIO BTN")
-    this.catFilter = "domanda";
+    this.tipoFilter = "domanda";
   }
 
   clickSondaggio() {
     this.utentiBtn = false;
     console.log("CLICK Sondaggio RADIO BTN")
-    this.catFilter = "sondaggio";
+    this.tipoFilter = "sondaggio";
   }
 
   //STATUS
   toggleOpen() {
     this.statusOpen = !this.statusOpen;
-    console.log("checked Open: " + this.statusOpen);//it is working !!!
+    console.log("checked Open: " + this.statusOpen);
   }
 
 
   toggleClose() {
     this.statusClosed = !this.statusClosed;
-    console.log("checked Close: " + this.statusClosed);//it is working !!!
+    console.log("checked Close: " + this.statusClosed);
   }
 
   //RICERCA
   ricerca() {
-    /*   //Test params
-      console.log("Input: ", this.keywordToSearch);
-      console.log("cat filter ", this.catFilter);
-      console.log("tipo filter ", this.tipoFilter);
-      console.log("cod categoria filter ", this.codCategoriaFilter);
-      console.log("statusOpen filter ", this.statusOpen);
-      console.log("statusClosed filter ", this.statusClosed); */
-    var url;
-    switch (this.catFilter) {
-      case "domanda":
-        url = "ricercaDomandaKeyword";
-        console.log(url);
-        break;
-      case "utente":
-        url = "ricercaUserKeyword";
-        console.log(url);
-        break;
-      case "sondaggio":
-        url = "ricercaSondaggioKeyword";
-        console.log(url);
-        break;
-    }
+    /*  var url;
+     switch (this.catFilter) {
+       case "domanda":
+         url = "ricercaDomandaKeyword";
+         console.log(url);
+         break;
+       case "utente":
+         url = "ricercaUserKeyword";
+         console.log(url);
+         break;
+       case "sondaggio":
+         url = "ricercaSondaggioKeyword";
+         console.log(url);
+         break;
+     } */
 
+    //checkStatus
     if (this.statusClosed && this.statusOpen) {
       var status = "both";
     }
@@ -152,12 +146,19 @@ export class AdvancedSearchPage implements OnInit {
     }
     if (!this.statusClosed && this.statusOpen) {
       var status = "open";
+
     }
 
-    this.dataService.setFilters(this.tipoFilter, this.codCategoriaFilter, status);
+    this.isFiltered = true;
+    if (this.tipoFilter == "utente") {
+      console.log("HAI SCELTO UTENTE");
+      this.dataService.setFilters("utente", "", "", false);
+    } else {
+      this.dataService.setFilters(this.tipoFilter, this.codCategoriaFilter, status, this.isFiltered);
+    }
     this.dataService.setKeywordToSearch(this.keywordToSearch);
-
     console.log("Input: ", this.keywordToSearch);
+
     this.router.navigate(['/search-results']);
   }
 
@@ -169,5 +170,6 @@ export class AdvancedSearchPage implements OnInit {
     this.codCategoriaFilter = "";
     this.statusOpen = false;
     this.statusClosed = false;
+    this.isFiltered = false
   }
 }
