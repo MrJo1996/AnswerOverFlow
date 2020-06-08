@@ -145,8 +145,9 @@ export class AdvancedSearchPage implements OnInit {
     }
 
     this.dataService.setKeywordToSearch(this.keywordToSearch);
+    
+    console.log("Input: ", this.keywordToSearch);
     this.router.navigate(['/search-results']);
-
   }
 
   initFilters() {

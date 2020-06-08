@@ -28,6 +28,7 @@ export class DataService {
 
   //Var Ricerca
   keywordToSearch;
+  filters = [];
 
 
   constructor(private http: HttpClient) { }
@@ -39,12 +40,21 @@ export class DataService {
     this.utente['4'] = cognome;
     this.utente['5'] = bio;
   }
-  setRefreshIndex(refresh_index: boolean){
-    this.refresh_index = refresh_index;}
+
+  setFilters(tipo: string, codCategoria: string, status: string) {
+    this.filters['tipo'] = tipo;
+    this.filters['codCategoria'] = codCategoria;
+    this.filters['status'] = status;
+  }
+
+  setRefreshIndex(refresh_index: boolean) {
+    this.refresh_index = refresh_index;
+  }
+
   setAvatar(avatar: string) {
     this.utente['6'] = avatar;
   }
-  setPopoverModifica(index: boolean){
+  setPopoverModifica(index: boolean) {
     this.popover_modifica = index;
   }
   setCod_domanda(id_domanda: number) {
@@ -62,7 +72,7 @@ export class DataService {
   setCodice_chat(cod_chat: number) {
     this.codice_chat = cod_chat;
   }
-  setAvatarUtente(avatar: string){
+  setAvatarUtente(avatar: string) {
     this.avatar = avatar;
   }
 
@@ -86,7 +96,7 @@ export class DataService {
     this.session = session;
   }
 
-  setDomanda(domanda){
+  setDomanda(domanda) {
     this.cod_domanda = domanda.codice_domanda;
     this.user_domanda = domanda.cod_utente;
   }
@@ -94,7 +104,7 @@ export class DataService {
   getSession() {
     return this.session;
   }
-  getRefreshIndex(){
+  getRefreshIndex() {
     return this.refresh_index;
   }
   getCod_domanda() {
@@ -132,6 +142,10 @@ export class DataService {
   getKeywordToSearch() {
     return this.keywordToSearch;
   }
+
+  getFilters() {
+    return this.filters;
+  }
   //
 
   getUtente() {
@@ -161,10 +175,10 @@ export class DataService {
   getCognome() {
     return this.cognome;
   }
-  getUserDomanda(){
+  getUserDomanda() {
     return this.user_domanda;
   }
-  getCodDomanda(){
+  getCodDomanda() {
     return this.cod_domanda;
   }
 }
