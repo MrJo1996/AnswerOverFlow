@@ -14,6 +14,22 @@
 
 
 <ion-content class = "backgrounds">
+
+  <ion-fab *ngIf="currentUser===sondaggio.cod_utente" horizontal="end" vertical="top" slot="fixed" edge>
+    <ion-fab-button>
+      <ion-icon name="settings"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list>
+      <ion-fab-button color="light" (click) = "popUpEliminaDomanda()" >
+        <ion-icon name="trash-sharp" color="primary" class = "icons_generic_style" ></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button color="light" (click) ="  goModificaDomanda() ">
+        <ion-icon name="hammer-sharp" color="primary" class = "icons_generic_style"></ion-icon>
+      </ion-fab-button>
+     
+    </ion-fab-list>
+  </ion-fab>
+
   <ion-refresher *ngIf="votato === false" slot="fixed" (ionRefresh)="doNormalRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
@@ -29,12 +45,12 @@
         <ion-icon   class = "alarm_style" name="alarm-outline" slot= "start"></ion-icon>
    
             <!--<ion-input id="timeLeft" readonly placeholder=" " color="medium"></ion-input>-->
-            <ion-button  expand="block" *ngIf="currentUser===sondaggio.cod_utente" (click) = "popUpEliminaSondaggio()" fill="clear">
+            <!-- <ion-button  expand="block" *ngIf="currentUser===sondaggio.cod_utente" (click) = "popUpEliminaSondaggio()" fill="clear">
               <ion-icon name="trash-sharp" color="primary" class = "icons_generic_style"></ion-icon>
             </ion-button>
             <ion-button   *ngIf="currentUser===sondaggio.cod_utente" (click) ="goModificaDomanda()" expand="block" fill="clear">
               <ion-icon name="hammer-sharp" color="primary" class = "icons_generic_style"></ion-icon>
-            </ion-button>
+            </ion-button> -->
       </ion-row>
       
       <ion-row *ngIf="currentUser!==sondaggio.cod_utente">

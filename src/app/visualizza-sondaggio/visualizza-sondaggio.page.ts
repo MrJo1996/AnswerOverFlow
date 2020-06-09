@@ -90,6 +90,7 @@ export class VisualizzaSondaggioPage implements OnInit {
           handler: () => {
             console.log('sondaggio eliminato');
           this.cancellaSondaggio();
+          this.goBack();
           }
         },
         {
