@@ -545,7 +545,7 @@ async popupInvalidTitle(){
     }
   }
 
-
+   interval
   async countDown(incAnno, incMese, incGG, incHH, incMM) {
 
     var auxData = []; //get dati dal sondaggio
@@ -561,7 +561,7 @@ async popupInvalidTitle(){
 
 
     // Aggiorno timer ogni 1000ms (1000ms==1s)
-    var x = setInterval(function () {
+     this.interval = setInterval(function () {
 
       //Timestamp Attuale (data + orario)
       var now = new Date().getTime();
@@ -585,13 +585,16 @@ async popupInvalidTitle(){
 
       // Se finisce il countDown viene mostrato "Domanda scaduta."
       if (distance < 0) {
-        clearInterval(x);
+        clearInterval(this.interval);
         document.getElementById("timeLeft").innerHTML = "Domanda scaduta.";
         this.timerView = "OMBO TIMER,SCADUTA";
       }
     }, 1000);
-
+console.log(this.interval)
   }
+  ionViewDidLeave() {
+    clearInterval(this.interval)
+  }  
   mappingIncrement(valueToMapp) {
     //creo nuova data di scadenza settata in base al timer impostato
     //case in base a timerToPass -> hh:mm (ossia la selezione dell'utente)
