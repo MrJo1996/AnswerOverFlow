@@ -6,6 +6,7 @@ import { DataService } from "../services/data.service";
 import { element } from 'protractor';
 import { computeStackId } from '@ionic/angular/directives/navigation/stack-utils';
 import { Storage } from "@ionic/storage";
+import { ToastController } from "@ionic/angular";
 
 @Component({
   selector: 'app-visualizza-statistiche',
@@ -68,7 +69,7 @@ export class VisualizzaStatistichePage {
   provaDomandeTOP = new Array();
   
 
-  constructor(private storage: Storage,private dataService: DataService, private navCtrl: NavController,public apiService: ApiService) {
+  constructor( public toastController: ToastController ,private storage: Storage,private dataService: DataService, private navCtrl: NavController,public apiService: ApiService) {
     
    }
    
@@ -445,7 +446,10 @@ async visualizzaStatisticheDomanda(){
             //console.log("ciaoOoooOOooO", categoria['Categoria']['data']['0'].titolo) ;
             this.RisposteDlabelsTitle[j]= categoria['Categoria']['data']['0'].titolo;
             //console.log('Il titolo è',this.RisposteDlabelsTitle[j]);
+
+          
             this. sdoughnutChartMethod()
+          
           },
           (rej) => {
             console.log("C'è stato un errore durante la visualizzazione");
@@ -491,6 +495,22 @@ async visualizzaStatisticheDomanda(){
   }
 
   doughnutChartMethod() {
+
+    if(this.DlabelsTitle[0] == undefined ){
+      const toast = document.createElement("ion-toast");
+  
+      toast.message = "L'utente non ha domande!";
+      toast.duration = 2000;
+      toast.position = "top";
+      toast.style.fontSize = "20px";
+      toast.color = "danger";
+      toast.style.textAlign = "center";
+  
+      document.body.appendChild(toast);
+      return toast.present();
+      
+    }else{
+      
     this.doughnutChart = new Chart(this.doughnutCanvas.nativeElement, {
       type: 'doughnut',
       data: {
@@ -504,6 +524,7 @@ async visualizzaStatisticheDomanda(){
       }
     });
   }
+}
 
     secondbars() {
     this.sbars = new Chart(this.barChart2.nativeElement, {
@@ -531,6 +552,22 @@ async visualizzaStatisticheDomanda(){
   }
 
   sdoughnutChartMethod() {
+
+    if(this.RisposteDlabelsTitle[0] == undefined ){
+      const toast = document.createElement("ion-toast");
+
+      toast.message = "L'utente non ha risposte!";
+      toast.duration = 2000;
+      toast.position = "top";
+      toast.style.fontSize = "20px";
+      toast.color = "danger";
+      toast.style.textAlign = "center";
+
+      document.body.appendChild(toast);
+      return toast.present();
+
+    }else{
+
     this.sdoughnutChart = new Chart(this.doughnutCanvas2.nativeElement, {
       type: 'doughnut',
       data: {
@@ -544,11 +581,27 @@ async visualizzaStatisticheDomanda(){
       }
     });
   }
+}
 
 
 
 
 lineChartMethod(){
+
+  if(this.categoriaxLtitle[0] == undefined ){
+    const toast = document.createElement("ion-toast");
+
+    toast.message = "L'utente non ha Like&Dislike!";
+    toast.duration = 2000;
+    toast.position = "top";
+    toast.style.fontSize = "20px";
+    toast.color = "danger";
+    toast.style.textAlign = "center";
+
+    document.body.appendChild(toast);
+    return toast.present();
+    
+  }else{
     
     this.lineChart = new Chart(this.lineCanvas.nativeElement, {
       type: 'horizontalBar',
@@ -581,6 +634,7 @@ lineChartMethod(){
       
     });
   }
+}
 
   
 }
