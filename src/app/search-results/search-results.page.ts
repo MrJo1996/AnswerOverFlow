@@ -122,9 +122,7 @@ export class SearchResultsPage implements OnInit {
       }
     );
 
-    if (this.isFiltered) {
-      this.filters();
-    }
+    
   }
 
   ionViewDidEnter() {

@@ -19,6 +19,8 @@ export class HomePage implements OnInit {
   y_domande = 0;
   i_sondaggi = 0;
   y_sondaggi = 0;
+  index1 = 1;
+  index2 = 2;
   session;
   refresh_index;
   switch = true;
@@ -37,6 +39,8 @@ export class HomePage implements OnInit {
   profilo = Array();
   categorie_domande = Array();
   categoria_sondaggi = Array();
+  voti_sondaggi = Array();
+  scelte = Array();
   sondaggi;
   domandaMailUser;//mail dell'utente che ha fatto la domanda
   domandaNomeUser = " ";//nome e cognome dell'utente che ha fatto la domanda
@@ -83,12 +87,13 @@ export class HomePage implements OnInit {
     this.switch = !(this.switch);
   }
   //POPOVER
-  async presentPopover(ev,domanda_user,domanda_cod) {
-    if (domanda_user == this.currentMailUser) {
-      this.dataService.setPopoverModifica(true);
+  async presentPopover(ev,index,user,codice) {
+
+    if (user == this.currentMailUser) {
+      this.dataService.setPopoverModifica(true,index);
     }
     else {
-      this.dataService.setPopoverModifica(false);
+      this.dataService.setPopoverModifica(false,index);
     }
     const popover = await this.popoverController.create({
       component: PopoverComponent,
@@ -101,11 +106,17 @@ export class HomePage implements OnInit {
     const { data } = await popover.onDidDismiss();
     console.log('dati', data);
     if (data != undefined) {
+      if(data.item == 1){
+        this.clickSondaggio(codice);
+      }else
       if (data.item == 2) {
-        this.clickDomanda(domanda_cod);
-      }
-      if (data.item == 3) {
-        this.clickModificaDomanda(domanda_user);
+        this.clickDomanda(codice);
+      }else
+      if ((data.item == 3)&&(index==1)) {
+        this.clickModificaDomanda(codice);
+      }else
+      if ((data.item == 3)&&(index==2)) {
+        this.clickModificaSondaggio(codice);
       }
     }
   }
@@ -231,7 +242,7 @@ export class HomePage implements OnInit {
       }
     );
   }
-
+  
   //LINK ALLE PAGINE
   //link a visualizza domanda
   clickDomanda(domanda_codice) {
@@ -255,6 +266,11 @@ export class HomePage implements OnInit {
     this.dataService.setCod_domanda(domanda_codice);
     this.router.navigate(['/modifica-domanda']);
   }
+  //link a modifica sondaggio
+  clickModificaSondaggio(sondaggio_codice) {
+    this.dataService.setCod_sondaggio(sondaggio_codice);
+    this.router.navigate(['/modifica-sondaggio']);
+  }
 
   //REFRESH
   doRefresh(event) {
@@ -266,7 +282,6 @@ export class HomePage implements OnInit {
 
   doRefresh2(){
     window.location.reload();
-    this.dataService.setRefreshIndex(false);
   }
   refresh() {
     this.zone.run(() => {

@@ -25,7 +25,7 @@ export class DataService {
   user_domanda;
   cod_domanda;
   avatar;
-
+  index2;
   //Var Ricerca
   keywordToSearch;
   filters = [];
@@ -56,8 +56,9 @@ export class DataService {
   setAvatar(avatar: string) {
     this.utente['6'] = avatar;
   }
-  setPopoverModifica(index: boolean) {
+  setPopoverModifica(index: boolean,index2: number) {
     this.popover_modifica = index;
+    this.index2 = index2;
   }
   setCod_domanda(id_domanda: number) {
     this.codice_domanda = id_domanda;
@@ -182,5 +183,11 @@ export class DataService {
   }
   getCodDomanda() {
     return this.cod_domanda;
+  }
+  getPopoverModifica(){
+    return this.popover_modifica;
+  }
+  getIndex2(){
+    return this.index2;
   }
 }

@@ -9,10 +9,12 @@ import { DataService } from "../services/data.service";
 })
 export class PopoverComponent implements OnInit {
   index_modifica;
+  index2;
   constructor(private dataService: DataService,private popoverCtrl: PopoverController) { }
 
   ngOnInit(){
     this.index_modifica=this.dataService.popover_modifica;
+    this.index2 = this.dataService.index2;
   }
 
   onClick(valor: number){

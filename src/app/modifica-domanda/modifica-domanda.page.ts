@@ -115,7 +115,6 @@ export class ModificaDomandaPage implements OnInit {
   }
 
   async showSurvey() {
-    
     this.codice_domanda = this.dataService.codice_domanda;
 
     this.apiService.getDomanda(this.codice_domanda).then(

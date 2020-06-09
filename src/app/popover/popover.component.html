@@ -1,9 +1,9 @@
 <p>
-  <ion-item (click)=onClick(1)>
-<ion-label>Rispondi</ion-label>
+  <ion-item *ngIf="index2===2" (click)=onClick(1)>
+<ion-label>Inserisci votazione</ion-label>
 <ion-icon name="chevron-forward"></ion-icon>
 </ion-item>
-<ion-item (click)=onClick(2)>
+<ion-item *ngIf="index2===1" (click)=onClick(2)>
 <ion-label>Dettagli</ion-label>
 <ion-icon name="chevron-forward"></ion-icon>
 </ion-item>
