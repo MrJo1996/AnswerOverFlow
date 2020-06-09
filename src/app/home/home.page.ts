@@ -24,7 +24,6 @@ export class HomePage implements OnInit {
   session;
   refresh_index;
   switch = true;
-  scelte = Array(2);
   indice_domande;
   codice_domanda;
   codice_sondaggio;
@@ -40,7 +39,6 @@ export class HomePage implements OnInit {
   categorie_domande = Array();
   categoria_sondaggi = Array();
   voti_sondaggi = Array();
-  scelte = Array();
   sondaggi;
   domandaMailUser;//mail dell'utente che ha fatto la domanda
   domandaNomeUser = " ";//nome e cognome dell'utente che ha fatto la domanda
