@@ -8,6 +8,9 @@ import { Router } from "@angular/router";
 import { Storage } from "@ionic/storage";
 import { AlertController } from "@ionic/angular";
 
+import { OneSignal } from '@ionic-native/onesignal/ngx';
+
+
 import { timer } from "rxjs/observable/timer"; //splash
 
 @Component({
@@ -94,7 +97,9 @@ export class AppComponent implements OnInit {
     public alertController: AlertController,
     public dataService: DataService,
     public navCtrl: NavController,
-    private menuCtrl: MenuController
+    private menuCtrl: MenuController,
+    private oneSignal: OneSignal
+
   ) {
     this.initializeApp();
   }
@@ -226,7 +231,7 @@ export class AppComponent implements OnInit {
 
           if (this.accountPages[index].title === "Logout") {
             this.alert();
-          } else if (this.accountPages[index].title === "Visualizza profilo") {
+          } else if (this.accountPages[index].title === "Profilo") {
             //console.log(window.location.pathname)
             this.dataService.emailOthers = "undefined";
             this.router.navigateByUrl("/visualizza-profiloutente");
@@ -275,6 +280,10 @@ export class AppComponent implements OnInit {
       this.statusBar.styleDefault();
       this.splashScreen.hide(); //////////////////////////
       timer(2000).subscribe(() => (this.showSplash = false)); //durata animazione definita in app.component.html -> 2s (era 3.5s)
+   
+     if (this.platform.is('cordova')) {
+        this.setupPush();
+      }
     });
 
     this.storage.get("session").then((data) => {
@@ -282,6 +291,53 @@ export class AppComponent implements OnInit {
       this.dataService.setSession(data);
     });
   }
+
+  setupPush(){
+
+    this.oneSignal.startInit('8efdc866-9bea-4b12-a371-aa01f421c4f7', '424760060101');
+ 
+    this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.None);
+ 
+    
+    this.oneSignal.handleNotificationReceived().subscribe(data => {
+      let msg = data.payload.body;
+      let title = data.payload.title;
+      let additionalData = data.payload.additionalData;
+      this.showAlert(title, msg, additionalData.task);
+    });
+ 
+   
+    this.oneSignal.handleNotificationOpened().subscribe(data => {
+      // Just a note that the data is a different place here!
+      let additionalData = data.notification.payload.additionalData;
+ 
+      this.showAlert('Notification opened', 'You already read this before', additionalData.task);
+    });
+ 
+    this.oneSignal.endInit();
+  }
+ 
+  async showAlert(title, msg, task) {
+    const alert = await this.alertController.create({
+      header: title,
+      subHeader: msg,
+      buttons: [
+        {
+          text: `Action: ${task}`,
+          handler: () => {
+            
+          }
+        }
+      ]
+    })
+    alert.present();
+
+
+  } 
+
+
+
+
 
   ngOnInit() {
     const path = window.location.pathname.split("folder/")[1];

@@ -177,26 +177,43 @@ export class HomePage implements OnInit {
 
 
   regolatore_infinite_scroll(){
-    for (this.i_domande = 0; this.i_domande < 3; this.i_domande++) {
+    for (this.i_domande = 0; this.i_domande < 2; this.i_domande++) {
+      console.log( this.domande_regolate[this.y_domande-1] )
+      console.log( this.domande[this.y_domande]-1 )
+      console.log( 'this.domande_regolate[this.y_domande-1]' )
+      console.log( this.domande[this.y_domande]-1 )
+      console.log( this.domande_regolate[this.y_domande] )
+      console.log( this.domande[this.y_domande] )
       this.domande_regolate[this.y_domande] = this.domande[this.y_domande];
       this.y_domande++;
     }
     for (this.i_sondaggi = 0; this.i_sondaggi < 2; this.i_sondaggi++) {
+      console.log( this.domande_regolate[this.y_domande] = this.domande[this.y_domande])
+
       this.sondaggi_regolati[this.y_sondaggi] = this.sondaggi[this.y_sondaggi];
+      console.log( this.domande_regolate[this.y_domande] = this.domande[this.y_domande])
+
       this.y_sondaggi++;
     }
   }
 
   regola_domande() {
+     console.log( this.domande_regolate )
+    console.log( 'this.domande' )
+    console.log( this.domande )
+    console.log( 'this.domande_regolate[this.y_domande-1]' )
+    console.log( this.domande[this.y_domande])
+    console.log( this.domande_regolate[this.y_domande] )
+    console.log( this.domande[this.y_domande] ) 
     for (this.i_domande = 0; this.i_domande < 3; this.i_domande++) {
-      this.domande_regolate[this.y_domande] = this.domande[this.y_domande];
+      this.domande_regolate[this.y_domande] = this.domande[this.i_domande];
       this.y_domande++;
     }
   }
 
   regola_sondaggi() {
     for (this.i_sondaggi = 0; this.i_sondaggi < 3; this.i_sondaggi++) {
-      this.sondaggi_regolati[this.y_sondaggi] = this.sondaggi[this.y_sondaggi];
+      this.sondaggi_regolati[this.y_sondaggi] = this.sondaggi[this.i_sondaggi];
       this.y_sondaggi++;
     }
   }
@@ -233,6 +250,8 @@ export class HomePage implements OnInit {
   async getCategoriaSondaggio(id_categoria) {
     this.apiService.getCategoria(id_categoria).then(
       (categoria) => {
+        console.log(id_categoria)
+        console.log(categoria)
         this.categoria_sondaggi.push(categoria['Categoria']['data']['0'].titolo);
       },
       (rej) => {

@@ -101,8 +101,12 @@ export class ModificaDomandaPage implements OnInit {
       this.toastParolaScoretta();
     }
     else {
-    this.apiService.modificaDomanda(this.codice_domanda, this.dataeoraToPass, this.timerToPass, this.titoloToPass, this.descrizioneToPass, this.categoriaToPass, this.cod_preferita).then(
+    this.apiService.modificaDomanda(this.codice_domanda, this.dataeoraToPass, this.timerToPass, this.titoloToPass, this.descrizioneToPass, this.categoriaToPass||this.categoriaView, this.cod_preferita).then(
       (result) => {  
+        console.log(result)
+        console.log('categoria',this.categoriaToPass)
+        console.log('categoria',this.categoriaScelta)
+        console.log(this.codice_domanda)
         console.log('Modifica avvenuta con successo: ');
         
       },
@@ -181,6 +185,7 @@ export class ModificaDomandaPage implements OnInit {
             this.categoriaToPass = this.categoriaView;
             this.cod_categoria = value['ValoreCategoriaSettata'].value;
             this.codCategoriaScelta = this.cod_categoria;
+            this.categoriaToPass=this.codCategoriaScelta
             console.log('Codice catgoria settata: ', this.codCategoriaScelta);
 
           }
@@ -540,7 +545,7 @@ async popupInvalidTitle(){
     }
   }
 
-
+   interval
   async countDown(incAnno, incMese, incGG, incHH, incMM) {
 
     var auxData = []; //get dati dal sondaggio
@@ -556,7 +561,7 @@ async popupInvalidTitle(){
 
 
     // Aggiorno timer ogni 1000ms (1000ms==1s)
-    var x = setInterval(function () {
+     this.interval = setInterval(function () {
 
       //Timestamp Attuale (data + orario)
       var now = new Date().getTime();
@@ -580,13 +585,16 @@ async popupInvalidTitle(){
 
       // Se finisce il countDown viene mostrato "Domanda scaduta."
       if (distance < 0) {
-        clearInterval(x);
+        clearInterval(this.interval);
         document.getElementById("timeLeft").innerHTML = "Domanda scaduta.";
         this.timerView = "OMBO TIMER,SCADUTA";
       }
     }, 1000);
-
+console.log(this.interval)
   }
+  ionViewDidLeave() {
+    clearInterval(this.interval)
+  }  
   mappingIncrement(valueToMapp) {
     //creo nuova data di scadenza settata in base al timer impostato
     //case in base a timerToPass -> hh:mm (ossia la selezione dell'utente)
