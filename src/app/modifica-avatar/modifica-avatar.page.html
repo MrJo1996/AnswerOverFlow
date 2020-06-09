@@ -1,36 +1,31 @@
-<ion-header>
-  <ion-toolbar class="backgroundsSecondaryItem">
-   
-      <ion-button  slot="start" expand="block" fill="clear" (click)="goBack()" class="msg-btn">
-        <ion-icon color="primary" slot="start" slot="icon-only" name="arrow-back-outline"></ion-icon>
-        </ion-button>
-     
-      <ion-title style="font-size: x-large; text-align: center;"><b>Modifica avatar</b></ion-title>
-      
-      <ion-button  slot="end" expand="block" fill="clear" (click)="avatarScelto()">
-        <ion-icon color="primary" slot="end" slot="icon-only" name="checkmark-sharp"></ion-icon>
-        </ion-button>
-     
-    </ion-toolbar>
-</ion-header>
+<ion-content style="--background: url('/assets/img/provaBack.png') no-repeat center center / cover;">
 
-<ion-content>
+  <ion-item style="border-radius: 20px; margin: 10px;box-shadow: 2px 5px 10px #000000;">Colored</ion-item>
+  <ion-card style="border-radius: 20px; padding-top: 14px;padding-bottom: 14px;box-shadow: 2px 5px 10px #000000;">
+    <div class="wrapper">
+      <ion-avatar *ngFor="let colored of colorFullfilled; index as i" id="coloredAvatar{{i}}"
+        (click)="stampaUrl(colored, 'colored', i)">
+        <img src={{colored}}>
+      </ion-avatar>
+    </div>
+  </ion-card>
 
-  <p>Normali</p>
-  <div class="wrapper">
-    <ion-avatar *ngFor="let colored of colorFullfilled; index as i" id="coloredAvatar{{i}}"
-      (click)="stampaUrl(colored, 'colored', i)">
-      <img src={{colored}}>
-    </ion-avatar>
+  <ion-item style="border-radius: 20px; margin: 10px;box-shadow: 2px 5px 10px #000000;">Blue</ion-item>
+
+  <ion-card style="border-radius: 20px; padding-top: 14px;padding-bottom: 14px;box-shadow: 2px 5px 10px #000000;">
+    <div class="wrapper">
+      <ion-avatar *ngFor="let lined of linesFilled; index as i" id="linedAvatar{{i}}"
+        (click)="stampaUrl(lined, 'lined', i)">
+        <img src={{lined}}>
+      </ion-avatar>
+    </div>
+  </ion-card>
+
+  <div style="text-align: center">
+    <ion-button color="danger" style="margin:auto" (click)="annulla()">Annulla</ion-button>
   </div>
-
-  <p>Blue</p>
-  <div class="wrapper">
-    <ion-avatar *ngFor="let lined of linesFilled; index as i" id="linedAvatar{{i}}"
-      (click)="stampaUrl(lined, 'lined', i)">
-      <img src={{lined}}>
-    </ion-avatar>
-  </div>
-  
+  <ion-button expand="block" color="primary" size="large" style="margin: 10px;" (click)="avatarScelto()">
+    Salva
+  </ion-button>
 
 </ion-content>

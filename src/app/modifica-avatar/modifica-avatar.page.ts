@@ -87,10 +87,11 @@ export class ModificaAvatarPage implements OnInit {
     avatar: string;
   
     ngOnInit() {
-
+    }
+    ionViewDidEnter() {
     }
   
-    goBack() {
+    annulla() {
       this.toastUnsuccess("Avatar non scelto");
       this.navCtrl.back();
     }
@@ -99,8 +100,7 @@ export class ModificaAvatarPage implements OnInit {
       if (this.avatar === "" || this.avatar === undefined) {
         this.toastUnsuccess("Non hai selezionato alcun avatar!");
       } else {
-        this.dataService.setAvatar(this.avatar);
-        console.log(this.dataService.utente);
+        this.dataService.settaTemporaryAvatar(this.avatar);
         this.navCtrl.back();
         this.toastSuccess();
       }
