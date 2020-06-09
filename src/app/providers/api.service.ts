@@ -92,14 +92,15 @@ export class ApiService {
     });
   }
 
-  modificaProfilo(username: string, password: string, nome: string, cognome: string, bio: string, email: string) {
+  modificaProfilo(username: string, password: string, nome: string, cognome: string, bio: string, email: string, avatar: string) {
     const body = {
       username,
       password,
       nome,
       cognome,
       bio,
-      email
+      email,
+      avatar
     };
     return new Promise((resolve, reject) => {
       this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/modificaProfilo', body).subscribe(
@@ -114,6 +115,30 @@ export class ApiService {
       );
     });
   }
+
+  modificaProfiloNoPass(username: string, nome: string, cognome: string, bio: string, email: string, avatar: string) {
+    const body = {
+      username,
+      nome,
+      cognome,
+      bio,
+      email,
+      avatar
+    };
+    return new Promise((resolve, reject) => {
+      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/modificaProfilo', body).subscribe(
+        data => {
+          let esito = data['message'];
+          //console.log('esito: ', esito);
+          resolve(esito);
+        },
+        (err) => {
+          reject();
+        }
+      );
+    });
+  }
+
 
   getProfilo(email: string) {
     const body = {

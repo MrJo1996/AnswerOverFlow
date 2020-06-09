@@ -24,7 +24,9 @@ export class DataService {
   domanda;
   user_domanda;
   cod_domanda;
-  avatar;
+  avatar; // var per l'avatar dell'utente loggato
+  avatarTemporary; // var per cambiare l'avatar
+
   index2;
   //Var Ricerca
   keywordToSearch;
@@ -55,6 +57,9 @@ export class DataService {
 
   setAvatar(avatar: string) {
     this.utente['6'] = avatar;
+  }
+  settaTemporaryAvatar(avatar: string) {
+    this.avatarTemporary = avatar;
   }
   setPopoverModifica(index: boolean,index2: number) {
     this.popover_modifica = index;
@@ -125,7 +130,9 @@ export class DataService {
   getAvatar() {
     return this.avatar;
   }
-
+  getTemporaryAvatar() {
+    return this.avatarTemporary
+  }
   getEmailOthers() {
     return this.emailOthers;
   }

@@ -14,34 +14,33 @@
     </ion-toolbar>
   </ion-header>
 
-<ion-content class="backgrounds">
+<ion-content style="--background: url('/assets/img/provaBack.png') no-repeat center center / cover;">
   <ion-card>
-  <ion-icon class="profilePicture" name="person-circle-outline"></ion-icon>
-  <ion-text class="textPicture">Cambia foto</ion-text>
+  <img class="profilePicture" src={{avatar}} button=true (click)="selectAvatar()">
 
       <ion-item color="light">
         <ion-icon name="happy-outline" slot="start"></ion-icon>
         <ion-label position="stacked"><strong>Username</strong>
         </ion-label>
-        <ion-input readonly placeholder={{usernameView}} color="medium" (click)="popupModificaUsername()"></ion-input>
+        <ion-input readonly value={{usernameView}} color="medium" (click)="popupModificaUsername()"></ion-input>
       </ion-item>
     
       <ion-item color="light">
         <ion-icon name="create-outline" slot="start"></ion-icon>
         <ion-label position="stacked"><strong>Nome</strong></ion-label>
-        <ion-input placeholder={{nomeView}} color="medium" (click)="popupModificaNome()" ></ion-input>
+        <ion-input value={{nomeView}} color="medium" (click)="popupModificaNome()" ></ion-input>
       </ion-item>
 
       <ion-item color="light">
         <ion-icon name="create-outline" slot="start"></ion-icon>
         <ion-label position="stacked"><strong>Cognome</strong></ion-label>
-        <ion-input placeholder={{cognomeView}} color="medium" (click)="popupModificaCognome()" ></ion-input>
+        <ion-input value={{cognomeView}} color="medium" (click)="popupModificaCognome()" ></ion-input>
       </ion-item>
 
       <ion-item color="light">
         <ion-icon name="chatbox-outline" slot="start"></ion-icon>
         <ion-label position="stacked"><strong>Bio</strong></ion-label>
-        <ion-input placeholder={{bioView}} color="medium" (click)="popupModificaBio()" ></ion-input>
+        <ion-input value={{bioView}} color="medium" (click)="popupModificaBio()" ></ion-input>
       </ion-item>
       
 
