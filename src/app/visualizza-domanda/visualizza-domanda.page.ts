@@ -25,7 +25,6 @@ export class VisualizzaDomandaPage implements OnInit {
   codice_domanda;
 
   currentMailUser = "";//mail dell'utente corrente
-  userNameUserDomanda: string;
   domandaMailUser: string;//mail di chi ha fatto la domanda
 
   domanda = {};
@@ -70,7 +69,7 @@ export class VisualizzaDomandaPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.handleLoading();
+
     this.visualizzaDomanda();
     this.showRisposte();
     this.storage.get('utente').then(data => { this.currentMailUser = data.email });
@@ -108,6 +107,7 @@ export class VisualizzaDomandaPage implements OnInit {
         this.getUserDomanda();
         this.visualizzaCategoria();
 
+       this.mappingIncrement(this.domanda['0'].timer);
 
       },
       (rej) => {
@@ -675,4 +675,111 @@ export class VisualizzaDomandaPage implements OnInit {
       }
     );
   }
+
+
+  async countDown(incAnno, incMese, incGG, incHH, incMM) {
+
+    var auxData = new Array(); //get dati dal sondaggio
+    auxData['0'] = (this.domanda['0'].dataeora.substring(0, 10).split("-")[0]); //anno
+    auxData['1'] = this.domanda['0'].dataeora.substring(0, 10).split("-")[1]; //mese [0]=gennaio
+    auxData['2'] = this.domanda['0'].dataeora.substring(0, 10).split("-")[2]; //gg
+    auxData['3'] = this.domanda['0'].dataeora.substring(11, 18).split(":")[0]; //hh
+    auxData['4'] = this.domanda['0'].dataeora.substring(11, 18).split(":")[1]; //mm
+
+    // Setto data scadenza aggiungendo l'incremento stabilito da mappingInc al momento del confermaModifiche
+    var countDownDate = new Date(parseInt(auxData['0'], 10) + incAnno, parseInt(auxData['1'], 10) - 1 + incMese, parseInt(auxData['2'], 10) + incGG, parseInt(auxData['3'], 10) + incHH, parseInt(auxData['4'], 10) + incMM).getTime();
+    // var countDownDateTEST = new Date(parseInt(auxData['0'], 10) + 1, parseInt(auxData['1'], 10) - 1, parseInt(auxData['2'], 10), parseInt(auxData['3'], 10), parseInt(auxData['4'], 10))/* .getTime() */;
+
+
+    // Aggiorno timer ogni 1000ms (1000ms==1s)
+    var x = setInterval(function () {
+
+      //Timestamp Attuale (data + orario)
+      var now = new Date().getTime();
+
+      // Calcolo differenza, tempo mancante
+      var distance = countDownDate - now;
+
+      // conversioni
+      var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      // Risultato delle conversioni messo nell'elemento con id="timeLeft"
+      //TODO non mostrare valori se non avvalorati o pari a zero
+     // document.getElementById("timeLeft").innerHTML = days + "d " + hours + "h "
+        + minutes + "m " + seconds + "s ";
+
+      this.timerView = days + "d " + hours + "h "
+        + minutes + "m " + seconds + "s ";
+
+      // Se finisce il countDown viene mostrato "Domanda scaduta."
+      if (distance < 0) {
+        clearInterval(x);
+        //document.getElementById("timeLeft").innerHTML = "Domanda scaduta.";
+        this.timerView = "OMBO TIMER,SCADUTA";
+      }
+    }, 1000);
+
+  }
+   mappingIncrement(valueToMapp) {
+    //creo nuova data di scadenza settata in base al timer impostato
+    //case in base a timerToPass -> hh:mm (ossia la selezione dell'utente)
+
+    switch (valueToMapp) {
+      case ("00:05:00"):
+        console.log("Selezionata scelta 5 min");
+        this.countDown(0, 0, 0, 0, 5);
+
+        break;
+      case ("00:15:00"):
+
+        this.countDown(0, 0, 0, 0, 15);
+
+        break;
+      case ("00:30:00"):
+
+        this.countDown(0, 0, 0, 0, 30);
+
+        break;
+      case ("01:00:00"):
+
+        this.countDown(0, 0, 0, 1, 0);
+
+        break;
+      case ("03:00:00"):
+
+        this.countDown(0, 0, 0, 3, 0);
+
+        break;
+      case ("06:00:00"):
+
+        this.countDown(0, 0, 0, 6, 0);
+
+        break;
+      case ("12:00:00"):
+
+        this.countDown(0, 0, 0, 12, 0);
+
+        break;
+      case ("24:00:00"):
+
+        this.countDown(0, 0, 1, 0, 0);
+
+        break;
+      case ("72:00:00"):
+
+        this.countDown(0, 0, 3, 0, 0);
+
+        break;
+    }
+  } 
+
+  clickProfilo(cod_utente) {
+    this.dataService.setEmailOthers(cod_utente);
+    console.log(this.dataService.setEmailOthers);
+    this.router.navigate(['/visualizza-profilo']);
+  }
+  
 }
