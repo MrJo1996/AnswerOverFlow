@@ -708,7 +708,7 @@ export class VisualizzaDomandaPage implements OnInit {
 
       // Risultato delle conversioni messo nell'elemento con id="timeLeft"
       //TODO non mostrare valori se non avvalorati o pari a zero
-      document.getElementById("timeLeft").innerHTML = days + "d " + hours + "h "
+     // document.getElementById("timeLeft").innerHTML = days + "d " + hours + "h "
         + minutes + "m " + seconds + "s ";
 
       this.timerView = days + "d " + hours + "h "
@@ -717,7 +717,7 @@ export class VisualizzaDomandaPage implements OnInit {
       // Se finisce il countDown viene mostrato "Domanda scaduta."
       if (distance < 0) {
         clearInterval(x);
-        document.getElementById("timeLeft").innerHTML = "Domanda scaduta.";
+        //document.getElementById("timeLeft").innerHTML = "Domanda scaduta.";
         this.timerView = "OMBO TIMER,SCADUTA";
       }
     }, 1000);

@@ -459,7 +459,7 @@ export class VisualizzaSondaggioPage implements OnInit {
   
       // Risultato delle conversioni messo nell'elemento con id="timeLeft"
       //TODO non mostrare valori se non avvalorati o pari a zero
-      document.getElementById("timeLeft").innerHTML = days + "giorni " + hours + "ore "
+     // document.getElementById("timeLeft").innerHTML = days + "giorni " + hours + "ore "
         + minutes + "min " + seconds + "s ";
 
       console.log(this.distanceTimer);
@@ -471,7 +471,7 @@ export class VisualizzaSondaggioPage implements OnInit {
         clearInterval(x);
         this.isSondaggioActive = false;
         console.log("il sondaggio è aperto: ", this.isSondaggioActive);
-        document.getElementById("timeLeft").innerHTML = "Sondaggio scaduto.";
+  //      document.getElementById("timeLeft").innerHTML = "Sondaggio scaduto.";
   
         //TODO Provare generazione allert da qui che al conferma riporta al visualizza
         //TODO se non va sol. di sopra METTERE ROUTE AL VISUALIZZA
