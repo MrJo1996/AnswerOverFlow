@@ -25,6 +25,25 @@
 
   <ion-card class = "backgrounds">    
     <ion-card-header>
+      <ion-row>
+        <ion-icon   class = "alarm_style" name="alarm-outline" slot= "start"></ion-icon>
+   
+            <ion-input id="timeLeft" readonly placeholder=" " color="medium"></ion-input>
+            <ion-button  expand="block" *ngIf="currentUser===sondaggio.cod_utente" (click) = "popUpEliminaSondaggio()" fill="clear">
+              <ion-icon name="trash-sharp" color="primary" class = "icons_generic_style"></ion-icon>
+            </ion-button>
+            <ion-button   *ngIf="currentUser===sondaggio.cod_utente" (click) ="goModificaDomanda()" expand="block" fill="clear">
+              <ion-icon name="hammer-sharp" color="primary" class = "icons_generic_style"></ion-icon>
+            </ion-button>
+      </ion-row>
+      
+      <ion-row *ngIf="currentUser!==sondaggio.cod_utente">
+        <ion-avatar  slot="start" class="icon-avatar" >
+          <img src="https://i.ytimg.com/vi/mCf6UGT3HrA/maxresdefault.jpg">
+        </ion-avatar>
+        <ion-label class = "username_text_style">{{username}}</ion-label>
+
+      </ion-row>
 
       <!--
         <ion-toolbar class="backgrounds">
@@ -48,30 +67,13 @@
 
         </ion-toolbar> -->
 
-        <ion-row>
-          <ion-icon   class = "alarm_style" name="alarm-outline" slot= "start"></ion-icon>
-     
-              <ion-input id="timeLeft" readonly placeholder=" " color="medium"></ion-input>
-              <ion-button slot="end" expand="block" *ngIf="currentUser===sondaggio.cod_utente" (click) = "popUpEliminaSondaggio()" fill="clear">
-                <ion-icon name="trash-sharp" color="primary" class = "icons_generic_style"></ion-icon>
-              </ion-button>
-              <ion-button slot="end" *ngIf="currentUser===sondaggio.cod_utente" (click) ="goModificaDomanda()" expand="block" fill="clear">
-                <ion-icon name="hammer-sharp" color="primary" class = "icons_generic_style"></ion-icon>
-              </ion-button>
-        </ion-row>
         
-        <ion-row *ngIf="currentUser!==sondaggio.cod_utente">
-          <ion-avatar  slot="start" class="icon-avatar" >
-            <img src="https://i.ytimg.com/vi/mCf6UGT3HrA/maxresdefault.jpg">
-          </ion-avatar>
-          <ion-label class = "username_text_style">{{username}}</ion-label>
-
-        </ion-row>
 
       <ion-card-title class = "textTitleBIG">{{sondaggio.titolo}}</ion-card-title>
     </ion-card-header>
 
     <ion-card-content>
+     
         <p class= "textSimple">{{descrizione}}</p>
    
         <ion-list  class = "backgrounds">
@@ -82,10 +84,9 @@
           
             <ion-item *ngFor="let scelta of scelte, let i = index">    
                 <ion-radio *ngIf="currentUser!==sondaggio.cod_utente && votato === false && isSondaggioActive=== true" value = "{{scelta.descrizione}}" (click) = "getScelta(scelta.descrizione, i)" slot = "start" ></ion-radio>
-                
                 <ion-label *ngIf="currentUser===sondaggio.cod_utente" slot = "start" >{{scelta.num_favorevoli}}</ion-label>
                 <ion-text  class="textSimple" slot = "start" >{{scelta.descrizione}}</ion-text>
-                <ion-progress-bar slot = "start" *ngIf="currentUser===sondaggio.cod_utente || votato === true || isSondaggioActive  === false && voti_totali!==0 " [value]="percentualiScelte[i]" ></ion-progress-bar>
+                <ion-progress-bar slot = "start" *ngIf="currentUser===sondaggio.cod_utente || votato === true || isSondaggioActive  === false " [value]="percentualiScelte[i]" ></ion-progress-bar>
               </ion-item>
 
           </div>
@@ -93,9 +94,7 @@
         </ion-radio-group>
 
         </ion-list>
-      
-
-
+    
         <ion-toolbar>
           <ion-icon name="calendar-outline" slot = start class = "calendar_icon_style" ></ion-icon>
           <ion-label class= "description_text" slot = "start" >{{sondaggio.dataeora}}</ion-label>
@@ -107,9 +106,23 @@
     </ion-card-content>
   </ion-card>
 
+  <ion-label *ngIf="isSondaggioActive !== true" >Il sondaggio è scaduto, non puoi più votare</ion-label>
+
+  <ion-card *ngIf="isSondaggioActive === false && currentUser===sondaggio.cod_utente">
+    <ion-card-header>
+      <ion-label  >Il tuo sondaggio è scaduto, nessuno potrà più votare</ion-label>
+    </ion-card-header>
+  </ion-card>
+
   <ion-card *ngIf="isSondaggioActive === false">
     <ion-card-header>
-      <ion-label  slot = "start" >Il sondaggio è scaduto, non puoi più votare</ion-label>
+      <ion-label  >Il sondaggio è scaduto, non puoi più votare</ion-label>
+    </ion-card-header>
+  </ion-card>
+
+  <ion-card *ngIf="votato === true && currentUser!==sondaggio.cod_utente">
+    <ion-card-header>
+      <ion-label   >Hai già votato al sondaggio!</ion-label>
     </ion-card-header>
   </ion-card>
 </ion-content>    

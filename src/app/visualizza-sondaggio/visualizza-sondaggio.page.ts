@@ -30,7 +30,7 @@ export class VisualizzaSondaggioPage implements OnInit {
 
   votato;
   voti_totali:  number = 0;
-  hasVoted = false;
+  hasVoted: boolean;
 
   scelte = new Array();
   codici_scelte = new Array();
@@ -42,7 +42,7 @@ export class VisualizzaSondaggioPage implements OnInit {
   profiloUserSondaggio = {};
   distanceTimer;
 
-  isSondaggioActive: boolean;
+  isSondaggioActive;
 
   url = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/cancellaSondaggio/14'
   url2 = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaSondaggio'
@@ -67,7 +67,7 @@ export class VisualizzaSondaggioPage implements OnInit {
     console.log("mail utente corrente: ", this.currentUser);
     
 
-    if(this.distanceTimer === 0)
+    if(this.distanceTimer < 0)
       this.isSondaggioActive = false;
 
     else
@@ -106,7 +106,7 @@ export class VisualizzaSondaggioPage implements OnInit {
   }
 
   async visualizzaSondaggioSelezionato() {
-this.codice_sondaggio= this.dataService.codice_sondaggio;
+    this.codice_sondaggio= this.dataService.codice_sondaggio;
     this.apiService.getSondaggio(this.codice_sondaggio).then(
       (sondaggio) => {
       
@@ -129,18 +129,19 @@ this.codice_sondaggio= this.dataService.codice_sondaggio;
 
   }
 
-  async visualizzaScelte() {
+  async  visualizzaScelte() {
 
     this.apiService.getScelteSondaggio(this.codice_sondaggio).then(
       (scelte) => {
       
-
+        
         this.scelte = scelte['Scelte']['data'];
         console.log("log riga 112 scelte sondaggi:", scelte);
         console.log("log riga 113 scelte sondaggi:", this.scelte);
         
         let i = 0;
-       this.scelte.forEach(element => {
+        this.voti_totali = 0;
+        this.scelte.forEach(element => {
         var x = +element.num_favorevoli ;
           this.voti_totali =  this.voti_totali + x ;
       });
@@ -155,6 +156,7 @@ this.codice_sondaggio= this.dataService.codice_sondaggio;
 
   calcolaPercentualiScelte(){
 
+    this.percentualiScelte = new Array();
     this.scelte.forEach(element => {
         var x = +element.num_favorevoli ;
         var nuovaPercentuale: number = (x)/this.voti_totali;
@@ -167,7 +169,7 @@ this.codice_sondaggio= this.dataService.codice_sondaggio;
 
   }
 
-  async cancellaSondaggio() {
+  async  cancellaSondaggio() {
 
     this.apiService.rimuoviSondaggio(this.codice_sondaggio).then(
       (scelte) => {
@@ -197,7 +199,7 @@ this.codice_sondaggio= this.dataService.codice_sondaggio;
       
         
         this.votato = risultato["0"]["data"];
-        console.log("HA GIA VOTATO:", risultato);
+        console.log("HA GIA VOTATO:", risultato, this.votato);
         
         
       },
@@ -209,7 +211,7 @@ this.codice_sondaggio= this.dataService.codice_sondaggio;
   }
 
 
-  async inviaVoto(){
+  async  inviaVoto(){
         this.codice_scelta_selezionata = this.scelte[this.index_scelta_selezionata]['codice_scelta'];
         console.log('codice scelta ->', this.codice_scelta_selezionata);
         console.log('codice sondaggio ->', this.codice_sondaggio);
@@ -308,11 +310,14 @@ this.codice_sondaggio= this.dataService.codice_sondaggio;
     await alert.present();
   }
 
-  doRefresh(event) {
+  async doRefresh(event) {
     this.voti_totali = 0;
     this.votato = true;
     //this.visualizzaSondaggioSelezionato();
-    this.visualizzaScelte();
+
+    this.ngOnInit();
+    //this.visualizzaScelte();
+
     //this.giaVotato();
     this.hasVoted = false;
     setTimeout(() => {
@@ -322,11 +327,14 @@ this.codice_sondaggio= this.dataService.codice_sondaggio;
   }
 
 
-  doNormalRefresh(event) {
+  async doNormalRefresh(event) {
     this.voti_totali = 0;
     this.votato = false;
     //this.visualizzaSondaggioSelezionato();
-    this.visualizzaScelte();
+    
+    this.ngOnInit();
+    //this.visualizzaScelte();
+
     //this.giaVotato();
     this.hasVoted = false;
     setTimeout(() => {
@@ -337,7 +345,7 @@ this.codice_sondaggio= this.dataService.codice_sondaggio;
 
 
 
-  async visualizzaCategoria() {
+   async visualizzaCategoria() {
 
     this.apiService.getCategoria(this.codice_categoria).then(
       (categoria) => {
@@ -351,7 +359,7 @@ this.codice_sondaggio= this.dataService.codice_sondaggio;
     );
   }
 
-  async getUserSondaggio() {
+  async  getUserSondaggio() {
     this.apiService.getProfilo(this.sondaggioUser).then(
       (profilo) => {
         
@@ -453,13 +461,16 @@ this.codice_sondaggio= this.dataService.codice_sondaggio;
       //TODO non mostrare valori se non avvalorati o pari a zero
       document.getElementById("timeLeft").innerHTML = days + "giorni " + hours + "ore "
         + minutes + "min " + seconds + "s ";
+
       console.log(this.distanceTimer);
-  
+    
       // Se finisce il countDown viene mostrato "Sondaggio scaduto."
       if (this.distanceTimer < 0) {
         /* this.SCAD = true;
         console.log("SCAD in countdown() ", this.SCAD); */
         clearInterval(x);
+        this.isSondaggioActive = false;
+        console.log("il sondaggio è aperto: ", this.isSondaggioActive);
         document.getElementById("timeLeft").innerHTML = "Sondaggio scaduto.";
   
         //TODO Provare generazione allert da qui che al conferma riporta al visualizza
