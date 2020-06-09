@@ -5,6 +5,7 @@ import { AlertController } from '@ionic/angular';
 import { PickerController } from "@ionic/angular";
 import { DataService } from "../services/data.service";
 import { NavController } from "@ionic/angular";
+import { Storage } from "@ionic/storage";
 
 @Component({
   selector: 'app-bio',
@@ -75,6 +76,10 @@ export class BioPage implements OnInit {
       (result) => {
         console.log('Inserimento avvenuto con successo:', this.utente['0'], this.utente['1'], this.utente['2'], this.utente['3'], this.utente['4'], this.utente['5']
           , this.utente['6']);
+        this.dataService.setUsername(this.utente['1']);
+        this.dataService.setNome(this.utente['3']);
+        this.dataService.setCognome(this.utente['4']);
+        this.dataService.setAvatarUtente(this.utente['6']);
         this.storage.set("utente", this.utente[0]);
         this.storage.set("session", true);
         this.router.navigate(['/benvenuto']);
