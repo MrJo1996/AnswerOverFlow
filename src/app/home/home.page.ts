@@ -184,8 +184,11 @@ export class HomePage implements OnInit {
       console.log( this.domande[this.y_domande]-1 )
       console.log( this.domande_regolate[this.y_domande] )
       console.log( this.domande[this.y_domande] )
+      if(this.domande[this.y_domande]){
+
       this.domande_regolate[this.y_domande] = this.domande[this.y_domande];
       this.y_domande++;
+      }
     }
     for (this.i_sondaggi = 0; this.i_sondaggi < 2; this.i_sondaggi++) {
       console.log( this.domande_regolate[this.y_domande] = this.domande[this.y_domande])
@@ -198,24 +201,27 @@ export class HomePage implements OnInit {
   }
 
   regola_domande() {
-     console.log( this.domande_regolate )
+/*      console.log( this.domande_regolate )
     console.log( 'this.domande' )
     console.log( this.domande )
     console.log( 'this.domande_regolate[this.y_domande-1]' )
     console.log( this.domande[this.y_domande])
     console.log( this.domande_regolate[this.y_domande] )
-    console.log( this.domande[this.y_domande] ) 
+    console.log( this.domande[this.y_domande] )  */
     for (this.i_domande = 0; this.i_domande < 3; this.i_domande++) {
-      this.domande_regolate[this.y_domande] = this.domande[this.i_domande];
+      if(this.domande[this.y_domande]){
+      this.domande_regolate[this.y_domande] = this.domande[this.y_domande];
       this.y_domande++;
-    }
+    }}
   }
 
   regola_sondaggi() {
     for (this.i_sondaggi = 0; this.i_sondaggi < 3; this.i_sondaggi++) {
-      this.sondaggi_regolati[this.y_sondaggi] = this.sondaggi[this.i_sondaggi];
+      if(this.sondaggi[this.y_sondaggi]){
+      this.sondaggi_regolati[this.y_sondaggi] = this.sondaggi[this.y_sondaggi];
       this.y_sondaggi++;
     }
+  }
   }
 
   //VISUALIZZA GLI ULTIMI SONDAGGI APERTI
