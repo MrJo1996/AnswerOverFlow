@@ -15,6 +15,8 @@ import { IonicStorageModule } from '@ionic/storage';
 
 import { PopoverComponent } from "./popover/popover.component"
 
+import { OneSignal } from '@ionic-native/onesignal/ngx';
+
 @NgModule({
   declarations: [AppComponent,PopoverComponent],
   entryComponents: [PopoverComponent],
@@ -29,6 +31,7 @@ import { PopoverComponent } from "./popover/popover.component"
   providers: [
     StatusBar,
     SplashScreen,
+    OneSignal,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

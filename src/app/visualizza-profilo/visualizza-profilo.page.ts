@@ -74,7 +74,9 @@ export class VisualizzaProfiloPage implements OnInit {
   }
 
   stats(){
+    this.dataService.emailOthers = this.profilo.email;
     this.router.navigate(['visualizza-statistiche']);
+
   }
 
   
