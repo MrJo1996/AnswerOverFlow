@@ -237,7 +237,7 @@ export class InserimentoSondaggioPage implements OnInit {
   toastPositivo() {
     const toast = document.createElement("ion-toast");
     toast.message =
-      "Hai pubblicato correttamente il sondaggio!";
+      "Sondaggio pubblicato!";
     toast.duration = 2000;
     toast.position = "top";
     toast.color = "success";

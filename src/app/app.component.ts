@@ -149,7 +149,7 @@ export class AppComponent implements OnInit {
     const alert = await this.alertController.create({
       header: "Ospite",
       message:
-        "Per accedere a questa funzionalità devi accedere, vuoi continuare?",
+        "Per usare questo servizio devi effettuare l'accesso, vuoi farlo?",
       buttons: [
         {
           text: "No",
