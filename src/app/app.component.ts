@@ -107,7 +107,6 @@ export class AppComponent implements OnInit {
     this.initializeApp();
   }
 
-  username = this.dataService.getUsername();
 
   ionViewWillEnter() { }
 
