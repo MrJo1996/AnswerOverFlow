@@ -69,7 +69,7 @@ export class VisualizzaDomandaPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.handleLoading();
+
     this.visualizzaDomanda();
     this.showRisposte();
     this.storage.get('utente').then(data => { this.currentMailUser = data.email });
