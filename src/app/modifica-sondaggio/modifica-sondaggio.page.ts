@@ -324,7 +324,7 @@ export class ModificaSondaggioPage implements OnInit {
     }
   }
 
-
+  interval
   countDown(incAnno, incMese, incGG, incHH, incMM) {
 
     var auxData = []; //get dati dal sondaggio
@@ -339,7 +339,7 @@ export class ModificaSondaggioPage implements OnInit {
     // var countDownDateTEST = new Date(parseInt(auxData['0'], 10) + 1, parseInt(auxData['1'], 10) - 1, parseInt(auxData['2'], 10), parseInt(auxData['3'], 10), parseInt(auxData['4'], 10))/* .getTime() */;
 
     // Aggiorno timer ogni 1000ms (1000ms==1s)
-    var x = setInterval(function () {
+    this.interval = setInterval(function () {
 
       //Timestamp Attuale (data + orario)
       var now = new Date().getTime();
@@ -363,7 +363,7 @@ export class ModificaSondaggioPage implements OnInit {
       if (distance < 0) {
         /* this.SCAD = true;
         console.log("SCAD in countdown() ", this.SCAD); */
-        clearInterval(x);
+        clearInterval(this.interval);
         document.getElementById("timeLeft").innerHTML = "Sondaggio scaduto.";
 
         //TODO Provare generazione allert da qui che al conferma riporta al visualizza
@@ -372,7 +372,9 @@ export class ModificaSondaggioPage implements OnInit {
     }, 1000);
 
   }
-
+  ionViewDidLeave() {
+    clearInterval(this.interval)
+  }  
   mappingIncrement(valueToMapp) {
     //creo nuova data di scadenza settata in base al timer impostato
     //case in base a timerToPass -> hh:mm (ossia la selezione dell'utente)
