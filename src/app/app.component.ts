@@ -23,6 +23,9 @@ export class AppComponent implements OnInit {
 
   utenteLogged = true;
   avatar: string;
+  nome: string;
+  cognome: string;
+  username: string;
 
   public selectedIndex = -1;
   public selectedIndexAccount = -1;
@@ -195,10 +198,20 @@ export class AppComponent implements OnInit {
       } else {
         this.accountPages[2].view = true;
         this.accountPages[3].view = false;
+        this.nome = this.dataService.getNome()
+        this.cognome = this.dataService.getCognome()
+        this.username = this.dataService.getUsername()
         this.avatar = this.dataService.getAvatar()
         this.utenteLogged = true;
       }
     });
+  }
+
+  reloadUserInfo() {
+    this.nome = this.dataService.getNome()
+    this.cognome = this.dataService.getCognome()
+    this.username = this.dataService.getUsername()
+    this.avatar = this.dataService.getAvatar()
   }
 
   /*  switch2 (index) {
@@ -250,7 +263,7 @@ export class AppComponent implements OnInit {
       switch (page) {
         case "app":
           this.selectedIndex = index;
-          if (this.appPages[index].title === "Home") {
+          if (this.appPages[index].title === "Home" || this.appPages[index].title === "Ricerca") {
             this.router.navigateByUrl(this.appPages[index].url);
           } else {
             this.alertOspite();

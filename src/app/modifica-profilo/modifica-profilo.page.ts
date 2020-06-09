@@ -6,6 +6,7 @@ import { NavController } from "@ionic/angular";
 import { PickerController } from "@ionic/angular";
 import { ToastController } from "@ionic/angular";
 import { Router } from "@angular/router";
+import { AppComponent } from '../app.component';
 
 @Component({
   selector: "app-modifica-profilo",
@@ -35,6 +36,7 @@ export class ModificaProfiloPage implements OnInit {
     public alertController: AlertController,
     public apiService: ApiService,
     public navCtrl: NavController,
+    private menuSet: AppComponent,
     public toastController: ToastController
   ) {}
 
@@ -106,8 +108,6 @@ export class ModificaProfiloPage implements OnInit {
 
             //TODO mostrare messaggio di avvenuta modifica e riportare alla home
 
-            this.toastSuccess();
-            this.navCtrl.back();
           },
         },
       ],
@@ -151,8 +151,11 @@ export class ModificaProfiloPage implements OnInit {
     ) {
       this.toastParolaScoretta();
     } else {
+      this.dataService.setUsername(this.usernameToPass);
+      this.dataService.setNome(this.nomeToPass);
+      this.dataService.setCognome(this.cognomeToPass);
+      this.dataService.setAvatarUtente(this.avatar);
       if (this.password) {
-        this.dataService.setAvatar(this.avatar);
         this.apiService
           .modificaProfilo(
             this.usernameToPass,
@@ -172,7 +175,6 @@ export class ModificaProfiloPage implements OnInit {
             }
           );
       } else {
-        this.dataService.setAvatar(this.avatar);
         this.apiService
           .modificaProfiloNoPass(
             this.usernameToPass,
@@ -191,6 +193,10 @@ export class ModificaProfiloPage implements OnInit {
             }
           );
       }
+      this.dataService.settaTemporaryAvatar(undefined);
+      this.menuSet.reloadUserInfo();
+      this.toastSuccess();
+      this.navCtrl.back();
     }
   }
 
