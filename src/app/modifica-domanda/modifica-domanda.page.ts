@@ -101,8 +101,12 @@ export class ModificaDomandaPage implements OnInit {
       this.toastParolaScoretta();
     }
     else {
-    this.apiService.modificaDomanda(this.codice_domanda, this.dataeoraToPass, this.timerToPass, this.titoloToPass, this.descrizioneToPass, this.categoriaToPass, this.cod_preferita).then(
+    this.apiService.modificaDomanda(this.codice_domanda, this.dataeoraToPass, this.timerToPass, this.titoloToPass, this.descrizioneToPass, this.categoriaToPass||this.categoriaView, this.cod_preferita).then(
       (result) => {  
+        console.log(result)
+        console.log('categoria',this.categoriaToPass)
+        console.log('categoria',this.categoriaScelta)
+        console.log(this.codice_domanda)
         console.log('Modifica avvenuta con successo: ');
         
       },
@@ -181,6 +185,7 @@ export class ModificaDomandaPage implements OnInit {
             this.categoriaToPass = this.categoriaView;
             this.cod_categoria = value['ValoreCategoriaSettata'].value;
             this.codCategoriaScelta = this.cod_categoria;
+            this.categoriaToPass=this.codCategoriaScelta
             console.log('Codice catgoria settata: ', this.codCategoriaScelta);
 
           }

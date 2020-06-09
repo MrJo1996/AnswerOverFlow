@@ -79,6 +79,7 @@ export class ApiService {
       cod_categoria,
       cod_preferita
     };
+    console.log(body)
     return new Promise((resolve, reject) => {
       this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/modificaDomanda', body).subscribe(
         data => {
