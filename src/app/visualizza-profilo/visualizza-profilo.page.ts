@@ -16,6 +16,7 @@ import {Storage} from '@ionic/storage';
 })
 export class VisualizzaProfiloPage implements OnInit {
 
+  ngOnInit(){}
   
   
   request: Promise<any>;
@@ -48,7 +49,7 @@ export class VisualizzaProfiloPage implements OnInit {
 
 
      
-  ngOnInit() {
+  ionViewWillEnter() {
     
     //this.userProfileId = "email"  /* this.dataService.getEmailOthers() */
 
