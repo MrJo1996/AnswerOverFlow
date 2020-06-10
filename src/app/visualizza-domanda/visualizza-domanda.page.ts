@@ -95,6 +95,9 @@ export class VisualizzaDomandaPage implements OnInit {
   goModificaDomanda() {
     if (this.risposte.length > 0)
       this.showErrorToast();
+    if(this.deadlineCheck){
+      this.toastDomandaScaduta();
+    }
     else
       //this.router.navigate(['modifica-domanda']);
       this.navCtrl.navigateForward(['modifica-domanda']);
