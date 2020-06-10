@@ -246,8 +246,10 @@ export class SearchResultsPage implements OnInit {
     this.filters = [];
     this.filters['categoria'] = '';
     this.isFiltered = false;
-    this.dataService.setFilters("", "", "", false);
+    //this.dataService.setFilters("", "", "", false); mettere in back o btn menu
     this.domandeSearched = [];
+    this.sondaggiSearched = [];
+
     // console.log("ionViewDidLeave");
   }
 
@@ -260,17 +262,25 @@ export class SearchResultsPage implements OnInit {
   clickUtente(cod_utente) {
     this.dataService.setEmailOthers(cod_utente);
     console.log(this.dataService.setEmailOthers);
+    this.dataService.setFilters(this.filters['tipo'], this.filters['codCategoria'], this.filters['status'], this.filters['isFiltered']);
+
     this.router.navigate(['/visualizza-profilo']);
   }
 
   clickDomanda(domanda_codice) {
     this.dataService.setCod_domanda(domanda_codice);
+    this.dataService.setFilters(this.filters['tipo'], this.filters['codCategoria'], this.filters['status'], this.filters['isFiltered']);
+
     this.router.navigate(['/visualizza-domanda']);
+
   }
 
   clickSondaggio(codice_sondaggio) {
     this.dataService.codice_sondaggio = codice_sondaggio;
+    this.dataService.setFilters(this.filters['tipo'], this.filters['codCategoria'], this.filters['status'], this.filters['isFiltered']);
+
     this.router.navigate(['/visualizza-sondaggio']);
+
   }
 }
 
