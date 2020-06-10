@@ -74,8 +74,8 @@ export class VisualizzaStatistichePage {
   }
 
   ngOnInit() {
-
     this.storage.get('utente').then(data => { this.cod_utente = data.email });
+    this.menuCtrl.swipeGesture(false);
   }
   ionViewDidEnter() {
 

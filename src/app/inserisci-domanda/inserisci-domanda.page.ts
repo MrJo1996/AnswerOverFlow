@@ -48,7 +48,7 @@ export class InserisciDomandaPage implements OnInit {
     public toastController: ToastController) { }
 
   ngOnInit() {
-
+    this.menuCrtl.swipeGesture(false);
     this.apiService.prendiCategorie(this.urlCategorie).then(
       (categories) => {
         this.categoriaSettings = categories;
