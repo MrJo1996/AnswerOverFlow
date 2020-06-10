@@ -98,12 +98,12 @@
  <ion-content>
  
    <div *ngIf="domandeButton == true || filters['tipo'] == 'domanda'">
- <div *ngIf="numDomande != 0; else nullArray">
+ <div *ngIf="numDomande != 0; else nullArrayDomande">
      <ion-list *ngFor="let domanda of domandeSearched; let i = index">
  
      <!--   <div *ngIf="categorie[i] == filters['categoria']"> -->
  
-         <ion-card>
+         <ion-card (click)="clickDomanda(domanda.codice_domanda)">
            <ion-card-header>
              <ion-card-title>{{domanda.titolo}}</ion-card-title>
              <ion-card-subtitle>{{categorie[i]}}</ion-card-subtitle>
@@ -128,10 +128,13 @@
   -->    </ion-list>
  </div>
  </div>
- <ng-template #nullArray>
-   <div>
-     non ci sono risultati
-   </div>
+ <ng-template #nullArrayDomande>
+  <ion-card
+  style="position:absolute; width: 390px; text-align: center;">
+    <ion-text><h1 style= "margin-bottom:20px; margin-left: 10px; margin-right: 10px; font-size: 1.2rem">
+        Nessun risultato di ricerca trovato</h1>
+    </ion-text>
+  </ion-card>
  </ng-template>
  
  
@@ -139,11 +142,11 @@
  
    <div *ngIf="sondaggiButton == true || filters['tipo'] == 'sondaggio'">
  
-     <div *ngIf="numSondaggi != 0; else nullArray">
+     <div *ngIf="numSondaggi != 0; else nullArraySondaggi">
  
      <ion-list *ngFor="let sondaggio of sondaggiSearched; let i = index">
  
-       <ion-card>
+       <ion-card (click)="clickSondaggio(sondaggio.codice_sondaggio)">
          <ion-card-header>
            <ion-card-title>{{sondaggio.titolo}}</ion-card-title>
            <ion-card-subtitle>{{categorieSondaggi[i]}}</ion-card-subtitle>
@@ -157,16 +160,21 @@
    </div>
  
  </div>
- <ng-template #nullArray>
-   <div>
-     non ci sono risultati
-   </div>
+ <ng-template #nullArraySondaggi>
+  <ion-card
+  style="position:absolute; width: 390px; text-align: center;">
+    <ion-text><h1 style= "margin-bottom:20px; margin-left: 10px; margin-right: 10px; font-size: 1.2rem">
+        Nessun risultato di ricerca trovato</h1>
+    </ion-text>
+  </ion-card>
  </ng-template>
  
    <div *ngIf="utentiButton == true || filters['tipo'] == 'utente'">
  
-     <div *ngIf="numUtenti != 0; else nullArray">
+     <div *ngIf="numUtenti != 0; else nullArrayUtenti">
      <ion-list *ngFor="let utente of utentiSearched; let i = index">
+
+      <div *ngIf="currentMailUser!==utente.email">
  
        <ion-card (click)="clickUtente(utente.email)">
          <ion-card-header>
@@ -174,17 +182,30 @@
            <ion-card-subtitle>{{utente.bio}}</ion-card-subtitle>
  
          </ion-card-header>
- 
- 
        </ion-card>
+      </div>
+
+      <div *ngIf="currentMailUser==utente.email">
+ 
+        <ion-card (click)="clickUtente(utente.email)">
+          <ion-card-header>
+            <ion-card-title>TU</ion-card-title>
+            <ion-card-subtitle>{{utente.bio}}</ion-card-subtitle>
+  
+          </ion-card-header>
+        </ion-card>
+       </div>
  
      </ion-list>
    </div>
  </div>
- <ng-template #nullArray>
-   <div>
-     non ci sono risultati
-   </div>
+ <ng-template #nullArrayUtenti>
+  <ion-card
+  style="position:absolute; width: 390px; text-align: center;">
+    <ion-text><h1 style= "margin-bottom:20px; margin-left: 10px; margin-right: 10px; font-size: 1.2rem">
+        Nessun risultato di ricerca trovato</h1>
+    </ion-text>
+  </ion-card>
  </ng-template>
  
  

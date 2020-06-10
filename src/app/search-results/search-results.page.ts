@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DataService } from "../services/data.service";
 import { Router } from '@angular/router';
 import { ApiService } from '../providers/api.service';
+import { Storage } from "@ionic/storage";
 
 @Component({
   selector: 'app-search-results',
@@ -33,10 +34,14 @@ export class SearchResultsPage implements OnInit {
   isFiltered: boolean = false;
   filters = [];
 
+  currentMailUser;
 
-  constructor(private dataService: DataService, private router: Router, private apiService: ApiService) { }
 
-  ngOnInit() { }
+  constructor(private dataService: DataService, private router: Router, private apiService: ApiService, private storage: Storage) { }
+
+  ngOnInit() { 
+    this.storage.get('utente').then(data => { this.currentMailUser = data.email });
+  }
 
 
   ionViewWillEnter() { //carica al rendering della page
@@ -168,7 +173,6 @@ export class SearchResultsPage implements OnInit {
     this.sondaggiButton = false;
     this.domandeButton = false;
     this.utentiButton = true;
-    console.log('bottone true')
   }
 
   async parseCodCat(codice_cat, index) {
@@ -226,6 +230,17 @@ export class SearchResultsPage implements OnInit {
   clickUtente(cod_utente) {
     this.dataService.setEmailOthers(cod_utente);
     console.log(this.dataService.setEmailOthers);
-    //this.router.navigate(['/visualizza-profilo']);
+    this.router.navigate(['/visualizza-profilo']);
+  }
+
+  clickDomanda(domanda_codice) {
+    this.dataService.setCod_domanda(domanda_codice);
+    this.router.navigate(['/visualizza-domanda']);
+  }
+
+  clickSondaggio(codice_sondaggio) {
+    this.dataService.codice_sondaggio = codice_sondaggio;
+    this.router.navigate(['/visualizza-sondaggio']);
   }
 }
+
