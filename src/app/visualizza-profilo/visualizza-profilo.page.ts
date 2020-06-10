@@ -97,6 +97,7 @@ export class VisualizzaProfiloPage implements OnInit {
       (data) => {
         console.log('Visualizzato con successo');
         this.profilo = data['data'][0];
+        console.log(this.profilo)
         this.selectId = this.profilo.email
         //console.log(this.profilo.bio);
         
