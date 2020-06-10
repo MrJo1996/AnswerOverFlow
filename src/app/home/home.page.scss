@@ -1,8 +1,11 @@
 .alarm_style{
+
     padding-right: 0.5rem;
     font-size: 1.5rem;
     color: #97a9c5
+
 }
+
 .textTitle2 {
     font-size: 1rem;
     color: #97a9c5
@@ -38,30 +41,25 @@
 }
 
 .username_text_style{
-    font-size: 1.8rem;
+    //font-size: 1.8rem;
+    font-size: 1rem;
     //color: white;
     color: DodgerBlue;
 }
 
 .icon-avatar{
-    max-width: 50px; 
-    max-height: 50px;
-    margin-right: 7px;
-    padding: 3px;
+    max-width: 30px; 
+    max-height: 30px;
+   margin-right: 7px;
+   //padding: 3px;
 
-
-}
-
-.description_text{
-    font-size: 0.8rem;
-    color: #97a9c5
 
 }
 
 .icon_list_style{
-    padding-left: 0.5rem;
+    //padding-left: 0.5rem;
     padding-right: 0.5rem;
-    font-size: 1rem;
+    font-size: 1.5rem;
     color: #97a9c5
 
 
@@ -71,36 +69,65 @@
 ion-title {
     text-align: center;
 }
+
 .msg-btn{
     --padding-start: 0.5em;
     --padding-end: 0.5em
 }
 
 .textTitleBIG2 {
-    font-size: 2rem;
+    font-size: 1.3rem;
     color: white;
+    padding-bottom: 10px;
+    padding-left: 3px;
+    padding-right: 3px;
   }
+
 ion-slides{
     overflow-y: scroll;
   }
+
   ion-item{
     --border-width:0px;
     --border-color:transparent;
     background-color: transparent;
   }
+
   .homebarup {
     width: 100%;
     height: 15px;
     background-size: 100%;
-    background: -webkit-linear-gradient(DodgerBlue,transparent);
+    background: -webkit-linear-gradient(rgb(123, 131, 146),transparent);
   }
+
+  .homebar {
+    background-size: 100%;
+    background: -webkit-linear-gradient(#19314A,transparent);
+  }
+
   .homebardown {
     width: 100%;
     height: 15px;
     background-size: 100%;
     background: -webkit-linear-gradient(0.25turn,DodgerBlue,transparent);
   }
+
   .backgrounds2 {
     background-size: 100%;
     background: -webkit-linear-gradient(0.25turn,DodgerBlue,transparent);
   }
+
+  .iconClass1{
+
+    font-size: 1.5rem;
+    color: #97a9c5
+
+  }
+  
+  .description_text{
+
+    font-size: 1rem;
+    color: #97a9c5
+
+}
+
