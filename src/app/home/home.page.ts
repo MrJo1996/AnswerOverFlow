@@ -67,6 +67,7 @@ export class HomePage implements OnInit {
   }
 
   ngOnInit(){
+    this.menuCtrl.swipeGesture(false);
     this.storage.get('utente').then(data => { this.currentMailUser = data.email });
     console.log(this.refresh_index);
     this.visualizzaDomandaHome();
@@ -318,6 +319,10 @@ export class HomePage implements OnInit {
 
     this.dataService.setKeywordToSearch(this.keywordToSearch);
     this.router.navigate(['/search-results']);
+  }
+
+  openMenu(){
+    this.menuCtrl.open();
   }
 }
 
