@@ -163,7 +163,7 @@ export class HomePage implements OnInit {
   async getUserDomanda(mail) {
     this.apiService.getProfilo(mail).then(
       (profilo) => {
-        this.profili_user_domande.push(profilo['data']['0'].username);
+        this.profili_user_domande.push(profilo['data']['0']);
       },
       (rej) => {
         console.log("C'è stato un errore durante la visualizzazione del profilo");
@@ -255,7 +255,7 @@ export class HomePage implements OnInit {
   async getUserSondaggio(mail) {
     this.apiService.getProfilo(mail).then(
       (profilo) => {
-        this.profili_user_sondaggi.push(profilo['data']['0'].username);
+        this.profili_user_sondaggi.push(profilo['data']['0']);
       },
       (rej) => {
         console.log("C'è stato un errore durante la visualizzazione del profilo");
