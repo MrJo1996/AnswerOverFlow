@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { DataService } from "../services/data.service";
 import { Router } from '@angular/router';
 import { ApiService } from '../providers/api.service';
+import { Storage } from "@ionic/storage";
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { MenuController } from '@ionic/angular';
 
 @Component({
   selector: 'app-search-results',
@@ -12,8 +15,8 @@ export class SearchResultsPage implements OnInit {
 
   keyRicerca;
 
-  domandeSearched;
-  sondaggiSearched;
+  domandeSearched = [];
+  sondaggiSearched = [];
   utentiSearched;
 
   numDomande;
@@ -33,10 +36,16 @@ export class SearchResultsPage implements OnInit {
   isFiltered: boolean = false;
   filters = [];
 
+  currentMailUser;
 
-  constructor(private dataService: DataService, private router: Router, private apiService: ApiService) { }
+  domandeFiltrate;
+  sondaggiFiltrati
 
-  ngOnInit() { }
+  constructor(private dataService: DataService, private menuCtrl: MenuController, private router: Router, private apiService: ApiService, private storage: Storage) { }
+
+  ngOnInit() {
+    this.storage.get('utente').then(data => { this.currentMailUser = data.email });
+  }
 
 
   ionViewWillEnter() { //carica al rendering della page
@@ -46,6 +55,8 @@ export class SearchResultsPage implements OnInit {
 
     //check presenza filtri
     this.filters = this.dataService.getFilters();
+    console.log("FILTRI JO ", this.filters);
+
     if (this.filters['isFiltered']) {
       this.domandeButton = false;
       this.apiService.getCategoria(this.filters['codCategoria']).then(
@@ -56,33 +67,61 @@ export class SearchResultsPage implements OnInit {
           console.log("rej getCat filtered");
         }
       );
-      console.log("RICERCA FILTRATA", this.filters['isFiltered']);
-      this.isFiltered = true;
-
+/*       console.log("RICERCA FILTRATA", this.filters['isFiltered']);
+ */      this.isFiltered = true;
     }
-    console.log("Filtri ", this.dataService.getFilters());
+
+    console.log("Filtri prima di domanda", this.filters);
 
     //DOMANDE
     this.apiService.ricercaDomanda(this.keyRicerca).then(
       (result) => { // nel caso in cui va a buon fine la chiamata
+        console.log("LUNGHEZZA totale chiamata ", result['data'].length);
 
-        if (result != undefined){
-          
-        
-        this.domandeSearched = result['data'];
-        //console.log("domande search-res: ", this.domandeSearched);
+        if (result != undefined) {
 
-        this.numDomande = this.domandeSearched.length;
+          console.log("Domande chiamata: ", this.domandeSearched);
 
-        var i;
-        for (i = 0; i < this.numDomande; i++) {
-          this.parseCodCat(this.domandeSearched[i].cod_categoria, i);
+          if (this.isFiltered) {
+
+            /*  console.log("cod passato dal filtro ", this.filters['codCategoria'])
+ 
+             this.domandeFiltrate = this.domandeSearched.filter(function (obj) {
+               return obj.cod_categoria == this.filters['codCategoria'];
+             });
+             //altri filtri
+ 
+             this.numDomande = this.domandeFiltrate.length;
+ 
+             console.log("FILTER array funzione ", this.domandeFiltrate);
+  */
+            var i;
+            for (i = 0; i < result['data'].length; i++) {
+              if (this.filters['codCategoria'] != "") {
+                if (result['data'][i].cod_categoria == this.filters['codCategoria'] && result['data'][i] != undefined) {
+                  this.domandeSearched.push(result['data'][i]);
+                  /*  this.domandeSearched.push(result['data'][i]);
+ 
+                   this.domandeSearched.pop(); //BOH */
+
+                }
+              }
+            }
+            this.numDomande = this.domandeSearched.length;
+
+          } else {
+            this.domandeSearched = result['data'];
+            this.numDomande = this.domandeSearched.length;
+          }
+
+          var i;
+          for (i = 0; i < this.numDomande; i++) {
+            this.parseCodCat(this.domandeSearched[i].cod_categoria, i);
+          }
+        } else {
+          this.numDomande = 0;
+          console.log("non ci sono domande");
         }
-      } else {
-      this.numDomande = 0;
-      console.log("non ci sono domande");  
-    }
-
       },
       (rej) => {// nel caso non vada a buon fine la chiamata
         console.log('rej domande search-res');
@@ -92,24 +131,43 @@ export class SearchResultsPage implements OnInit {
     //SONDAGGI
     this.apiService.ricercaSondaggio(this.keyRicerca).then(
       (result) => { // nel caso in cui va a buon fine la chiamata
-       
 
-        if (result != undefined){
 
-        this.sondaggiSearched = result['data'];
-        //console.log("sondaggi search-res: ", this.sondaggiSearched.length);
-        this.numSondaggi = this.sondaggiSearched.length;
+        if (result != undefined) {
+          console.log("sondaggi chiamata: ", result);
 
-        var i;
+          if (this.isFiltered) {
 
-        for (i = 0; i < this.numSondaggi; i++) {
-          this.parseCodCatSondaggi(this.sondaggiSearched[i].cod_categoria, i);
+            var i;
+            for (i = 0; i < result['data'].length; i++) {
+              if (this.filters['codCategoria'] != "") {
+                if (result['data'][i].cod_categoria == this.filters['codCategoria'] && result['data'][i] != undefined) {
+                  this.sondaggiSearched.push(result['data'][i]);
+                  /*  this.domandeSearched.push(result['data'][i]);
+ 
+                   this.domandeSearched.pop(); //BOH */
 
+                }
+              }
+            }
+
+            this.numSondaggi = this.sondaggiSearched.length;
+            console.log("FILTER array funzione ", this.sondaggiSearched);
+
+          } else {
+            this.sondaggiSearched = result['data'];
+            this.numSondaggi = this.sondaggiSearched.length;
+          }
+
+          var i;
+          for (i = 0; i < this.numSondaggi; i++) {
+            this.parseCodCatSondaggi(this.sondaggiSearched[i].cod_categoria, i);
+
+          }
+        } else {
+          this.numSondaggi = 0;
+          console.log("non ci sono sondaggi");
         }
-      } else {
-        this.numSondaggi = 0;
-        console.log("non ci sono sondaggi");  
-      }
 
       },
       (rej) => {// nel caso non vada a buon fine la chiamata
@@ -122,18 +180,18 @@ export class SearchResultsPage implements OnInit {
     this.apiService.ricercaUtente(this.keyRicerca).then(
       (result) => { // nel caso in cui va a buon fine la chiamata
 
-        if (result != undefined){
+        if (result != undefined) {
 
           console.log("utente: ", result)
 
-        this.utentiSearched = result['data'];
-        //console.log("Utenti search-res: ", this.utentiSearched.length);
-        this.numUtenti = this.utentiSearched.length;
+          this.utentiSearched = result['data'];
+          //console.log("Utenti search-res: ", this.utentiSearched.length);
+          this.numUtenti = this.utentiSearched.length;
 
-      } else {
-        this.numUtenti = 0;
-        console.log("non ci sono utenti");  
-      }
+        } else {
+          this.numUtenti = 0;
+          console.log("non ci sono utenti");
+        }
 
       },
       (rej) => {// nel caso non vada a buon fine la chiamata
@@ -141,7 +199,7 @@ export class SearchResultsPage implements OnInit {
       }
     );
 
-    
+
   }
 
   ionViewDidEnter() {
@@ -168,7 +226,6 @@ export class SearchResultsPage implements OnInit {
     this.sondaggiButton = false;
     this.domandeButton = false;
     this.utentiButton = true;
-    console.log('bottone true')
   }
 
   async parseCodCat(codice_cat, index) {
@@ -205,6 +262,8 @@ export class SearchResultsPage implements OnInit {
     console.log("Input: ", this.keywordToSearch);
 
     this.dataService.setKeywordToSearch(this.keywordToSearch);
+    this.isFiltered = false;
+    this.domandeSearched = [];
     this.ionViewWillEnter();
   }
 
@@ -213,11 +272,14 @@ export class SearchResultsPage implements OnInit {
     this.filters = [];
     this.filters['categoria'] = '';
     this.isFiltered = false;
-    this.dataService.setFilters("", "", "", false);
-    console.log("ionViewDidLeave");
+    //this.dataService.setFilters("", "", "", false); //mettere in back o btn menu
+    this.domandeSearched = [];
+    this.sondaggiSearched = [];
+
+    // console.log("ionViewDidLeave");
   }
 
-  clickFilter(){
+  clickFilter() {
     this.router.navigate(['/advanced-search']);
   }
 
@@ -226,6 +288,29 @@ export class SearchResultsPage implements OnInit {
   clickUtente(cod_utente) {
     this.dataService.setEmailOthers(cod_utente);
     console.log(this.dataService.setEmailOthers);
-    //this.router.navigate(['/visualizza-profilo']);
+    this.dataService.setFilters(this.filters['tipo'], this.filters['codCategoria'], this.filters['status'], this.filters['isFiltered']);
+
+    this.router.navigate(['/visualizza-profilo']);
+  }
+
+  clickDomanda(domanda_codice) {
+    this.dataService.setCod_domanda(domanda_codice);
+    this.dataService.setFilters(this.filters['tipo'], this.filters['codCategoria'], this.filters['status'], this.filters['isFiltered']);
+
+    this.router.navigate(['/visualizza-domanda']);
+
+  }
+
+  clickSondaggio(codice_sondaggio) {
+    this.dataService.codice_sondaggio = codice_sondaggio;
+    this.dataService.setFilters(this.filters['tipo'], this.filters['codCategoria'], this.filters['status'], this.filters['isFiltered']);
+
+    this.router.navigate(['/visualizza-sondaggio']);
+
+  }
+
+  openMenu(){
+    this.menuCtrl.open();
   }
 }
+

@@ -8,6 +8,7 @@ import { DataService } from '../services/data.service';
 import {NavController} from "@ionic/angular";
 import { element } from 'protractor';
 import { Storage } from "@ionic/storage";
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-visualizza-sondaggio',
@@ -45,6 +46,16 @@ export class VisualizzaSondaggioPage implements OnInit {
   isSondaggioActive;
   interval;
   timerView2;
+  dataeoraView
+
+  numeroScelta;
+
+
+  private buttonColor: string = "#2a2a2a";
+  private buttonColorBest: string = "#64F58D";
+
+
+  arrayChecked = new Array();
 
   url = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/cancellaSondaggio/14'
   url2 = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaSondaggio'
@@ -57,7 +68,8 @@ export class VisualizzaSondaggioPage implements OnInit {
               private menuCtrl: MenuController, 
               public apiService: ApiService, 
               private storage: Storage,
-              public alertController: AlertController) 
+              public alertController: AlertController,
+              public toastController: ToastController) 
               { }
 
   ngOnInit() {
@@ -81,9 +93,20 @@ export class VisualizzaSondaggioPage implements OnInit {
   @ViewChild('content', { read: IonContent, static: false }) myContent: IonContent;
 
   goModificaSondaggio() {
+    
+    if(this.deadlineCheck()){
+      this.toastModificaSondaggioScaduto();
+    }
+    else if (this.voti_totali > 0){
     //this.router.navigate(['modifica-sondaggio']);
-    this.navCtrl.navigateForward(['/modifica-sondaggio']);
+        this.toastModificaSondaggioCiSonoVoti() ;
+    }
+    else
+      //this.router.navigate(['modifica-domanda']);
+      this.navCtrl.navigateForward(['/modifica-sondaggio']);
   }
+
+
 
   async popUpEliminaSondaggio(){
     const alert = await this.alertController.create({
@@ -93,6 +116,7 @@ export class VisualizzaSondaggioPage implements OnInit {
           text: 'Si',
           handler: () => {
             console.log('sondaggio eliminato');
+            this.showDeleteToast();
           this.cancellaSondaggio();
           this.goBack();
           }
@@ -121,6 +145,7 @@ export class VisualizzaSondaggioPage implements OnInit {
         this.sondaggioUser = sondaggio['data']['0'].cod_utente;
         this.codice_categoria = sondaggio['data']['0'].cod_categoria;
         this.timerView2 = sondaggio['data']['0'].timer;
+        this.dataeoraView = sondaggio['data']['0'].dataeora;
         this.mappingIncrement(sondaggio['data']['0'].timer);
         console.log('CODICE CATEGORIA: ', this.sondaggio);
         console.log("Email utente del sondaggio: ", this.sondaggioUser);
@@ -148,9 +173,12 @@ export class VisualizzaSondaggioPage implements OnInit {
         
         let i = 0;
         this.voti_totali = 0;
+        this.arrayChecked = new Array();
+        
         this.scelte.forEach(element => {
         var x = +element.num_favorevoli ;
           this.voti_totali =  this.voti_totali + x ;
+          this.arrayChecked.push(0);
       });
       this.calcolaPercentualiScelte();
       },
@@ -282,12 +310,26 @@ export class VisualizzaSondaggioPage implements OnInit {
 
 
    getScelta(scelta, i){
+     if(this.deadlineCheck()){
+       this.toastSondaggioScaduto();
+     }else{
 
-    this.sceltaSelezionata = scelta;
-    if(!this.hasVoted)
-    this.hasVoted = true;
-    this.index_scelta_selezionata = i;
-    console.log();
+      this.selezionaChecked(i);
+      this.sceltaSelezionata = scelta;
+      if(!this.hasVoted){
+        this.hasVoted = true;
+  
+    }
+      else{
+        this.hasVoted = false;
+  
+      }
+      this.index_scelta_selezionata = i;
+      console.log();
+
+
+     }
+ 
   }
 
   async confermaVoto(scelta){
@@ -472,6 +514,7 @@ export class VisualizzaSondaggioPage implements OnInit {
         + minutes + "min " + seconds + "s ";
 
       console.log(this.distanceTimer);
+     
     
       // Se finisce il countDown viene mostrato "Sondaggio scaduto."
       if (this.distanceTimer < 0) {
@@ -517,6 +560,114 @@ export class VisualizzaSondaggioPage implements OnInit {
     this.navCtrl.navigateForward(['/visualizza-profilo']);
   }
 
+  deadlineCheck(): boolean {
+    var date = new Date(this.dataeoraView.toLocaleString());
+    console.log(date.getTime());
+    var timer = this.timerView2;
+    console.log(timer);
+    var dateNow = new Date().getTime();
+
+
+    // Since the getTime function of the Date object gets the milliseconds since 1970/01/01, we can do this:
+    var time2 = date.getTime();
+    var seconds = new Date('1970-01-01T' + timer + 'Z').getTime();
+
+    var diff = dateNow - time2;
+
+    console.log(seconds);
+    console.log(time2);
+    console.log(diff);
+
+    return diff > seconds;
+  }
+
+  async toastSondaggioScaduto() {
+    const toast = await this.toastController.create({
+      message: 'Sondaggio scaduto! Impossibile votare!',
+      duration: 2000
+    });
+    toast.color = 'danger';
+    toast.position = "top";
+    toast.style.fontSize = '20px';
+    toast.style.textAlign = 'center';
+    toast.present();
+  }
+
+  async toastModificaSondaggioScaduto() {
+    const toast = await this.toastController.create({
+      message: 'Il tuo sondaggio è scaduto, non puoi più modificarlo!',
+      duration: 2000
+    });
+    toast.color = 'danger';
+    toast.position = "top";
+    toast.style.fontSize = '20px';
+    toast.style.textAlign = 'center';
+    toast.present();
+  }
+
+
+  async toastModificaSondaggioCiSonoVoti() {
+    const toast = await this.toastController.create({
+      message: 'Ci sono dei voti al tuo sondaggio, non è più possibile modificarlo!',
+      duration: 2000
+    });
+    toast.color = 'danger';
+    toast.position = "top";
+    toast.style.fontSize = '20px';
+    toast.style.textAlign = 'center';
+    toast.present();
+  }
+
+
+
+  selezionaChecked(i){
+
+    if (i === this.numeroScelta) {
+      this.numeroScelta = -1;
+     
+    }
+    else {
+   this.numeroScelta = i;
+    }
+  }
+
+
+
+  async showDeleteToast() {
+    const toast = document.createElement('ion-toast');
+    toast.message = 'Domanda eliminata con successo!';
+    toast.duration = 2000;
+    toast.position = "top";
+    toast.style.fontSize = '20px';
+    toast.color = 'success';
+    toast.style.textAlign = 'center';
+    document.body.appendChild(toast);
+    return toast.present();
+  }
+
+  async showErrorToast() {
+    const toast = document.createElement('ion-toast');
+    toast.message = 'Operazione non consentita!';
+    toast.duration = 2000;
+    toast.position = "top";
+    toast.style.fontSize = '20px';
+    toast.color = 'danger';
+    toast.style.textAlign = 'center';
+    document.body.appendChild(toast);
+    return toast.present();
+  }
+
+  async showModifyToast() {
+    const toast = document.createElement('ion-toast');
+    toast.message = 'Modifica avvenuta con successo!';
+    toast.duration = 2000;
+    toast.position = "top";
+    toast.style.fontSize = '20px';
+    toast.color = 'success';
+    toast.style.textAlign = 'center';
+    document.body.appendChild(toast);
+    return toast.present();
+  }
 
 }
 

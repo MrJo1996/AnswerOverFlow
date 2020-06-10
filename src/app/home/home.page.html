@@ -47,11 +47,11 @@
                 <ion-label class="textTitle2" >Domanda aperta</ion-label>
                 <ion-icon class="alarm_style" slot="end" name="ellipsis-vertical" (click)="presentPopover($event,index1,domanda.cod_utente,domanda.codice_domanda)"></ion-icon>
               </ion-item>
-              <ion-item class="backgrounds" *ngIf="currentMailUser!==domanda.cod_utente">
+              <ion-item class="backgrounds noPadding" *ngIf="currentMailUser!==domanda.cod_utente">
                 <ion-avatar slot="start" class="icon-avatar">
-                  <img src="{{profili_user_domande[i].avatar}}">
+                  <img src="{{domanda.profilo.avatar}}">
                 </ion-avatar>
-                <ion-label class="username_text_style" (click)="clickProfilo(domanda.cod_utente)">{{profili_user_domande[i].username}}
+                <ion-label class="username_text_style" (click)="clickProfilo(domanda.cod_utente)">{{domanda.profilo.username}}
                 </ion-label>
 
               </ion-item>
@@ -72,7 +72,7 @@
                 <ion-icon name="calendar-outline" slot=start class="calendar_icon_style"></ion-icon>
                 <ion-label class="description_text" slot="start">{{domanda.dataeora}}</ion-label>
                 <ion-icon name="list" slot="start" class="icon_list_style"></ion-icon>
-                <ion-label class="description_text" slot="start"> {{categorie_domande[i]}}</ion-label>
+                <ion-label class="description_text" slot="start"> </ion-label>
 
 
               </ion-toolbar>
@@ -98,7 +98,7 @@
                 <ion-icon class="alarm_style" slot="end" name="ellipsis-vertical" (click)="presentPopover($event,index2,sondaggio.cod_utente,sondaggio.codice_sondaggio)"></ion-icon>
 
             </ion-item>
-            <ion-item class="backgrounds" *ngIf="currentMailUser!==sondaggio.cod_utente">
+            <ion-item class="backgrounds noPadding" *ngIf="currentMailUser!==sondaggio.cod_utente">
               <ion-avatar slot="start" class="icon-avatar">
                 <img src="{{profili_user_sondaggi[i].avatar}}">
               </ion-avatar>

@@ -81,20 +81,16 @@
     </ion-card-content>
   </ion-card>
   <ion-icon name="chatbubble-ellipses-outline" class = "icons_generic_style" (click) = " goChat()"  slot = "end"></ion-icon>
-<ion-card *ngIf="timerView === 'OMBO TIMER,SCADUTA'">
-  <ion-card-header>
-    La domanda è scaduta, non è più possibile rispondere!
-  </ion-card-header>
-</ion-card>
+
   
 
 
   <ion-card *ngIf="risposte.length === 0" class = "backgrounds">    
     <ion-card-header>
-      <ion-card-title class = "textTitleBIG"> 
-          <ion-label *ngIf="risposte.length === 0 && currentMailUser===domandaMailUser" class = "textSimple">Non ci sono ancora risposte alla tua domanda</ion-label>
-          <ion-label *ngIf="risposte.length === 0  && currentMailUser!==domandaMailUser" class = "textSimple">Non ci sono ancora risposte per questa domanda. Rispondi per primo!</ion-label>
-      </ion-card-title>
+
+          <ion-label *ngIf="risposte.length === 0 && currentMailUser===domandaMailUser" >Non ci sono ancora risposte alla tua domanda</ion-label>
+          <ion-label *ngIf="risposte.length === 0  && currentMailUser!==domandaMailUser">Non ci sono ancora risposte per questa domanda. Rispondi per primo!</ion-label>
+   
     </ion-card-header>
 
 
@@ -109,9 +105,9 @@
           <ion-card-header>
             <ion-toolbar class="backgrounds">
               <ion-avatar slot="start" class="icon-avatar" >
-                <img src= {{profiliUtentiRisposte.avatar}}>
+                <img src= {{profiliUtentiRisposte[i].avatar}}>
               </ion-avatar>
-              <ion-label *ngIf="currentMailUser!==risposta.cod_utente" class = "username_text_style">{{profiliUtentiRisposte.username}}</ion-label>
+              <ion-label *ngIf="currentMailUser!==risposta.cod_utente" class = "username_text_style">{{profiliUtentiRisposte[i].username}}</ion-label>
               <ion-label *ngIf="currentMailUser===risposta.cod_utente " class = "username_text_style">Tu</ion-label>
              
              

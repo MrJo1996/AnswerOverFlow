@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController} from '@ionic/angular';
+import { AlertController, MenuController} from '@ionic/angular';
 import {NavController} from "@ionic/angular";
 import { Router } from "@angular/router";
 import {Storage} from '@ionic/storage';
@@ -26,7 +26,8 @@ export class ModificaPasswordPage implements OnInit {
     private pickerController: PickerController, 
     private navCtrl: NavController,
     private router: Router,
-    private dataService: DataService
+    private dataService: DataService,
+    private menuCtrl: MenuController
     ) { 
 
       this.userId = this.dataService.getEmail_Utente();
@@ -168,6 +169,10 @@ async salvaPassword() {
 
 goback(){
   this.router.navigate(['modifica-profilo']);
+}
+
+openMenu(){
+  this.menuCtrl.open();
 }
 
 }

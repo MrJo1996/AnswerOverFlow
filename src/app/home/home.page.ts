@@ -66,7 +66,7 @@ export class HomePage implements OnInit {
     this.doRefresh2();
   }
   }
-
+  
   ngOnInit(){
     setInterval(()=>{
     this.update.detectChanges();
@@ -143,15 +143,10 @@ export class HomePage implements OnInit {
   async visualizzaDomandaHome() {
     this.apiService.getDomandaHome().then(
       (domande) => {
-        console.log('Domande caricate',domande);
-        this.domande = domande; //assegno alla variabile locale il risultato della chiamata. la variabile sarà utilizzata nella stampa in HTML
-        setTimeout(()=>{      
-        this.domande.forEach(element => {
-          this.getUserDomanda(element.cod_utente);
-        this.domande.forEach(element => {
-          this.getCategoriaDomande(element.cod_categoria);
-        });
-      });},2000)
+        this.domande = domande;
+        console.log(this.domande);
+        this.getUserDomanda(this.domande); //assegno alla variabile locale il risultato della chiamata. la variabile sarà utilizzata nella stampa in HTML
+        console.log(this.domande);
         this.regola_domande();
       },
       (rej) => {
@@ -160,16 +155,18 @@ export class HomePage implements OnInit {
     );
   }
 
-  async getUserDomanda(mail) {
-    this.apiService.getProfilo(mail).then(
+  async getUserDomanda(domande) {
+    for(let i =0; i<=domande.length; i++){
+    this.apiService.getProfilo(domande[i].cod_utente).then(
       (profilo1) => {
         this.profili_user_domande.push(profilo1['data']['0']);
+        this.domande[i]['profilo']=profilo1['data']['0'];
         console.log(profilo1['data']['0'].username);
       },
       (rej) => {
         console.log("C'è stato un errore durante la visualizzazione del profilo");
       }
-    );
+    );}
   }
 
   async getCategoriaDomande(id_categoria) {
@@ -260,8 +257,6 @@ export class HomePage implements OnInit {
     this.apiService.getProfilo(mail2).then(
       (profilo2) => {
         this.profili_user_sondaggi.push(profilo2['data']['0']);
-        console.log(profilo2['data']['0'].username);
-
       },
       (rej) => {
         console.log("C'è stato un errore durante la visualizzazione del profilo");
