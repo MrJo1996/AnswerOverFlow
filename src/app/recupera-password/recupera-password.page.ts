@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Promise } from "q";
 import { PostServiceService } from "../services/post-service.service";
 import { Router } from '@angular/router';
+import { MenuController } from '@ionic/angular';
 
 @Component({
   selector: 'app-recupera-password',
@@ -16,9 +17,10 @@ export class RecuperaPasswordPage implements OnInit {
   result: Promise<any>;
   url = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/recupero'
 
-  constructor(private service: PostServiceService, private router: Router) { }
+  constructor(private service: PostServiceService, private router: Router, private menuCtrl: MenuController) { }
 
   ngOnInit() {
+    this.menuCtrl.enable(false);
     //disable scroll (anche su ios)
     var fixed = document.getElementById('fixed');
 

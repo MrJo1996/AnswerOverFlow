@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController, NavController } from '@ionic/angular';
+import { AlertController, NavController, MenuController } from '@ionic/angular';
 import { ApiService } from '../providers/api.service';
 import { DataService } from '../services/data.service';
 import { Storage } from "@ionic/storage";
@@ -18,7 +18,7 @@ export class ProponiCategoriaPage implements OnInit {
   request: Promise<any>;
   result: Promise<any>;
 
-  constructor(public apiService: ApiService, private storage: Storage, public alertController: AlertController, private router: Router, private navCtrl: NavController, private dataService: DataService) { }
+  constructor(private menuCtrl: MenuController, public apiService: ApiService, private storage: Storage, public alertController: AlertController, private router: Router, private navCtrl: NavController, private dataService: DataService) { }
 
   ngOnInit() {
     this.storage.get('utente').then(
@@ -102,5 +102,9 @@ export class ProponiCategoriaPage implements OnInit {
 
   goback(){
     this.navCtrl.back();
+  }
+
+  openMenu(){
+    this.menuCtrl.open();
   }
 }

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DataService } from "../services/data.service";
 import { Router } from '@angular/router';
 import { ApiService } from '../providers/api.service';
+import { MenuController } from '@ionic/angular';
 
 @Component({
   selector: 'app-search-results',
@@ -33,7 +34,7 @@ export class SearchResultsPage implements OnInit {
   isFiltered: boolean = false;
   filters = [];
 
-  constructor(private dataService: DataService, private router: Router, private apiService: ApiService) { }
+  constructor(private dataService: DataService, private menuCtrl: MenuController, private router: Router, private apiService: ApiService) { }
 
   ngOnInit() { }
 
@@ -150,6 +151,10 @@ export class SearchResultsPage implements OnInit {
     this.domandeButton = false;
     this.utentiButton = true;
     console.log('bottone true')
+  }
+
+  openMenu(){
+    this.menuCtrl.open();
   }
 
   async parseCodCat(codice_cat, index) {

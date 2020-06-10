@@ -3,7 +3,7 @@ import { TransitiveCompileNgModuleMetadata, ThrowStmt } from '@angular/compiler'
 import { NOMEM } from 'dns';
 
 import { ApiService } from '../providers/api.service';
-import { AlertController } from '@ionic/angular';
+import { AlertController, MenuController } from '@ionic/angular';
 import { DataService } from "../services/data.service";
 import { NavController } from "@ionic/angular";
 import { resolve } from 'url';
@@ -73,6 +73,7 @@ export class VisualizzaDomandaPage implements OnInit {
     public alertController:
       AlertController,
     private storage: Storage,
+    private menuCtrl: MenuController,
     public toastController: ToastController,
     public loadingController: LoadingController
   ) { }
@@ -813,6 +814,10 @@ export class VisualizzaDomandaPage implements OnInit {
   ionViewDidLeave() {
     clearInterval(this.interval)
   } 
+
+  openMenu(){
+    this.menuCtrl.open();
+  }
 
 /*   ionViewDidEnter(){
     clearInterval(this.interval)

@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
-import { AlertController } from "@ionic/angular";
+import { AlertController, MenuController } from "@ionic/angular";
 import { DataService } from "../services/data.service";
 
 @Component({
@@ -12,7 +12,8 @@ export class ScegliAvatarPage implements OnInit {
   constructor(
     private router: Router,
     private alertController: AlertController,
-    private dataService: DataService
+    private dataService: DataService,
+    private menuCtrl: MenuController
   ) {}
 
   colorFullfilled: string[] = [
@@ -79,7 +80,9 @@ export class ScegliAvatarPage implements OnInit {
   elementID: string;
   avatar: string;
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.menuCtrl.enable(false);
+  }
 
   routeToBio() {
     this.alertSalta();

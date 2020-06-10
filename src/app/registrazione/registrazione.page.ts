@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { ApiService } from "src/app/providers/api.service";
-import { AlertController } from "@ionic/angular";
+import { AlertController, MenuController } from "@ionic/angular";
 import { PickerController } from "@ionic/angular";
 import { DataService } from "../services/data.service";
 import { Storage } from "@ionic/storage";
@@ -39,9 +39,11 @@ export class RegistrazionePage implements OnInit {
     public alertController: AlertController,
     private pickerController: PickerController,
     private servicePost: PostServiceService,
-    private router: Router
+    private router: Router,
+    private menuCtrl: MenuController
   ) {}
   ngOnInit() {
+    this.menuCtrl.enable(false);
     //disable scroll (anche su ios)
     var fixed = document.getElementById("fixed");
 
