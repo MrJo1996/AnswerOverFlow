@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'src/app/providers/api.service';
 import { PostServiceService } from "../services/post-service.service";
 import { DataService } from "../services/data.service";
-import { AlertController } from '@ionic/angular';
+import { AlertController, MenuController } from '@ionic/angular';
 import { PickerController } from "@ionic/angular";
 import { PickerOptions } from "@ionic/core";
 import { Router } from "@angular/router";
@@ -41,13 +41,13 @@ export class InserisciDomandaPage implements OnInit {
     public alertController: AlertController,
     private pickerController: PickerController,
     private router: Router,
+    private menuCrtl: MenuController,
     private dataService: DataService,
     private navCtrl: NavController,
     private storage: Storage,
     public toastController: ToastController) { }
 
   ngOnInit() {
-
     this.apiService.prendiCategorie(this.urlCategorie).then(
       (categories) => {
         this.categoriaSettings = categories;
@@ -337,6 +337,11 @@ export class InserisciDomandaPage implements OnInit {
 
   goBack() {
     this.navCtrl.back();
+  }
+
+  openMenu(){
+    this.menuCrtl.open()
+    console.log(this.menuCrtl.swipeGesture.length);
   }
 
 

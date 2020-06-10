@@ -8,55 +8,56 @@
   </div>
 
   <ion-split-pane contentId="main-content">
-   
-    <ion-menu contentId="main-content" type="overlay">
 
-     
+    <ion-menu contentId="main-content" type="overlay" swipe-gesture="false">
+
+
       <ion-content>
 
-        <div style="position: -webkit-sticky; position: sticky; top: 0; background-color: var(--ion-item-background);  width: 100%; height: 144px; border-radius: 0px 0px 144px 144px; padding-top: 10px;" >
-          <ion-img id=logo src = "/assets/img/logo AnswerOverFlow.png" style="height: 100px; width: 100px; margin:0px auto ;" class="ion-align-self-center"></ion-img>
+        <div
+          style="position: -webkit-sticky; position: sticky; top: 0; background-color: var(--ion-item-background);  zoom:130%; border-radius: 0% 0% 50% 50%; padding-top: 2.3%;">
+          <ion-img id=logo src="/assets/img/logo AnswerOverFlow.png"
+            style="height: 40px; width: 40px; margin:0px auto ;" class="ion-align-self-center"></ion-img>
         </div>
 
-      <ion-card style="border-radius: 27px; margin-bottom: 10%;">
-            <ion-toolbar style="align-items: center;">
-              <ion-avatar style="width: 50px; height: 50px; margin-left: 5px;  margin-right: 10px;" slot="start"
-                (click)="goToProfile()">
+        <ion-card style="border-radius: 27px; margin-bottom: 10%;">
+          <ion-toolbar style="align-items: center;">
+            <ion-avatar style="width: 50px; height: 50px; margin-left: 5px;  margin-right: 10px;" slot="start"
+              (click)="goToProfile()">
 
-                <ion-icon  *ngIf="!avatar" name="person-circle-outline" style="width: 100%; height: 100%;"></ion-icon>
-                <img *ngIf="avatar"
-                  src={{avatar}}>
-              </ion-avatar>
+              <ion-icon *ngIf="!avatar" name="person-circle-outline" style="width: 100%; height: 100%;"></ion-icon>
+              <img *ngIf="avatar" src={{avatar}}>
+            </ion-avatar>
 
-              <ion-label style="font-size: 1.2rem;">{{nome}} </ion-label>
-              <ion-label style="font-size: 1.2rem;">{{cognome}}</ion-label><br>
-              <ion-label style="padding-top: 5px;">{{username}}</ion-label>
+            <ion-label style="font-size: 1.2rem;">{{nome}} </ion-label>
+            <ion-label style="font-size: 1.2rem;">{{cognome}}</ion-label><br>
+            <ion-label style="padding-top: 5px;">{{username}}</ion-label>
 
-            </ion-toolbar>
-          </ion-card>
-          <ion-list id="inbox-list">
+          </ion-toolbar>
+        </ion-card>
+        <ion-list id="inbox-list">
 
           <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
             <ion-item *ngIf="p.view" (click)="switch(i,'app')" routerDirection="root" lines="none" detail="false"
               [class.selected]="selectedIndex === i">
               <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
-              <ion-label>{{ p.title }}</ion-label>
+              <ion-label [class.blocked]="p.blocked">{{ p.title }}</ion-label>
             </ion-item>
 
             <!-- <ion-label *ngIf="p.title === 'Chat'"><br></ion-label> -->
 
           </ion-menu-toggle>
 
-          <div style="margin-top: 15%;">
+          <div style="margin-top: 10%;">
             <ion-menu-toggle auto-hide="false" *ngFor="let page of accountPages; let id = index">
               <ion-item *ngIf="page.view" (click)="switch(id,'account')" routerDirection="root" lines="none"
                 detail="false" [class.selected]="selectedIndexAccount == id">
                 <ion-icon slot="start" [ios]="page.icon + '-outline'" [md]="page.icon + '-sharp'"></ion-icon>
-                <ion-label>{{ page.title }}</ion-label>
+                <ion-label [class.blocked]="page.blocked">{{ page.title }}</ion-label>
               </ion-item>
             </ion-menu-toggle>
           </div>
-          
+
         </ion-list>
 
 

@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { NavController, AlertController } from "@ionic/angular";
+import { NavController, AlertController, MenuController } from "@ionic/angular";
 import { ApiService } from "./../providers/api.service";
 import { PickerController } from "@ionic/angular"; //Picker - import e poi definire nel constructor
 import { PickerOptions } from "@ionic/core";
@@ -55,7 +55,8 @@ export class InserimentoSondaggioPage implements OnInit {
     public alertController: AlertController,
     private router: Router,
     private data: DataService,
-    private storage: Storage
+    private storage: Storage,
+    private menuCtrl: MenuController
   ) {}
 
   ngOnInit() {
@@ -291,7 +292,7 @@ export class InserimentoSondaggioPage implements OnInit {
             console.log(value);
 
             this.categoriaView = value["ValoreCategoriaSettata"].text; //setto timerPopUp al valore inserito nel popUp una volta premuto ok così viene visualizzato
-            this.categoriaScelta = this.categoriaView;
+            this.categoriaScelta = value["ValoreCategoriaSettata"].value;
             console.log("categoria to pass: ", this.categoriaScelta);
           },
         },
@@ -419,5 +420,9 @@ export class InserimentoSondaggioPage implements OnInit {
     console.log(check);
 
     return check;
+  }
+
+  openMenu(){
+    this.menuCtrl.open();
   }
 }

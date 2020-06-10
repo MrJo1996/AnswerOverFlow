@@ -188,6 +188,7 @@ export class HomePage implements OnInit {
 
       this.domande_regolate[this.y_domande] = this.domande[this.y_domande];
       this.y_domande++;
+      this.doRefresh2()
       }
     }
     for (this.i_sondaggi = 0; this.i_sondaggi < 2; this.i_sondaggi++) {
@@ -317,6 +318,10 @@ export class HomePage implements OnInit {
 
     this.dataService.setKeywordToSearch(this.keywordToSearch);
     this.router.navigate(['/search-results']);
+  }
+
+  openMenu(){
+    this.menuCtrl.open();
   }
 }
 

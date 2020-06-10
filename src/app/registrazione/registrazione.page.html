@@ -32,13 +32,13 @@
     </ion-item>
     <ion-item fixed>
       <ion-label fixed>
-        <ion-icon name="mail"></ion-icon>
+        <ion-icon name="mail" id="mailIcon"></ion-icon>
       </ion-label>
       <ion-input [(ngModel)]="email" placeholder="E-mail*" (ionChange)="checkForEmail($event['detail']['value'])"></ion-input>
     </ion-item>
     <ion-item fixed>
       <ion-label fixed>
-        <ion-icon name="happy"></ion-icon>
+        <ion-icon name="happy" id="usernameIcon"></ion-icon>
       </ion-label>
       <ion-input [(ngModel)]="username" placeholder="Username*" (ionChange)="checkForUser($event['detail']['value'])"></ion-input>
     </ion-item>

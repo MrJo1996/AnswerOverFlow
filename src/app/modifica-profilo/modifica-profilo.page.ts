@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { AlertController } from "@ionic/angular";
+import { AlertController, MenuController } from "@ionic/angular";
 import { DataService } from "../services/data.service";
 import { ApiService } from "src/app/providers/api.service";
 import { NavController } from "@ionic/angular";
@@ -37,10 +37,13 @@ export class ModificaProfiloPage implements OnInit {
     public apiService: ApiService,
     public navCtrl: NavController,
     private menuSet: AppComponent,
-    public toastController: ToastController
+    public toastController: ToastController,
+    private menuCrtl: MenuController
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.menuCrtl.swipeGesture(false);
+  }
 
   ionViewWillEnter() {
     console.log(this.dataService.avatarTemporary);
@@ -507,5 +510,10 @@ export class ModificaProfiloPage implements OnInit {
     toast.style.textAlign = "center";
     document.body.appendChild(toast);
     return toast.present();
+  }
+
+  openMenu(){
+    this.menuCrtl.open();
+    console.log(this.menuCrtl.swipeGesture.length)
   }
 }

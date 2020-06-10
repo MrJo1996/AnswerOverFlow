@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { Chart } from 'chart.js';
-import { NavController } from "@ionic/angular";
+import { NavController, MenuController } from "@ionic/angular";
 import { ApiService } from '../providers/api.service';
 import { DataService } from "../services/data.service";
 import { element } from 'protractor';
@@ -69,13 +69,13 @@ export class VisualizzaStatistichePage {
   provaDomandeTOP = new Array();
 
 
-  constructor(public toastController: ToastController, private storage: Storage, private dataService: DataService, private navCtrl: NavController, public apiService: ApiService) {
+  constructor(public toastController: ToastController, private menuCtrl: MenuController, private storage: Storage, private dataService: DataService, private navCtrl: NavController, public apiService: ApiService) {
 
   }
 
   ngOnInit() {
-
     this.storage.get('utente').then(data => { this.cod_utente = data.email });
+    this.menuCtrl.swipeGesture(false);
   }
   ionViewDidEnter() {
 
@@ -655,6 +655,10 @@ export class VisualizzaStatistichePage {
     }
   }
 
+  openMenu(){
+    this.menuCtrl.open();
+    console.log(this.menuCtrl.swipeGesture.length);
+  }
 
 }
 
