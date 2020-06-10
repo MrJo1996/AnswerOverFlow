@@ -36,10 +36,12 @@ export class SearchResultsPage implements OnInit {
 
   currentMailUser;
 
+  domandeFiltrate;
+  sondaggiFiltrati
 
   constructor(private dataService: DataService, private router: Router, private apiService: ApiService, private storage: Storage) { }
 
-  ngOnInit() { 
+  ngOnInit() {
     this.storage.get('utente').then(data => { this.currentMailUser = data.email });
   }
 
@@ -70,24 +72,37 @@ export class SearchResultsPage implements OnInit {
     //DOMANDE
     this.apiService.ricercaDomanda(this.keyRicerca).then(
       (result) => { // nel caso in cui va a buon fine la chiamata
+        console.log("LUNGHEZZA totale chiamata ", result['data'].length);
 
-        if (result != undefined){
-          
-        
-        this.domandeSearched = result['data'];
-        //console.log("domande search-res: ", this.domandeSearched);
+        if (result != undefined) {
 
-        this.numDomande = this.domandeSearched.length;
+          this.domandeSearched = result['data'];
+          console.log("Domande chiamata: ", this.domandeSearched);
 
-        var i;
-        for (i = 0; i < this.numDomande; i++) {
-          this.parseCodCat(this.domandeSearched[i].cod_categoria, i);
+          if (this.isFiltered) {
+
+            this.domandeFiltrate = this.domandeSearched.filter(function (obj) {
+              return obj.cod_categoria == 1;
+            });
+            //altri filtri
+
+            this.numDomande = this.domandeFiltrate.length;
+
+            console.log("FILTER array funzione ", this.domandeFiltrate);
+
+          } else {
+
+            this.numDomande = this.domandeSearched.length;
+          }
+
+          var i;
+          for (i = 0; i < this.numDomande; i++) {
+            this.parseCodCat(this.domandeSearched[i].cod_categoria, i);
+          }
+        } else {
+          this.numDomande = 0;
+          console.log("non ci sono domande");
         }
-      } else {
-      this.numDomande = 0;
-      console.log("non ci sono domande");  
-    }
-
       },
       (rej) => {// nel caso non vada a buon fine la chiamata
         console.log('rej domande search-res');
@@ -97,24 +112,38 @@ export class SearchResultsPage implements OnInit {
     //SONDAGGI
     this.apiService.ricercaSondaggio(this.keyRicerca).then(
       (result) => { // nel caso in cui va a buon fine la chiamata
-       
 
-        if (result != undefined){
 
-        this.sondaggiSearched = result['data'];
-        //console.log("sondaggi search-res: ", this.sondaggiSearched.length);
-        this.numSondaggi = this.sondaggiSearched.length;
+        if (result != undefined) {
+          this.sondaggiSearched = result['data'];
+          console.log("sondaggi chiamata: ", this.sondaggiSearched);
 
-        var i;
+          if (this.isFiltered) {
 
-        for (i = 0; i < this.numSondaggi; i++) {
-          this.parseCodCatSondaggi(this.sondaggiSearched[i].cod_categoria, i);
+            this.sondaggiFiltrati = this.sondaggiSearched.filter(function (obj) {
+              return obj.cod_categoria == 1;
+            });
+            //altri filtri
 
+            this.numSondaggi = this.sondaggiFiltrati.length;
+
+            console.log("FILTER array funzione ", this.sondaggiFiltrati);
+
+          } else {
+
+            this.numSondaggi = this.sondaggiSearched.length;
+          }
+
+          var i;
+
+          for (i = 0; i < this.numSondaggi; i++) {
+            this.parseCodCatSondaggi(this.sondaggiSearched[i].cod_categoria, i);
+
+          }
+        } else {
+          this.numSondaggi = 0;
+          console.log("non ci sono sondaggi");
         }
-      } else {
-        this.numSondaggi = 0;
-        console.log("non ci sono sondaggi");  
-      }
 
       },
       (rej) => {// nel caso non vada a buon fine la chiamata
@@ -127,18 +156,18 @@ export class SearchResultsPage implements OnInit {
     this.apiService.ricercaUtente(this.keyRicerca).then(
       (result) => { // nel caso in cui va a buon fine la chiamata
 
-        if (result != undefined){
+        if (result != undefined) {
 
           console.log("utente: ", result)
 
-        this.utentiSearched = result['data'];
-        //console.log("Utenti search-res: ", this.utentiSearched.length);
-        this.numUtenti = this.utentiSearched.length;
+          this.utentiSearched = result['data'];
+          //console.log("Utenti search-res: ", this.utentiSearched.length);
+          this.numUtenti = this.utentiSearched.length;
 
-      } else {
-        this.numUtenti = 0;
-        console.log("non ci sono utenti");  
-      }
+        } else {
+          this.numUtenti = 0;
+          console.log("non ci sono utenti");
+        }
 
       },
       (rej) => {// nel caso non vada a buon fine la chiamata
@@ -146,7 +175,7 @@ export class SearchResultsPage implements OnInit {
       }
     );
 
-    
+
   }
 
   ionViewDidEnter() {
@@ -218,10 +247,11 @@ export class SearchResultsPage implements OnInit {
     this.filters['categoria'] = '';
     this.isFiltered = false;
     this.dataService.setFilters("", "", "", false);
-    console.log("ionViewDidLeave");
+    this.domandeSearched = [];
+    // console.log("ionViewDidLeave");
   }
 
-  clickFilter(){
+  clickFilter() {
     this.router.navigate(['/advanced-search']);
   }
 
