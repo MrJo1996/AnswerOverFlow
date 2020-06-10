@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ApiService } from '../providers/api.service';
 import { Storage } from "@ionic/storage";
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { MenuController } from '@ionic/angular';
 
 @Component({
   selector: 'app-search-results',
@@ -40,7 +41,7 @@ export class SearchResultsPage implements OnInit {
   domandeFiltrate;
   sondaggiFiltrati
 
-  constructor(private dataService: DataService, private router: Router, private apiService: ApiService, private storage: Storage) { }
+  constructor(private dataService: DataService, private menuCtrl: MenuController, private router: Router, private apiService: ApiService, private storage: Storage) { }
 
   ngOnInit() {
     this.storage.get('utente').then(data => { this.currentMailUser = data.email });
@@ -306,6 +307,10 @@ export class SearchResultsPage implements OnInit {
 
     this.router.navigate(['/visualizza-sondaggio']);
 
+  }
+
+  openMenu(){
+    this.menuCtrl.open();
   }
 }
 
