@@ -7,6 +7,9 @@ import { PickerController } from "@ionic/angular";
 import { ToastController } from "@ionic/angular";
 import { Router } from "@angular/router";
 import { AppComponent } from '../app.component';
+import { Storage } from "@ionic/storage";
+import { PostServiceService } from "../services/post-service.service";
+
 
 @Component({
   selector: "app-modifica-profilo",
@@ -29,8 +32,11 @@ export class ModificaProfiloPage implements OnInit {
   bioView: string;
 
   profilo = {};
-
-  constructor(
+  usernameAvailable: boolean;
+  urlControlloUsername =
+    "http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaprofiloperusername";
+  
+    constructor(
     private router: Router,
     private dataService: DataService,
     public alertController: AlertController,
@@ -38,11 +44,39 @@ export class ModificaProfiloPage implements OnInit {
     public navCtrl: NavController,
     private menuSet: AppComponent,
     public toastController: ToastController,
-    private menuCrtl: MenuController
+    private menuCrtl: MenuController,
+    private servicePost: PostServiceService,
+    private storage: Storage
   ) {}
 
   ngOnInit() {
     this.menuCrtl.swipeGesture(false);
+  }
+
+  checkForUser() {
+    console.log(this.usernameToPass);
+    let postData = {
+      username: this.usernameToPass,
+    };
+    if (this.usernameToPass === "") {
+      document.getElementById("usernameIcon").style.color = "";
+    } else {
+      this.servicePost.postService(postData, this.urlControlloUsername).then(
+        (data) => {
+          console.log(data);
+          if (data["error"] == true) {
+            document.getElementById("usernameIcon").style.color = "#4ED552";
+            this.usernameAvailable = true;
+          } else {
+            document.getElementById("usernameIcon").style.color = "#DA4141";
+            this.usernameAvailable = false;
+          }
+        },
+        (err) => {
+          console.log(err.message);
+        }
+      );
+    }
   }
 
   ionViewWillEnter() {
@@ -135,8 +169,9 @@ export class ModificaProfiloPage implements OnInit {
     if (this.bioToPass == null) {
       this.bioToPass = this.bioView;
     }
-
-    if (this.stringUsernameLengthChecker()) {
+    if (this.usernameAvailable){
+      this.popupUsernameUnavailable();
+    } else if (this.stringUsernameLengthChecker()) {
       this.popupInvalidUsername();
     } else if (this.stringNameLengthChecker()) {
       this.popupInvalidName();
@@ -275,6 +310,19 @@ export class ModificaProfiloPage implements OnInit {
     toast.style.textAlign = "center";
     document.body.appendChild(toast);
     return toast.present();
+  }
+  async popupUsernameUnavailable () {
+    const toast = document.createElement("ion-toast");
+
+      toast.message = "Username non disponibile";
+      toast.duration = 2000;
+      toast.position = "top";
+      toast.style.fontSize = "20px";
+      toast.color = "danger";
+      toast.style.textAlign = "center";
+
+      document.body.appendChild(toast);
+      return toast.present();
   }
   async popupInvalidBio() {
     const toast = document.createElement("ion-toast");
