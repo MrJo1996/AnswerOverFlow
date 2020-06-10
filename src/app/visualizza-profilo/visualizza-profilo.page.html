@@ -24,7 +24,8 @@
   <ion-content *ngIf="profilo" style="--background: url('/assets/img/provaBack.png') no-repeat center center / cover;">
 
     <ion-card>
-      <ion-icon class="profilePicture" name="person-circle-outline"></ion-icon>
+      <!-- <ion-icon class="profilePicture" name="person-circle-outline"></ion-icon> -->
+      <img class="profilePicture" src={{profilo?.avatar}}>
       
       <ion-item color="light" >
         <ion-icon name="happy-outline" slot="start"></ion-icon>

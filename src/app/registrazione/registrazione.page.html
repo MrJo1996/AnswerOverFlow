@@ -13,7 +13,6 @@
       AnswerOverFlow
     </ion-text>
     <br>
-    <br>
   </div>
   <ion-card fixed>
     <ion-item fixed>
@@ -34,13 +33,15 @@
       <ion-label fixed>
         <ion-icon name="mail" id="mailIcon"></ion-icon>
       </ion-label>
-      <ion-input [(ngModel)]="email" placeholder="E-mail*" (ionChange)="checkForEmail($event['detail']['value'])"></ion-input>
+      <ion-input [(ngModel)]="email" placeholder="E-mail*" (ionChange)="checkForEmail($event['detail']['value'])">
+      </ion-input>
     </ion-item>
     <ion-item fixed>
       <ion-label fixed>
         <ion-icon name="happy" id="usernameIcon"></ion-icon>
       </ion-label>
-      <ion-input [(ngModel)]="username" placeholder="Username*" (ionChange)="checkForUser($event['detail']['value'])"></ion-input>
+      <ion-input [(ngModel)]="username" placeholder="Username*" (ionChange)="checkForUser($event['detail']['value'])">
+      </ion-input>
     </ion-item>
     <ion-item fixed>
       <ion-label fixed>
@@ -66,15 +67,15 @@
     <ion-item>
       <ion-label>
         <ion-text>Cliccando su "Registrati" accetti i </ion-text>
-        <ion-text (click)="termini()" color="primary">termini</ion-text>
+        <ion-text (click)="terminiAlert()" color="primary">termini</ion-text>
       </ion-label>
     </ion-item>
   </ion-card>
   <ion-grid fixed class="grid">
     <div>
-      <ion-button expand="block" slot="start" color="primary" size="large" (click)="checkFields()">
-        Prosegui
-      </ion-button>
+
+      <ion-button expand="full" slot="start" color="primary" (click)="checkFields()">REGISTRATI</ion-button>
+
     </div>
     <div>
       <ion-label>

@@ -2,3 +2,26 @@
     color:black;
 }
 
+.itemClass{
+    border-radius: 10px;
+    --background: #3171e0;
+    height: 35px;
+    width: 90px;
+    }
+
+    .placeholder {
+        opacity: 2;
+        font-size: 0.88rem;
+        padding-right: 8px;
+        
+    }
+
+    .chip{
+        
+        right: 10px;
+         position: absolute;
+    }
+
+    .segment{
+        top:50px;
+    }

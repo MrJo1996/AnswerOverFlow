@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { AlertController} from '@ionic/angular';
 import {NavController} from "@ionic/angular";
 import { Router } from "@angular/router";
+import {Storage} from '@ionic/storage';
 
 import { ApiService } from 'src/app/providers/api.service';
+import { DataService } from "../services/data.service";
 
 //Picker - import e poi definire nel constructor
 import { PickerController } from "@ionic/angular";
@@ -18,12 +20,24 @@ import { PickerOptions } from "@ionic/core";
 
 export class ModificaPasswordPage implements OnInit {
 
-  constructor(public alertController: AlertController,public apiService: ApiService, private pickerController: PickerController, private navCtrl: NavController,private router: Router) { }
+  constructor(
+    public alertController: AlertController,
+    public apiService: ApiService, 
+    private pickerController: PickerController, 
+    private navCtrl: NavController,
+    private router: Router,
+    private dataService: DataService
+    ) { 
+
+      this.userId = this.dataService.getEmail_Utente();
+    }
 
 
   email: string; //param per le funzioni
   password: string;
   confermapassword: string;
+
+  userId: string;
 
   
   async popupModificaPassw() {
@@ -59,9 +73,9 @@ export class ModificaPasswordPage implements OnInit {
 
   ngOnInit() {
 
-    this.email = 'giovanni@gmail.com'
-    this.password = 'passwords'
-    this.confermapassword = 'passwords'
+   // this.email = ''
+    this.password = ''
+    this.confermapassword = ''
   }
 
   is_email_valid(email: string){
@@ -111,13 +125,13 @@ export class ModificaPasswordPage implements OnInit {
       return toast.present();
     }else{
       
-      this.apiService.modificaPassword(this.password, this.email).then(
+      this.apiService.modificaPassword(this.password, this.userId).then(
       (result) => { // nel caso in cui va a buon fine la chiama
       
 
       },
       (rej) => {// nel caso non vada a buon fine la chiamata
-        console.log('Modifica effetutata', this.password, this.email); //anche se va nel rej va bene, modifiche effettive nel db
+        console.log('Modifica effetutata', this.password, this.userId); //anche se va nel rej va bene, modifiche effettive nel db
 
       }
     );

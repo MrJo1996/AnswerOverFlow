@@ -752,68 +752,69 @@ export class ApiService {
 
 
 
-  //RICERCA
-  ricercaDomanda(keyword: string) {
-    const body = {
-      keyword
-    };
-    return new Promise((resolve, reject) => {
+    //RICERCA
+    ricercaDomanda(keyword: string) {
+      const body = {
+        keyword
+      };
+      return new Promise((resolve, reject) => {
+        
+        this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaDomandaKeyword', body).subscribe(
+          (data) => {
+  
+            let esito = data['Domanda'];
+            resolve(esito);
+           
+          },
+          (err) => {
+            console.log(err);
+            reject();
+          }
+        );
+      });
+    }
+  
+    ricercaSondaggio(keyword: string) {
+      const body = {
+        keyword
+      };
+      return new Promise((resolve, reject) => {
+        
+        this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaSondaggioKeyword', body).subscribe(
+          (data) => {
+            let esito = data['Sondaggio'];
+            resolve(esito);
+          },
+          (err) => {
+            console.log("Rej sond",err);
+            reject();
+          }
+        );
+      });
+    }
+  
+    ricercaUtente(keyword: string) {
+  
       
-      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaDomandaKeyword', body).subscribe(
-        (data) => {
-          let esito = data['Domanda']['data'];
-          resolve(esito);
-        },
-        (err) => {
-          console.log(err);
-          reject();
-        }
-      );
-    });
-  }
-
-  ricercaSondaggio(keyword: string) {
-    const body = {
-      keyword
-    };
-    return new Promise((resolve, reject) => {
-      
-      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaSondaggioKeyword', body).subscribe(
-        (data) => {
-          let esito = data['Sondaggio']['data'];
-          resolve(esito);
-        },
-        (err) => {
-          console.log("Rej sond",err);
-          reject();
-        }
-      );
-    });
-  }
-
-  ricercaUtente(keyword: string) {
-
-    
-    const body = {
-      keyword
-    };
-    return new Promise((resolve, reject) => {
-      
-      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaUserKeyword', body).subscribe(
-        (data) => {
-          let esito = data['utente']['data'];
-          console.log(data);
-
-          resolve(esito);
-        },
-        (err) => {
-          console.log("Rej utente",err);
-          reject();
-        }
-      );
-    });
-  }
-
+      const body = {
+        keyword
+      };
+      return new Promise((resolve, reject) => {
+        
+        this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaUserKeyword', body).subscribe(
+          (data) => {
+            let esito = data['utente'];
+            
+  
+            resolve(esito);
+          },
+          (err) => {
+            console.log("Rej utente",err);
+            reject();
+          }
+        );
+      });
+    }
   
   controllaGiaVotato(cod_utente: string, cod_sondaggio: number) {
     const body = {

@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonContent, AlertController, IonCheckbox, MenuController } from '@ionic/angular';
 import { PostServiceService } from "../services/post-service.service";
 import { TransitiveCompileNgModuleMetadata, ThrowStmt } from '@angular/compiler';
-import { Router } from '@angular/router';
+
 import { ApiService } from '../providers/api.service';
 import { DataService } from '../services/data.service';
 import {NavController} from "@ionic/angular";
@@ -43,6 +43,8 @@ export class VisualizzaSondaggioPage implements OnInit {
   distanceTimer;
 
   isSondaggioActive;
+  interval;
+  timerView2;
 
   url = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/cancellaSondaggio/14'
   url2 = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaSondaggio'
@@ -51,7 +53,7 @@ export class VisualizzaSondaggioPage implements OnInit {
   constructor(private navCtrl:NavController,
               private service: PostServiceService, 
               private dataService: DataService,
-              private router: Router,
+             
               private menuCtrl: MenuController, 
               public apiService: ApiService, 
               private storage: Storage,
@@ -64,7 +66,7 @@ export class VisualizzaSondaggioPage implements OnInit {
     this.visualizzaSondaggioSelezionato();
     this.visualizzaScelte();
     this.giaVotato();
-    this.getUserSondaggio();
+    
     console.log("mail utente corrente: ", this.currentUser);
     
 
@@ -78,8 +80,9 @@ export class VisualizzaSondaggioPage implements OnInit {
 
   @ViewChild('content', { read: IonContent, static: false }) myContent: IonContent;
 
-  goModificaDomanda() {
-    this.router.navigate(['modifica-sondaggio']);
+  goModificaSondaggio() {
+    //this.router.navigate(['modifica-sondaggio']);
+    this.navCtrl.navigateForward(['/modifica-sondaggio']);
   }
 
   async popUpEliminaSondaggio(){
@@ -117,9 +120,11 @@ export class VisualizzaSondaggioPage implements OnInit {
         this.sondaggio = sondaggio['data']['0']; 
         this.sondaggioUser = sondaggio['data']['0'].cod_utente;
         this.codice_categoria = sondaggio['data']['0'].cod_categoria;
+        this.timerView2 = sondaggio['data']['0'].timer;
         this.mappingIncrement(sondaggio['data']['0'].timer);
         console.log('CODICE CATEGORIA: ', this.sondaggio);
         console.log("Email utente del sondaggio: ", this.sondaggioUser);
+        this.getUserSondaggio();
         this.visualizzaCategoria();
       },
       (rej) => {
@@ -313,6 +318,7 @@ export class VisualizzaSondaggioPage implements OnInit {
   }
 
   async doRefresh(event) {
+    clearInterval(this.interval);
     this.voti_totali = 0;
     this.votato = true;
     //this.visualizzaSondaggioSelezionato();
@@ -330,6 +336,7 @@ export class VisualizzaSondaggioPage implements OnInit {
 
 
   async doNormalRefresh(event) {
+    clearInterval(this.interval);
     this.voti_totali = 0;
     this.votato = false;
     //this.visualizzaSondaggioSelezionato();
@@ -365,7 +372,7 @@ export class VisualizzaSondaggioPage implements OnInit {
     this.apiService.getProfilo(this.sondaggioUser).then(
       (profilo) => {
         
-        this.profiloUserSondaggio = profilo;
+        this.profiloUserSondaggio = profilo['data']['0'];;
         
         console.log('profilo trovato con successo', this.sondaggioUser, profilo);
 
@@ -445,7 +452,7 @@ export class VisualizzaSondaggioPage implements OnInit {
     // var countDownDateTEST = new Date(parseInt(auxData['0'], 10) + 1, parseInt(auxData['1'], 10) - 1, parseInt(auxData['2'], 10), parseInt(auxData['3'], 10), parseInt(auxData['4'], 10))/* .getTime() */;
   
     // Aggiorno timer ogni 1000ms (1000ms==1s)
-    var x = setInterval(function () {
+    this.interval = setInterval(function () {
   
       //Timestamp Attuale (data + orario)
       var now = new Date().getTime();
@@ -461,7 +468,7 @@ export class VisualizzaSondaggioPage implements OnInit {
   
       // Risultato delle conversioni messo nell'elemento con id="timeLeft"
       //TODO non mostrare valori se non avvalorati o pari a zero
-     // document.getElementById("timeLeft").innerHTML = days + "giorni " + hours + "ore "
+      document.getElementById("timeLeft").innerHTML = days + "giorni " + hours + "ore "
         + minutes + "min " + seconds + "s ";
 
       console.log(this.distanceTimer);
@@ -470,10 +477,10 @@ export class VisualizzaSondaggioPage implements OnInit {
       if (this.distanceTimer < 0) {
         /* this.SCAD = true;
         console.log("SCAD in countdown() ", this.SCAD); */
-        clearInterval(x);
+        clearInterval(this.interval);
         this.isSondaggioActive = false;
         console.log("il sondaggio è aperto: ", this.isSondaggioActive);
-  //      document.getElementById("timeLeft").innerHTML = "Sondaggio scaduto.";
+     document.getElementById("timeLeft").innerHTML = "Sondaggio scaduto.";
   
         //TODO Provare generazione allert da qui che al conferma riporta al visualizza
         //TODO se non va sol. di sopra METTERE ROUTE AL VISUALIZZA
@@ -485,6 +492,31 @@ export class VisualizzaSondaggioPage implements OnInit {
   openMenu(){
     this.menuCtrl.open();
   }
+
+  ionViewDidLeave(){
+
+    clearInterval(this.interval);
+  }
+
+  ionViewDidEnter(){
+    clearInterval(this.interval);
+    this.mappingIncrement(this.timerView2);
+  } 
+
+  goChat(){
+    this.dataService.setEmailOthers(this.sondaggioUser);
+    this.navCtrl.navigateForward(['/chat'])
+
+  }
+
+
+  clickProfilo(cod_utente) {
+    this.dataService.setEmailOthers(cod_utente);
+    console.log(this.dataService.setEmailOthers);
+   // this.router.navigate(['/visualizza-profilo']);
+    this.navCtrl.navigateForward(['/visualizza-profilo']);
+  }
+
 
 }
 
