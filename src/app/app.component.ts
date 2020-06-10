@@ -206,6 +206,10 @@ export class AppComponent implements OnInit {
         this.appPages[3].blocked = true;
         this.accountPages[0].blocked = true;
         this.accountPages[1].blocked = true;
+
+        this.nome = "Ospite"
+        this.cognome = ""
+        this.username = ""
         this.avatar = ""
         this.utenteLogged = false;
       } else {
