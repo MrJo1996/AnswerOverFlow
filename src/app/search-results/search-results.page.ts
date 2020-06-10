@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { DataService } from "../services/data.service";
 import { Router } from '@angular/router';
 import { ApiService } from '../providers/api.service';
-import { MenuController } from '@ionic/angular';
 
 @Component({
   selector: 'app-search-results',
@@ -34,7 +33,8 @@ export class SearchResultsPage implements OnInit {
   isFiltered: boolean = false;
   filters = [];
 
-  constructor(private dataService: DataService, private menuCtrl: MenuController, private router: Router, private apiService: ApiService) { }
+
+  constructor(private dataService: DataService, private router: Router, private apiService: ApiService) { }
 
   ngOnInit() { }
 
@@ -65,10 +65,12 @@ export class SearchResultsPage implements OnInit {
     //DOMANDE
     this.apiService.ricercaDomanda(this.keyRicerca).then(
       (result) => { // nel caso in cui va a buon fine la chiamata
-        console.log("Domande chiamata: ", result);
 
-        this.domandeSearched = result;
-        console.log("domande search-res: ", this.domandeSearched);
+        if (result != undefined){
+          
+        
+        this.domandeSearched = result['data'];
+        //console.log("domande search-res: ", this.domandeSearched);
 
         this.numDomande = this.domandeSearched.length;
 
@@ -76,6 +78,10 @@ export class SearchResultsPage implements OnInit {
         for (i = 0; i < this.numDomande; i++) {
           this.parseCodCat(this.domandeSearched[i].cod_categoria, i);
         }
+      } else {
+      this.numDomande = 0;
+      console.log("non ci sono domande");  
+    }
 
       },
       (rej) => {// nel caso non vada a buon fine la chiamata
@@ -86,10 +92,12 @@ export class SearchResultsPage implements OnInit {
     //SONDAGGI
     this.apiService.ricercaSondaggio(this.keyRicerca).then(
       (result) => { // nel caso in cui va a buon fine la chiamata
-        console.log("Sondaggi chiamata: ", result);
+       
 
-        this.sondaggiSearched = result;
-        console.log("sondaggi search-res: ", this.sondaggiSearched.length);
+        if (result != undefined){
+
+        this.sondaggiSearched = result['data'];
+        //console.log("sondaggi search-res: ", this.sondaggiSearched.length);
         this.numSondaggi = this.sondaggiSearched.length;
 
         var i;
@@ -98,6 +106,10 @@ export class SearchResultsPage implements OnInit {
           this.parseCodCatSondaggi(this.sondaggiSearched[i].cod_categoria, i);
 
         }
+      } else {
+        this.numSondaggi = 0;
+        console.log("non ci sono sondaggi");  
+      }
 
       },
       (rej) => {// nel caso non vada a buon fine la chiamata
@@ -109,13 +121,19 @@ export class SearchResultsPage implements OnInit {
 
     this.apiService.ricercaUtente(this.keyRicerca).then(
       (result) => { // nel caso in cui va a buon fine la chiamata
-        console.log("Utenti chiamata: ", result);
 
-        this.utentiSearched = result;
-        console.log("Utenti search-res: ", this.utentiSearched.length);
+        if (result != undefined){
+
+          console.log("utente: ", result)
+
+        this.utentiSearched = result['data'];
+        //console.log("Utenti search-res: ", this.utentiSearched.length);
         this.numUtenti = this.utentiSearched.length;
 
-        console.log("utente: ", this.utentiSearched[0].nome);
+      } else {
+        this.numUtenti = 0;
+        console.log("non ci sono utenti");  
+      }
 
       },
       (rej) => {// nel caso non vada a buon fine la chiamata
@@ -153,10 +171,6 @@ export class SearchResultsPage implements OnInit {
     console.log('bottone true')
   }
 
-  openMenu(){
-    this.menuCtrl.open();
-  }
-
   async parseCodCat(codice_cat, index) {
     //set categorieToView
     console.log("", codice_cat, index);
@@ -164,7 +178,7 @@ export class SearchResultsPage implements OnInit {
     this.apiService.getCategoria(codice_cat).then(
       (categoria) => {
         this.categorie[index] = categoria['Categoria']['data'][0].titolo;
-        console.log("COD parsato", index, " ", this.categorie[index]);
+        //onsole.log("COD parsato", index, " ", this.categorie[index]);
       },
       (rej) => {
         console.log("C'è stato un errore durante la visualizzazione");
@@ -179,7 +193,7 @@ export class SearchResultsPage implements OnInit {
     this.apiService.getCategoria(codice_cat).then(
       (categoria) => {
         this.categorieSondaggi[index] = categoria['Categoria']['data'][0].titolo;
-        console.log("COD parsato sondaggi", index, " ", this.categorieSondaggi[index]);
+        //console.log("COD parsato sondaggi", index, " ", this.categorieSondaggi[index]);
       },
       (rej) => {
         console.log("C'è stato un errore durante la visualizzazione");
@@ -203,6 +217,15 @@ export class SearchResultsPage implements OnInit {
     console.log("ionViewDidLeave");
   }
 
+  clickFilter(){
+    this.router.navigate(['/advanced-search']);
+  }
+
   //TODO ARRAY FILTERED
 
+  clickUtente(cod_utente) {
+    this.dataService.setEmailOthers(cod_utente);
+    console.log(this.dataService.setEmailOthers);
+    //this.router.navigate(['/visualizza-profilo']);
+  }
 }
