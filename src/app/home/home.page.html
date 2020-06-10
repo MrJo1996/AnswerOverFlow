@@ -42,12 +42,12 @@
               <div class="homebarup"></div>
             </div>
             <ion-card-header>
-              <ion-item class="backgrounds">
+              <ion-item class="backgrounds noPadding">
                 <ion-icon class="alarm_style" name="lock-open-outline" ></ion-icon>
                 <ion-label class="textTitle2" >Domanda aperta</ion-label>
                 <ion-icon class="alarm_style" slot="end" name="ellipsis-vertical" (click)="presentPopover($event,index1,domanda.cod_utente,domanda.codice_domanda)"></ion-icon>
               </ion-item>
-              <ion-item class="backgrounds" *ngIf="currentMailUser!==domanda.cod_utente">
+              <ion-item class="backgrounds noPadding" *ngIf="currentMailUser!==domanda.cod_utente">
                 <ion-avatar slot="start" class="icon-avatar">
                   <img src="{{profili_user_domande[i].avatar}}">
                 </ion-avatar>
@@ -92,13 +92,13 @@
             <div class="homebarup"></div>
           </div>
           <ion-card-header>
-            <ion-item class="backgrounds">
+            <ion-item class="backgrounds noPadding">
               <ion-icon class="alarm_style" name="lock-open-outline" ></ion-icon>
                 <ion-label class="textTitle2" >Sondaggio aperto</ion-label>
                 <ion-icon class="alarm_style" slot="end" name="ellipsis-vertical" (click)="presentPopover($event,index2,sondaggio.cod_utente,sondaggio.codice_sondaggio)"></ion-icon>
 
             </ion-item>
-            <ion-item class="backgrounds" *ngIf="currentMailUser!==sondaggio.cod_utente">
+            <ion-item class="backgrounds noPadding" *ngIf="currentMailUser!==sondaggio.cod_utente">
               <ion-avatar slot="start" class="icon-avatar">
                 <img src="{{profili_user_sondaggi[i].avatar}}">
               </ion-avatar>
