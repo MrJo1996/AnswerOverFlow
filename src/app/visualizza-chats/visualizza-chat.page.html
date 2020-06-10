@@ -32,7 +32,8 @@
     margin: 0px 10px;
     border-radius: 7px;">
       <ion-item *ngFor="let singleChat of chat | filtro: testoRicercato: 'username' "
-        (click)="mostraMessaggi(singleChat.codice_chat, singleChat.cod_utente0)" button="true">
+        (click)="mostraMessaggi(singleChat.codice_chat, singleChat.cod_utente0)" button="true"
+        class="noPadding">
         <ion-avatar item-start>
           <img src="{{singleChat?.avatar}}"/>
         </ion-avatar>

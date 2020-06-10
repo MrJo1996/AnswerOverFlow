@@ -103,6 +103,10 @@ ion-toast{
   max-width: 700px;
   text-align: center;
 }
+
+ion-item.noPadding {
+  --padding-start: 0px
+}
 /* 
   //Per ora non serve //
   // MENU //
