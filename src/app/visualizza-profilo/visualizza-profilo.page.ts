@@ -34,16 +34,16 @@ export class VisualizzaProfiloPage implements OnInit {
     ){
 
       this.userProfileId = this.dataService.getEmailOthers();
-      this .userId = this.dataService.getEmail_Utente();
+      // this .userId = this.dataService.getEmail_Utente();
       
-     /*  this.storage.get('utente').then(data => {
+      this.storage.get('utente').then(data => {
         this.userId = data.email;
 
-          #172c3d
+//           #172c3d
 
-#15293a
-#19314A
-    }); */ 
+// #15293a
+// #19314A
+    }); 
      }
 
 
