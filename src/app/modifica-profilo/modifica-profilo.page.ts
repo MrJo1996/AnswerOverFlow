@@ -60,13 +60,14 @@ export class ModificaProfiloPage implements OnInit {
     this.menuCrtl.swipeGesture(false);
   }
 
-  checkForUser() {
+  checkForUser(usernameInserted) {
     console.log(this.usernameToPass);
     let postData = {
-      username: this.usernameToPass,
+      username: usernameInserted,
     };
-    if (this.usernameToPass === "") {
+    if (this.profilo["0"].username === usernameInserted) {
       document.getElementById("usernameIcon").style.color = "";
+      this.usernameAvailable = true;
     } else {
       this.servicePost.postService(postData, this.urlControlloUsername).then(
         (data) => {
@@ -176,7 +177,7 @@ export class ModificaProfiloPage implements OnInit {
     if (this.bioToPass == null) {
       this.bioToPass = this.bioView;
     }
-    if (this.usernameAvailable) {
+    if (!this.usernameAvailable) {
       this.popupUsernameUnavailable();
     } else if (this.stringUsernameLengthChecker()) {
       this.popupInvalidUsername();

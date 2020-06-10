@@ -386,7 +386,25 @@ export class VisualizzaDomandaPage implements OnInit {
 
     let array = list.array
 
-    return array.includes(string);
+    console.log(array);
+
+    let stringArray = [];
+    let stringPassed = string.split(' ');
+    stringArray = stringArray.concat(stringPassed);
+
+    console.log(stringArray);
+
+    var check;
+
+    stringArray.forEach( element => {
+      if (array.includes(element))
+      check = true; 
+    });
+
+    console.log(check);
+
+    return check;
+
   }
 
 
