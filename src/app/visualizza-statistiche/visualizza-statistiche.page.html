@@ -5,19 +5,16 @@
       <ion-icon color="primary" slot="start" slot="icon-only" name="arrow-back-outline"></ion-icon>
       </ion-button>
    
-    <ion-title style="font-size: x-large; text-align: center;"><b>Statistiche</b></ion-title>
+    <ion-title class="textTitle" class="ion-text-center" style="text-align: center; margin-right: 15%;">Statistiche</ion-title>
   
    
   </ion-toolbar>
 </ion-header>
-<ion-content class="ion-padding">
+<ion-content  style="--background: url('/assets/img/provaBack.png') no-repeat center center / cover;">
 
-<ion-segment [(ngModel)]="segment">
+<ion-segment [(ngModel)]="segment" >
   <ion-segment-button value="Domande" (click)="carica()">
     <ion-label>Domande</ion-label>
-
-
-    
   </ion-segment-button>
   <ion-segment-button value="Risposte" (click)="caricaR()">
     <ion-label>Risposte</ion-label>
@@ -31,9 +28,11 @@
 
 
 
+<div [ngSwitch]="segment" (ionChange)=" segmentChanged($event)" >
+  
 
 
-<div [ngSwitch]="segment" (ionChange)=" segmentChanged($event)">
+
   <div *ngSwitchCase= "'Domande'">
   <ion-card color="primary">
     <ion-card>
@@ -110,6 +109,9 @@
       <ion-icon name="arrow-forward-circle-outline" style="opacity: 100%; "></ion-icon>
     </ion-fab-button>
   </ion-fab>
+
+
+     
 
 </ion-content>
 

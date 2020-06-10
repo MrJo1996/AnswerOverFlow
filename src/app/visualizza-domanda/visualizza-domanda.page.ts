@@ -301,6 +301,7 @@ export class VisualizzaDomandaPage implements OnInit {
 
     this.doRefresh(event);
 
+
   }
 
 
@@ -435,10 +436,19 @@ export class VisualizzaDomandaPage implements OnInit {
   }
 
   setRispostaVisible() {
-    if (this.rispostaVisible === false)
-      this.rispostaVisible = true;
-    else
-      this.rispostaVisible = false;
+    if(!this.deadlineCheck()){
+      if (this.rispostaVisible === false)
+        this.rispostaVisible = true;
+
+      else
+          this.rispostaVisible = false;
+
+  }
+  else{
+  
+  this.toastDomandaScaduta();
+  }
+    
 
   }
 
@@ -862,6 +872,40 @@ export class VisualizzaDomandaPage implements OnInit {
     this.navCtrl.navigateForward(['/chat'])
 
   }
+
+  deadlineCheck(): boolean {
+    var date = new Date(this.dataeoraView.toLocaleString());
+    console.log(date.getTime());
+    var timer = this.timerView2;
+    console.log(timer);
+    var dateNow = new Date().getTime();
+
+
+    // Since the getTime function of the Date object gets the milliseconds since 1970/01/01, we can do this:
+    var time2 = date.getTime();
+    var seconds = new Date('1970-01-01T' + timer + 'Z').getTime();
+
+    var diff = dateNow - time2;
+
+    console.log(seconds);
+    console.log(time2);
+    console.log(diff);
+
+    return diff > seconds;
+  }
+
+  async toastDomandaScaduta() {
+    const toast = await this.toastController.create({
+      message: 'Domanda scaduta! Impossibile effettuare le modifiche!!!',
+      duration: 2000
+    });
+    toast.color = 'danger';
+    toast.position = "top";
+    toast.style.fontSize = '20px';
+    toast.style.textAlign = 'center';
+    toast.present();
+  }
+
   }
 
   
