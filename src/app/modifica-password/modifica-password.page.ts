@@ -59,9 +59,9 @@ export class ModificaPasswordPage implements OnInit {
 
   ngOnInit() {
 
-    this.email = 'giovanni@gmail.com'
-    this.password = 'passwords'
-    this.confermapassword = 'passwords'
+    this.email = ''
+    this.password = ''
+    this.confermapassword = ''
   }
 
   is_email_valid(email: string){
