@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from "@angular/router";
-import { NavController } from '@ionic/angular';
+import { NavController, MenuController } from '@ionic/angular';
 
 @Component({
   selector: 'app-info',
@@ -10,7 +10,7 @@ import { NavController } from '@ionic/angular';
 export class InfoPage implements OnInit {
 
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private menuCtrl: MenuController) { }
 
   ngOnInit() {
   }
@@ -18,6 +18,10 @@ export class InfoPage implements OnInit {
 
   goback(){
     this.router.navigate(['home']);
+  }
+
+  openMenu(){
+    this.menuCtrl.open();
   }
 
 }

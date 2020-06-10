@@ -3,6 +3,8 @@ import { DataService } from "../services/data.service";
 import { Router } from '@angular/router';
 import { ApiService } from '../providers/api.service';
 import { Storage } from "@ionic/storage";
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { MenuController } from '@ionic/angular';
 
 @Component({
   selector: 'app-search-results',
@@ -13,8 +15,8 @@ export class SearchResultsPage implements OnInit {
 
   keyRicerca;
 
-  domandeSearched;
-  sondaggiSearched;
+  domandeSearched = [];
+  sondaggiSearched = [];
   utentiSearched;
 
   numDomande;
@@ -39,7 +41,7 @@ export class SearchResultsPage implements OnInit {
   domandeFiltrate;
   sondaggiFiltrati
 
-  constructor(private dataService: DataService, private router: Router, private apiService: ApiService, private storage: Storage) { }
+  constructor(private dataService: DataService, private menuCtrl: MenuController, private router: Router, private apiService: ApiService, private storage: Storage) { }
 
   ngOnInit() {
     this.storage.get('utente').then(data => { this.currentMailUser = data.email });
@@ -53,6 +55,8 @@ export class SearchResultsPage implements OnInit {
 
     //check presenza filtri
     this.filters = this.dataService.getFilters();
+    console.log("FILTRI JO ", this.filters);
+
     if (this.filters['isFiltered']) {
       this.domandeButton = false;
       this.apiService.getCategoria(this.filters['codCategoria']).then(
@@ -63,11 +67,11 @@ export class SearchResultsPage implements OnInit {
           console.log("rej getCat filtered");
         }
       );
-      console.log("RICERCA FILTRATA", this.filters['isFiltered']);
-      this.isFiltered = true;
-
+/*       console.log("RICERCA FILTRATA", this.filters['isFiltered']);
+ */      this.isFiltered = true;
     }
-    console.log("Filtri ", this.dataService.getFilters());
+
+    console.log("Filtri prima di domanda", this.filters);
 
     //DOMANDE
     this.apiService.ricercaDomanda(this.keyRicerca).then(
@@ -76,22 +80,37 @@ export class SearchResultsPage implements OnInit {
 
         if (result != undefined) {
 
-          this.domandeSearched = result['data'];
           console.log("Domande chiamata: ", this.domandeSearched);
 
           if (this.isFiltered) {
 
-            this.domandeFiltrate = this.domandeSearched.filter(function (obj) {
-              return obj.cod_categoria == 1;
-            });
-            //altri filtri
+            /*  console.log("cod passato dal filtro ", this.filters['codCategoria'])
+ 
+             this.domandeFiltrate = this.domandeSearched.filter(function (obj) {
+               return obj.cod_categoria == this.filters['codCategoria'];
+             });
+             //altri filtri
+ 
+             this.numDomande = this.domandeFiltrate.length;
+ 
+             console.log("FILTER array funzione ", this.domandeFiltrate);
+  */
+            var i;
+            for (i = 0; i < result['data'].length; i++) {
+              if (this.filters['codCategoria'] != "") {
+                if (result['data'][i].cod_categoria == this.filters['codCategoria'] && result['data'][i] != undefined) {
+                  this.domandeSearched.push(result['data'][i]);
+                  /*  this.domandeSearched.push(result['data'][i]);
+ 
+                   this.domandeSearched.pop(); //BOH */
 
-            this.numDomande = this.domandeFiltrate.length;
-
-            console.log("FILTER array funzione ", this.domandeFiltrate);
+                }
+              }
+            }
+            this.numDomande = this.domandeSearched.length;
 
           } else {
-
+            this.domandeSearched = result['data'];
             this.numDomande = this.domandeSearched.length;
           }
 
@@ -115,27 +134,32 @@ export class SearchResultsPage implements OnInit {
 
 
         if (result != undefined) {
-          this.sondaggiSearched = result['data'];
-          console.log("sondaggi chiamata: ", this.sondaggiSearched);
+          console.log("sondaggi chiamata: ", result);
 
           if (this.isFiltered) {
 
-            this.sondaggiFiltrati = this.sondaggiSearched.filter(function (obj) {
-              return obj.cod_categoria == 1;
-            });
-            //altri filtri
+            var i;
+            for (i = 0; i < result['data'].length; i++) {
+              if (this.filters['codCategoria'] != "") {
+                if (result['data'][i].cod_categoria == this.filters['codCategoria'] && result['data'][i] != undefined) {
+                  this.sondaggiSearched.push(result['data'][i]);
+                  /*  this.domandeSearched.push(result['data'][i]);
+ 
+                   this.domandeSearched.pop(); //BOH */
 
-            this.numSondaggi = this.sondaggiFiltrati.length;
+                }
+              }
+            }
 
-            console.log("FILTER array funzione ", this.sondaggiFiltrati);
+            this.numSondaggi = this.sondaggiSearched.length;
+            console.log("FILTER array funzione ", this.sondaggiSearched);
 
           } else {
-
+            this.sondaggiSearched = result['data'];
             this.numSondaggi = this.sondaggiSearched.length;
           }
 
           var i;
-
           for (i = 0; i < this.numSondaggi; i++) {
             this.parseCodCatSondaggi(this.sondaggiSearched[i].cod_categoria, i);
 
@@ -238,6 +262,8 @@ export class SearchResultsPage implements OnInit {
     console.log("Input: ", this.keywordToSearch);
 
     this.dataService.setKeywordToSearch(this.keywordToSearch);
+    this.isFiltered = false;
+    this.domandeSearched = [];
     this.ionViewWillEnter();
   }
 
@@ -246,7 +272,7 @@ export class SearchResultsPage implements OnInit {
     this.filters = [];
     this.filters['categoria'] = '';
     this.isFiltered = false;
-    //this.dataService.setFilters("", "", "", false); mettere in back o btn menu
+    //this.dataService.setFilters("", "", "", false); //mettere in back o btn menu
     this.domandeSearched = [];
     this.sondaggiSearched = [];
 
@@ -281,6 +307,10 @@ export class SearchResultsPage implements OnInit {
 
     this.router.navigate(['/visualizza-sondaggio']);
 
+  }
+
+  openMenu(){
+    this.menuCtrl.open();
   }
 }
 

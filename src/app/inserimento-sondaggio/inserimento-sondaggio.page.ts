@@ -62,10 +62,11 @@ export class InserimentoSondaggioPage implements OnInit {
 ngOnInit() {}
 
   ionViewWillEnter() {
-    this.storage.get("utente").then((data) => {
-      console.log(data)
-      this.emailUtente = data.email;
-    });
+    // this.storage.get("utente").then((data) => {
+    //   console.log(data)
+    //   this.emailUtente = data.email;
+    // });
+    this.emailUtente = this.dataService.getEmail_Utente();
     this.service.prendiCategorie(this.urlCategorie).then(
       (categories) => {
         this.categoriaSettings = categories;
