@@ -100,9 +100,9 @@
             </ion-item>
             <ion-item class="backgrounds noPadding" *ngIf="currentMailUser!==sondaggio.cod_utente">
               <ion-avatar slot="start" class="icon-avatar">
-                <img src="{{profili_user_sondaggi[i].avatar}}">
+                <img src="{{sondaggio.profilo.avatar}}">
               </ion-avatar>
-              <ion-label class="username_text_style" (click)="clickProfilo(sondaggio.cod_utente)" >{{profili_user_sondaggi[i].username}}
+              <ion-label class="username_text_style" (click)="clickProfilo(sondaggio.cod_utente)" >{{sondaggio.profilo.username}}
               </ion-label>
             </ion-item>
             <ion-item class="backgrounds" *ngIf="currentMailUser===sondaggio.cod_utente">

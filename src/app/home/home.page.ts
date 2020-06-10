@@ -159,7 +159,6 @@ export class HomePage implements OnInit {
     for(let i =0; i<=domande.length; i++){
     this.apiService.getProfilo(domande[i].cod_utente).then(
       (profilo1) => {
-        this.profili_user_domande.push(profilo1['data']['0']);
         this.domande[i]['profilo']=profilo1['data']['0'];
         console.log(profilo1['data']['0'].username);
       },
@@ -238,14 +237,7 @@ export class HomePage implements OnInit {
       (sondaggi) => {
         console.log('Sondaggi caricati');
         this.sondaggi = sondaggi; //assegno alla variabile locale il risultato della chiamata. la variabile sarà utilizzata nella stampa in HTML
-        setTimeout(()=>{      
-        this.sondaggi.forEach(element => {
-          this.getUserSondaggio(element.cod_utente);
-        });
-        this.sondaggi.forEach(element => {
-          this.getCategoriaSondaggio(element.cod_categoria);
-        });},2000)
-
+        this.getUserSondaggio(this.sondaggi);
         this.regola_sondaggi();
       },
       (rej) => {
@@ -253,15 +245,17 @@ export class HomePage implements OnInit {
       }
     );
   }
-  async getUserSondaggio(mail2) {
-    this.apiService.getProfilo(mail2).then(
-      (profilo2) => {
-        this.profili_user_sondaggi.push(profilo2['data']['0']);
-      },
-      (rej) => {
-        console.log("C'è stato un errore durante la visualizzazione del profilo");
-      }
-    );
+  async getUserSondaggio(sondaggi) {
+    for(let i =0; i<=sondaggi.length; i++){
+      this.apiService.getProfilo(sondaggi[i].cod_utente).then(
+        (profilo1) => {
+          this.sondaggi[i]['profilo']=profilo1['data']['0'];
+          console.log(profilo1['data']['0'].username);
+        },
+        (rej) => {
+          console.log("C'è stato un errore durante la visualizzazione del profilo");
+        }
+      );}
   }
   async getCategoriaSondaggio(id_categoria) {
     this.apiService.getCategoria(id_categoria).then(
