@@ -226,6 +226,6 @@ export class SearchResultsPage implements OnInit {
   clickUtente(cod_utente) {
     this.dataService.setEmailOthers(cod_utente);
     console.log(this.dataService.setEmailOthers);
-    this.router.navigate(['/visualizza-profilo']);
+    //this.router.navigate(['/visualizza-profilo']);
   }
 }
