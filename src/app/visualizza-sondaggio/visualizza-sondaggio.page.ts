@@ -93,12 +93,20 @@ export class VisualizzaSondaggioPage implements OnInit {
   @ViewChild('content', { read: IonContent, static: false }) myContent: IonContent;
 
   goModificaSondaggio() {
+    
     if(this.deadlineCheck()){
       this.toastModificaSondaggioScaduto();
-    }else{
+    }
+    else if (this.voti_totali > 0){
     //this.router.navigate(['modifica-sondaggio']);
-    this.navCtrl.navigateForward(['/modifica-sondaggio']);}
+        this.toastModificaSondaggioCiSonoVoti() ;
+    }
+    else
+      //this.router.navigate(['modifica-domanda']);
+      this.navCtrl.navigateForward(['/modifica-sondaggio']);
   }
+
+
 
   async popUpEliminaSondaggio(){
     const alert = await this.alertController.create({
@@ -108,6 +116,7 @@ export class VisualizzaSondaggioPage implements OnInit {
           text: 'Si',
           handler: () => {
             console.log('sondaggio eliminato');
+            this.showDeleteToast();
           this.cancellaSondaggio();
           this.goBack();
           }
@@ -597,6 +606,20 @@ export class VisualizzaSondaggioPage implements OnInit {
   }
 
 
+  async toastModificaSondaggioCiSonoVoti() {
+    const toast = await this.toastController.create({
+      message: 'Ci sono dei voti al tuo sondaggio, non è più possibile modificarlo!',
+      duration: 2000
+    });
+    toast.color = 'danger';
+    toast.position = "top";
+    toast.style.fontSize = '20px';
+    toast.style.textAlign = 'center';
+    toast.present();
+  }
+
+
+
   selezionaChecked(i){
 
     if (i === this.numeroScelta) {
@@ -606,6 +629,44 @@ export class VisualizzaSondaggioPage implements OnInit {
     else {
    this.numeroScelta = i;
     }
+  }
+
+
+
+  async showDeleteToast() {
+    const toast = document.createElement('ion-toast');
+    toast.message = 'Domanda eliminata con successo!';
+    toast.duration = 2000;
+    toast.position = "top";
+    toast.style.fontSize = '20px';
+    toast.color = 'success';
+    toast.style.textAlign = 'center';
+    document.body.appendChild(toast);
+    return toast.present();
+  }
+
+  async showErrorToast() {
+    const toast = document.createElement('ion-toast');
+    toast.message = 'Operazione non consentita!';
+    toast.duration = 2000;
+    toast.position = "top";
+    toast.style.fontSize = '20px';
+    toast.color = 'danger';
+    toast.style.textAlign = 'center';
+    document.body.appendChild(toast);
+    return toast.present();
+  }
+
+  async showModifyToast() {
+    const toast = document.createElement('ion-toast');
+    toast.message = 'Modifica avvenuta con successo!';
+    toast.duration = 2000;
+    toast.position = "top";
+    toast.style.fontSize = '20px';
+    toast.color = 'success';
+    toast.style.textAlign = 'center';
+    document.body.appendChild(toast);
+    return toast.present();
   }
 
 }
