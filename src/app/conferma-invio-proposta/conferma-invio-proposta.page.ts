@@ -13,12 +13,10 @@ export class ConfermaInvioPropostaPage implements OnInit {
 
   constructor(private router: Router, private menuCtrl: MenuController, private dataService: DataService, private storage: Storage) { }
 
-  cat_selezionata;
   proposta_confermata;
   cod_utente;
   
   ngOnInit() {
-    this.cat_selezionata = this.dataService.getCatSelezionata();
     this.proposta_confermata = this.dataService.getNuovaProposta();
     this.storage.get('utente').then(
       (data)=>{

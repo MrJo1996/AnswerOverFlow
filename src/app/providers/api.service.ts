@@ -530,13 +530,12 @@ export class ApiService {
     });
   }
 
-  proponi_categoria(selezione, proposta) {
+  proponi_categoria(proposta) {
     const body = {
-      selezione,
       proposta
     };
     return new Promise((resolve, reject) => {
-      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/proponi_cat_o_sottocat', body).subscribe(
+      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/proponi_categoria', body).subscribe(
         data => {
           let esito = data['message'];
           resolve(esito);
