@@ -38,30 +38,35 @@ export class AppComponent implements OnInit {
       url: "/home",
       icon: "home",
       view: true,
+      blocked: false,
     },
     {
       title: "Nuova domanda",
       url: "/inserisci-domanda",
       icon: "reader",
       view: true,
+      blocked: false,
     },
     {
       title: "Nuovo sondaggio",
       url: "/inserimento-sondaggio",
       icon: "trail-sign",
       view: true,
+      blocked: false,
     },
     {
       title: "Chat",
       url: "/visualizza-chats",
       icon: "chatbubble-ellipses",
       view: true,
+      blocked: false,
     },
     {
       title: "Ricerca",
       url: "/advanced-search",
       icon: "search",
       view: true,
+      blocked: false,
     },
   ];
 
@@ -71,24 +76,28 @@ export class AppComponent implements OnInit {
       url: "/visualizza-profilo",
       icon: "person",
       view: true,
+      blocked: false,
     },
     {
       title: "Le mie attività",
       url: "/mie-attivita",
       icon: "swap-vertical",
       view: true,
+      blocked: false,
     },
     {
       title: "Logout",
       icon: "exit",
       url: "",
       view: true,
+      blocked: false,
     },
     {
       title: "Login",
       icon: "enter",
       url: "/login",
       view: false,
+      blocked: false,
     },
   ];
   constructor(
@@ -192,11 +201,22 @@ export class AppComponent implements OnInit {
       if (!data) {
         this.accountPages[2].view = false;
         this.accountPages[3].view = true;
+        this.appPages[1].blocked = true;
+        this.appPages[2].blocked = true;
+        this.appPages[3].blocked = true;
+        this.accountPages[0].blocked = true;
+        this.accountPages[1].blocked = true;
         this.avatar = ""
         this.utenteLogged = false;
       } else {
         this.accountPages[2].view = true;
         this.accountPages[3].view = false;
+        this.appPages[1].blocked = false;
+        this.appPages[2].blocked = false;
+        this.appPages[3].blocked = false;
+        this.accountPages[0].blocked = false;
+        this.accountPages[1].blocked = false;
+
         this.nome = this.dataService.getNome()
         this.cognome = this.dataService.getCognome()
         this.username = this.dataService.getUsername()
