@@ -93,8 +93,11 @@ export class VisualizzaSondaggioPage implements OnInit {
   @ViewChild('content', { read: IonContent, static: false }) myContent: IonContent;
 
   goModificaSondaggio() {
+    if(this.deadlineCheck()){
+      this.toastModificaSondaggioScaduto();
+    }else{
     //this.router.navigate(['modifica-sondaggio']);
-    this.navCtrl.navigateForward(['/modifica-sondaggio']);
+    this.navCtrl.navigateForward(['/modifica-sondaggio']);}
   }
 
   async popUpEliminaSondaggio(){
@@ -315,7 +318,7 @@ export class VisualizzaSondaggioPage implements OnInit {
       this.index_scelta_selezionata = i;
       console.log();
 
-      
+
      }
  
   }
@@ -580,6 +583,19 @@ export class VisualizzaSondaggioPage implements OnInit {
     toast.style.textAlign = 'center';
     toast.present();
   }
+
+  async toastModificaSondaggioScaduto() {
+    const toast = await this.toastController.create({
+      message: 'Il tuo sondaggio è scaduto, non puoi più modificarlo!',
+      duration: 2000
+    });
+    toast.color = 'danger';
+    toast.position = "top";
+    toast.style.fontSize = '20px';
+    toast.style.textAlign = 'center';
+    toast.present();
+  }
+
 
   selezionaChecked(i){
 
