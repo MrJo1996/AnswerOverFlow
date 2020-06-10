@@ -185,7 +185,7 @@ export class SearchResultsPage implements OnInit {
           console.log("utente: ", result)
 
           this.utentiSearched = result['data'];
-          //console.log("Utenti search-res: ", this.utentiSearched.length);
+          console.log("Utenti search-res: ", this.utentiSearched);
           this.numUtenti = this.utentiSearched.length;
 
         } else {

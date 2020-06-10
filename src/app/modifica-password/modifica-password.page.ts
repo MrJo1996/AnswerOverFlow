@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController, MenuController} from '@ionic/angular';
+import { AlertController} from '@ionic/angular';
 import {NavController} from "@ionic/angular";
 import { Router } from "@angular/router";
 import {Storage} from '@ionic/storage';
@@ -26,8 +26,7 @@ export class ModificaPasswordPage implements OnInit {
     private pickerController: PickerController, 
     private navCtrl: NavController,
     private router: Router,
-    private dataService: DataService,
-    private menuCtrl: MenuController
+    private dataService: DataService
     ) { 
 
       this.userId = this.dataService.getEmail_Utente();
@@ -47,19 +46,17 @@ export class ModificaPasswordPage implements OnInit {
      
       buttons: [
         {
-          text: 'Cancel',
+          text: "Annulla",
           role: 'cancel',
           cssClass: 'secondary',
           handler: () => {
             console.log('Confirm cancel');
           }
         }, {
-          text: 'Ok',
+          text: "Conferma",
           handler: () => {
             console.log('Confirm Ok');
             this.modify();
-
-
           }
         }
       ]
@@ -78,16 +75,6 @@ export class ModificaPasswordPage implements OnInit {
    // this.email = ''
     this.password = ''
     this.confermapassword = ''
-  }
-
-  is_email_valid(email: string){
-    var format: RegExp;
-
-    format = /^([a-zA-z0-9_.\-/])+\@([a-zA-z0-9_.\-/])+\.([a-zA-Z]{2,4})$/;
-    if(!format.test(email)){
-      return false;
-    }
-    return true;
   }
 
   async modify() {
@@ -145,7 +132,8 @@ export class ModificaPasswordPage implements OnInit {
 
 async salvaPassword() {
   const alert = await this.alertController.create({
-    header: 'Password modifica con successo',     buttons: [
+    header: 'Avvenuta modifica',   
+      buttons: [
       {
         text: 'Ok',
         handler: () => {
@@ -160,19 +148,12 @@ async salvaPassword() {
   let result = await alert.onDidDismiss();
 
   
- 
 
 }
-
-
 
 
 goback(){
   this.router.navigate(['modifica-profilo']);
-}
-
-openMenu(){
-  this.menuCtrl.open();
 }
 
 }
