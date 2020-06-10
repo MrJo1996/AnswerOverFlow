@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonContent, AlertController, IonCheckbox, MenuController } from '@ionic/angular';
 import { PostServiceService } from "../services/post-service.service";
 import { TransitiveCompileNgModuleMetadata, ThrowStmt } from '@angular/compiler';
-import { Router } from '@angular/router';
+
 import { ApiService } from '../providers/api.service';
 import { DataService } from '../services/data.service';
 import {NavController} from "@ionic/angular";
@@ -53,7 +53,7 @@ export class VisualizzaSondaggioPage implements OnInit {
   constructor(private navCtrl:NavController,
               private service: PostServiceService, 
               private dataService: DataService,
-              private router: Router,
+             
               private menuCtrl: MenuController, 
               public apiService: ApiService, 
               private storage: Storage,
@@ -81,7 +81,8 @@ export class VisualizzaSondaggioPage implements OnInit {
   @ViewChild('content', { read: IonContent, static: false }) myContent: IonContent;
 
   goModificaSondaggio() {
-    this.router.navigate(['modifica-sondaggio']);
+    //this.router.navigate(['modifica-sondaggio']);
+    this.navCtrl.navigateForward(['/modifica-sondaggio']);
   }
 
   async popUpEliminaSondaggio(){
@@ -516,6 +517,6 @@ export class VisualizzaSondaggioPage implements OnInit {
     this.navCtrl.navigateForward(['/visualizza-profilo']);
   }
 
-  
+
 }
 
