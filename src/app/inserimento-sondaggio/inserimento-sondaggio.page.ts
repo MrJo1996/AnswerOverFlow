@@ -59,8 +59,11 @@ export class InserimentoSondaggioPage implements OnInit {
     private menuCtrl: MenuController
   ) {}
 
-  ngOnInit() {
+ngOnInit() {}
+
+  ionViewWillEnter() {
     this.storage.get("utente").then((data) => {
+      console.log(data)
       this.emailUtente = data.email;
     });
     this.service.prendiCategorie(this.urlCategorie).then(

@@ -19,6 +19,13 @@ export class BioPage implements OnInit {
   ngOnInit() {
     this.utente = this.dataService.utente;
   }
+
+  ionViewWillLeave() {
+    this.storage.get("utente").then((data) => {
+      console.log("SESSION:" + data);
+    });
+  }
+
   async buttonClick() {
     const alert = await this.alertController.create({
       header: 'Confermi i dati?',
@@ -69,6 +76,17 @@ export class BioPage implements OnInit {
     this.dataService.setEmail_Utente(this.utente['0']);
     this.postRegistrazione();
   }
+
+  renameKey(obj, old_key, new_key) {    
+    // check if old key = new key   
+        if (old_key !== new_key) {                   
+           Object.defineProperty(obj, new_key, // modify old key 
+                                // fetch description from object 
+           Object.getOwnPropertyDescriptor(obj, old_key)); 
+           delete obj[old_key];                // delete old key 
+           } 
+    } 
+
   async postRegistrazione() {
     this.utente = this.dataService.utente;
     console.log(this.utente)
@@ -80,8 +98,30 @@ export class BioPage implements OnInit {
         this.dataService.setNome(this.utente['3']);
         this.dataService.setCognome(this.utente['4']);
         this.dataService.setAvatarUtente(this.utente['6']);
-        this.storage.set("utente", this.utente[0]);
+
+        //Formatto i valori da inserire nello storage
+        this.renameKey(this.utente, '0', "email")
+        this.renameKey(this.utente, '1', "username")
+        this.renameKey(this.utente, '3', "nome")
+        this.renameKey(this.utente, '4', "cognome")
+        this.renameKey(this.utente, '6', "avatar")
+        delete this.utente['2']
+        console.log(this.utente)
+
+        //Inserisco i valori che servono
+        this.storage.set("utente", this.utente);
         this.storage.set("session", true);
+
+        
+      setTimeout(() => {
+        this.storage.get("session").then((data) => {
+          console.log("SESSION:" + data);
+        });
+
+        this.storage.get("utente").then((data) => {
+          this.dataService.emailUtente = data.email;
+        });
+      }, 1000);
         this.router.navigate(['/benvenuto']);
       },
       (rej) => {
