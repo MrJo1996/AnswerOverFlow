@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { IonContent, AlertController, IonCheckbox } from '@ionic/angular';
+import { IonContent, AlertController, IonCheckbox, MenuController } from '@ionic/angular';
 import { PostServiceService } from "../services/post-service.service";
 import { TransitiveCompileNgModuleMetadata, ThrowStmt } from '@angular/compiler';
 import { Router } from '@angular/router';
@@ -51,7 +51,8 @@ export class VisualizzaSondaggioPage implements OnInit {
   constructor(private navCtrl:NavController,
               private service: PostServiceService, 
               private dataService: DataService,
-              private router: Router, 
+              private router: Router,
+              private menuCtrl: MenuController, 
               public apiService: ApiService, 
               private storage: Storage,
               public alertController: AlertController) 
@@ -479,6 +480,10 @@ export class VisualizzaSondaggioPage implements OnInit {
       }
     }, 1000);
   
+  }
+
+  openMenu(){
+    this.menuCtrl.open();
   }
 
 }

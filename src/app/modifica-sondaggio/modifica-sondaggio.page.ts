@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController } from '@ionic/angular';
+import { AlertController, MenuController } from '@ionic/angular';
 import { ToastController } from '@ionic/angular';
 
 import { ApiService } from 'src/app/providers/api.service';
@@ -38,7 +38,7 @@ export class ModificaSondaggioPage implements OnInit {
   ciao="ciao";
 
   constructor(private alertController: AlertController, public apiService: ApiService, private pickerController: PickerController,
-    public navCtrl: NavController, public dataService: DataService, private toastController: ToastController) { }
+    public navCtrl: NavController, public dataService: DataService, private toastController: ToastController, private menuCtrl: MenuController) { }
 
 
   ngOnInit() {
@@ -546,5 +546,8 @@ export class ModificaSondaggioPage implements OnInit {
     toast.present();
   }
 
+  openMenu(){
+    this.menuCtrl.open();
+  }
 
 }

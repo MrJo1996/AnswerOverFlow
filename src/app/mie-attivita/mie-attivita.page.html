@@ -220,6 +220,13 @@
   </ion-card>
 
   <ion-textarea readonly *ngIf="range.value===500 && (domande1m===undefined || domande1m.length===0)" class="ion-text-center">
-    Non hai postato nessuna domanda nell'ultimo mese</ion-textarea>
+    Non hai postato nessuna domanda nell'ultimo mese
+  </ion-textarea>
+
+  <ion-fab vertical="bottom" horizontal="start" slot="fixed" style="opacity: 70%;">
+    <ion-fab-button  size="small" (click)="openMenu()" color="light">
+      <ion-icon name="arrow-forward-circle-outline" style="opacity: 100%;"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 
 </ion-content>

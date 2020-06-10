@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { NavController, AlertController } from "@ionic/angular";
+import { NavController, AlertController, MenuController } from "@ionic/angular";
 import { ApiService } from "./../providers/api.service";
 import { PickerController } from "@ionic/angular"; //Picker - import e poi definire nel constructor
 import { PickerOptions } from "@ionic/core";
@@ -54,12 +54,16 @@ export class InserimentoSondaggioPage implements OnInit {
     private pickerController: PickerController,
     public alertController: AlertController,
     private router: Router,
-    private data: DataService,
-    private storage: Storage
+    private dataService: DataService,
+    private storage: Storage,
+    private menuCtrl: MenuController
   ) {}
 
-  ngOnInit() {
+ngOnInit() {}
+
+  ionViewWillEnter() {
     this.storage.get("utente").then((data) => {
+      console.log(data)
       this.emailUtente = data.email;
     });
     this.service.prendiCategorie(this.urlCategorie).then(
@@ -94,6 +98,7 @@ export class InserimentoSondaggioPage implements OnInit {
   }
   goHome() {
     this.router.navigate(["home"]);
+    this.dataService.setRefreshIndex(true);
   }
   backButton() {
     this.navCtrl.back();
@@ -291,7 +296,7 @@ export class InserimentoSondaggioPage implements OnInit {
             console.log(value);
 
             this.categoriaView = value["ValoreCategoriaSettata"].text; //setto timerPopUp al valore inserito nel popUp una volta premuto ok così viene visualizzato
-            this.categoriaScelta = this.categoriaView;
+            this.categoriaScelta = value["ValoreCategoriaSettata"].value;
             console.log("categoria to pass: ", this.categoriaScelta);
           },
         },
@@ -419,5 +424,9 @@ export class InserimentoSondaggioPage implements OnInit {
     console.log(check);
 
     return check;
+  }
+
+  openMenu(){
+    this.menuCtrl.open();
   }
 }

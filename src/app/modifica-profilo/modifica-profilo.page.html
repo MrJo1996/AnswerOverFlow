@@ -22,7 +22,7 @@
         <ion-icon name="happy-outline" slot="start"></ion-icon>
         <ion-label position="stacked"><strong>Username</strong>
         </ion-label>
-        <ion-input readonly value={{usernameView}} color="medium" (click)="popupModificaUsername()"></ion-input>
+        <ion-input readonly value={{usernameView}} color="medium" (ionChange)="checkForUser($event['detail']['value'])" (click)="popupModificaUsername()"></ion-input> 
       </ion-item>
     
       <ion-item color="light">

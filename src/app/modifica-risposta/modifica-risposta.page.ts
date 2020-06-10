@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController} from '@ionic/angular';
+import { AlertController, MenuController} from '@ionic/angular';
 import { Router } from '@angular/router';
 
 import { ApiService } from 'src/app/providers/api.service';
@@ -19,7 +19,7 @@ export class ModificaRispostaPage implements OnInit {
 
   risposta = {};
 
-  constructor(public alertController: AlertController,public apiService: ApiService, public router: Router ) { }
+  constructor(public alertController: AlertController,public apiService: ApiService, private menuCtrl: MenuController, public router: Router ) { }
 
 
   ngOnInit() {
@@ -118,6 +118,10 @@ export class ModificaRispostaPage implements OnInit {
     //console.log(result);
 
     this.modify();
+  }
+
+  openMenu(){
+    this.menuCtrl.open();
   }
 
 }

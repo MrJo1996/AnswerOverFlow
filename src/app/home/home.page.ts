@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild,ChangeDetectorRef } from '@angular/core';
 import { PostServiceService } from "../services/post-service.service";
 import { DataService } from "../services/data.service";
 import { ApiService } from '../providers/api.service';
@@ -53,6 +53,7 @@ export class HomePage implements OnInit {
     private service: PostServiceService,
     private dataService: DataService,
     private router: Router,
+    private update: ChangeDetectorRef,
     private zone: NgZone) { }
 
   ionViewWillEnter() {
@@ -67,6 +68,11 @@ export class HomePage implements OnInit {
   }
 
   ngOnInit(){
+    setInterval(()=>{
+    this.update.detectChanges();
+
+    },500)
+
     this.storage.get('utente').then(data => { this.currentMailUser = data.email });
     console.log(this.refresh_index);
     this.visualizzaDomandaHome();
@@ -188,8 +194,10 @@ export class HomePage implements OnInit {
 
       this.domande_regolate[this.y_domande] = this.domande[this.y_domande];
       this.y_domande++;
-      this.doRefresh2()
+      this.update.detectChanges();
       }
+      this.update.detectChanges();
+
     }
     for (this.i_sondaggi = 0; this.i_sondaggi < 2; this.i_sondaggi++) {
       console.log( this.domande_regolate[this.y_domande] = this.domande[this.y_domande])
@@ -318,6 +326,10 @@ export class HomePage implements OnInit {
 
     this.dataService.setKeywordToSearch(this.keywordToSearch);
     this.router.navigate(['/search-results']);
+  }
+
+  openMenu(){
+    this.menuCtrl.open();
   }
 }
 

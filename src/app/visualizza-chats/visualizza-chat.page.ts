@@ -3,7 +3,7 @@ import { ApiService } from "./../providers/api.service";
 import { Observable } from "rxjs";
 import { DataService } from "../services/data.service";
 import { Router } from "@angular/router";
-import { NavController } from "@ionic/angular";
+import { NavController, MenuController } from "@ionic/angular";
 import { Storage } from "@ionic/storage";
 import { PostServiceService } from "../services/post-service.service";
 import * as $ from "jquery";
@@ -33,7 +33,8 @@ export class VisualizzaChatPage implements OnInit {
     private service: ApiService,
     private servicePost: PostServiceService,
     private data: DataService,
-    private storage: Storage
+    private storage: Storage,
+    private menuCtrl: MenuController
   ) {}
 
   ngOnInit() {}
@@ -172,5 +173,9 @@ export class VisualizzaChatPage implements OnInit {
   //-----------------------Torna indietro
   goBack() {
     this.navCtrl.back();
+  }
+
+  openMenu(){
+    this.menuCtrl.open();
   }
 }

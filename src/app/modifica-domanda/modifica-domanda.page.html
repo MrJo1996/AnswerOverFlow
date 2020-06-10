@@ -19,19 +19,19 @@
   <ion-card>
     <ion-item color="light">
       <ion-icon name="create-outline" slot="start"></ion-icon>
-      <ion-label position="stacked">Titolo</ion-label>
+      <ion-label position="stacked"><strong>Titolo</strong></ion-label>
       <ion-input readonly placeholder={{titoloView}} color="medium" (click)="popupModificaTitolo()"></ion-input>
     </ion-item>
   
     <ion-item color="light">
       <ion-icon name="calendar-outline" slot="start"></ion-icon>
-      <ion-label position="stacked">Data e ora creazione</ion-label>
+      <ion-label position="stacked"><strong>Data e ora creazione</strong></ion-label>
       <ion-input id="dataOraCreazione" readonly placeholder="" color="medium"></ion-input>
     </ion-item>
   
     <ion-item color="light">
       <ion-icon name="time-outline" slot="start"></ion-icon>
-      <ion-label position="stacked">Timer</ion-label>
+      <ion-label position="stacked"><strong>Timer</strong></ion-label>
       <ion-input readonly placeholder={{timerView}} color="medium" (click)="showTimerPicker()"></ion-input>
     </ion-item>
 
@@ -39,7 +39,7 @@
   
     <ion-item color="light">
       <ion-icon name="pencil-outline" slot="start"></ion-icon>
-      <ion-label position="stacked">Descrizione</ion-label>
+      <ion-label position="stacked"><strong>Descrizione</strong></ion-label>
       <ion-input readonly placeholder={{descrizioneView}} color="medium" (click)="popupModificaDescrizione()"></ion-input>
       </ion-item>
 
@@ -47,22 +47,24 @@
         <ion-label>
             <ion-icon name="file-tray-full-outline" slot="start"></ion-icon>
         </ion-label>
-        <ion-text *ngIf="[categoriaView]==''" class="placeholder">Categoria</ion-text>
+        <ion-text *ngIf="[categoriaView]==''" class="placeholder"><strong>Categoria</strong></ion-text>
         <ion-text *ngIf="[categoriaView]!=''" class="text">{{categoriaView}}</ion-text>
         <ion-icon class="inner" name="chevron-down-outline"></ion-icon>
       </ion-item>
   
       <ion-item color="light">
         <ion-icon name="alert-outline" slot="start"></ion-icon>
-        <ion-label position="stacked">La tua domanda scadrà tra</ion-label>
+        <ion-label position="stacked"><strong>La tua domanda scadrà tra</strong></ion-label>
         <ion-input id="timeLeft" readonly placeholder=" " color="medium" ></ion-input>
       </ion-item>
 
   </ion-card>
   </ion-card>
   
-  <ion-button expand="block" color="light" class="ion-margin" (click)="popupConfermaEliminaDomanda()">
-    <ion-text color="danger">Elimina</ion-text>
-  </ion-button>
 
+  <ion-fab vertical="bottom" horizontal="start" slot="fixed" style="opacity: 70%;">
+    <ion-fab-button  size="small" (click)="openMenu()" color="light">
+      <ion-icon name="arrow-forward-circle-outline" style="opacity: 100%;"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>

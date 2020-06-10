@@ -15,7 +15,7 @@
   <ion-card class="backgrounds">
     <ion-card-content>
       <ion-card-title class="titleSize">GRAZIE!</ion-card-title><p style="line-height: 0.5rem;"><br></p>
-      <ion-card-subtitle class="normalText">I nostri sviluppatori valuteranno al più presto la tua proposta.<p style="line-height: 0.8rem;"><br></p>
+      <ion-card-subtitle class="normalText">I nostri sviluppatori valuteranno al più presto la tua proposta.<p style="line-height: 0.5rem;"><br></p>
         <div class="riepText">Riepilogo dati inseriti</div>
         <div class="propText">Categoria selezionata: <span>{{cat_selezionata}}</span><br>
           La tua proposta: <span>{{proposta_confermata}}</span>
@@ -26,12 +26,14 @@
 
   <ion-card class="backgrounds">
     <ion-card-content>
-      <ion-card-title class="normalTextbold">Vuoi inserire comunque la tua domanda o il tuo sondaggio?</ion-card-title><p style="line-height: 0.5rem;"><br></p>
-      <ion-card-subtitle class="propText">Seleziona nella sidebar l'opzione che ti interessa oppure clicca su uno dei link sottostanti per essere reindirizzato!<p style="line-height: 0.5rem;"><br></p>
-      - <ion-text (click)="goTo_insDomanda()" color="primary">Inserisci domanda</ion-text><p style="line-height: 0.3rem;"><br></p>
-      - <ion-text (click)="goTo_insSondaggio()" color="primary">Inserisci sondaggio</ion-text><p style="line-height: 0.3rem;"><br></p>
-      - <ion-text (click)="goTo_Home()" color="primary">Home</ion-text>   
-      </ion-card-subtitle>
+      <ion-card-title class="normalTextbold">E adesso?</ion-card-title><p style="line-height: 0.5rem;"><br></p>
+      <ion-card-subtitle class="propTextCtr">Apri la sidebar cliccando sul pulsante in basso a sinistra e continua la navigazione nella nostra app scegliendo l'opzione che ti interessa!</ion-card-subtitle>
     </ion-card-content>
   </ion-card>
+
+  <ion-fab vertical="bottom" horizontal="start" slot="fixed" style="opacity: 70%;">
+    <ion-fab-button  size="small" (click)="openMenu()" color="light">
+      <ion-icon name="arrow-forward-circle-outline" style="opacity: 100%;"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>

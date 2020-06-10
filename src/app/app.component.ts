@@ -221,10 +221,12 @@ export class AppComponent implements OnInit {
         this.accountPages[0].blocked = false;
         this.accountPages[1].blocked = false;
 
-        this.nome = this.dataService.getNome()
-        this.cognome = this.dataService.getCognome()
-        this.username = this.dataService.getUsername()
-        this.avatar = this.dataService.getAvatar()
+        this.storage.get('utente').then(utente => {
+          this.nome = utente.nome;
+          this.cognome = utente.cognome;
+          this.username = utente.username;
+          this.avatar = utente.avatar;
+        });
         this.utenteLogged = true;
       }
     });
@@ -235,6 +237,12 @@ export class AppComponent implements OnInit {
     this.cognome = this.dataService.getCognome()
     this.username = this.dataService.getUsername()
     this.avatar = this.dataService.getAvatar()
+    // this.storage.get('utente').then(utente => {
+    //   this.nome = utente.nome;
+    //   this.cognome = utente.cognome;
+    //   this.username = utente.username;
+    //   this.avatar = utente.avatar;
+    // });
   }
 
   /*  switch2 (index) {

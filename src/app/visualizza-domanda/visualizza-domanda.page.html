@@ -35,7 +35,7 @@
      
     </ion-fab-list>
   </ion-fab>
-
+  
   <ion-card class = "backgrounds">    
  
 
@@ -54,8 +54,9 @@
       </ion-row>
 
       <ion-row *ngIf="currentMailUser!==domandaMailUser">
-        <ion-avatar  slot="start" class="icon-avatar" >
-          <img src="https://i.ytimg.com/vi/mCf6UGT3HrA/maxresdefault.jpg">
+        
+        <ion-avatar  class="icon-avatar" >
+          <img src= {{profiloUserDomanda.avatar}}>
         </ion-avatar>
         <ion-label class = "username_text_style" (click)="clickProfilo(domandaMailUser)">{{profiloUserDomanda.username}}</ion-label>
       </ion-row>
@@ -79,7 +80,11 @@
     </ion-card-content>
   </ion-card>
 
-
+<ion-card *ngIf="timerView === 'OMBO TIMER,SCADUTA'">
+  <ion-card-header>
+    La domanda è scaduta, non è più possibile rispondere!
+  </ion-card-header>
+</ion-card>
   
 
 
@@ -102,8 +107,8 @@
         <ion-card *ngFor="let risposta of risposte; let i = index" class = "backgrounds">    
           <ion-card-header>
             <ion-toolbar class="backgrounds">
-              <ion-avatar  slot="start" class="icon-avatar" >
-                <img src="https://avatars3.githubusercontent.com/u/14333644?s=460&u=c6cf7b831fd7afd92292677dc5543c858e1e05a8&v=4">
+              <ion-avatar slot="start" class="icon-avatar" >
+                <img src= {{profiliUtentiRisposte[i][0].avatar}}>
               </ion-avatar>
               <ion-label *ngIf="currentMailUser!==risposta.cod_utente" class = "username_text_style">{{profiliUtentiRisposte[i]['0'].username}}</ion-label>
               <ion-label *ngIf="currentMailUser===risposta.cod_utente " class = "username_text_style">Tu</ion-label>
@@ -143,7 +148,7 @@
               <p readonly class= "textSimple" >{{risposta.descrizione}}</p>
               <ion-toolbar class="backgrounds">
     
-                <ion-icon name="settings-outline" slot="start" class = "calendar_icon_style" (click)="clickRisposta(risposta, i)" ></ion-icon>
+                <ion-icon *ngIf="currentMailUser === risposta.cod_utente" name="settings-outline" slot="start" class = "calendar_icon_style" (click)="clickRisposta(risposta, i)" ></ion-icon>
                 <ion-label class= "description_text"  slot="start" ></ion-label>
             
               
@@ -159,6 +164,12 @@
 
           
         </ion-card>
+        
+        <ion-fab vertical="bottom" horizontal="start" slot="fixed" style="opacity: 70%;">
+          <ion-fab-button size="small" (click)="openMenu()" color="light">
+            <ion-icon name="arrow-forward-circle-outline" style="opacity: 100%;"></ion-icon>
+          </ion-fab-button>
+        </ion-fab>  
 </ion-content>    
 
 

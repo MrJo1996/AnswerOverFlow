@@ -43,7 +43,6 @@
             </div>
             <ion-card-header>
               <ion-item class="backgrounds">
-
                 <ion-icon class="alarm_style" name="lock-open-outline" ></ion-icon>
                 <ion-label class="textTitle2" >Domanda aperta</ion-label>
                 <ion-icon class="alarm_style" slot="end" name="ellipsis-vertical" (click)="presentPopover($event,index1,domanda.cod_utente,domanda.codice_domanda)"></ion-icon>
@@ -61,7 +60,7 @@
                 </ion-label>
 
               </ion-item>
-              <ion-card-title class="textTitleBIG"> {{domanda.titolo}}</ion-card-title>
+              <ion-card-title class="textTitleBIG2"> {{domanda.titolo}}</ion-card-title>
             </ion-card-header>
 
 
@@ -137,4 +136,10 @@
     <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
+
+  <ion-fab vertical="bottom" horizontal="start"   slot="fixed" style="opacity: 70%; ">
+    <ion-fab-button  size="small" (click)="openMenu()"  color="light">
+      <ion-icon name="arrow-forward-circle-outline" style="opacity: 100%; "></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>

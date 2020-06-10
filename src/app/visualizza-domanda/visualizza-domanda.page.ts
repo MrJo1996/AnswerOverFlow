@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { TransitiveCompileNgModuleMetadata, ThrowStmt } from '@angular/compiler';
 import { NOMEM } from 'dns';
-import { Router } from '@angular/router';
+
 import { ApiService } from '../providers/api.service';
-import { AlertController } from '@ionic/angular';
+import { AlertController, MenuController } from '@ionic/angular';
 import { DataService } from "../services/data.service";
 import { NavController } from "@ionic/angular";
 import { resolve } from 'url';
@@ -11,6 +11,7 @@ import { Storage } from "@ionic/storage";
 import { ToastController } from '@ionic/angular';
 import { element } from 'protractor';
 import { LoadingController } from '@ionic/angular';
+import { __await } from 'tslib';
 
 @Component({
   selector: 'app-visualizza-domanda',
@@ -61,23 +62,24 @@ export class VisualizzaDomandaPage implements OnInit {
   ore;
   minuti;
   secondi;
-x;
+
 
 
   constructor(
     private navCtrl: NavController,
     private dataService: DataService,
     public apiService: ApiService,
-    private router: Router,
+    //private router: Router,
     public alertController:
       AlertController,
     private storage: Storage,
+    private menuCtrl: MenuController,
     public toastController: ToastController,
     public loadingController: LoadingController
   ) { }
 
   ngOnInit() {
-
+    
     this.visualizzaDomanda();
     this.showRisposte();
     this.storage.get('utente').then(data => { this.currentMailUser = data.email });
@@ -92,7 +94,8 @@ x;
     if (this.risposte.length > 0)
       this.showErrorToast();
     else
-      this.router.navigate(['modifica-domanda']);
+      //this.router.navigate(['modifica-domanda']);
+      this.navCtrl.navigateForward(['modifica-domanda']);
   }
 
 
@@ -136,7 +139,8 @@ x;
             console.log('domanda eliminata');
             this.showDeleteToast();
             this.cancellaDomanda();
-            this.router.navigate(['home']);                                         
+            //this.router.navigate(['home']);        
+            this.navCtrl.navigateBack(['home']);                                 
           }
         },
         {
@@ -292,6 +296,7 @@ x;
 
     this.inserisciRisposta();
     this.rispostaVisible = false;
+
     this.doRefresh(event);
 
   }
@@ -418,6 +423,7 @@ x;
   }
 
   doRefresh(event) {
+    clearInterval(this.interval)
     this.visualizzaDomanda();
     this.showRisposte();
 
@@ -689,7 +695,7 @@ x;
 
 
 
-
+  interval
   async countDown(incAnno, incMese, incGG, incHH, incMM) {
 
     var auxData = new Array(); //get dati dal sondaggio
@@ -705,7 +711,7 @@ x;
 
 
     // Aggiorno timer ogni 1000ms (1000ms==1s)
-      this.x = setInterval(function () {
+    this.interval = setInterval(function () {
 
       //Timestamp Attuale (data + orario)
       var now = new Date().getTime();
@@ -736,7 +742,7 @@ x;
 
       //Se finisce il countDown viene mostrato "Domanda scaduta."
       if (distance < 0) {
-        clearInterval(this.x);
+        clearInterval(this.interval);
         document.getElementById("timeLeft").innerHTML = "Domanda scaduta.";
         this.timerView = "OMBO TIMER,SCADUTA";
       } 
@@ -800,15 +806,33 @@ x;
   clickProfilo(cod_utente) {
     this.dataService.setEmailOthers(cod_utente);
     console.log(this.dataService.setEmailOthers);
-    this.router.navigate(['/visualizza-profilo']);
+   // this.router.navigate(['/visualizza-profilo']);
+    this.navCtrl.navigateForward(['/visualizza-profilo']);
   }
 
 
+  ionViewDidLeave() {
+    clearInterval(this.interval)
+  } 
 
-
-  ionViewDidLeave(){
-    clearInterval(this.x);
+  openMenu(){
+    this.menuCtrl.open();
   }
+
+/*   ionViewDidEnter(){
+    clearInterval(this.interval)
+  }  */
+
+
+
+/*   ionViewWillLeave() {
+    clearInterval(this.interval)
+  }
+
+  ngOnDestroy(){
+    clearInterval(this.interval)
+  }
+ */
   }
 
   
