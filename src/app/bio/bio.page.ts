@@ -107,6 +107,7 @@ export class BioPage implements OnInit {
         this.renameKey(this.utente, '4', "cognome")
         this.renameKey(this.utente, '6', "avatar")
         delete this.utente['2']
+        delete this.utente['5']
         console.log(this.utente)
 
         //Inserisco i valori che servono

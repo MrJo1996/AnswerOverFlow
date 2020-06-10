@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from "../services/data.service";
 import { Router } from '@angular/router';
-import { PickerController } from "@ionic/angular";
+import { PickerController, MenuController } from "@ionic/angular";
 import { PickerOptions } from "@ionic/core";
 import { ApiService } from 'src/app/providers/api.service';
 
@@ -28,7 +28,8 @@ export class AdvancedSearchPage implements OnInit {
     private router: Router,
     private dataService: DataService,
     private pickerController: PickerController,
-    public apiService: ApiService
+    public apiService: ApiService,
+    private menuCtrl: MenuController
   ) { }
 
   ngOnInit() {
@@ -117,6 +118,10 @@ export class AdvancedSearchPage implements OnInit {
   toggleClose() {
     this.statusClosed = !this.statusClosed;
     console.log("checked Close: " + this.statusClosed);
+  }
+
+  openMenu(){
+    this.menuCtrl.open();
   }
 
   //RICERCA
