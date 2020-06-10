@@ -12,7 +12,6 @@ export class ConfermaRecuperoPage implements OnInit {
   constructor(private router: Router, private menuCtrl: MenuController) { }
 
   ngOnInit() {
-    this.menuCtrl.enable(false);
   }
 
   goback(){

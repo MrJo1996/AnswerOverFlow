@@ -18,7 +18,6 @@ export class BioPage implements OnInit {
   constructor(private navCtrl: NavController, private menuCtrl: MenuController, private storage: Storage, private dataService: DataService, public apiService: ApiService, public alertController: AlertController, private pickerController: PickerController, private router: Router) { }
   ngOnInit() {
     this.utente = this.dataService.utente;
-    this.menuCtrl.enable(false);
   }
   async buttonClick() {
     const alert = await this.alertController.create({

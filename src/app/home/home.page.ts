@@ -67,7 +67,6 @@ export class HomePage implements OnInit {
   }
 
   ngOnInit(){
-    this.menuCtrl.swipeGesture(false);
     this.storage.get('utente').then(data => { this.currentMailUser = data.email });
     console.log(this.refresh_index);
     this.visualizzaDomandaHome();

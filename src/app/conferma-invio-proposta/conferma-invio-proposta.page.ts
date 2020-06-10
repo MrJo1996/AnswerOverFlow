@@ -18,7 +18,6 @@ export class ConfermaInvioPropostaPage implements OnInit {
   cod_utente;
   
   ngOnInit() {
-    this.menuCtrl.swipeGesture(false);
     this.cat_selezionata = this.dataService.getCatSelezionata();
     this.proposta_confermata = this.dataService.getNuovaProposta();
     this.storage.get('utente').then(
