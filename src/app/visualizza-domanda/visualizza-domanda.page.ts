@@ -57,6 +57,8 @@ export class VisualizzaDomandaPage implements OnInit {
 
   codice_valutazione;
 
+  timerView2;
+
 
   giorni;
   ore;
@@ -79,10 +81,10 @@ export class VisualizzaDomandaPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    
+
+    this.storage.get('utente').then(data => { this.currentMailUser = data.email });
     this.visualizzaDomanda();
     this.showRisposte();
-    this.storage.get('utente').then(data => { this.currentMailUser = data.email });
     console.log(this.currentMailUser);
     this.allVisible = true;
     
@@ -108,14 +110,14 @@ export class VisualizzaDomandaPage implements OnInit {
 
         this.domanda = domanda['data'];
         this.dataeoraView = this.domanda['0'].dataeora;
-        this.timerView = this.domanda['0'].timer;
+        this.timerView2 = this.domanda['0'].timer;
         this.titoloView = this.domanda['0'].titolo;
         this.descrizioneView = this.domanda['0'].descrizione;
         this.domandaMailUser = this.domanda['0'].cod_utente;
         this.cod_preferita = this.domanda['0'].cod_preferita;
         this.codice_categoria = this.domanda['0'].cod_categoria;
         console.log('Domanda: ', this.domanda['0']);
-        console.log("TIMER VIEW: ", this.timerView);
+        console.log("TIMER VIEW: ", this.timerView2);
         this.getUserDomanda();
         this.visualizzaCategoria();
 
@@ -205,7 +207,7 @@ export class VisualizzaDomandaPage implements OnInit {
   async trovaProfiliUtentiRisposte(mailUtenteRisposta) {
     this.apiService.getProfilo(mailUtenteRisposta).then(
       (profilo) => {
-        this.profiliUtentiRisposte.push(profilo['data']);
+        this.profiliUtentiRisposte.push(profilo['data']['0']);
         console.log('profilo trovato con successo', this.profiliUtentiRisposte);
 
       },
@@ -815,14 +817,16 @@ export class VisualizzaDomandaPage implements OnInit {
     clearInterval(this.interval)
   } 
 
+ 
+
   openMenu(){
     this.menuCtrl.open();
   }
-
-/*   ionViewDidEnter(){
-    clearInterval(this.interval)
-  }  */
-
+  ionViewDidEnter(){
+    clearInterval(this.interval);
+    this.mappingIncrement(this.timerView2);
+  } 
+ 
 
 
 /*   ionViewWillLeave() {
@@ -833,6 +837,13 @@ export class VisualizzaDomandaPage implements OnInit {
     clearInterval(this.interval)
   }
  */
+
+
+  goChat(){
+    this.dataService.setEmailOthers(this.domandaMailUser);
+    this.navCtrl.navigateForward(['/chat'])
+
+  }
   }
 
   

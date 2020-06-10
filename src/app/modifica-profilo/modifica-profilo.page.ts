@@ -7,9 +7,8 @@ import { PickerController } from "@ionic/angular";
 import { ToastController } from "@ionic/angular";
 import { Storage } from "@ionic/storage";
 import { Router } from "@angular/router";
-import { AppComponent } from '../app.component';
+import { AppComponent } from "../app.component";
 import { PostServiceService } from "../services/post-service.service";
-
 
 @Component({
   selector: "app-modifica-profilo",
@@ -19,12 +18,14 @@ import { PostServiceService } from "../services/post-service.service";
 export class ModificaProfiloPage implements OnInit {
   email: string;
   avatar: string;
-  objUtente: any[] = [{
-    'username':"",
-    'nome':"",
-    'cognome':"",
-    'avatar':"",
-}]
+  objUtente: any[] = [
+    {
+      username: "",
+      nome: "",
+      cognome: "",
+      avatar: "",
+    },
+  ];
 
   usernameToPass: string;
   nomeToPass: string;
@@ -41,8 +42,8 @@ export class ModificaProfiloPage implements OnInit {
   usernameAvailable: boolean;
   urlControlloUsername =
     "http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaprofiloperusername";
-  
-    constructor(
+
+  constructor(
     private router: Router,
     private dataService: DataService,
     public alertController: AlertController,
@@ -102,25 +103,27 @@ export class ModificaProfiloPage implements OnInit {
   ionViewDidLeave() {}
 
   async showSurvey() {
-    this.email = this.dataService.getEmail_Utente();
-    this.apiService.getProfilo(this.email).then(
-      (profilo) => {
-        console.log("Visualizzato con successo");
+    this.storage.get("utente").then((data) => {
+      this.email = data.email;
+      this.apiService.getProfilo(this.email).then(
+        (profilo) => {
+          console.log("Visualizzato con successo");
 
-        this.profilo = profilo["data"]; //assegno alla variabile locale il risultato della chiamata. la variabile sarà utilizzata nella stampa in HTML
-        console.log("Profilo: ", this.profilo["0"]);
+          this.profilo = profilo["data"]; //assegno alla variabile locale il risultato della chiamata. la variabile sarà utilizzata nella stampa in HTML
+          console.log("Profilo: ", this.profilo["0"]);
 
-        this.usernameView = this.profilo["0"].username;
-        this.nomeView = this.profilo["0"].nome;
-        this.cognomeView = this.profilo["0"].cognome;
-        this.bioView = this.profilo["0"].bio;
-        this.avatar = this.profilo["0"].avatar;
-        console.log(this.avatar);
-      },
-      (rej) => {
-        console.log("C'è stato un errore durante la visualizzazione");
-      }
-    );
+          this.usernameView = this.profilo["0"].username;
+          this.nomeView = this.profilo["0"].nome;
+          this.cognomeView = this.profilo["0"].cognome;
+          this.bioView = this.profilo["0"].bio;
+          this.avatar = this.profilo["0"].avatar;
+          console.log(this.avatar);
+        },
+        (rej) => {
+          console.log("C'è stato un errore durante la visualizzazione");
+        }
+      );
+    });
   }
 
   selectAvatar() {
@@ -149,7 +152,6 @@ export class ModificaProfiloPage implements OnInit {
             this.modify();
 
             //TODO mostrare messaggio di avvenuta modifica e riportare alla home
-
           },
         },
       ],
@@ -174,7 +176,7 @@ export class ModificaProfiloPage implements OnInit {
     if (this.bioToPass == null) {
       this.bioToPass = this.bioView;
     }
-    if (this.usernameAvailable){
+    if (this.usernameAvailable) {
       this.popupUsernameUnavailable();
     } else if (this.stringUsernameLengthChecker()) {
       this.popupInvalidUsername();
@@ -198,13 +200,13 @@ export class ModificaProfiloPage implements OnInit {
       this.dataService.setNome(this.nomeToPass);
       this.dataService.setCognome(this.cognomeToPass);
       this.dataService.setAvatarUtente(this.avatar);
-      console.log(this.usernameToPass)
-      this.objUtente['username'] = this.usernameToPass;
-      this.objUtente['nome'] = this.nomeToPass;
-      this.objUtente['cognome'] = this.cognomeToPass;
-      this.objUtente['avatar'] = this.avatar;
-      this.objUtente['email'] = this.email;
-      this.storage.set('utente', this.objUtente);
+      console.log(this.usernameToPass);
+      this.objUtente["username"] = this.usernameToPass;
+      this.objUtente["nome"] = this.nomeToPass;
+      this.objUtente["cognome"] = this.cognomeToPass;
+      this.objUtente["avatar"] = this.avatar;
+      this.objUtente["email"] = this.email;
+      this.storage.set("utente", this.objUtente);
 
       if (this.password) {
         this.apiService
@@ -324,18 +326,18 @@ export class ModificaProfiloPage implements OnInit {
     document.body.appendChild(toast);
     return toast.present();
   }
-  async popupUsernameUnavailable () {
+  async popupUsernameUnavailable() {
     const toast = document.createElement("ion-toast");
 
-      toast.message = "Username non disponibile";
-      toast.duration = 2000;
-      toast.position = "top";
-      toast.style.fontSize = "20px";
-      toast.color = "danger";
-      toast.style.textAlign = "center";
+    toast.message = "Username non disponibile";
+    toast.duration = 2000;
+    toast.position = "top";
+    toast.style.fontSize = "20px";
+    toast.color = "danger";
+    toast.style.textAlign = "center";
 
-      document.body.appendChild(toast);
-      return toast.present();
+    document.body.appendChild(toast);
+    return toast.present();
   }
   async popupInvalidBio() {
     const toast = document.createElement("ion-toast");
@@ -573,8 +575,8 @@ export class ModificaProfiloPage implements OnInit {
     return toast.present();
   }
 
-  openMenu(){
+  openMenu() {
     this.menuCrtl.open();
-    console.log(this.menuCrtl.swipeGesture.length)
+    console.log(this.menuCrtl.swipeGesture.length);
   }
 }
