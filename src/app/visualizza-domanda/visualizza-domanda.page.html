@@ -59,6 +59,7 @@
           <img src= {{profiloUserDomanda.avatar}}>
         </ion-avatar>
         <ion-label class = "username_text_style" (click)="clickProfilo(domandaMailUser)">{{profiloUserDomanda.username}}</ion-label>
+       
       </ion-row>
 
       <ion-card-title class = "textTitleBIG"> {{titoloView}}</ion-card-title>
@@ -74,12 +75,12 @@
               <ion-label class= "description_text" slot = "start" >{{dataeoraView}}</ion-label>
               <ion-icon name="list" slot = "start"  class = "icon_list_style"></ion-icon>
               <ion-label class= "description_text" slot = "start" >{{categoria}}</ion-label>
-               
+              <ion-icon name="chatbubble-ellipses-outline" class = "icons_generic_style" (click) = " goChat()"  slot = "end"></ion-icon>
 
           </ion-toolbar>
     </ion-card-content>
   </ion-card>
-
+  <ion-icon name="chatbubble-ellipses-outline" class = "icons_generic_style" (click) = " goChat()"  slot = "end"></ion-icon>
 <ion-card *ngIf="timerView === 'OMBO TIMER,SCADUTA'">
   <ion-card-header>
     La domanda è scaduta, non è più possibile rispondere!
@@ -108,9 +109,9 @@
           <ion-card-header>
             <ion-toolbar class="backgrounds">
               <ion-avatar slot="start" class="icon-avatar" >
-                <img src= {{profiliUtentiRisposte[i][0].avatar}}>
+                <img src= {{profiliUtentiRisposte.avatar}}>
               </ion-avatar>
-              <ion-label *ngIf="currentMailUser!==risposta.cod_utente" class = "username_text_style">{{profiliUtentiRisposte[i]['0'].username}}</ion-label>
+              <ion-label *ngIf="currentMailUser!==risposta.cod_utente" class = "username_text_style">{{profiliUtentiRisposte.username}}</ion-label>
               <ion-label *ngIf="currentMailUser===risposta.cod_utente " class = "username_text_style">Tu</ion-label>
              
              
@@ -148,7 +149,7 @@
               <p readonly class= "textSimple" >{{risposta.descrizione}}</p>
               <ion-toolbar class="backgrounds">
     
-                <ion-icon *ngIf="currentMailUser === risposta.cod_utente" name="settings-outline" slot="start" class = "calendar_icon_style" (click)="clickRisposta(risposta, i)" ></ion-icon>
+                <ion-icon *ngIf="currentMailUser === risposta.cod_utente" name="settings-outline" slot="start" class = "calendar_icon_style" (click)="clickRisposta(risposta, i)" (click)="popupModificaDescrizioneRisposta()"></ion-icon>
                 <ion-label class= "description_text"  slot="start" ></ion-label>
             
               

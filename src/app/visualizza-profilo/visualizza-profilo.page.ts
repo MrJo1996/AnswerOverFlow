@@ -16,6 +16,7 @@ import {Storage} from '@ionic/storage';
 })
 export class VisualizzaProfiloPage implements OnInit {
 
+  ngOnInit(){}
   
   
   request: Promise<any>;
@@ -34,21 +35,21 @@ export class VisualizzaProfiloPage implements OnInit {
     ){
 
       this.userProfileId = this.dataService.getEmailOthers();
-      this .userId = this.dataService.getEmail_Utente();
+      // this .userId = this.dataService.getEmail_Utente();
       
-     /*  this.storage.get('utente').then(data => {
+      this.storage.get('utente').then(data => {
         this.userId = data.email;
 
-          #172c3d
+//           #172c3d
 
-#15293a
-#19314A
-    }); */ 
+// #15293a
+// #19314A
+    }); 
      }
 
 
      
-  ngOnInit() {
+  ionViewWillEnter() {
     
     //this.userProfileId = "email"  /* this.dataService.getEmailOthers() */
 
@@ -97,6 +98,7 @@ export class VisualizzaProfiloPage implements OnInit {
       (data) => {
         console.log('Visualizzato con successo');
         this.profilo = data['data'][0];
+        console.log(this.profilo)
         this.selectId = this.profilo.email
         //console.log(this.profilo.bio);
         

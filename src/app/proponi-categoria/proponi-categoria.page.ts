@@ -56,7 +56,7 @@ export class ProponiCategoriaPage implements OnInit {
     toast.message = 'Hai inserito una o più parole non consentite!';
     toast.duration = 2000;
     toast.position = "top";
-    toast.style.fontSize = '15px';
+    toast.style.fontSize = '20px';
     toast.color = 'danger';
     toast.style.textAlign = 'center';
     document.body.appendChild(toast);
@@ -65,10 +65,10 @@ export class ProponiCategoriaPage implements OnInit {
 
   max_lenght_exceeded_toast(){
     const toast = document.createElement('ion-toast');
-    toast.message = 'Il nome inserito per la nuova categoria o sottocategoria è troppo lungo!';
+    toast.message = 'Il nome inserito per la nuova categoria è troppo lungo!';
     toast.duration = 2000;
     toast.position = "top";
-    toast.style.fontSize = '15px';
+    toast.style.fontSize = '20px';
     toast.color = 'danger';
     toast.style.textAlign = 'center';
     document.body.appendChild(toast);
@@ -80,7 +80,7 @@ export class ProponiCategoriaPage implements OnInit {
       this.max_lenght_exceeded_toast();
     } else{
       if((!this.english_bad_words_check(this.proposta)) && (!this.italian_bad_words_check(this.proposta))){
-        this.apiService.proponi_categoria(this.selezione, this.proposta).then(
+        this.apiService.proponi_categoria(this.proposta).then(
           (result)=>{
             console.log("Proposta inviata con successo")
           }, (rej)=>{
@@ -95,7 +95,6 @@ export class ProponiCategoriaPage implements OnInit {
   }
 
   goToConfirm(){
-    this.dataService.setSelezioneCategoria(this.selezione);
     this.dataService.setNuovaProposta(this.proposta);
     this.router.navigate(['conferma-invio-proposta']);
   }

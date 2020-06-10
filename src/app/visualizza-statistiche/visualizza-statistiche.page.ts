@@ -69,12 +69,15 @@
       categoriaxL = {};
       emailOther;
       emailProva;
+      segment;
     
+      
       provaDomandeTOP = new Array();
+     
     
-    
-      constructor(public toastController: ToastController,private menuCtrl:MenuController, private storage: Storage, private dataService: DataService, private navCtrl: NavController, public apiService: ApiService) {
-    
+      constructor( private menuCrtl: MenuController,public toastController: ToastController, private storage: Storage, private dataService: DataService, private navCtrl: NavController, public apiService: ApiService) {
+      this.segment='Domande';
+     
       }
     
       ngOnInit() {
@@ -110,7 +113,7 @@
         this.carica();
         this.caricaR();
         this.caricaLD();
-    
+       
     
     
       }
@@ -138,6 +141,11 @@
       goBack() {
         this.navCtrl.back();
       }
+
+      openMenu(){
+        this.menuCrtl.open()
+        console.log(this.menuCrtl.swipeGesture.length  )
+       }
       //---------------Colori random per i grafici-------------------------------
       generateColorArray(num) {
         this.colorArray = [];
@@ -521,7 +529,8 @@
             scales: {
               yAxes: [{
                 ticks: {
-                  beginAtZero: true
+                  stepSize: 1,
+                  beginAtZero: true,
                 }
               }]
             }
@@ -579,7 +588,8 @@
             scales: {
               yAxes: [{
                 ticks: {
-                  beginAtZero: true
+                  stepSize: 1,
+                  beginAtZero: true,
                 }
               }]
             }
@@ -609,9 +619,7 @@
     
     
       lineChartMethod() {
-       
-    
-          this.lineChart = new Chart(this.lineCanvas.nativeElement, {
+            this.lineChart = new Chart(this.lineCanvas.nativeElement, {
             type: 'horizontalBar',
             data: {
               labels: this.categoriaxLtitle,
@@ -622,7 +630,7 @@
                 borderColor: '#008000',// array should have same number of elements as number of dataset
                 borderWidth: 1
               },
-              {
+                {
                 label: 'DISLIKE ▼',
                 data: this.numDISLIKE,
                 backgroundColor: '#dd1144', // array should have same number of elements as number of dataset
@@ -632,9 +640,11 @@
             },
             options: {
               scales: {
-                yAxes: [{
+                xAxes: [{
                   ticks: {
-                    beginAtZero: true
+                    stepSize: 1,
+                    beginAtZero: true,
+                    
                   }
                 }]
               }
@@ -642,10 +652,9 @@
     
           });
         
-        }
-        openMenu(){
-          this.menuCtrl.open();
-        }
+      }
+      
+    
     }
     
 

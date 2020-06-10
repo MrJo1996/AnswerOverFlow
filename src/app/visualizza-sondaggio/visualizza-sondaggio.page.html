@@ -20,10 +20,10 @@
       <ion-icon name="settings"></ion-icon>
     </ion-fab-button>
     <ion-fab-list>
-      <ion-fab-button color="light" (click) = "popUpEliminaDomanda()" >
+      <ion-fab-button color="light" (click) = "popUpEliminaSondaggio()" >
         <ion-icon name="trash-sharp" color="primary" class = "icons_generic_style" ></ion-icon>
       </ion-fab-button>
-      <ion-fab-button color="light" (click) ="  goModificaDomanda() ">
+      <ion-fab-button color="light" (click) ="  goModificaSondaggio() ">
         <ion-icon name="hammer-sharp" color="primary" class = "icons_generic_style"></ion-icon>
       </ion-fab-button>
      
@@ -44,7 +44,13 @@
       <ion-row>
         <ion-icon   class = "alarm_style" name="alarm-outline" slot= "start"></ion-icon>
    
-            <!--<ion-input id="timeLeft" readonly placeholder=" " color="medium"></ion-input>-->
+        <ion-button disabled = true expand="block"  fill="clear">
+          <ion-icon   class = "icons_generic_style" name="alarm-outline" ></ion-icon>
+        </ion-button>
+        <ion-button disabled = true expand="block"  fill="clear">
+          <ion-label id="timeLeft"  color="medium"></ion-label>
+      </ion-button>
+            
             <!-- <ion-button  expand="block" *ngIf="currentUser===sondaggio.cod_utente" (click) = "popUpEliminaSondaggio()" fill="clear">
               <ion-icon name="trash-sharp" color="primary" class = "icons_generic_style"></ion-icon>
             </ion-button>
@@ -54,10 +60,10 @@
       </ion-row>
       
       <ion-row *ngIf="currentUser!==sondaggio.cod_utente">
-        <ion-avatar  slot="start" class="icon-avatar" >
-          <img src="https://i.ytimg.com/vi/mCf6UGT3HrA/maxresdefault.jpg">
+        <ion-avatar  class="icon-avatar" >
+          <img src= {{profiloUserSondaggio.avatar}}>
         </ion-avatar>
-        <ion-label class = "username_text_style">{{username}}</ion-label>
+        <ion-label class = "username_text_style" (click)="clickProfilo(sondaggioUser)">{{profiloUserSondaggio.username}}</ion-label>
 
       </ion-row>
 
@@ -116,6 +122,7 @@
           <ion-label class= "description_text" slot = "start" >{{sondaggio.dataeora}}</ion-label>
           <ion-icon name="list" slot = "start"  class = "icon_list_style"></ion-icon>
           <ion-label class= "description_text" slot = "start" >{{categoria}}</ion-label>
+          <ion-icon name="chatbubble-ellipses-outline" class = "icons_generic_style" (click) = " goChat()"  slot = "end"></ion-icon>
            
 
       </ion-toolbar>

@@ -57,6 +57,8 @@ export class VisualizzaDomandaPage implements OnInit {
 
   codice_valutazione;
 
+  timerView2;
+
 
   giorni;
   ore;
@@ -79,10 +81,10 @@ export class VisualizzaDomandaPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    
+
+    this.storage.get('utente').then(data => { this.currentMailUser = data.email });
     this.visualizzaDomanda();
     this.showRisposte();
-    this.storage.get('utente').then(data => { this.currentMailUser = data.email });
     console.log(this.currentMailUser);
     this.allVisible = true;
     
@@ -108,14 +110,14 @@ export class VisualizzaDomandaPage implements OnInit {
 
         this.domanda = domanda['data'];
         this.dataeoraView = this.domanda['0'].dataeora;
-        this.timerView = this.domanda['0'].timer;
+        this.timerView2 = this.domanda['0'].timer;
         this.titoloView = this.domanda['0'].titolo;
         this.descrizioneView = this.domanda['0'].descrizione;
         this.domandaMailUser = this.domanda['0'].cod_utente;
         this.cod_preferita = this.domanda['0'].cod_preferita;
         this.codice_categoria = this.domanda['0'].cod_categoria;
         console.log('Domanda: ', this.domanda['0']);
-        console.log("TIMER VIEW: ", this.timerView);
+        console.log("TIMER VIEW: ", this.timerView2);
         this.getUserDomanda();
         this.visualizzaCategoria();
 
@@ -205,7 +207,7 @@ export class VisualizzaDomandaPage implements OnInit {
   async trovaProfiliUtentiRisposte(mailUtenteRisposta) {
     this.apiService.getProfilo(mailUtenteRisposta).then(
       (profilo) => {
-        this.profiliUtentiRisposte.push(profilo['data']);
+        this.profiliUtentiRisposte.push(profilo['data']['0']);
         console.log('profilo trovato con successo', this.profiliUtentiRisposte);
 
       },
@@ -267,7 +269,11 @@ export class VisualizzaDomandaPage implements OnInit {
 
   async modify() {
 
-    if (!this.checkIfThereAreEnglishBadWords(this.descrizioneRispostaView) && !this.checkIfThereAreItalianBadWords(this.descrizioneRispostaView)) {
+    if (this.checkIfThereAreEnglishBadWords(this.descrizioneRispostaToPass) || this.checkIfThereAreItalianBadWords(this.descrizioneRispostaToPass)) {
+      this.toastParolaScoretta();
+    } else if (this.stringLengthChecker(this.descrizioneRispostaToPass)) {
+      this.toastInvalidString();
+    } else {
       this.apiService.modificaRisposta(this.dataService.codice_risposta, this.descrizioneRispostaToPass).then(
         (result) => { // nel caso in cui va a buon fine la chiamata
         },
@@ -275,8 +281,7 @@ export class VisualizzaDomandaPage implements OnInit {
           console.log('Modifica non effetutata'); //anche se va nel rej va bene, modifiche effettive nel db
         }
       );
-    } else {
-      this.popupParolaScorretta();
+      this.showModifyToast();
     }
 
   }
@@ -298,12 +303,16 @@ export class VisualizzaDomandaPage implements OnInit {
     this.rispostaVisible = false;
 
     this.doRefresh(event);
-
   }
 
 
 
   async inserisciRisposta() {
+    if (this.checkIfThereAreItalianBadWords(this.descrizione_risposta) || this.checkIfThereAreEnglishBadWords(this.descrizione_risposta)) {
+      this.toastParolaScoretta();
+    } else if (this.stringLengthChecker(this.descrizione_risposta)){
+      this.toastInvalidString();
+    } else {
     this.apiService.inserisciRisposta(this.descrizione_risposta, this.currentMailUser, this.codice_domanda).then(
       (result) => { // nel caso in cui va a buon fine la chiamata
       },
@@ -311,6 +320,9 @@ export class VisualizzaDomandaPage implements OnInit {
         console.log('Modifica non effetutata'); //anche se va nel rej va bene, modifiche effettive nel db
       }
     );
+
+    this.showModifyToast();
+    }
 
   }
 
@@ -342,7 +354,6 @@ export class VisualizzaDomandaPage implements OnInit {
             this.descrizioneRispostaView = insertedData.descrizionePopUp; //setto descrizioneView al valore inserito nel popUp una volta premuto ok così viene visualizzato
             this.descrizioneRispostaToPass = insertedData.descrizionePopUp; //setto descrizioneToPass al valore inserito nel popUp una volta premuto ok
             
-            this.showModifyToast();
             this.modify();
            
                                                                                    //TOASTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
@@ -364,8 +375,6 @@ export class VisualizzaDomandaPage implements OnInit {
 
       this.rispostaCliccata = risposta;
 
-      this.popupModificaDescrizioneRisposta();
-
     }
   }
 
@@ -384,21 +393,25 @@ export class VisualizzaDomandaPage implements OnInit {
 
     let array = list.array
 
-    return array.includes(string);
-  }
+    console.log(array);
 
+    let stringArray = [];
+    let stringPassed = string.split(' ');
+    stringArray = stringArray.concat(stringPassed);
 
-  async popupParolaScorretta() {
-    const alert = await this.alertController.create({
-      header: 'ATTENZIONE',
-      subHeader: 'Subtitle',
-      message: 'Hai inserito una parola scorretta',
-      buttons: ['OK']
+    console.log(stringArray);
+
+    var check;
+
+    stringArray.forEach( element => {
+      if (array.includes(element))
+      check = true; 
     });
 
-    await alert.present();
-    let result = await alert.onDidDismiss();
-    console.log(result);
+    console.log(check);
+
+    return check;
+
   }
 
   changeColor(cod_nuova_preferita) {
@@ -415,10 +428,19 @@ export class VisualizzaDomandaPage implements OnInit {
   }
 
   setRispostaVisible() {
-    if (this.rispostaVisible === false)
-      this.rispostaVisible = true;
-    else
-      this.rispostaVisible = false;
+    if(!this.deadlineCheck()){
+      if (this.rispostaVisible === false)
+        this.rispostaVisible = true;
+
+      else
+          this.rispostaVisible = false;
+
+  }
+  else{
+  
+  this.toastDomandaScaduta();
+  }
+    
 
   }
 
@@ -815,14 +837,16 @@ export class VisualizzaDomandaPage implements OnInit {
     clearInterval(this.interval)
   } 
 
+ 
+
   openMenu(){
     this.menuCtrl.open();
   }
-
-/*   ionViewDidEnter(){
-    clearInterval(this.interval)
-  }  */
-
+  ionViewDidEnter(){
+    clearInterval(this.interval);
+    this.mappingIncrement(this.timerView2);
+  } 
+ 
 
 
 /*   ionViewWillLeave() {
@@ -833,6 +857,80 @@ export class VisualizzaDomandaPage implements OnInit {
     clearInterval(this.interval)
   }
  */
+
+
+  goChat(){
+    this.dataService.setEmailOthers(this.domandaMailUser);
+    this.navCtrl.navigateForward(['/chat'])
+
+  }
+
+  deadlineCheck(): boolean {
+    var date = new Date(this.dataeoraView.toLocaleString());
+    console.log(date.getTime());
+    var timer = this.timerView2;
+    console.log(timer);
+    var dateNow = new Date().getTime();
+
+
+    // Since the getTime function of the Date object gets the milliseconds since 1970/01/01, we can do this:
+    var time2 = date.getTime();
+    var seconds = new Date('1970-01-01T' + timer + 'Z').getTime();
+
+    var diff = dateNow - time2;
+
+    console.log(seconds);
+    console.log(time2);
+    console.log(diff);
+
+    return diff > seconds;
+  }
+
+  async toastDomandaScaduta() {
+    const toast = await this.toastController.create({
+      message: 'Domanda scaduta! Impossibile effettuare le modifiche!!!',
+      duration: 2000
+    });
+    toast.color = 'danger';
+    toast.position = "top";
+    toast.style.fontSize = '20px';
+    toast.style.textAlign = 'center';
+    toast.present();
+  }
+
+  stringLengthChecker(string: String):boolean {
+
+    if ((string.length > 1000) || !(string.match(/[a-zA-Z0-9_]+/))) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+async toastInvalidString() {
+  const toast = await this.toastController.create({
+    message: 'ATTENZIONE! Hai lasciato un campo vuoto oppure hai superato la lunghezza massima!',
+    duration: 2000
+  });
+  toast.color = 'danger';
+  toast.position = "top";
+  toast.style.fontSize = '20px';
+  toast.style.textAlign = 'center';
+  toast.present();
+}
+
+async toastParolaScoretta() {
+  const toast = await this.toastController.create({
+    message: 'Hai inserito una parola scorretta!',
+    duration: 2000
+  });
+  toast.color = 'danger';
+  toast.position = "top";
+  toast.style.fontSize = '20px';
+  toast.style.textAlign = 'center';
+  toast.present();
+}
+
   }
 
   
