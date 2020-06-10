@@ -132,6 +132,6 @@ export class BioPage implements OnInit {
     );
   }
   goback() {
-    this.navCtrl.pop();
+    this.router.navigate(['/registrazione']);
   }
 }
