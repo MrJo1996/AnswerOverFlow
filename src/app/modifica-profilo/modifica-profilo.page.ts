@@ -41,7 +41,9 @@ export class ModificaProfiloPage implements OnInit {
     private menuCrtl: MenuController
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.menuCrtl.swipeGesture(false);
+  }
 
   ionViewWillEnter() {
     console.log(this.dataService.avatarTemporary);
