@@ -96,7 +96,7 @@ export class VisualizzaDomandaPage implements OnInit {
     if (this.risposte.length > 0)
       this.showErrorToast();
     if(this.deadlineCheck){
-      this.toastDomandaScaduta();
+      this.toastModificaDomandaScaduta();
     }
     else
       //this.router.navigate(['modifica-domanda']);
@@ -891,7 +891,7 @@ export class VisualizzaDomandaPage implements OnInit {
 
   async toastDomandaScaduta() {
     const toast = await this.toastController.create({
-      message: 'Domanda scaduta! Impossibile effettuare le modifiche!!!',
+      message: 'Domanda scaduta! Impossibile rispondere!',
       duration: 2000
     });
     toast.color = 'danger';
@@ -900,6 +900,21 @@ export class VisualizzaDomandaPage implements OnInit {
     toast.style.textAlign = 'center';
     toast.present();
   }
+
+  async toastModificaDomandaScaduta() {
+    const toast = await this.toastController.create({
+      message: 'Domanda scaduta! Non puoi più modificarla!',
+      duration: 2000
+    });
+    toast.color = 'danger';
+    toast.position = "top";
+    toast.style.fontSize = '20px';
+    toast.style.textAlign = 'center';
+    toast.present();
+  }
+
+
+
 
   stringLengthChecker(string: String):boolean {
 
