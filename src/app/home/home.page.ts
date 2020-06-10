@@ -319,5 +319,9 @@ export class HomePage implements OnInit {
     this.dataService.setKeywordToSearch(this.keywordToSearch);
     this.router.navigate(['/search-results']);
   }
+
+  openMenu(){
+    this.menuCtrl.open();
+  }
 }
 

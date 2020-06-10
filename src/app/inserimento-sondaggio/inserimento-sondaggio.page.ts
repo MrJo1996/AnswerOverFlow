@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { NavController, AlertController } from "@ionic/angular";
+import { NavController, AlertController, MenuController } from "@ionic/angular";
 import { ApiService } from "./../providers/api.service";
 import { PickerController } from "@ionic/angular"; //Picker - import e poi definire nel constructor
 import { PickerOptions } from "@ionic/core";
@@ -54,8 +54,9 @@ export class InserimentoSondaggioPage implements OnInit {
     private pickerController: PickerController,
     public alertController: AlertController,
     private router: Router,
-    private dataService: DataService,
-    private storage: Storage
+    private data: DataService,
+    private storage: Storage,
+    private menuCtrl: MenuController
   ) {}
 
 ngOnInit() {}
@@ -422,5 +423,9 @@ ngOnInit() {}
     console.log(check);
 
     return check;
+  }
+
+  openMenu(){
+    this.menuCtrl.open();
   }
 }
