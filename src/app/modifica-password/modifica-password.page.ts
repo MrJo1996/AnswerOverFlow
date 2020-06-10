@@ -59,6 +59,7 @@ export class ModificaPasswordPage implements OnInit {
             console.log('Confirm Ok');
             this.modify();
 
+
           }
         }
       ]
@@ -136,10 +137,35 @@ export class ModificaPasswordPage implements OnInit {
 
       }
     );
+    this.salvaPassword();
 
   }
 
 }
+
+async salvaPassword() {
+  const alert = await this.alertController.create({
+    header: 'Password modifica con successo',     buttons: [
+      {
+        text: 'Ok',
+        handler: () => {
+          
+          this.router.navigate(['visualizza-profilo']);
+        }
+      }
+    ]
+     });
+
+  await alert.present();
+  let result = await alert.onDidDismiss();
+
+  
+ 
+
+}
+
+
+
 
 goback(){
   this.router.navigate(['modifica-profilo']);
