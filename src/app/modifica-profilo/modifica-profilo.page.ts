@@ -5,9 +5,9 @@ import { ApiService } from "src/app/providers/api.service";
 import { NavController } from "@ionic/angular";
 import { PickerController } from "@ionic/angular";
 import { ToastController } from "@ionic/angular";
+import { Storage } from "@ionic/storage";
 import { Router } from "@angular/router";
 import { AppComponent } from '../app.component';
-import { Storage } from "@ionic/storage";
 import { PostServiceService } from "../services/post-service.service";
 
 
@@ -19,6 +19,12 @@ import { PostServiceService } from "../services/post-service.service";
 export class ModificaProfiloPage implements OnInit {
   email: string;
   avatar: string;
+  objUtente: any[] = [{
+    'username':"",
+    'nome':"",
+    'cognome':"",
+    'avatar':"",
+}]
 
   usernameToPass: string;
   nomeToPass: string;
@@ -97,7 +103,6 @@ export class ModificaProfiloPage implements OnInit {
 
   async showSurvey() {
     this.email = this.dataService.getEmail_Utente();
-    // this.email = "stohkplays@gmail.com";
     this.apiService.getProfilo(this.email).then(
       (profilo) => {
         console.log("Visualizzato con successo");
@@ -193,6 +198,14 @@ export class ModificaProfiloPage implements OnInit {
       this.dataService.setNome(this.nomeToPass);
       this.dataService.setCognome(this.cognomeToPass);
       this.dataService.setAvatarUtente(this.avatar);
+      console.log(this.usernameToPass)
+      this.objUtente['username'] = this.usernameToPass;
+      this.objUtente['nome'] = this.nomeToPass;
+      this.objUtente['cognome'] = this.cognomeToPass;
+      this.objUtente['avatar'] = this.avatar;
+      this.objUtente['email'] = this.email;
+      this.storage.set('utente', this.objUtente);
+
       if (this.password) {
         this.apiService
           .modificaProfilo(
