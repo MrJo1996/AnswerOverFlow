@@ -102,7 +102,7 @@
               <ion-avatar slot="start" class="icon-avatar">
                 <img src="{{profili_user_sondaggi[i].avatar}}">
               </ion-avatar>
-              <ion-label class="username_text_style" >{{profili_user_sondaggi[i].username}}
+              <ion-label class="username_text_style" (click)="clickProfilo(sondaggio.cod_utente)" >{{profili_user_sondaggi[i].username}}
               </ion-label>
             </ion-item>
             <ion-item class="backgrounds" *ngIf="currentMailUser===sondaggio.cod_utente">
@@ -110,7 +110,7 @@
               </ion-label>
             </ion-item>
 
-            <ion-card-title class="textTitleBIG">{{sondaggio.titolo}}</ion-card-title>
+            <ion-card-title class="textTitleBIG2">{{sondaggio.titolo}}</ion-card-title>
           </ion-card-header>
 
 
