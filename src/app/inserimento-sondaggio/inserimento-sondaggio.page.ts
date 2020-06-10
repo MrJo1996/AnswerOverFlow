@@ -54,7 +54,7 @@ export class InserimentoSondaggioPage implements OnInit {
     private pickerController: PickerController,
     public alertController: AlertController,
     private router: Router,
-    private data: DataService,
+    private dataService: DataService,
     private storage: Storage,
     private menuCtrl: MenuController
   ) {}
@@ -98,6 +98,7 @@ ngOnInit() {}
   }
   goHome() {
     this.router.navigate(["home"]);
+    this.dataService.setRefreshIndex(true);
   }
   backButton() {
     this.navCtrl.back();
