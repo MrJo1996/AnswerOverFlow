@@ -63,7 +63,6 @@ export class HomePage implements OnInit {
     this.menuSet.checkUserLogged();
     this.refresh_index=this.dataService.getRefreshIndex();
     if(this.refresh_index == true){
-    this.doRefresh2();
   }
   }
   
@@ -94,10 +93,10 @@ export class HomePage implements OnInit {
   async presentPopover(ev,index,user,codice) {
 
     if (user == this.currentMailUser) {
-      this.dataService.setPopoverModifica(true,index);
+      this.setPopoverMod(true,index);
     }
     else {
-      this.dataService.setPopoverModifica(false,index);
+      this.setPopoverMod(false,index);
     }
     const popover = await this.popoverController.create({
       component: PopoverComponent,
@@ -111,21 +110,21 @@ export class HomePage implements OnInit {
     const { data } = await popover.onDidDismiss();
     console.log('dati', data);
     if (data != undefined) {
-      if(data.item == 1){
-        this.clickSondaggio(codice);
-      }else
-      if (data.item == 2) {
-        this.clickDomanda(codice);
-      }else
-      if ((data.item == 3)&&(index==1)) {
-        this.clickModificaDomanda(codice);
-      }else
-      if ((data.item == 3)&&(index==2)) {
-        this.clickModificaSondaggio(codice);
-      }
+      this.checkClick1(data,index,codice);
     }
   }
+  checkClick1(data,index,codice){
+    if(data.item == 1){
+      this.clickSondaggio(codice);
+    }else
+    if (data.item == 2) {
+      this.clickDomanda(codice);
+    }
+  }
+  setPopoverMod(bool,indice){
+    this.dataService.setPopoverModifica(bool,indice);
 
+  }
   //IFINITE SCROLL
   loadMore(event) {
     setTimeout(() => {
@@ -157,24 +156,32 @@ export class HomePage implements OnInit {
   }
 
   async getUserDomanda(domande) {
-    for(let i =0; i<=domande.length; i++){
-    this.apiService.getProfilo(domande[i].cod_utente).then(
-      (profilo1) => {
-        this.domande[i]['profilo']=profilo1['data']['0'];
-      },
-      (rej) => {
-        console.log("C'è stato un errore durante la visualizzazione del profilo");
-      }
-    );
-    this.apiService.getCategoria(domande[i].cod_categoria).then(
-      (categoria1) => {
-        this.domande[i]['categoria'] = categoria1['Categoria']['data']['0'];
-      },
-      (rej) => {
-        console.log("C'è stato un errore durante la visualizzazione");
-      }
-    );
+    this.getUser1(domande);
+    this.getUser2(domande);
   }
+
+  getUser1(domande){
+    for(let i =0; i<domande.length; i++){
+      this.apiService.getProfilo(domande[i].cod_utente).then(
+        (profilo1) => {
+          domande[i]['profilo']=profilo1['data']['0'];
+        },
+        (rej) => {
+          console.log("C'è stato un errore durante la visualizzazione del profilo");
+        }
+      );}
+  }
+  getUser2(domande){
+    for(let i =0; i<domande.length; i++){
+      this.apiService.getCategoria(domande[i].cod_categoria).then(
+        (categoria1) => {
+          domande[i]['categoria'] = categoria1['Categoria']['data']['0'];
+        },
+        (rej) => {
+          console.log("C'è stato un errore durante la visualizzazione");
+        }
+      );
+    }
   }
 
   async getCategoriaDomande(id_categoria) {
@@ -255,19 +262,27 @@ export class HomePage implements OnInit {
     );
   }
   async getUserSondaggio(sondaggi) {
-    for(let i =0; i<=sondaggi.length; i++){
+    this.getUser3(sondaggi);
+    this.getUser4(sondaggi)
+  }
+
+  getUser3(sondaggi){
+    for(let i =0; i<sondaggi.length; i++){
       this.apiService.getProfilo(sondaggi[i].cod_utente).then(
         (profilo1) => {
-          this.sondaggi[i]['profilo']=profilo1['data']['0'];
+          sondaggi[i]['profilo']=profilo1['data']['0'];
           console.log(profilo1['data']['0'].username);
         },
         (rej) => {
           console.log("C'è stato un errore durante la visualizzazione del profilo");
         }
       );
+  }}
+  getUser4(sondaggi){
+    for(let i =0; i<sondaggi.length; i++){
       this.apiService.getCategoria(sondaggi[i].cod_categoria).then(
         (categoria2) => {
-          this.sondaggi[i]['categoria']=categoria2['Categoria']['data']['0'];
+          sondaggi[i]['categoria']=categoria2['Categoria']['data']['0'];
         },
         (rej) => {
           console.log("C'è stato un errore durante la visualizzazione");
@@ -275,6 +290,8 @@ export class HomePage implements OnInit {
       );
     }
   }
+
+
   async getCategoriaSondaggio(id_categoria) {
     this.apiService.getCategoria(id_categoria).then(
       (categoria) => {
