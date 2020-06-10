@@ -160,12 +160,20 @@ export class HomePage implements OnInit {
     this.apiService.getProfilo(domande[i].cod_utente).then(
       (profilo1) => {
         this.domande[i]['profilo']=profilo1['data']['0'];
-        console.log(profilo1['data']['0'].username);
       },
       (rej) => {
         console.log("C'è stato un errore durante la visualizzazione del profilo");
       }
-    );}
+    );
+    this.apiService.getCategoria(domande[i].cod_categoria).then(
+      (categoria1) => {
+        this.domande[i]['categoria'] = categoria1['Categoria']['data']['0'];
+      },
+      (rej) => {
+        console.log("C'è stato un errore durante la visualizzazione");
+      }
+    );
+  }
   }
 
   async getCategoriaDomande(id_categoria) {
@@ -255,7 +263,16 @@ export class HomePage implements OnInit {
         (rej) => {
           console.log("C'è stato un errore durante la visualizzazione del profilo");
         }
-      );}
+      );
+      this.apiService.getCategoria(sondaggi[i].cod_categoria).then(
+        (categoria2) => {
+          this.sondaggi[i]['categoria']=categoria2['Categoria']['data']['0'];
+        },
+        (rej) => {
+          console.log("C'è stato un errore durante la visualizzazione");
+        }
+      );
+    }
   }
   async getCategoriaSondaggio(id_categoria) {
     this.apiService.getCategoria(id_categoria).then(
