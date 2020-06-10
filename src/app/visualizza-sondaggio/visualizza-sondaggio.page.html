@@ -104,7 +104,11 @@
           
             <div class = "backgrounds">
           
-            <ion-item *ngFor="let scelta of scelte, let i = index">    
+            <ion-item style = " border-radius: 25px;
+                                border: 0.15rem solid #343434;
+                                margin-top: 1rem;" 
+                                
+              *ngFor="let scelta of scelte, let i = index">    
              <!--    <ion-radio  [checked] = "true" *ngIf="currentUser!==sondaggio.cod_utente && votato === false && isSondaggioActive=== true" value = "{{scelta.descrizione}}" (click) = "getScelta(scelta.descrizione, i)" slot = "start" ></ion-radio> -->
                 
                   <ion-button *ngIf="currentUser!==sondaggio.cod_utente && votato === false" (click) = "getScelta(scelta.descrizione, i)"  expand="block" slot = "start" fill = "clear">
