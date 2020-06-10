@@ -80,7 +80,11 @@
     </ion-card-content>
   </ion-card>
 
-
+<ion-card *ngIf="timerView === 'OMBO TIMER,SCADUTA'">
+  <ion-card-header>
+    La domanda è scaduta, non è più possibile rispondere!
+  </ion-card-header>
+</ion-card>
   
 
 
