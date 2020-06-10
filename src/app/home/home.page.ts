@@ -33,9 +33,9 @@ export class HomePage implements OnInit {
   domande;
   domande_regolate = Array();
   sondaggi_regolati = Array();
-  profili_user_domande = Array();
-  profili_user_sondaggi = Array();
-  profilo = Array();
+  profili_user_domande = new Array();
+  profili_user_sondaggi = new Array();
+  profilo;
   categorie_domande = Array();
   categoria_sondaggi = Array();
   voti_sondaggi = Array();

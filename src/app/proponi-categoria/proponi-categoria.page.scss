@@ -6,16 +6,16 @@
 }
 
 .titleSize{
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     font-weight: bold;
     text-align: center;
     color: #ffffff;
 }
 
 .normalText{
-    font-size: 1rem;
+    font-size: 1.1rem;
     font-weight: normal;
-    text-align: start;
+    text-align: center;
     color: #ffffff;
 }
 
@@ -27,7 +27,7 @@
 
 .backBtn{
     --padding-start: 0.5rem;
-    --padding-end: 0.5rem
+    --padding-end: 0.5rem;
 }
 
 .btnInvio{
@@ -36,14 +36,14 @@
 }
 
 .boxText{
-    font-size: 0.8rem;
+    font-size:1rem;
     font-weight: normal;
     text-align: start;
     color:#ffffff;
 }
 
 .rboxText{
-    font-size: 1rem;
+    font-size: 1.2rem;
     font-weight: normal;
     text-align: start;
     color: red;

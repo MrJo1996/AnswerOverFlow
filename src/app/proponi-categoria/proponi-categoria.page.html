@@ -9,23 +9,24 @@
   </ion-toolbar> 
 </ion-header>
 
-<ion-content>
-  <ion-card class="backgrounds">
+<ion-content style="--background: url('/assets/img/provaBack.png') no-repeat center center / cover;">
+  <ion-card>
     <ion-card-content>
-      <ion-card-title class="titleSize">Hai una nuova categoria o sottocategoria da proporre?</ion-card-title><p style="line-height:1rem;"><br></p>
-      <ion-card-subtitle class="normalText">
-        1. Seleziona dalla lista la categoria per la quale proporre una nuova sottocategoria.<ion-text class="RnormalText">*</ion-text>
+      <ion-card-title class="titleSize">Hai una nuova categoria da proporre?</ion-card-title><p style="line-height: 0.5rem;"><br></p>
+      <ion-card-subtitle class="normalText">Scrivi nel box di testo sottostante il nome della categoria che vuoi proporre ai nostri sviluppatori.
+        Riceveranno una mail con la tua proposta e la valuteranno al più presto!
+        <!-- 1. Seleziona dalla lista la categoria per la quale proporre una nuova sottocategoria.<ion-text class="RnormalText">*</ion-text>
         <p style="line-height:0.5rem;"><br></p>
         2. Scrivi nel box di testo il nome della nuova categoria o sottocategoria.
         <p style="line-height:0.5rem;"><br></p>
-        3. Premi invio per confermare e inviare la proposta ai nostri sviluppatori.
+        3. Premi invio per confermare e inviare la proposta ai nostri sviluppatori. -->
       </ion-card-subtitle>
     </ion-card-content>
   </ion-card>
 
-  <ion-card class="backgrounds">
+  <ion-card>
     <ion-card-content>
-      <ion-text class="boxText">Seleziona categoria</ion-text>
+      <!-- <ion-text class="boxText">Seleziona categoria</ion-text>
       <ion-text class="rboxText">*</ion-text>      
       <ion-select placeholder="- - - - -" interface="popover" class="select" [(ngModel)]="selezione">
         <ion-select-option value="Scienza">Scienza</ion-select-option>
@@ -33,11 +34,11 @@
         <ion-select-option value="Arte">Arte</ion-select-option>
         <ion-select-option value="Letteratura">Letteratura</ion-select-option>
         <ion-select-option value="Nuova categoria">Nuova categoria</ion-select-option>
-      </ion-select>
+      </ion-select> -->
       
       <ion-text class="boxText">Inserisci nome</ion-text>
       <ion-text class="rboxText">*</ion-text>
-      <ion-input [disabled]="selezione === ''" placeholder="es. Musica (Rock, Pop...), Letteratura (Fantasy, Thriller...), ecc..." class="select" [(ngModel)]="proposta"></ion-input>
+      <ion-input placeholder="es. Musica, Letteratura, Cinema, ecc..." class="select" [(ngModel)]="proposta"></ion-input>
     </ion-card-content>
   </ion-card>
 
@@ -45,12 +46,12 @@
     <ion-text> INVIO </ion-text>
   </ion-button>
 
-  <ion-card class="backgrounds">
+  <!-- <ion-card class="backgrounds">
     <ion-card-content>
       <ion-text class="rboxText">*</ion-text>
       <ion-text class="boxText">Per proporre una categoria selezionare l'opzione "Nuova categoria" tra le scelte disponibili</ion-text>
     </ion-card-content>
-  </ion-card>
+  </ion-card> -->
 
   <ion-fab vertical="bottom" horizontal="start" slot="fixed" style="opacity: 70%;">
     <ion-fab-button size="small" (click)="openMenu()" color="light">

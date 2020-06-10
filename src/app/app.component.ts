@@ -199,6 +199,7 @@ export class AppComponent implements OnInit {
   checkUserLogged() {
     this.storage.get("session").then((data) => {
       if (!data) {
+
         this.accountPages[2].view = false;
         this.accountPages[3].view = true;
         this.appPages[1].blocked = true;
@@ -206,13 +207,14 @@ export class AppComponent implements OnInit {
         this.appPages[3].blocked = true;
         this.accountPages[0].blocked = true;
         this.accountPages[1].blocked = true;
-
         this.nome = "Ospite"
         this.cognome = ""
         this.username = ""
         this.avatar = ""
         this.utenteLogged = false;
+
       } else {
+
         this.accountPages[2].view = true;
         this.accountPages[3].view = false;
         this.appPages[1].blocked = false;
@@ -324,8 +326,8 @@ export class AppComponent implements OnInit {
       this.statusBar.styleDefault();
       this.splashScreen.hide(); //////////////////////////
       timer(2000).subscribe(() => (this.showSplash = false)); //durata animazione definita in app.component.html -> 2s (era 3.5s)
-   
-     if (this.platform.is('cordova')) {
+
+      if (this.platform.is('cordova')) {
         this.setupPush();
       }
     });
@@ -336,31 +338,31 @@ export class AppComponent implements OnInit {
     });
   }
 
-  setupPush(){
+  setupPush() {
 
     this.oneSignal.startInit('8efdc866-9bea-4b12-a371-aa01f421c4f7', '424760060101');
- 
+
     this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.None);
- 
-    
+
+
     this.oneSignal.handleNotificationReceived().subscribe(data => {
       let msg = data.payload.body;
       let title = data.payload.title;
       let additionalData = data.payload.additionalData;
       this.showAlert(title, msg, additionalData.task);
     });
- 
-   
+
+
     this.oneSignal.handleNotificationOpened().subscribe(data => {
       // Just a note that the data is a different place here!
       let additionalData = data.notification.payload.additionalData;
- 
+
       this.showAlert('Notification opened', 'You already read this before', additionalData.task);
     });
- 
+
     this.oneSignal.endInit();
   }
- 
+
   async showAlert(title, msg, task) {
     const alert = await this.alertController.create({
       header: title,
@@ -369,7 +371,7 @@ export class AppComponent implements OnInit {
         {
           text: `Action: ${task}`,
           handler: () => {
-            
+
           }
         }
       ]
@@ -377,7 +379,7 @@ export class AppComponent implements OnInit {
     alert.present();
 
 
-  } 
+  }
 
 
 

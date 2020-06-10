@@ -87,9 +87,6 @@ export class DataService {
   setEmailOthers(emailOthers) {
     this.emailOthers = emailOthers;
   }
-  setSelezioneCategoria(selezione) {
-    this.selezione_cat = selezione;
-  }
   setNuovaProposta(proposta) {
     this.nuova_proposta = proposta;
   }
@@ -135,9 +132,6 @@ export class DataService {
   }
   getEmailOthers() {
     return this.emailOthers;
-  }
-  getCatSelezionata() {
-    return this.selezione_cat;
   }
   getNuovaProposta() {
     return this.nuova_proposta;
