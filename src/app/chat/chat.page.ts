@@ -53,6 +53,7 @@ export class ChatPage implements OnInit {
   }
   
 
+  avatarFriend: any;
   chatFriend: string;
   chatFriend_id: string; // = "pippo.cocainasd.com";
   msg_utente_id: string; //gmailverificata giorgiovanni
@@ -101,6 +102,7 @@ export class ChatPage implements OnInit {
         this.request = data;
         //console.log(data.Profilo);
         this.chatFriend = data.Profilo.data[0].username;
+        this.avatarFriend = data.Profilo.data[0].avatar;
       },
       (err) => {
         console.log(err.message);
