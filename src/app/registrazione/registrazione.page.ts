@@ -118,7 +118,7 @@ export class RegistrazionePage implements OnInit {
     ) {
       const toast = document.createElement("ion-toast");
 
-      toast.message = "Compilare tutti i campi contrassegnati da *!";
+      toast.message = "Compilare tutti i campi contrassegnati da * ";
       toast.duration = 2000;
       toast.position = "top";
       toast.style.fontSize = "20px";
@@ -142,7 +142,7 @@ export class RegistrazionePage implements OnInit {
     } else if (this.cognome.length > 19) {
       const toast = document.createElement("ion-toast");
 
-      toast.message = "Cognome troppo lungo!";
+      toast.message = "Cognome troppo lungo";
       toast.duration = 2000;
       toast.position = "top";
       toast.style.fontSize = "20px";
@@ -167,7 +167,7 @@ export class RegistrazionePage implements OnInit {
       const toast = document.createElement("ion-toast");
 
       toast.message =
-        "Password troppo corta. Utilizzare una password con almeno 8 caratteri";
+        "Password troppo corta. Utilizzare una password composta da almeno 8 caratteri";
       toast.duration = 2000;
       toast.position = "top";
       toast.style.fontSize = "20px";
@@ -203,7 +203,7 @@ export class RegistrazionePage implements OnInit {
     } else if (this.password != this.confermapassword) {
       const toast = document.createElement("ion-toast");
 
-      toast.message = "'Le password non coincidono!";
+      toast.message = "'Le password non coincidono";
       toast.duration = 2000;
       toast.position = "top";
       toast.style.fontSize = "20px";
@@ -221,7 +221,6 @@ export class RegistrazionePage implements OnInit {
             role: "cancel",
             cssClass: "secondary",
             handler: (blah) => {
-              console.log("Confirm Cancel: blah");
             },
           },
           {
