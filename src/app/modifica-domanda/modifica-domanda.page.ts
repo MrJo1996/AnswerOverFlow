@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController, ToastController} from '@ionic/angular';
+import { AlertController, ToastController, MenuController} from '@ionic/angular';
 import { Router } from "@angular/router";
 import { ApiService } from 'src/app/providers/api.service';
 import { DataService } from "../services/data.service";
@@ -53,6 +53,7 @@ export class ModificaDomandaPage implements OnInit {
     public alertController: AlertController, 
     public apiService: ApiService,
     private pickerController: PickerController,
+    private menuCtrl: MenuController,
     public toastController: ToastController,
     public navCtrl: NavController) { }
 
@@ -673,6 +674,10 @@ console.log(this.interval)
     this.navCtrl.navigateRoot(['/visualizza-domanda']);
   }
 
+  openMenu(){
+    this.menuCtrl.open();
+  }
+
   checkIfThereAreEnglishBadWords(string: string): boolean {
 
     var Filter = require('bad-words'),
@@ -720,5 +725,4 @@ console.log(this.interval)
       toast.style.textAlign = 'center';
       toast.present();
     }
-
 }

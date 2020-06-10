@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController } from '@ionic/angular';
+import { NavController, MenuController } from '@ionic/angular';
 import { ApiService } from '../providers/api.service';
 import { AlertController} from '@ionic/angular';
 import { DataService } from "../services/data.service";
@@ -31,7 +31,7 @@ export class MieAttivitaPage implements OnInit {
   sezione = 'Domande';
 
 
-  constructor(private navCtrl: NavController, private apiService: ApiService, private alertController: AlertController, private dataService: DataService, private router: Router, private storage: Storage) { }
+  constructor(private navCtrl: NavController, private menuCtrl: MenuController, private apiService: ApiService, private alertController: AlertController, private dataService: DataService, private router: Router, private storage: Storage) { }
 
   ngOnInit() {
     this.storage.get('utente').then( 
@@ -304,4 +304,7 @@ export class MieAttivitaPage implements OnInit {
     this.check1 = true;
   }
 
+  openMenu(){
+    this.menuCtrl.open();
+  }
 }
