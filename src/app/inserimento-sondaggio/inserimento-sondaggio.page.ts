@@ -54,12 +54,15 @@ export class InserimentoSondaggioPage implements OnInit {
     private pickerController: PickerController,
     public alertController: AlertController,
     private router: Router,
-    private data: DataService,
+    private dataService: DataService,
     private storage: Storage
   ) {}
 
-  ngOnInit() {
+ngOnInit() {}
+
+  ionViewWillEnter() {
     this.storage.get("utente").then((data) => {
+      console.log(data)
       this.emailUtente = data.email;
     });
     this.service.prendiCategorie(this.urlCategorie).then(
