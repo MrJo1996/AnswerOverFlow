@@ -58,7 +58,7 @@
   <ion-card *ngIf="range.value===200" color="primary">
     <ion-card *ngFor="let sondaggio of sondaggi1s" (click)="clickSondaggio(sondaggio.codice_sondaggio)">
       <ion-item>
-       <ion-label lines="full" class = "textTitle"><b>Titolo: </b>T{{sondaggio.titolo}}</ion-label>
+       <ion-label lines="full" class = "textTitle"><b>Titolo: </b>{{sondaggio.titolo}}</ion-label>
       </ion-item>
       <ion-item>
        <ion-label lines="full" class = "textTitle"><b>Data e ora: </b>{{sondaggio.dataeora}}</ion-label>
