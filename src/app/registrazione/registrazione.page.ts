@@ -5,6 +5,7 @@ import { AlertController } from '@ionic/angular';
 import { PickerController } from "@ionic/angular";
 import { DataService } from "../services/data.service";
 import { Storage } from '@ionic/storage';
+import { PostServiceService } from '../services/post-service.service';
 
 @Component({
   selector: 'app-registrazione',
@@ -21,10 +22,21 @@ export class RegistrazionePage implements OnInit {
   confermapassword;
   id;
   utente = {};
-  url = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/registrazione'
+  url = 
+  'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/registrazione'
+  urlControlloEmail = 
+  "http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/controlloEmail"
+
+  emailAvailable: boolean;
 
 
-  constructor(private storage: Storage,private dataService: DataService, public apiService: ApiService, public alertController: AlertController, private pickerController: PickerController, private router: Router) { }
+  constructor(private storage: Storage,
+    private dataService: DataService, 
+    public apiService: ApiService, 
+    public alertController: AlertController, 
+    private pickerController: PickerController, 
+    private servicePost: PostServiceService,
+    private router: Router) { }
   ngOnInit() {
     //disable scroll (anche su ios)
     var fixed = document.getElementById('fixed');
@@ -35,104 +47,133 @@ export class RegistrazionePage implements OnInit {
 
     }, false);
   }
+
+  checkForEmail(emailInserita){
+    console.log(emailInserita)
+    let postData = {
+      email: emailInserita,
+    };
+
+    this.servicePost.postService(postData, this.urlControlloEmail).then(
+      (data) => {
+        console.log(data)
+        if(data['data'] == false){
+          this.emailAvailable = true;
+        console.log(this.emailAvailable)
+        } else {
+          this.emailAvailable = false;
+          console.log(this.emailAvailable)
+        }
+      },
+      (err) => {
+        console.log(err.message);
+      }
+    );
+  }
+
+  checkForUser(usernameInserito){
+    console.log(usernameInserito)
+  }
+
   async checkFields() {
     if ((this.nome.length < 1) || (this.cognome.length < 1) || (this.email.length < 1) || (this.username.length < 1)) {
-      const alert = await this.alertController.create({
-        header: 'Compilare tutti i campi contrassegnati da *',
-        buttons: [
-          {
-            text: 'Ok',
-            role: 'cancel',
-            cssClass: 'secondary',
-            handler: (blah) => {
-              console.log('Confirm Cancel: blah');
-            }
-          }
-        ]
-      });
-      await alert.present();
+      
+      const toast = document.createElement("ion-toast");
+
+      toast.message = "Compilare tutti i campi contrassegnati da *!";
+      toast.duration = 2000;
+      toast.position = "top";
+      toast.style.fontSize = "20px";
+      toast.color = "danger";
+      toast.style.textAlign = "center";
+
+      document.body.appendChild(toast);
+      return toast.present();
     }
     else
     if(this.nome.length > 19){
-      const alert = await this.alertController.create({
-        header: 'Nome troppo lungo (Max 20 caratteri)',
-        buttons: [
-          {
-            text: 'Ok',
-            role: 'cancel',
-            cssClass: 'secondary',
-            handler: (blah) => {
-              console.log('Confirm Cancel: blah');
-            }
-          }
-        ]
-      });
-      await alert.present();
+      
+      const toast = document.createElement("ion-toast");
+
+      toast.message = "Nome troppo lungo";
+      toast.duration = 2000;
+      toast.position = "top";
+      toast.style.fontSize = "20px";
+      toast.color = "danger";
+      toast.style.textAlign = "center";
+
+      document.body.appendChild(toast);
+      return toast.present();
     }else
     if(this.cognome.length > 19){
-      const alert = await this.alertController.create({
-        header: 'Cognome troppo lungo (Max 20 caratteri)',
-        buttons: [
-          {
-            text: 'Ok',
-            role: 'cancel',
-            cssClass: 'secondary',
-            handler: (blah) => {
-              console.log('Confirm Cancel: blah');
-            }
-          }
-        ]
-      });
-      await alert.present();
+      
+      const toast = document.createElement("ion-toast");
+
+      toast.message = "Cognome troppo lungo!";
+      toast.duration = 2000;
+      toast.position = "top";
+      toast.style.fontSize = "20px";
+      toast.color = "danger";
+      toast.style.textAlign = "center";
+
+      document.body.appendChild(toast);
+      return toast.present();;
     }else
     if(this.username.length > 19){
-      const alert = await this.alertController.create({
-        header: 'Username troppo lungo (Max 20 caratteri)',
-        buttons: [
-          {
-            text: 'Ok',
-            role: 'cancel',
-            cssClass: 'secondary',
-            handler: (blah) => {
-              console.log('Confirm Cancel: blah');
-            }
-          }
-        ]
-      });
-      await alert.present();
+      
+      const toast = document.createElement("ion-toast");
+
+      toast.message = "Username troppo lungo!";
+      toast.duration = 2000;
+      toast.position = "top";
+      toast.style.fontSize = "20px";
+      toast.color = "danger";
+      toast.style.textAlign = "center";
+
+      document.body.appendChild(toast);
+      return toast.present();
     }else
       if (this.password.length < 8) {
-        const alert = await this.alertController.create({
-          header: 'Password troppo corta. Utilizzare una password con almeno 8 caratteri',
-          buttons: [
-            {
-              text: 'Ok',
-              role: 'cancel',
-              cssClass: 'secondary',
-              handler: (blah) => {
-                console.log('Confirm Cancel: blah');
-              }
-            }
-          ]
-        });
-        await alert.present();
-      }
+        
+      const toast = document.createElement("ion-toast");
+
+      toast.message = "Password troppo corta. Utilizzare una password con almeno 8 caratteri";
+      toast.duration = 2000;
+      toast.position = "top";
+      toast.style.fontSize = "20px";
+      toast.color = "danger";
+      toast.style.textAlign = "center";
+
+      document.body.appendChild(toast);
+      return toast.present();
+      } else 
+      if (!this.emailAvailable) {
+        
+        const toast = document.createElement("ion-toast");
+  
+        toast.message = "Email già registrata, ritenta con la login";
+        toast.duration = 2000;
+        toast.position = "top";
+        toast.style.fontSize = "20px";
+        toast.color = "danger";
+        toast.style.textAlign = "center";
+  
+        document.body.appendChild(toast);
+        return toast.present();
+        }
       else
         if (this.password != this.confermapassword) {
-          const alert = await this.alertController.create({
-            header: 'Le password non coincidono',
-            buttons: [
-              {
-                text: 'Ok',
-                role: 'cancel',
-                cssClass: 'secondary',
-                handler: (blah) => {
-                  console.log('Confirm Cancel: blah');
-                }
-              }
-            ]
-          });
-          await alert.present();
+      const toast = document.createElement("ion-toast");
+
+      toast.message = "'Le password non coincidono!";
+      toast.duration = 2000;
+      toast.position = "top";
+      toast.style.fontSize = "20px";
+      toast.color = "danger";
+      toast.style.textAlign = "center";
+
+      document.body.appendChild(toast);
+      return toast.present();
         }
         else {
           const alert = await this.alertController.create({
