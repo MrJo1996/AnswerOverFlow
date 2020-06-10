@@ -99,22 +99,25 @@
         <p class= "textSimple">{{descrizione}}</p>
    
         <ion-list  class = "backgrounds">
-          <ion-radio-group >
+        
           <ion-list-header> <ion-label >Voti totali: {{voti_totali}}</ion-label></ion-list-header>
           
             <div class = "backgrounds">
           
             <ion-item *ngFor="let scelta of scelte, let i = index">    
-                <ion-radio *ngIf="currentUser!==sondaggio.cod_utente && votato === false && isSondaggioActive=== true" value = "{{scelta.descrizione}}" (click) = "getScelta(scelta.descrizione, i)" slot = "start" ></ion-radio>
+             <!--    <ion-radio  [checked] = "true" *ngIf="currentUser!==sondaggio.cod_utente && votato === false && isSondaggioActive=== true" value = "{{scelta.descrizione}}" (click) = "getScelta(scelta.descrizione, i)" slot = "start" ></ion-radio> -->
+                
+                  <ion-button *ngIf="currentUser!==sondaggio.cod_utente && votato === false" (click) = "getScelta(scelta.descrizione, i)"  expand="block" slot = "start" fill = "clear">
+                    <ion-icon [style.color]="buttonColor" class="ribbon_style_not_pushed" *ngIf = "i!==numeroScelta"    name="checkmark-circle-outline" ></ion-icon>
+                    <ion-icon [style.color]="buttonColorBest" class="ribbon_style" *ngIf = "i === numeroScelta"   name="checkmark-circle-outline"></ion-icon>
+                  </ion-button>
+                  
                 <ion-label *ngIf="currentUser===sondaggio.cod_utente" slot = "start" >{{scelta.num_favorevoli}}</ion-label>
                 <ion-text  class="textSimple" slot = "start" >{{scelta.descrizione}}</ion-text>
                 <ion-progress-bar slot = "start" *ngIf="currentUser===sondaggio.cod_utente || votato === true || isSondaggioActive  === false " [value]="percentualiScelte[i]" ></ion-progress-bar>
               </ion-item>
 
           </div>
-
-        </ion-radio-group>
-
         </ion-list>
     
         <ion-toolbar>
