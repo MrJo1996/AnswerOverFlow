@@ -8,6 +8,7 @@ import { PopoverController, iosTransitionAnimation, MenuController } from '@ioni
 import { PopoverComponent } from '../popover/popover.component';
 import { AppComponent } from "../app.component";
 import { NgZone } from '@angular/core';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-home',
@@ -35,7 +36,8 @@ export class HomePage implements OnInit {
   sondaggi_regolati = Array();
   profili_user_domande = new Array();
   profili_user_sondaggi = new Array();
-  profilo;
+  profilo1;
+  profilo2;
   categorie_domande = Array();
   categoria_sondaggi = Array();
   voti_sondaggi = Array();
@@ -60,9 +62,7 @@ export class HomePage implements OnInit {
     this.menuCtrl.enable(true);
     this.menuSet.checkUserLogged();
     this.refresh_index=this.dataService.getRefreshIndex();
-    console.log(this.refresh_index);
     if(this.refresh_index == true){
-    this.ngOnInit();
     this.doRefresh2();
   }
   }
@@ -145,13 +145,13 @@ export class HomePage implements OnInit {
       (domande) => {
         console.log('Domande caricate',domande);
         this.domande = domande; //assegno alla variabile locale il risultato della chiamata. la variabile sarà utilizzata nella stampa in HTML
+        setTimeout(()=>{      
         this.domande.forEach(element => {
           this.getUserDomanda(element.cod_utente);
-        });
-        console.log('Profili',this.profili_user_domande);
         this.domande.forEach(element => {
           this.getCategoriaDomande(element.cod_categoria);
         });
+      });},2000)
         this.regola_domande();
       },
       (rej) => {
@@ -162,14 +162,16 @@ export class HomePage implements OnInit {
 
   async getUserDomanda(mail) {
     this.apiService.getProfilo(mail).then(
-      (profilo) => {
-        this.profili_user_domande.push(profilo['data']['0']);
+      (profilo1) => {
+        this.profili_user_domande.push(profilo1['data']['0']);
+        console.log(profilo1['data']['0'].username);
       },
       (rej) => {
         console.log("C'è stato un errore durante la visualizzazione del profilo");
       }
     );
   }
+
   async getCategoriaDomande(id_categoria) {
     this.apiService.getCategoria(id_categoria).then(
       (categoria) => {
@@ -239,12 +241,14 @@ export class HomePage implements OnInit {
       (sondaggi) => {
         console.log('Sondaggi caricati');
         this.sondaggi = sondaggi; //assegno alla variabile locale il risultato della chiamata. la variabile sarà utilizzata nella stampa in HTML
+        setTimeout(()=>{      
         this.sondaggi.forEach(element => {
           this.getUserSondaggio(element.cod_utente);
         });
         this.sondaggi.forEach(element => {
           this.getCategoriaSondaggio(element.cod_categoria);
-        });
+        });},2000)
+
         this.regola_sondaggi();
       },
       (rej) => {
@@ -252,10 +256,12 @@ export class HomePage implements OnInit {
       }
     );
   }
-  async getUserSondaggio(mail) {
-    this.apiService.getProfilo(mail).then(
-      (profilo) => {
-        this.profili_user_sondaggi.push(profilo['data']['0']);
+  async getUserSondaggio(mail2) {
+    this.apiService.getProfilo(mail2).then(
+      (profilo2) => {
+        this.profili_user_sondaggi.push(profilo2['data']['0']);
+        console.log(profilo2['data']['0'].username);
+
       },
       (rej) => {
         console.log("C'è stato un errore durante la visualizzazione del profilo");
@@ -265,8 +271,6 @@ export class HomePage implements OnInit {
   async getCategoriaSondaggio(id_categoria) {
     this.apiService.getCategoria(id_categoria).then(
       (categoria) => {
-        console.log(id_categoria)
-        console.log(categoria)
         this.categoria_sondaggi.push(categoria['Categoria']['data']['0'].titolo);
       },
       (rej) => {

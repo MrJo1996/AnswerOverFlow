@@ -269,7 +269,11 @@ export class VisualizzaDomandaPage implements OnInit {
 
   async modify() {
 
-    if (!this.checkIfThereAreEnglishBadWords(this.descrizioneRispostaView) && !this.checkIfThereAreItalianBadWords(this.descrizioneRispostaView)) {
+    if (this.checkIfThereAreEnglishBadWords(this.descrizioneRispostaToPass) || this.checkIfThereAreItalianBadWords(this.descrizioneRispostaToPass)) {
+      this.toastParolaScoretta();
+    } else if (this.stringLengthChecker(this.descrizioneRispostaToPass)) {
+      this.toastInvalidString();
+    } else {
       this.apiService.modificaRisposta(this.dataService.codice_risposta, this.descrizioneRispostaToPass).then(
         (result) => { // nel caso in cui va a buon fine la chiamata
         },
@@ -277,8 +281,7 @@ export class VisualizzaDomandaPage implements OnInit {
           console.log('Modifica non effetutata'); //anche se va nel rej va bene, modifiche effettive nel db
         }
       );
-    } else {
-      this.popupParolaScorretta();
+      this.showModifyToast();
     }
 
   }
@@ -300,13 +303,16 @@ export class VisualizzaDomandaPage implements OnInit {
     this.rispostaVisible = false;
 
     this.doRefresh(event);
-
-
   }
 
 
 
   async inserisciRisposta() {
+    if (this.checkIfThereAreItalianBadWords(this.descrizione_risposta) || this.checkIfThereAreEnglishBadWords(this.descrizione_risposta)) {
+      this.toastParolaScoretta();
+    } else if (this.stringLengthChecker(this.descrizione_risposta)){
+      this.toastInvalidString();
+    } else {
     this.apiService.inserisciRisposta(this.descrizione_risposta, this.currentMailUser, this.codice_domanda).then(
       (result) => { // nel caso in cui va a buon fine la chiamata
       },
@@ -314,6 +320,9 @@ export class VisualizzaDomandaPage implements OnInit {
         console.log('Modifica non effetutata'); //anche se va nel rej va bene, modifiche effettive nel db
       }
     );
+
+    this.showModifyToast();
+    }
 
   }
 
@@ -345,7 +354,6 @@ export class VisualizzaDomandaPage implements OnInit {
             this.descrizioneRispostaView = insertedData.descrizionePopUp; //setto descrizioneView al valore inserito nel popUp una volta premuto ok così viene visualizzato
             this.descrizioneRispostaToPass = insertedData.descrizionePopUp; //setto descrizioneToPass al valore inserito nel popUp una volta premuto ok
             
-            this.showModifyToast();
             this.modify();
            
                                                                                    //TOASTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
@@ -366,8 +374,6 @@ export class VisualizzaDomandaPage implements OnInit {
 
 
       this.rispostaCliccata = risposta;
-
-      this.popupModificaDescrizioneRisposta();
 
     }
   }
@@ -406,20 +412,6 @@ export class VisualizzaDomandaPage implements OnInit {
 
     return check;
 
-  }
-
-
-  async popupParolaScorretta() {
-    const alert = await this.alertController.create({
-      header: 'ATTENZIONE',
-      subHeader: 'Subtitle',
-      message: 'Hai inserito una parola scorretta',
-      buttons: ['OK']
-    });
-
-    await alert.present();
-    let result = await alert.onDidDismiss();
-    console.log(result);
   }
 
   changeColor(cod_nuova_preferita) {
@@ -905,6 +897,39 @@ export class VisualizzaDomandaPage implements OnInit {
     toast.style.textAlign = 'center';
     toast.present();
   }
+
+  stringLengthChecker(string: String):boolean {
+
+    if ((string.length > 1000) || !(string.match(/[a-zA-Z0-9_]+/))) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+async toastInvalidString() {
+  const toast = await this.toastController.create({
+    message: 'ATTENZIONE! Hai lasciato un campo vuoto oppure hai superato la lunghezza massima!',
+    duration: 2000
+  });
+  toast.color = 'danger';
+  toast.position = "top";
+  toast.style.fontSize = '20px';
+  toast.style.textAlign = 'center';
+  toast.present();
+}
+
+async toastParolaScoretta() {
+  const toast = await this.toastController.create({
+    message: 'Hai inserito una parola scorretta!',
+    duration: 2000
+  });
+  toast.color = 'danger';
+  toast.position = "top";
+  toast.style.fontSize = '20px';
+  toast.style.textAlign = 'center';
+  toast.present();
+}
 
   }
 
