@@ -56,6 +56,14 @@ export class VisualizzaDomandaPage implements OnInit {
 
   codice_valutazione;
 
+
+  giorni;
+  ore;
+  minuti;
+  secondi;
+x;
+
+
   constructor(
     private navCtrl: NavController,
     private dataService: DataService,
@@ -75,7 +83,7 @@ export class VisualizzaDomandaPage implements OnInit {
     this.storage.get('utente').then(data => { this.currentMailUser = data.email });
     console.log(this.currentMailUser);
     this.allVisible = true;
-
+    
   }
 
                                                                                                   //TOASTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
@@ -104,6 +112,7 @@ export class VisualizzaDomandaPage implements OnInit {
         this.cod_preferita = this.domanda['0'].cod_preferita;
         this.codice_categoria = this.domanda['0'].cod_categoria;
         console.log('Domanda: ', this.domanda['0']);
+        console.log("TIMER VIEW: ", this.timerView);
         this.getUserDomanda();
         this.visualizzaCategoria();
 
@@ -677,6 +686,10 @@ export class VisualizzaDomandaPage implements OnInit {
   }
 
 
+
+
+
+
   async countDown(incAnno, incMese, incGG, incHH, incMM) {
 
     var auxData = new Array(); //get dati dal sondaggio
@@ -688,11 +701,11 @@ export class VisualizzaDomandaPage implements OnInit {
 
     // Setto data scadenza aggiungendo l'incremento stabilito da mappingInc al momento del confermaModifiche
     var countDownDate = new Date(parseInt(auxData['0'], 10) + incAnno, parseInt(auxData['1'], 10) - 1 + incMese, parseInt(auxData['2'], 10) + incGG, parseInt(auxData['3'], 10) + incHH, parseInt(auxData['4'], 10) + incMM).getTime();
-    // var countDownDateTEST = new Date(parseInt(auxData['0'], 10) + 1, parseInt(auxData['1'], 10) - 1, parseInt(auxData['2'], 10), parseInt(auxData['3'], 10), parseInt(auxData['4'], 10))/* .getTime() */;
+    
 
 
     // Aggiorno timer ogni 1000ms (1000ms==1s)
-    var x = setInterval(function () {
+      this.x = setInterval(function () {
 
       //Timestamp Attuale (data + orario)
       var now = new Date().getTime();
@@ -701,26 +714,34 @@ export class VisualizzaDomandaPage implements OnInit {
       var distance = countDownDate - now;
 
       // conversioni
+    /*   var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+ */
+
       var days = Math.floor(distance / (1000 * 60 * 60 * 24));
       var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
+        console.log("GIORNI ORE MINUTI SECONDI: ", days, hours, minutes, seconds);
       // Risultato delle conversioni messo nell'elemento con id="timeLeft"
       //TODO non mostrare valori se non avvalorati o pari a zero
-     // document.getElementById("timeLeft").innerHTML = days + "d " + hours + "h "
+     document.getElementById("timeLeft").innerHTML = days + "d " + hours + "h "
         + minutes + "m " + seconds + "s ";
 
       this.timerView = days + "d " + hours + "h "
         + minutes + "m " + seconds + "s ";
 
-      // Se finisce il countDown viene mostrato "Domanda scaduta."
+      //Se finisce il countDown viene mostrato "Domanda scaduta."
       if (distance < 0) {
-        clearInterval(x);
-        //document.getElementById("timeLeft").innerHTML = "Domanda scaduta.";
+        clearInterval(this.x);
+        document.getElementById("timeLeft").innerHTML = "Domanda scaduta.";
         this.timerView = "OMBO TIMER,SCADUTA";
-      }
-    }, 1000);
+      } 
+   },  1000);
+
 
   }
    mappingIncrement(valueToMapp) {
@@ -781,5 +802,13 @@ export class VisualizzaDomandaPage implements OnInit {
     console.log(this.dataService.setEmailOthers);
     this.router.navigate(['/visualizza-profilo']);
   }
+
+
+
+
+  ionViewDidLeave(){
+    clearInterval(this.x);
+  }
+  }
+
   
-}
