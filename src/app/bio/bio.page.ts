@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from "@angular/router";
 import { ApiService } from 'src/app/providers/api.service';
-import { AlertController } from '@ionic/angular';
+import { AlertController, MenuController } from '@ionic/angular';
 import { PickerController } from "@ionic/angular";
 import { DataService } from "../services/data.service";
 import { NavController } from "@ionic/angular";
@@ -15,9 +15,10 @@ import { Storage } from "@ionic/storage";
 export class BioPage implements OnInit {
   bio;
   utente = {};
-  constructor(private navCtrl: NavController, private storage: Storage, private dataService: DataService, public apiService: ApiService, public alertController: AlertController, private pickerController: PickerController, private router: Router) { }
+  constructor(private navCtrl: NavController, private menuCtrl: MenuController, private storage: Storage, private dataService: DataService, public apiService: ApiService, public alertController: AlertController, private pickerController: PickerController, private router: Router) { }
   ngOnInit() {
     this.utente = this.dataService.utente;
+    this.menuCtrl.enable(false);
   }
   async buttonClick() {
     const alert = await this.alertController.create({

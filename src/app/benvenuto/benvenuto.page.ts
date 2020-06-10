@@ -13,7 +13,7 @@ export class BenvenutoPage implements OnInit {
 
   ngOnInit() {
     this.codice_utente=this.dataService.utente['1'];
-    this.menuCtrl.swipeGesture(false);
+    this.menuCtrl.enable(false);
   }
 
   home() {
