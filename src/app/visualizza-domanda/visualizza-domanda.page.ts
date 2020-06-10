@@ -270,7 +270,7 @@ export class VisualizzaDomandaPage implements OnInit {
   async modify() {
 
     if (this.checkIfThereAreEnglishBadWords(this.descrizioneRispostaToPass) || this.checkIfThereAreItalianBadWords(this.descrizioneRispostaToPass)) {
-      this.popupParolaScorretta();
+      this.toastParolaScoretta();
     } else if (this.stringLengthChecker(this.descrizioneRispostaToPass)) {
       this.toastInvalidString();
     } else {
@@ -309,7 +309,7 @@ export class VisualizzaDomandaPage implements OnInit {
 
   async inserisciRisposta() {
     if (this.checkIfThereAreItalianBadWords(this.descrizione_risposta) || this.checkIfThereAreEnglishBadWords(this.descrizione_risposta)) {
-      this.popupParolaScorretta();
+      this.toastParolaScoretta();
     } else if (this.stringLengthChecker(this.descrizione_risposta)){
       this.toastInvalidString();
     } else {
@@ -412,20 +412,6 @@ export class VisualizzaDomandaPage implements OnInit {
 
     return check;
 
-  }
-
-
-  async popupParolaScorretta() {
-    const alert = await this.alertController.create({
-      header: 'ATTENZIONE',
-      subHeader: 'Subtitle',
-      message: 'Hai inserito una parola scorretta',
-      buttons: ['OK']
-    });
-
-    await alert.present();
-    let result = await alert.onDidDismiss();
-    console.log(result);
   }
 
   changeColor(cod_nuova_preferita) {
@@ -924,6 +910,18 @@ export class VisualizzaDomandaPage implements OnInit {
 async toastInvalidString() {
   const toast = await this.toastController.create({
     message: 'ATTENZIONE! Hai lasciato un campo vuoto oppure hai superato la lunghezza massima!',
+    duration: 2000
+  });
+  toast.color = 'danger';
+  toast.position = "top";
+  toast.style.fontSize = '20px';
+  toast.style.textAlign = 'center';
+  toast.present();
+}
+
+async toastParolaScoretta() {
+  const toast = await this.toastController.create({
+    message: 'Hai inserito una parola scorretta!',
     duration: 2000
   });
   toast.color = 'danger';
