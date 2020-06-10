@@ -291,7 +291,7 @@ export class InserimentoSondaggioPage implements OnInit {
             console.log(value);
 
             this.categoriaView = value["ValoreCategoriaSettata"].text; //setto timerPopUp al valore inserito nel popUp una volta premuto ok così viene visualizzato
-            this.categoriaScelta = this.categoriaView;
+            this.categoriaScelta = value["ValoreCategoriaSettata"].value;
             console.log("categoria to pass: ", this.categoriaScelta);
           },
         },
