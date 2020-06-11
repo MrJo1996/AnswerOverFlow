@@ -27,6 +27,8 @@ export class AppComponent implements OnInit {
   cognome: string;
   username: string;
 
+  usernameLogged;
+
   public selectedIndex = -1;
   public selectedIndexAccount = -1;
   classItem = false;
@@ -137,6 +139,10 @@ export class AppComponent implements OnInit {
           handler: () => {
             this.storage.set("session", false);
             this.storage.set("utente", null);
+
+            //WARNING: HOT!!!
+            this.storage.clear(); //pulisce tutto storage
+
             this.dataService.setSession(false);
             //Visualizza il frame di caricamento
             const loading = document.createElement('ion-loading');
@@ -187,7 +193,7 @@ export class AppComponent implements OnInit {
             loading.duration = 2000;
             document.body.appendChild(loading);
             loading.present();
-            
+
             this.router.navigate(["login"]);
 
             setTimeout(() => {
@@ -330,7 +336,7 @@ export class AppComponent implements OnInit {
             loading.duration = 1500;
             document.body.appendChild(loading);
             loading.present();
-            
+
             this.router.navigateByUrl(this.accountPages[index].url);
           } else {
             this.alertOspite();
@@ -356,6 +362,20 @@ export class AppComponent implements OnInit {
       if (this.platform.is('cordova')) {
         this.setupPush();
       }
+
+      this.storage.get("utente").then((utente) => {
+        //check utente logged
+        if (utente.username == null) { // login
+          console.log("utente non loggato", utente.username);
+          this.router.navigate(['login']);
+
+        } else { //  home
+          this.router.navigate(['home']);
+          console.log("utente logged in", utente.username);
+        }
+        console.log("STORAGE JO user: ", utente.username);
+      });
+
     });
 
     this.storage.get("session").then((data) => {
