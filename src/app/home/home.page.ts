@@ -102,6 +102,7 @@ export class HomePage implements OnInit {
       component: PopoverComponent,
       event: ev,
       translucent: true,
+      
       mode: 'md',
       cssClass: 'popOver'
     });
