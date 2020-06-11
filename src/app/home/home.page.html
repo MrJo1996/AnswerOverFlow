@@ -62,11 +62,11 @@
         <ion-item *ngIf="currentMailUser!==domanda.cod_utente" style="--background:none; align-items: center;">
 
           <ion-avatar slot="start" class="icon-avatar"> 
-            <img src="{{domanda.profilo.avatar}}">
+            <img src="{{domanda.avatar}}">
           </ion-avatar>
 
           <ion-label class="username_text_style" (click)="clickProfilo(domanda.cod_utente)">
-            {{domanda.profilo.username}}
+            {{domanda.username}}
           </ion-label>
 
         </ion-item>
@@ -86,7 +86,7 @@
         <ion-toolbar style="--background:none">
 
           <!-- <ion-icon name="list" slot="start" class="iconClass1"></ion-icon> -->
-          <ion-label class="description_text" slot="start"> {{domanda.categoria.titolo}}</ion-label>
+          <ion-label class="description_text" slot="start"> {{domanda.categoria}}</ion-label>
           <!-- <ion-icon name="calendar-outline" slot="end" class="iconClass1"></ion-icon> -->
           <ion-label class="description_text" slot="end">{{domanda.dataeora}}</ion-label>
 
@@ -119,10 +119,10 @@
         <ion-item *ngIf="currentMailUser!==sondaggio.cod_utente" style="--background:none; align-items: center;">
 
           <ion-avatar slot="start" class="icon-avatar">
-            <img src="{{sondaggio.profilo.avatar}}">
+            <img src="{{sondaggio.avatar}}">
           </ion-avatar>
 
-          <ion-label class="username_text_style">{{sondaggio.profilo.username}} </ion-label>
+          <ion-label class="username_text_style">{{sondaggio.username}} </ion-label>
 
         </ion-item>
 
@@ -138,7 +138,7 @@
 
         <ion-toolbar style="--background:none" >
 
-          <ion-label class="description_text" slot="start">{{sondaggio.categoria.titolo}}</ion-label>
+          <ion-label class="description_text" slot="start">{{sondaggio.categoria}}</ion-label>
           <!-- <ion-icon name="calendar-outline" slot=start class="calendar_icon_style"></ion-icon> -->
           <ion-label class="description_text" slot="end">{{sondaggio.dataeora}}</ion-label>
           <!--   <ion-icon name="list" slot="start" class="icon_list_style"></ion-icon> -->
