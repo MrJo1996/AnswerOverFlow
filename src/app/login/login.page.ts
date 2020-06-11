@@ -125,29 +125,9 @@ export class LoginPage implements OnInit {
     }
   }
 
-  italian_bad_words_check(input: string) {
-    let list = require("italian-badwords-list");
-    let array = list.array;
-    return array.includes(input);
-  }
 
   checkField(data) {
-    if (
-      this.italian_bad_words_check(this.username) ||
-      this.italian_bad_words_check(this.password)
-    ) {
-      const toast = document.createElement("ion-toast");
-
-      toast.message = "Hai inserito una parola scorretta!";
-      toast.duration = 2000;
-      toast.position = "top";
-      toast.style.fontSize = "20px";
-      toast.color = "danger";
-      toast.style.textAlign = "center";
-
-      document.body.appendChild(toast);
-      return toast.present();
-    } else if (this.username.length < 1 || this.password.length < 8) {
+    if (this.username.length < 1 || this.password.length < 8) {
       const toast = document.createElement("ion-toast");
       toast.message = "Devi inserire un username valido!";
       toast.duration = 2000;
