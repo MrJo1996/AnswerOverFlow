@@ -103,10 +103,13 @@
  
      <!--   <div *ngIf="categorie[i] == filters['categoria']"> -->
  
-         <ion-card (click)="clickDomanda(domanda.codice_domanda)">
+         <ion-card (click)="clickDomanda(domanda.codice_domanda)" class= "card">
            <ion-card-header>
              <ion-card-title>{{domanda.titolo}}</ion-card-title>
-             <ion-card-subtitle>{{categorie[i]}}</ion-card-subtitle>
+             <ion-card-subtitle> <ion-chip color="primary" style="
+              margin-left: 0px"><ion-icon name="file-tray-full-outline"></ion-icon><ion-label>
+              {{categorie[i]}}</ion-label></ion-chip></ion-card-subtitle>
+
  
            </ion-card-header>
  
@@ -146,7 +149,7 @@
  
      <ion-list *ngFor="let sondaggio of sondaggiSearched; let i = index">
  
-       <ion-card (click)="clickSondaggio(sondaggio.codice_sondaggio)">
+       <ion-card (click)="clickSondaggio(sondaggio.codice_sondaggio)" class= "card">
          <ion-card-header>
            <ion-card-title>{{sondaggio.titolo}}</ion-card-title>
            <ion-card-subtitle>{{categorieSondaggi[i]}}</ion-card-subtitle>
@@ -175,46 +178,55 @@
      <ion-list *ngFor="let utente of utentiSearched; let i = index">
 
       <div *ngIf="currentMailUser!==utente.email">
+
+        <ion-card class= "card">
+          <ion-card-content>
  
-        <ion-item (click)="clickUtente(utente.email)">
+        <ion-item (click)="clickUtente(utente.email)" style="--background:none">
           <ion-avatar slot="start" class="icon-avatar">
             <img src="{{utente.avatar}}">
           </ion-avatar>
           <ion-label class="username_text_style">{{utente.username}}</ion-label>
         </ion-item>
          <div *ngIf= "utente.bio; else nullBio">
-         <ion-item>
+         <ion-item style="--background:none">
            
            <ion-label>{{utente.bio}}</ion-label>
        </ion-item>
 </div>
        <ng-template #nullBio>
-        <ion-item>
+        <ion-item style="--background:none">
           <ion-label>L'utente non ha ancora una bio.</ion-label>
       </ion-item>
        </ng-template>
+      </ion-card-content>
+      </ion-card>
 
       </div>
 
-      <div *ngIf="currentMailUser==utente.email">
+      <div *ngIf="currentMailUser==utente.email" >
+
+        <ion-card class= "card">
+          <ion-card-content>
  
-        <ion-item (click)="clickUtente(utente.email)">
+        <ion-item (click)="clickUtente(utente.email)" style="--background:none">
           <ion-avatar slot="start" class="icon-avatar">
             <img src="{{utente.avatar}}">
           </ion-avatar>
           <ion-label class="username_text_style">TU</ion-label>
-        </ion-item>
+        </ion-item >
         <div *ngIf= "utente.bio; else nullBio">
-          <ion-item>    
+          <ion-item style="--background:none">    
             <ion-label>{{utente.bio}}</ion-label>
         </ion-item>
  </div>
         <ng-template #nullBio>
-         <ion-item>
+         <ion-item style="--background:none">
            <ion-label>Non hai ancora una bio.</ion-label>
        </ion-item>
- 
         </ng-template>
+      </ion-card-content>
+    </ion-card>
        </div>
  
      </ion-list>

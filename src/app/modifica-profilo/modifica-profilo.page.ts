@@ -134,7 +134,7 @@ export class ModificaProfiloPage implements OnInit {
 
   goBack() {
     this.dataService.settaTemporaryAvatar(undefined);
-    this.navCtrl.back();
+    this.router.navigate(['/visualizzaProfilo'])
   }
 
   async popupConfermaModificaProfilo() {

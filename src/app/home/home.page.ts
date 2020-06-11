@@ -30,7 +30,7 @@ export class HomePage implements OnInit {
   codice_sondaggio;
   codice_categoria;
   categoria;
-  currentMailUser;;//mail dell'utente corrente
+  currentMailUser;//mail dell'utente corrente
   domande;
   domande_regolate = Array();
   sondaggi_regolati = Array();
@@ -41,6 +41,7 @@ export class HomePage implements OnInit {
   categorie_domande = Array();
   categoria_sondaggi = Array();
   voti_sondaggi = Array();
+  titolo =  Array();
   sondaggi;
   domandaMailUser;//mail dell'utente che ha fatto la domanda
   domandaNomeUser = " ";//nome e cognome dell'utente che ha fatto la domanda
@@ -73,7 +74,6 @@ export class HomePage implements OnInit {
     },500)
 
     this.storage.get('utente').then(data => { this.currentMailUser = data.email });
-    console.log(this.refresh_index);
     this.visualizzaDomandaHome();
     this.visualizzaSondaggiHome();
   }
@@ -102,12 +102,12 @@ export class HomePage implements OnInit {
       component: PopoverComponent,
       event: ev,
       translucent: true,
+      
       mode: 'md',
       cssClass: 'popOver'
     });
     await popover.present();
     const { data } = await popover.onDidDismiss();
-    console.log('dati', data);
     if (data != undefined) {
       this.checkClick1(data,index,codice);
     }
@@ -143,9 +143,7 @@ export class HomePage implements OnInit {
     this.apiService.getDomandaHome().then(
       (domande) => {
         this.domande = domande;
-        console.log(this.domande);
         this.getUserDomanda(this.domande); //assegno alla variabile locale il risultato della chiamata. la variabile sarà utilizzata nella stampa in HTML
-        console.log(this.domande);
         this.regola_domande();
       },
       (rej) => {
@@ -157,13 +155,19 @@ export class HomePage implements OnInit {
   async getUserDomanda(domande) {
     this.getUser1(domande);
     this.getUser2(domande);
+    this.titoloo(domande);
   }
-
+titoloo(domande){
+  for(let i =0; i<domande.length; i++){
+    this.titolo[i]=domande[i].titolo;
+  }
+}
   getUser1(domande){
     for(let i =0; i<domande.length; i++){
       this.apiService.getProfilo(domande[i].cod_utente).then(
         (profilo1) => {
-          domande[i]['profilo']=profilo1['data']['0'];
+          domande[i]['avatar']=profilo1['data']['0'].avatar;
+          domande[i]['username']=profilo1['data']['0'].username;
         },
         (rej) => {
           console.log("C'è stato un errore durante la visualizzazione del profilo");
@@ -174,7 +178,7 @@ export class HomePage implements OnInit {
     for(let i =0; i<domande.length; i++){
       this.apiService.getCategoria(domande[i].cod_categoria).then(
         (categoria1) => {
-          domande[i]['categoria'] = categoria1['Categoria']['data']['0'];
+          domande[i]['categoria'] = categoria1['Categoria']['data']['0'].titolo;
         },
         (rej) => {
           console.log("C'è stato un errore durante la visualizzazione");
@@ -197,12 +201,6 @@ export class HomePage implements OnInit {
 
   regolatore_infinite_scroll(){
     for (this.i_domande = 0; this.i_domande < 2; this.i_domande++) {
-      console.log( this.domande_regolate[this.y_domande-1] )
-      console.log( this.domande[this.y_domande]-1 )
-      console.log( 'this.domande_regolate[this.y_domande-1]' )
-      console.log( this.domande[this.y_domande]-1 )
-      console.log( this.domande_regolate[this.y_domande] )
-      console.log( this.domande[this.y_domande] )
       if(this.domande[this.y_domande]){
 
       this.domande_regolate[this.y_domande] = this.domande[this.y_domande];
@@ -213,23 +211,14 @@ export class HomePage implements OnInit {
 
     }
     for (this.i_sondaggi = 0; this.i_sondaggi < 2; this.i_sondaggi++) {
-      console.log( this.domande_regolate[this.y_domande] = this.domande[this.y_domande])
 
       this.sondaggi_regolati[this.y_sondaggi] = this.sondaggi[this.y_sondaggi];
-      console.log( this.domande_regolate[this.y_domande] = this.domande[this.y_domande])
 
       this.y_sondaggi++;
     }
   }
 
   regola_domande() {
-/*      console.log( this.domande_regolate )
-    console.log( 'this.domande' )
-    console.log( this.domande )
-    console.log( 'this.domande_regolate[this.y_domande-1]' )
-    console.log( this.domande[this.y_domande])
-    console.log( this.domande_regolate[this.y_domande] )
-    console.log( this.domande[this.y_domande] )  */
     for (this.i_domande = 0; this.i_domande < 3; this.i_domande++) {
       if(this.domande[this.y_domande]){
       this.domande_regolate[this.y_domande] = this.domande[this.y_domande];
@@ -269,8 +258,8 @@ export class HomePage implements OnInit {
     for(let i =0; i<sondaggi.length; i++){
       this.apiService.getProfilo(sondaggi[i].cod_utente).then(
         (profilo1) => {
-          sondaggi[i]['profilo']=profilo1['data']['0'];
-          console.log(profilo1['data']['0'].username);
+          sondaggi[i]['username']=profilo1['data']['0'].username;
+          sondaggi[i]['avatar']=profilo1['data']['0'].avatar;
         },
         (rej) => {
           console.log("C'è stato un errore durante la visualizzazione del profilo");
@@ -281,7 +270,7 @@ export class HomePage implements OnInit {
     for(let i =0; i<sondaggi.length; i++){
       this.apiService.getCategoria(sondaggi[i].cod_categoria).then(
         (categoria2) => {
-          sondaggi[i]['categoria']=categoria2['Categoria']['data']['0'];
+          sondaggi[i]['categoria']=categoria2['Categoria']['data']['0'].titolo;
         },
         (rej) => {
           console.log("C'è stato un errore durante la visualizzazione");
@@ -306,7 +295,6 @@ export class HomePage implements OnInit {
   //link a visualizza domanda
   clickDomanda(domanda_codice) {
     this.dataService.setCod_domanda(domanda_codice);
-    console.log(this.dataService.codice_domanda);
     this.router.navigate(['/visualizza-domanda']);
   }
   //link a viualizza sondaggio
@@ -344,7 +332,6 @@ export class HomePage implements OnInit {
   }
   refresh() {
     this.zone.run(() => {
-      console.log('force update the screen');
     });
   }
   //RICERCA - Azioni SearchBar
@@ -358,5 +345,7 @@ export class HomePage implements OnInit {
   openMenu(){
     this.menuCtrl.open();
   }
+  formatsDate: string[] = [
+    'd MMM y, H:mm'    ];
 }
 
