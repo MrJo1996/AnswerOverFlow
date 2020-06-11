@@ -101,9 +101,18 @@ export class VisualizzaSondaggioPage implements OnInit {
     //this.router.navigate(['modifica-sondaggio']);
         this.toastModificaSondaggioCiSonoVoti() ;
     }
-    else
+    else{
       //this.router.navigate(['modifica-domanda']);
+      //Visualizza il frame di caricamento
+      const loading = document.createElement('ion-loading');
+      loading.cssClass = 'loading';
+      loading.spinner = 'crescent';
+      loading.duration = 1500;
+      document.body.appendChild(loading);
+      loading.present();
+
       this.navCtrl.navigateForward(['/modifica-sondaggio']);
+    }
   }
 
 
@@ -117,8 +126,8 @@ export class VisualizzaSondaggioPage implements OnInit {
           handler: () => {
             console.log('sondaggio eliminato');
             this.showDeleteToast();
-          this.cancellaSondaggio();
-          this.goBack();
+            this.cancellaSondaggio();
+            this.goBack();
           }
         },
         {
@@ -293,7 +302,15 @@ export class VisualizzaSondaggioPage implements OnInit {
           text: 'Si',
           handler: () => {
             console.log('Confirm Okay');
-           
+            
+            //Visualizza il frame di caricamento
+            const loading = document.createElement('ion-loading');
+            loading.cssClass = 'loading';
+            loading.spinner = 'crescent';
+            loading.duration = 3000;
+            document.body.appendChild(loading);
+            loading.present();
+
             this.navCtrl.pop();
           }
         }
@@ -303,7 +320,15 @@ export class VisualizzaSondaggioPage implements OnInit {
     await alert.present();
   }
   else{
-    this.navCtrl.pop();
+    //Visualizza il frame di caricamento
+    const loading = document.createElement('ion-loading');
+    loading.cssClass = 'loading';
+    loading.spinner = 'crescent';
+    loading.duration = 3000;
+    document.body.appendChild(loading);
+    loading.present();
+
+    this.navCtrl.back();
   }
 }
   
@@ -479,7 +504,6 @@ export class VisualizzaSondaggioPage implements OnInit {
     }
   }
   
-  
   countDown(incAnno, incMese, incGG, incHH, incMM) {
   
     var auxData = []; //get dati dal sondaggio
@@ -548,6 +572,14 @@ export class VisualizzaSondaggioPage implements OnInit {
 
   goChat(){
     this.dataService.setEmailOthers(this.sondaggioUser);
+    //Visualizza il frame di caricamento
+    const loading = document.createElement('ion-loading');
+    loading.cssClass = 'loading';
+    loading.spinner = 'crescent';
+    loading.duration = 1500;
+    document.body.appendChild(loading);
+    loading.present();
+
     this.navCtrl.navigateForward(['/chat'])
 
   }
@@ -624,7 +656,6 @@ export class VisualizzaSondaggioPage implements OnInit {
 
     if (i === this.numeroScelta) {
       this.numeroScelta = -1;
-     
     }
     else {
    this.numeroScelta = i;
@@ -633,7 +664,7 @@ export class VisualizzaSondaggioPage implements OnInit {
 
 
 
-  async showDeleteToast() {
+  async showDeleteToast(){
     const toast = document.createElement('ion-toast');
     toast.message = 'Domanda eliminata con successo!';
     toast.duration = 2000;
@@ -668,6 +699,4 @@ export class VisualizzaSondaggioPage implements OnInit {
     document.body.appendChild(toast);
     return toast.present();
   }
-
 }
-

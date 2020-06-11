@@ -44,6 +44,13 @@ export class SearchResultsPage implements OnInit {
   constructor(private dataService: DataService, private menuCtrl: MenuController, private router: Router, private apiService: ApiService, private storage: Storage) { }
 
   ngOnInit() {
+    const loading = document.createElement('ion-loading');
+    loading.cssClass = 'loading';
+    loading.spinner = 'crescent';
+    loading.duration = 3500;
+    document.body.appendChild(loading);
+    loading.present();
+    
     this.storage.get('utente').then(data => { this.currentMailUser = data.email });
   }
 
@@ -261,6 +268,13 @@ export class SearchResultsPage implements OnInit {
   ricerca() {
     console.log("Input: ", this.keywordToSearch);
 
+    const loading = document.createElement('ion-loading');
+    loading.cssClass = 'loading';
+    loading.spinner = 'crescent';
+    loading.duration = 3000;
+    document.body.appendChild(loading);
+    loading.present();
+
     this.dataService.setKeywordToSearch(this.keywordToSearch);
     this.isFiltered = false;
     this.domandeSearched = [];
@@ -280,12 +294,26 @@ export class SearchResultsPage implements OnInit {
   }
 
   clickFilter() {
+    const loading = document.createElement('ion-loading');
+    loading.cssClass = 'loading';
+    loading.spinner = 'crescent';
+    loading.duration = 2000;
+    document.body.appendChild(loading);
+    loading.present();
+
     this.router.navigate(['/advanced-search']);
   }
 
   //TODO ARRAY FILTERED
 
   clickUtente(cod_utente) {
+    const loading = document.createElement('ion-loading');
+    loading.cssClass = 'loading';
+    loading.spinner = 'crescent';
+    loading.duration = 3500;
+    document.body.appendChild(loading);
+    loading.present();
+
     this.dataService.setEmailOthers(cod_utente);
     console.log(this.dataService.setEmailOthers);
     this.dataService.setFilters(this.filters['tipo'], this.filters['codCategoria'], this.filters['status'], this.filters['isFiltered']);
@@ -294,6 +322,13 @@ export class SearchResultsPage implements OnInit {
   }
 
   clickDomanda(domanda_codice) {
+    const loading = document.createElement('ion-loading');
+    loading.cssClass = 'loading';
+    loading.spinner = 'crescent';
+    loading.duration = 3500;
+    document.body.appendChild(loading);
+    loading.present();
+
     this.dataService.setCod_domanda(domanda_codice);
     this.dataService.setFilters(this.filters['tipo'], this.filters['codCategoria'], this.filters['status'], this.filters['isFiltered']);
 
@@ -302,6 +337,13 @@ export class SearchResultsPage implements OnInit {
   }
 
   clickSondaggio(codice_sondaggio) {
+    const loading = document.createElement('ion-loading');
+    loading.cssClass = 'loading';
+    loading.spinner = 'crescent';
+    loading.duration = 3500;
+    document.body.appendChild(loading);
+    loading.present();
+
     this.dataService.codice_sondaggio = codice_sondaggio;
     this.dataService.setFilters(this.filters['tipo'], this.filters['codCategoria'], this.filters['status'], this.filters['isFiltered']);
 

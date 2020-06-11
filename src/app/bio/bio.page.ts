@@ -89,6 +89,13 @@ export class BioPage implements OnInit {
     } 
 
   async postRegistrazione() {
+    const loading = document.createElement('ion-loading');
+    loading.cssClass = 'loading';
+    loading.spinner = 'crescent';
+    loading.duration = 2000;
+    document.body.appendChild(loading);
+    loading.present();
+
     this.utente = this.dataService.utente;
     console.log(this.utente)
     this.apiService.registrazione(this.utente['0'], this.utente['1'], this.utente['2'], this.utente['3'], this.utente['4'], this.utente['5'], this.utente['6']).then(
@@ -132,6 +139,13 @@ export class BioPage implements OnInit {
     );
   }
   goback() {
+    const loading = document.createElement('ion-loading');
+    loading.cssClass = 'loading';
+    loading.spinner = 'crescent';
+    loading.duration = 2000;
+    document.body.appendChild(loading);
+    loading.present();
+    
     this.router.navigate(['/registrazione']);
   }
 }

@@ -27,6 +27,8 @@ export class AppComponent implements OnInit {
   cognome: string;
   username: string;
 
+  usernameLogged;
+
   public selectedIndex = -1;
   public selectedIndexAccount = -1;
   classItem = false;
@@ -116,16 +118,7 @@ export class AppComponent implements OnInit {
     this.initializeApp();
   }
 
-
   ionViewWillEnter() { }
-
-  /* {
-    title: "Info",
-    url: "/info",
-    icon: "information-circle",
-    view: true,
-  },
- */
 
   //ALERT E ROUTING LOGOUT---------------------------------------
 
@@ -146,7 +139,19 @@ export class AppComponent implements OnInit {
           handler: () => {
             this.storage.set("session", false);
             this.storage.set("utente", null);
+
+            //WARNING: HOT!!!
+            this.storage.clear(); //pulisce tutto storage
+
             this.dataService.setSession(false);
+            //Visualizza il frame di caricamento
+            const loading = document.createElement('ion-loading');
+            loading.cssClass = 'loading';
+            loading.spinner = 'crescent';
+            loading.duration = 2000;
+            document.body.appendChild(loading);
+            loading.present();
+
             this.router.navigate(["login"]);
 
             setTimeout(() => {
@@ -181,6 +186,14 @@ export class AppComponent implements OnInit {
             this.storage.set("session", false);
             this.storage.set("utente", null);
             this.dataService.setSession(false);
+            //Visualizza il frame di caricamento
+            const loading = document.createElement('ion-loading');
+            loading.cssClass = 'loading';
+            loading.spinner = 'crescent';
+            loading.duration = 2000;
+            document.body.appendChild(loading);
+            loading.present();
+
             this.router.navigate(["login"]);
 
             setTimeout(() => {
@@ -297,6 +310,14 @@ export class AppComponent implements OnInit {
         case "app":
           this.selectedIndex = index;
           if (this.appPages[index].title === "Home" || this.appPages[index].title === "Ricerca") {
+            //Visualizza il frame di caricamento
+            const loading = document.createElement('ion-loading');
+            loading.cssClass = 'loading';
+            loading.spinner = 'crescent';
+            loading.duration = 3500;
+            document.body.appendChild(loading);
+            loading.present();
+
             this.router.navigateByUrl(this.appPages[index].url);
           } else {
             this.alertOspite();
@@ -308,6 +329,14 @@ export class AppComponent implements OnInit {
           this.selectedIndexAccount = index;
 
           if (this.accountPages[index].title === "Login") {
+            //Visualizza il frame di caricamento
+            const loading = document.createElement('ion-loading');
+            loading.cssClass = 'loading';
+            loading.spinner = 'crescent';
+            loading.duration = 1500;
+            document.body.appendChild(loading);
+            loading.present();
+
             this.router.navigateByUrl(this.accountPages[index].url);
           } else {
             this.alertOspite();
@@ -323,13 +352,30 @@ export class AppComponent implements OnInit {
 
   initializeApp() {
     this.platform.ready().then(() => {
-      this.statusBar.styleDefault();
+      //this.statusBar.styleDefault();
+      this.statusBar.overlaysWebView(false);
+      this.statusBar.backgroundColorByHexString('#2a2a2a'); //stesso colore toolbar
+
       this.splashScreen.hide(); //////////////////////////
       timer(2000).subscribe(() => (this.showSplash = false)); //durata animazione definita in app.component.html -> 2s (era 3.5s)
 
       if (this.platform.is('cordova')) {
         this.setupPush();
       }
+
+      this.storage.get("utente").then((utente) => {
+        //check utente logged
+        if (utente.username == null) { // login
+          console.log("utente non loggato", utente.username);
+          this.router.navigate(['login']);
+
+        } else { //  home
+          this.router.navigate(['home']);
+          console.log("utente logged in", utente.username);
+        }
+        console.log("STORAGE JO user: ", utente.username);
+      });
+
     });
 
     this.storage.get("session").then((data) => {
@@ -408,7 +454,15 @@ export class AppComponent implements OnInit {
   }
 
   goToInfo() {
-    this.router.navigate(["info"]);
     this.menuCtrl.close();
+    //Visualizza il frame di caricamento
+    const loading = document.createElement('ion-loading');
+    loading.cssClass = 'loading';
+    loading.spinner = 'crescent';
+    loading.duration = 1500;
+    document.body.appendChild(loading);
+    loading.present();
+
+    this.router.navigate(["info"]);
   }
 }
