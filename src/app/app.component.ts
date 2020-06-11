@@ -370,8 +370,14 @@ export class AppComponent implements OnInit {
           this.router.navigate(['login']);
 
         } else { //  home
+         /*  this.dataService.setUsername(utente.username);
+          this.dataService.setNome(utente.nome);
+          this.dataService.setCognome(utente.cognome); */
+          // this.dataService.setAvatarUtente(data.data[0]["avatar"]);
+          // console.log(this.dataService.getAvatar());
+
           this.router.navigate(['home']);
-          console.log("utente logged in", utente.username);
+          console.log("utente logged in", utente.username, " ", utente.nome, " ", utente.cognome);
         }
         console.log("STORAGE JO user: ", utente.username);
       });

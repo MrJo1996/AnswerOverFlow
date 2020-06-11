@@ -177,7 +177,7 @@ export class LoginPage implements OnInit {
       this.dataService.setNome(data.data[0]["nome"]);
       this.dataService.setCognome(data.data[0]["cognome"]);
       this.dataService.setAvatarUtente(data.data[0]["avatar"]);
-      console.log(this.dataService.getAvatar())
+      console.log(this.dataService.getAvatar());
 
       this.storage.set("utente", data.data[0]);
       this.storage.set("session", true);
