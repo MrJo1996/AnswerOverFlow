@@ -316,7 +316,7 @@ export class AppComponent implements OnInit {
     this.platform.ready().then(() => {
       //this.statusBar.styleDefault();
       this.statusBar.overlaysWebView(false);
-      this.statusBar.backgroundColorByHexString('#33000000');
+      this.statusBar.backgroundColorByHexString('#2a2a2a'); //stesso colore toolbar
 
       this.splashScreen.hide(); //////////////////////////
       timer(2000).subscribe(() => (this.showSplash = false)); //durata animazione definita in app.component.html -> 2s (era 3.5s)
