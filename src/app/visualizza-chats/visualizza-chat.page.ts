@@ -167,11 +167,27 @@ export class VisualizzaChatPage implements OnInit {
     // console.log(chatter)
     this.data.setCodice_chat(codiceChat);
     this.data.setEmailOthers(chatter);
+    //Visualizza il frame di caricamento
+    const loading = document.createElement('ion-loading');
+    loading.cssClass = 'loading';
+    loading.spinner = 'crescent';
+    loading.duration = 3500;
+    document.body.appendChild(loading);
+    loading.present();
+
     this.router.navigate(["chat"]);
   }
 
   //-----------------------Torna indietro
   goBack() {
+    //Visualizza il frame di caricamento
+    const loading = document.createElement('ion-loading');
+    loading.cssClass = 'loading';
+    loading.spinner = 'crescent';
+    loading.duration = 3500;
+    document.body.appendChild(loading);
+    loading.present();
+
     this.navCtrl.back();
   }
 

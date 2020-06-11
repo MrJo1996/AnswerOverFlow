@@ -259,6 +259,13 @@ export class RegistrazionePage implements OnInit {
   }
 
   clickRegistrazione() {
+    const loading = document.createElement('ion-loading');
+    loading.cssClass = 'loading';
+    loading.spinner = 'crescent';
+    loading.duration = 3500;
+    document.body.appendChild(loading);
+    loading.present();
+
     this.dataService.setUtente(
       this.email,
       this.username,
@@ -270,7 +277,16 @@ export class RegistrazionePage implements OnInit {
     this.router.navigate(["scegli-avatar"]);
     console.log(this.dataService.utente);
   }
+  
   login() {
+    //Visualizza il frame di caricamento
+    const loading = document.createElement('ion-loading');
+    loading.cssClass = 'loading';
+    loading.spinner = 'crescent';
+    loading.duration = 1500;
+    document.body.appendChild(loading);
+    loading.present();
+
     this.router.navigate(["login"]);
   }
 

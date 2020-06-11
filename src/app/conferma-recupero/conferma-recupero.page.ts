@@ -16,10 +16,26 @@ export class ConfermaRecuperoPage implements OnInit {
   }
 
   goback(){
+    //Visualizza il frame di caricamento
+    const loading = document.createElement('ion-loading');
+    loading.cssClass = 'loading';
+    loading.spinner = 'crescent';
+    loading.duration = 1500;
+    document.body.appendChild(loading);
+    loading.present();
+
     this.router.navigate(['recupera-password'])
   }
 
   goTo_login(){
+    //Visualizza il frame di caricamento
+    const loading = document.createElement('ion-loading');
+    loading.cssClass = 'loading';
+    loading.spinner = 'crescent';
+    loading.duration = 1500;
+    document.body.appendChild(loading);
+    loading.present();
+    
     this.router.navigate(['login']);
   }
 }

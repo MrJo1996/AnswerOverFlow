@@ -658,7 +658,13 @@ console.log(this.interval)
         {
           text: 'Ok',
           handler: (value: any) => {
-
+            //Visualizza il frame di caricamento
+            const loading = document.createElement('ion-loading');
+            loading.cssClass = 'loading';
+            loading.spinner = 'crescent';
+            loading.duration = 2000;
+            document.body.appendChild(loading);
+            loading.present();
             //Porta a "visualizza domanda" dopo avvenuta modifica
             this.navCtrl.navigateRoot('/visualizza-domanda');
 
@@ -671,6 +677,14 @@ console.log(this.interval)
   }
 
   goBack() {
+    //Visualizza il frame di caricamento
+    const loading = document.createElement('ion-loading');
+    loading.cssClass = 'loading';
+    loading.spinner = 'crescent';
+    loading.duration = 2000;
+    document.body.appendChild(loading);
+    loading.present();
+
     this.navCtrl.navigateRoot(['/visualizza-domanda']);
   }
 

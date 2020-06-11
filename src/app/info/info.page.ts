@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from "@angular/router";
-import { NavController, MenuController } from '@ionic/angular';
+import { MenuController } from '@ionic/angular';
 
 @Component({
   selector: 'app-info',
@@ -17,6 +17,14 @@ export class InfoPage implements OnInit {
 
 
   goback(){
+    //Visualizza il frame di caricamento
+    const loading = document.createElement('ion-loading');
+    loading.cssClass = 'loading';
+    loading.spinner = 'crescent';
+    loading.duration = 3500;
+    document.body.appendChild(loading);
+    loading.present();
+
     this.router.navigate(['home']);
   }
 

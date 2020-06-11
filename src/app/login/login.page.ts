@@ -5,13 +5,14 @@ import { Router } from "@angular/router";
 import { Promise } from "q";
 import { Storage } from "@ionic/storage";
 import { PostServiceService } from "../services/post-service.service";
-import { NavController } from "@ionic/angular";
+import { NavController, LoadingController } from "@ionic/angular";
 import { DataService } from "../services/data.service";
 import { ToastController } from "@ionic/angular";
 import { ApiService } from "src/app/providers/api.service";
 import { MenuController } from "@ionic/angular";
 import { Observable } from "rxjs";
 import { AppComponent } from "../app.component";
+import { __await } from 'tslib';
 
 @Component({
   selector: "app-login",
@@ -67,11 +68,27 @@ export class LoginPage implements OnInit {
     });
   }
 
-  public reg() {
+  reg() {
+    //Visualizza il frame di caricamento
+    const loading = document.createElement('ion-loading');
+    loading.cssClass = 'loading';
+    loading.spinner = 'crescent';
+    loading.duration = 1500;
+    document.body.appendChild(loading);
+    loading.present();
+
     this.router.navigate(["registrazione"]);
   }
 
   public recupero() {
+    //Visualizza il frame di caricamento
+    const loading = document.createElement('ion-loading');
+    loading.cssClass = 'loading';
+    loading.spinner = 'crescent';
+    loading.duration = 1500;
+    document.body.appendChild(loading);
+    loading.present();
+
     this.router.navigate(["recupera-password"]);
   }
 
@@ -87,6 +104,7 @@ export class LoginPage implements OnInit {
       document.body.appendChild(toast);
       return toast.present();
     } else {
+      
       let postData = {
         username: this.username,
         password: this.password,
@@ -182,6 +200,15 @@ export class LoginPage implements OnInit {
       //   this.storage.set('session', true);
       //   console.log('SESSION:' + data)
       // });
+      
+      //Visualizza il frame di caricamento
+      const loading = document.createElement('ion-loading');
+      loading.cssClass = 'loading';
+      loading.spinner = 'crescent';
+      loading.duration = 5000;
+      document.body.appendChild(loading);
+      loading.present();
+      
       this.router.navigate(["home"]);
     } else {
       console.log("error");
@@ -193,6 +220,13 @@ export class LoginPage implements OnInit {
   }
 
   clickOspite() {
+    //Visualizza il frame di caricamento
+    const loading = document.createElement('ion-loading');
+    loading.cssClass = 'loading';
+    loading.spinner = 'crescent';
+    loading.duration = 5000;
+    document.body.appendChild(loading);
+    loading.present();
     //TODO SETTARE NOME E COGNOME COME USERNAME
     this.dataService.setUsername("");
     this.dataService.setNome("Ospite");
@@ -200,6 +234,7 @@ export class LoginPage implements OnInit {
 
     this.storage.set("utente", false);
     this.storage.set("session", false);
+
     this.router.navigate(["home"]);
   }
 }
