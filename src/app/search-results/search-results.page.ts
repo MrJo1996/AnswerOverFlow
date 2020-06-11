@@ -83,13 +83,13 @@ export class SearchResultsPage implements OnInit {
     //DOMANDE
     this.apiService.ricercaDomanda(this.keyRicerca).then(
       (result) => { // nel caso in cui va a buon fine la chiamata
-        console.log("LUNGHEZZA totale chiamata ", result['data'].length);
+        //console.log("LUNGHEZZA totale chiamata ", result['data'].length);
 
         if (result != undefined) {
-
           console.log("Domande chiamata: ", this.domandeSearched);
 
           if (this.isFiltered) {
+
 
             /*  console.log("cod passato dal filtro ", this.filters['codCategoria'])
  
