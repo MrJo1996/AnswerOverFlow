@@ -15,8 +15,9 @@ import { element } from 'protractor';
   styleUrls: ['./visualizza-domanda.page.scss'],
 })
 export class VisualizzaDomandaPage implements OnInit {
-
-
+  numLike2:Array<number>=[]
+  numDislike2:Array<number>=[]
+  votoAttuale
   allVisible: boolean = false;
 
   codice_domanda;
@@ -63,6 +64,7 @@ export class VisualizzaDomandaPage implements OnInit {
 
   valutazioni = new Array();
 
+  risposte2
   constructor(
     private navCtrl: NavController,
     private dataService: DataService,
@@ -112,7 +114,7 @@ export class VisualizzaDomandaPage implements OnInit {
    
     this.codice_domanda = this.dataService.codice_domanda;
     this.currentMailUser = this.dataService.getEmail_Utente();
-
+console.log(this.currentMailUser)
     this.apiService.getDomanda(this.codice_domanda).then(
       (domanda) => {
 
@@ -179,7 +181,20 @@ export class VisualizzaDomandaPage implements OnInit {
       (risposte) => {
         //Prendo le risposte dal db
         this.risposte = risposte['Risposte']['data'];
-
+        this.risposte2=risposte['Risposte']['data']
+        let temp:Array<Number>=[]
+        this.risposte2.forEach(element => {
+          this.numLike2.push(element.num_like)
+          this.numDislike2.push(element.num_dislike)
+         
+         
+          this.apiService.controllaGiaValutatoRisposta(this.currentMailUser, element.codice_risposta).then((data)=>{
+            this.votoType.push(data[0]['data'][0].tipo_like)
+            console.log(data)})
+            
+         
+         
+                });
        
         for(let i = 0; i<this.risposte.length; i++){
         
@@ -548,7 +563,7 @@ export class VisualizzaDomandaPage implements OnInit {
     return toast.present();
   }
 
-
+/*
   //AZIONI CHE RIGUARDANO I LIKE
   async modificaLike(codice_risposta, i){
     // L'UTENTE VUOLE TOGLIERE IL LIKE
@@ -621,7 +636,7 @@ export class VisualizzaDomandaPage implements OnInit {
       );}
 
   }
-
+*/
 
 /*   async modificaLike(codice_risposta, i){
     // L'UTENTE VUOLE TOGLIERE IL LIKE
@@ -724,7 +739,7 @@ export class VisualizzaDomandaPage implements OnInit {
     );}
   }
  */
-  
+  /*
  async modificaDislike(codice_risposta, i){
   // L'UTENTE VUOLE TOGLIERE IL DISLIKE
  if(this.risposte[i]['tipo_like']===2){
@@ -841,6 +856,35 @@ export class VisualizzaDomandaPage implements OnInit {
 
   }
  */
+ votoType:Array<number>=[]
+modificaLike(i,value){
+  console.log('value'+value)
+
+  if(value==1){
+    if(this.votoType[i]==2)
+    this.numDislike2[i]-=1
+    this.votoType[i]=1}
+  if(value==-1) this.votoType[i]=null
+  console.log(this.risposte2)
+  this.numLike2[i]=this.numLike2[i]+ value||0
+ 
+  console.log(this.numLike2)
+  console.log(this.numDislike2[i]+'       ',this.numLike2[i]+''+this.votoType[i])
+
+}
+modificaDislike(i,value){
+  console.log('value'+value)
+  if(value==1){
+    if(this.votoType[i]==1)this.numLike2[i]-=1
+    this.votoType[i]=2
+  
+  }
+  if(value==-1) this.votoType[i]=null
+  this.numDislike2[i]+=value
+  console.log(this.numDislike2[i]+'       ',this.numLike2[i]+''+this.votoType[i])
+ console.log(this.numDislike2)
+  console.log(this.risposte2)
+}
   cercaValutazione(cod_utente, risposte, i){
     this.apiService.controllaGiaValutatoRisposta(cod_utente, risposte[i].codice_risposta).then(
       (result) => { 
@@ -870,7 +914,7 @@ export class VisualizzaDomandaPage implements OnInit {
 
 
 
-   cancellaValutazione(codice_valutazione) {
+ /*  cancellaValutazione(codice_valutazione) {
     this.apiService.rimuoviValutazione(codice_valutazione).then(
       (risultato) => {
         console.log('eliminata');
@@ -911,7 +955,7 @@ export class VisualizzaDomandaPage implements OnInit {
   }
 
 
-
+*/
 
 
   interval
@@ -1055,15 +1099,6 @@ export class VisualizzaDomandaPage implements OnInit {
   } 
  
 
-
-/*   ionViewWillLeave() {
-    clearInterval(this.interval)
-  }
-
-  ngOnDestroy(){
-    clearInterval(this.interval)
-  }
- */
 
 
   goChat(){

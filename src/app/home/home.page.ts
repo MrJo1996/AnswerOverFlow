@@ -48,6 +48,7 @@ export class HomePage implements OnInit {
   keywordToSearch;
   searchingResults;
   request: Promise<any>;
+  timer;
   constructor(public popoverController: PopoverController,
     private menuSet: AppComponent,
     private menuCtrl: MenuController,
@@ -68,7 +69,7 @@ export class HomePage implements OnInit {
   }
   
   ngOnInit(){
-    setInterval(()=>{
+   this.timer= setInterval(()=>{
     this.update.detectChanges();
 
     },500)
@@ -137,7 +138,9 @@ export class HomePage implements OnInit {
     }, 500);
     
   }
-
+  ionViewDidLeave() {
+    clearInterval(this.timer)
+  }  
   //VISUALIZZA LE ULTIME DOMANDE APERTE
   async visualizzaDomandaHome() {
     this.apiService.getDomandaHome().then(
