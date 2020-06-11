@@ -116,16 +116,7 @@ export class AppComponent implements OnInit {
     this.initializeApp();
   }
 
-
   ionViewWillEnter() { }
-
-  /* {
-    title: "Info",
-    url: "/info",
-    icon: "information-circle",
-    view: true,
-  },
- */
 
   //ALERT E ROUTING LOGOUT---------------------------------------
 
@@ -323,7 +314,10 @@ export class AppComponent implements OnInit {
 
   initializeApp() {
     this.platform.ready().then(() => {
-      this.statusBar.styleDefault();
+      //this.statusBar.styleDefault();
+      this.statusBar.overlaysWebView(false);
+      this.statusBar.backgroundColorByHexString('#33000000');
+
       this.splashScreen.hide(); //////////////////////////
       timer(2000).subscribe(() => (this.showSplash = false)); //durata animazione definita in app.component.html -> 2s (era 3.5s)
 
