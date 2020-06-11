@@ -345,5 +345,7 @@ titoloo(domande){
   openMenu(){
     this.menuCtrl.open();
   }
+  formatsDate: string[] = [
+    'd MMM y, H:mm'    ];
 }
 
