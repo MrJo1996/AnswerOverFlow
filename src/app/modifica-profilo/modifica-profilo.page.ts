@@ -57,7 +57,6 @@ export class ModificaProfiloPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.menuCrtl.swipeGesture(false);
   }
 
   checkForUser(usernameInserted) {
@@ -128,13 +127,29 @@ export class ModificaProfiloPage implements OnInit {
   }
 
   selectAvatar() {
+    //visualizza frame caricamento
+    const loading = document.createElement('ion-loading');
+    loading.cssClass = 'loading';
+    loading.spinner = 'crescent';
+    loading.duration = 3000;
+    document.body.appendChild(loading);
+    loading.present();
+
     this.dataService.settaTemporaryAvatar("clicked");
     this.router.navigate(["/modifica-avatar"]);
   }
 
   goBack() {
+    //visualizza frame caricamento
+    const loading = document.createElement('ion-loading');
+    loading.cssClass = 'loading';
+    loading.spinner = 'crescent';
+    loading.duration = 3000;
+    document.body.appendChild(loading);
+    loading.present();
+
     this.dataService.settaTemporaryAvatar(undefined);
-    this.router.navigate(['/visualizzaProfilo'])
+    this.router.navigate(['/visualizza-profilo'])
   }
 
   async popupConfermaModificaProfilo() {
@@ -578,6 +593,5 @@ export class ModificaProfiloPage implements OnInit {
 
   openMenu() {
     this.menuCrtl.open();
-    console.log(this.menuCrtl.swipeGesture.length);
   }
 }

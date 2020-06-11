@@ -294,16 +294,37 @@ titoloo(domande){
   //LINK ALLE PAGINE
   //link a visualizza domanda
   clickDomanda(domanda_codice) {
+    const loading = document.createElement('ion-loading');
+    loading.cssClass = 'loading';
+    loading.spinner = 'crescent';
+    loading.duration = 3500;
+    document.body.appendChild(loading);
+    loading.present();
+
     this.dataService.setCod_domanda(domanda_codice);
     this.router.navigate(['/visualizza-domanda']);
   }
   //link a viualizza sondaggio
   clickSondaggio(codice_sondaggio) {
+    const loading = document.createElement('ion-loading');
+    loading.cssClass = 'loading';
+    loading.spinner = 'crescent';
+    loading.duration = 3000;
+    document.body.appendChild(loading);
+    loading.present();
+
     this.dataService.codice_sondaggio = codice_sondaggio;
     this.router.navigate(['/visualizza-sondaggio']);
   }
   //link a visualizza profilo
   clickProfilo(cod_utente) {
+    const loading = document.createElement('ion-loading');
+    loading.cssClass = 'loading';
+    loading.spinner = 'crescent';
+    loading.duration = 3500;
+    document.body.appendChild(loading);
+    loading.present();
+
     this.dataService.setEmailOthers(cod_utente);
     console.log(this.dataService.setEmailOthers);
     this.router.navigate(['/visualizza-profilo']);

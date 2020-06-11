@@ -139,6 +139,14 @@
     
     
       goBack() {
+        //Visualizza il frame di caricamento
+        const loading = document.createElement('ion-loading');
+        loading.cssClass = 'loading';
+        loading.spinner = 'crescent';
+        loading.duration = 2000;
+        document.body.appendChild(loading);
+        loading.present();
+
         this.navCtrl.back();
       }
 

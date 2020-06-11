@@ -16,7 +16,15 @@ import {Storage} from '@ionic/storage';
 })
 export class VisualizzaProfiloPage implements OnInit {
 
-  ngOnInit(){}
+  ngOnInit(){
+    //visualizza frame caricamento
+    const loading = document.createElement('ion-loading');
+    loading.cssClass = 'loading';
+    loading.spinner = 'crescent';
+    loading.duration = 3000;
+    document.body.appendChild(loading);
+    loading.present();
+  }
   
   
   request: Promise<any>;
@@ -66,18 +74,40 @@ export class VisualizzaProfiloPage implements OnInit {
 }
 
   goBack(){
+    //visualizza frame caricamento
+    const loading = document.createElement('ion-loading');
+    loading.cssClass = 'loading';
+    loading.spinner = 'crescent';
+    loading.duration = 3500;
+    document.body.appendChild(loading);
+    loading.present();
+
     this.navCtrl.back();
   }
 
   goToChat() {
+    //visualizza frame caricamento
+    const loading = document.createElement('ion-loading');
+    loading.cssClass = 'loading';
+    loading.spinner = 'crescent';
+    loading.duration = 1500;
+    document.body.appendChild(loading);
+    loading.present();
+
     this.dataService.emailOthers = this.profilo.email;
     this.router.navigateByUrl("/chat");
   }
 
   stats(){
+    const loading = document.createElement('ion-loading');
+    loading.cssClass = 'loading';
+    loading.spinner = 'crescent';
+    loading.duration = 2500;
+    document.body.appendChild(loading);
+    loading.present();
+
     this.dataService.emailOthers = this.profilo.email;
     this.router.navigate(['visualizza-statistiche']);
-
   }
 
   
@@ -208,11 +238,27 @@ async confirmAboutAlert() {
 
 
 goToHome(){
+  //visualizza frame caricamento
+  const loading = document.createElement('ion-loading');
+  loading.cssClass = 'loading';
+  loading.spinner = 'crescent';
+  loading.duration = 3500;
+  document.body.appendChild(loading);
+  loading.present();
+
   this.router.navigate(['/home'])
 }
 
 
 goToSettingProfile(){
+  //visualizza frame caricamento
+  const loading = document.createElement('ion-loading');
+  loading.cssClass = 'loading';
+  loading.spinner = 'crescent';
+  loading.duration = 3000;
+  document.body.appendChild(loading);
+  loading.present();
+
   this.router.navigate(['/modifica-profilo'])
 }
 

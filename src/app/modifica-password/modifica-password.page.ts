@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController} from '@ionic/angular';
+import { AlertController, MenuController} from '@ionic/angular';
 import {NavController} from "@ionic/angular";
 import { Router } from "@angular/router";
 import {Storage} from '@ionic/storage';
@@ -26,6 +26,7 @@ export class ModificaPasswordPage implements OnInit {
     private pickerController: PickerController, 
     private navCtrl: NavController,
     private router: Router,
+    private menuCtrl: MenuController,
     private dataService: DataService
     ) { 
 
@@ -71,6 +72,12 @@ export class ModificaPasswordPage implements OnInit {
 
 
   ngOnInit() {
+    const loading = document.createElement('ion-loading');
+    loading.cssClass = 'loading';
+    loading.spinner = 'crescent';
+    loading.duration = 1500;
+    document.body.appendChild(loading);
+    loading.present();
 
    // this.email = ''
     this.password = ''
@@ -125,7 +132,6 @@ export class ModificaPasswordPage implements OnInit {
       }
     );
     this.salvaPassword();
-
   }
 
 }
@@ -137,7 +143,13 @@ async salvaPassword() {
       {
         text: 'Ok',
         handler: () => {
-          
+        //visualizza frame caricamento
+        const loading = document.createElement('ion-loading');
+        loading.cssClass = 'loading';
+        loading.spinner = 'crescent';
+        loading.duration = 2500;
+        document.body.appendChild(loading);
+        loading.present();
           this.router.navigate(['visualizza-profilo']);
         }
       }
@@ -151,8 +163,18 @@ async salvaPassword() {
 
 }
 
+openMenu(){
+  this.menuCtrl.open();
+}
 
 goback(){
+  //visualizza frame caricamento
+  const loading = document.createElement('ion-loading');
+  loading.cssClass = 'loading';
+  loading.spinner = 'crescent';
+  loading.duration = 2500;
+  document.body.appendChild(loading);
+  loading.present();
   this.router.navigate(['modifica-profilo']);
 }
 
