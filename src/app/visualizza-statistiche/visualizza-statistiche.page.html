@@ -24,9 +24,11 @@
   </ion-segment-button>
 </ion-segment>
 
-
-
-
+<ion-card-subtitle>
+<ion-textarea readonly *ngIf="check===false" class="ion-text-center">
+  Cliccando su Domanda/Risposta/Like&Dislike hai la possibilità di scoprire le statistiche che stai cercando
+</ion-textarea>
+</ion-card-subtitle>
 
 <div [ngSwitch]="segment" (ionChange)=" segmentChanged($event)" >
   
@@ -40,6 +42,8 @@
       <ion-card-subtitle>Domande</ion-card-subtitle>
       <ion-card-title>Categorie con maggiore attività di domande</ion-card-title>
     </ion-card-header>
+    <ion-textarea readonly *ngIf="num_domandeTOP===undefined" class="ion-text-center">
+      Non esistono domande relative all'utente</ion-textarea>
     <ion-card-content>
       <canvas #barChart></canvas>
     </ion-card-content>
@@ -53,6 +57,8 @@
         <ion-card-subtitle>Domande</ion-card-subtitle>
         <ion-card-title>Domande totali</ion-card-title>
       </ion-card-header>
+      <ion-textarea readonly *ngIf="num_domandeTot[0]===undefined" class="ion-text-center">
+        Non esistono domande relative all'utente </ion-textarea>
       <ion-card-content>
         <canvas #doughnutCanvas></canvas>
       </ion-card-content>
@@ -67,6 +73,8 @@
         <ion-card-subtitle>Risposte</ion-card-subtitle>
         <ion-card-title>Categorie con maggiore attività di risposte</ion-card-title>
       </ion-card-header>
+      <ion-textarea readonly *ngIf="num_risposteTOP===undefined" class="ion-text-center">
+        Non esistono risposte relative all'utente</ion-textarea>
       <ion-card-content>
         <canvas #barChart2></canvas>
       </ion-card-content>
@@ -80,6 +88,8 @@
           <ion-card-subtitle>Risposte</ion-card-subtitle>
           <ion-card-title>Risposte totali</ion-card-title>
         </ion-card-header>
+        <ion-textarea readonly *ngIf="num_risposteTot[0]===undefined" class="ion-text-center">
+          Non esistono risposte relative all'utente</ion-textarea>
         <ion-card-content>
           <canvas #doughnutCanvas2></canvas>
         </ion-card-content>
@@ -90,12 +100,15 @@
 
 
     <div *ngSwitchCase= "'LikeDislike'">
+     
     <ion-card color="primary">
     <ion-card>
         <ion-card-header>
           
           <ion-card-title>Like & Dislike</ion-card-title>
         </ion-card-header>
+        <ion-textarea readonly *ngIf="(numLIKE[0]===undefined && numDISLIKE[0]===undefined)" class="ion-text-center">
+          Non esistono valutazioni relative all'utente</ion-textarea>
         <ion-card-content>
           <canvas #lineCanvas></canvas>
         </ion-card-content>
@@ -109,9 +122,5 @@
       <ion-icon name="arrow-forward-circle-outline" style="opacity: 100%; "></ion-icon>
     </ion-fab-button>
   </ion-fab>
-
-
-     
-
 </ion-content>
 

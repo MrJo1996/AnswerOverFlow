@@ -70,15 +70,23 @@
       emailOther;
       emailProva;
       segment;
+      refresh_index;
+      check: boolean;
+     
     
       
       provaDomandeTOP = new Array();
      
     
-      constructor( private menuCrtl: MenuController,public toastController: ToastController, private storage: Storage, private dataService: DataService, private navCtrl: NavController, public apiService: ApiService) {
-      this.segment='Domande';
+      constructor( private menuCrtl: MenuController,
+                   public toastController: ToastController, 
+                   private storage: Storage, 
+                  private dataService: DataService,
+                  private navCtrl: NavController,
+                  public apiService: ApiService) {
+
      
-      }
+                                                }
     
       ngOnInit() {
     
@@ -94,6 +102,12 @@
         },800)
         
       }
+
+      ionViewWillEnter() {
+        this.check  = false;
+      
+        }
+
       ionViewDidEnter() {
     
     
@@ -114,18 +128,20 @@
         this.caricaR();
         this.caricaLD();
        
-    
-    
-      }
       
     
+      }
+
+      doRefresh2(){
+        window.location.reload();//ricaricapage page
+      }
     
+  //_________________________________________________________________
       carica() {
-       
-    
+
         this.visualizzaStatisticheDomanda();
         this.visualizzaTOTStatisticheDomanda();
-       
+        this.check= true;
       }
     
       caricaR() {
@@ -136,7 +152,7 @@
       caricaLD() {
          this.Valutazioni();
       }
-    
+    //_____________________________________________________________________Carica al click del segmentB
     
       goBack() {
         this.navCtrl.back();
@@ -146,7 +162,7 @@
         this.menuCrtl.open()
         console.log(this.menuCrtl.swipeGesture.length  )
        }
-      //---------------Colori random per i grafici-------------------------------
+      //-------------------------------------------------------------------Colori random per i grafici
       generateColorArray(num) {
         this.colorArray = [];
         for (let i = 0; i < num; i++) {
@@ -154,7 +170,7 @@
         }
       }
     
-      //------------------------valutaioni----------------
+      //-----------------------------------------------------------------------valutaioni
     
     
       async Valutazioni() {
@@ -180,6 +196,7 @@
     
                     },
                     (rej) => {
+                      
                       console.log("C'è stato un errore durante la visualizzazione");
                     }
     
@@ -199,7 +216,7 @@
     
       //__________________________________________________________________
     
-      //--------------domande TOP 3-----------------------------------------------
+      //--------------------------------------------------------------------------------domande TOP 3
       async visualizzaStatisticheDomanda() {
     
         this.apiService.get_top_Domande(this.cod_utente).then(
@@ -255,7 +272,7 @@
       }
     
     
-    
+    //____________________________________________________________________________________CATEGORIE PER DOMANDE TOP3
     
     
       async visualizzaCategoria() {
@@ -355,7 +372,7 @@
     
     
     
-      //--------------------Fine domande top--------------------------------
+      //------------------------------------------------------------------Fine domande top
       async visualizzaTOTStatisticheDomanda() {
     
         this.apiService.get_tot_Domande(this.cod_utente).then(
@@ -392,7 +409,7 @@
       }
     
     
-      //----------------------Risposte top 3-------------------------------------
+      //---------------------------------------------------------------------------------Risposte top 3-
       async visualizzaStatitischeRisposta() {
         this.apiService.get_top_Risposte(this.cod_utente).then(
           (risposte) => {
@@ -455,11 +472,11 @@
         )
       }
     
-    
+    //___________________________________________________________________TOT
       async visualizzaTOTStatitischeRisposta() {
         this.apiService.get_tot_Risposte(this.cod_utente).then(
           (risposte) => {
-            console.log(risposte['Risposte']['Data']);
+            //console.log(risposte['Risposte']['Data']);
             for (let j = 0; j < risposte['Risposte']['data'].length; j++) {
     
               this.LabelRisposte[j] = risposte['Risposte']['data'][j].cod_categoria;
@@ -493,7 +510,7 @@
         )
       }
     
-    
+    //__________________________________________________________________________GRAFICI
     
       createBarChart() {
     
