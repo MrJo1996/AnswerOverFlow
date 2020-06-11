@@ -6,6 +6,8 @@ import { PickerController } from "@ionic/angular";
 import { DataService } from "../services/data.service";
 import { Storage } from "@ionic/storage";
 import { PostServiceService } from "../services/post-service.service";
+import { OneSignal } from '@ionic-native/onesignal/ngx';
+
 
 @Component({
   selector: "app-registrazione",
@@ -40,13 +42,15 @@ export class RegistrazionePage implements OnInit {
     private pickerController: PickerController,
     private servicePost: PostServiceService,
     private router: Router,
-    private menuCtrl: MenuController
+    private menuCtrl: MenuController,
+    private oneSignal: OneSignal
   ) { }
 
   ngOnInit() {
     this.menuCtrl.enable(false);
     //disable scroll (anche su ios)
     var fixed = document.getElementById("fixed");
+
 
     fixed.addEventListener(
       "touchmove",
@@ -116,7 +120,11 @@ export class RegistrazionePage implements OnInit {
       this.email.length < 1 ||
       this.username.length < 1
     ) {
-      const toast = document.createElement("ion-toast");
+
+
+      this.toastView('Compilare tutti i campi contrassegnati da * ','danger')
+
+     /*  const toast = document.createElement("ion-toast");
 
       toast.message = "Compilare tutti i campi contrassegnati da * ";
       toast.duration = 2000;
@@ -126,8 +134,13 @@ export class RegistrazionePage implements OnInit {
       toast.style.textAlign = "center";
 
       document.body.appendChild(toast);
-      return toast.present();
+      return toast.present(); */
+
+
     } else if (this.nome.length > 19) {
+
+      this.toastView('Nome troppo lungo','danger')
+/* 
       const toast = document.createElement("ion-toast");
 
       toast.message = "Nome troppo lungo";
@@ -138,8 +151,13 @@ export class RegistrazionePage implements OnInit {
       toast.style.textAlign = "center";
 
       document.body.appendChild(toast);
-      return toast.present();
+      return toast.present(); */
+
+
     } else if (this.cognome.length > 19) {
+
+      this.toastView('Cognome troppo lungo','danger');
+    /*   
       const toast = document.createElement("ion-toast");
 
       toast.message = "Cognome troppo lungo";
@@ -151,7 +169,16 @@ export class RegistrazionePage implements OnInit {
 
       document.body.appendChild(toast);
       return toast.present();
+
+       */
+
+
     } else if (this.username.length > 19) {
+
+
+      this.toastView('Username troppo lungo','danger');
+
+/* 
       const toast = document.createElement("ion-toast");
 
       toast.message = "Username troppo lungo!";
@@ -162,10 +189,15 @@ export class RegistrazionePage implements OnInit {
       toast.style.textAlign = "center";
 
       document.body.appendChild(toast);
-      return toast.present();
-    } else if (this.password.length < 8) {
-      const toast = document.createElement("ion-toast");
+      return toast.present(); */
 
+
+    } else if (this.password.length < 8) {
+
+      this.toastView('Password troppo corta. Utilizzare una password composta da almeno 8 caratteri','danger');
+
+/* 
+      const toast = document.createElement("ion-toast");
       toast.message =
         "Password troppo corta. Utilizzare una password composta da almeno 8 caratteri";
       toast.duration = 2000;
@@ -175,8 +207,14 @@ export class RegistrazionePage implements OnInit {
       toast.style.textAlign = "center";
 
       document.body.appendChild(toast);
-      return toast.present();
+      return toast.present(); */
+
     } else if (!this.emailAvailable) {
+
+
+      this.toastView('Email non disponibile','danger');
+
+/* 
       const toast = document.createElement("ion-toast");
 
       toast.message = "Email non disponibile";
@@ -187,9 +225,16 @@ export class RegistrazionePage implements OnInit {
       toast.style.textAlign = "center";
 
       document.body.appendChild(toast);
-      return toast.present();
+      return toast.present(); */
+
+
     } else if (!this.usernameAvailable) {
-      const toast = document.createElement("ion-toast");
+
+
+      this.toastView('Username non disponibile','danger');
+
+
+      /* const toast = document.createElement("ion-toast");
 
       toast.message = "Username non disponibile";
       toast.duration = 2000;
@@ -199,9 +244,13 @@ export class RegistrazionePage implements OnInit {
       toast.style.textAlign = "center";
 
       document.body.appendChild(toast);
-      return toast.present();
+      return toast.present(); */
+
     } else if (this.password != this.confermapassword) {
-      const toast = document.createElement("ion-toast");
+
+      this.toastView('Le password non coincidono','danger');
+
+     /*  const toast = document.createElement("ion-toast");
 
       toast.message = "'Le password non coincidono";
       toast.duration = 2000;
@@ -211,8 +260,10 @@ export class RegistrazionePage implements OnInit {
       toast.style.textAlign = "center";
 
       document.body.appendChild(toast);
-      return toast.present();
+      return toast.present(); */
+
     } else {
+
       const alert = await this.alertController.create({
         header: "Confermi i dati?",
         buttons: [
@@ -305,5 +356,25 @@ export class RegistrazionePage implements OnInit {
 
     await alert.present();
   }
+
+
+
+ toastView(textMessage: string, colorToast: string){
+
+  const toast = document.createElement("ion-toast");
+
+  toast.message = textMessage;
+  toast.duration = 2000;
+  toast.position = "top";
+  toast.style.fontSize = "20px";
+  toast.color = colorToast;
+  toast.style.textAlign = "center";
+
+  document.body.appendChild(toast);
+  return toast.present();
+
+
+ }
+
 
 }

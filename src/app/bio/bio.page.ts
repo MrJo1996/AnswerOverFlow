@@ -7,6 +7,9 @@ import { DataService } from "../services/data.service";
 import { NavController } from "@ionic/angular";
 import { Storage } from "@ionic/storage";
 
+import { OneSignal } from '@ionic-native/onesignal/ngx';
+
+
 @Component({
   selector: 'app-bio',
   templateUrl: './bio.page.html',
@@ -15,7 +18,18 @@ import { Storage } from "@ionic/storage";
 export class BioPage implements OnInit {
   bio;
   utente = {};
-  constructor(private navCtrl: NavController, private menuCtrl: MenuController, private storage: Storage, private dataService: DataService, public apiService: ApiService, public alertController: AlertController, private pickerController: PickerController, private router: Router) { }
+  constructor(
+      private navCtrl: NavController, 
+      private menuCtrl: MenuController, 
+      private storage: Storage, 
+      private dataService: DataService, 
+      public apiService: ApiService,
+       public alertController: AlertController, 
+       private pickerController: PickerController, 
+       private router: Router,
+       private oneSignal :OneSignal ) { }
+
+
   ngOnInit() {
     this.menuCtrl.enable(false);
     this.utente = this.dataService.utente;
@@ -106,6 +120,9 @@ export class BioPage implements OnInit {
         this.dataService.setNome(this.utente['3']);
         this.dataService.setCognome(this.utente['4']);
         this.dataService.setAvatarUtente(this.utente['6']);
+        
+        this.setupPush(this.utente[0]);
+
 
         //Formatto i valori da inserire nello storage
         this.renameKey(this.utente, '0', "email")
@@ -116,6 +133,14 @@ export class BioPage implements OnInit {
         delete this.utente['2']
         delete this.utente['5']
         console.log(this.utente)
+
+
+        
+          
+        
+
+
+
 
         //Inserisco i valori che servono
         this.storage.set("utente", this.utente);
@@ -148,4 +173,52 @@ export class BioPage implements OnInit {
     
     this.router.navigate(['/registrazione']);
   }
+
+
+
+
+  setupPush(idUtente:string) {
+
+    console.log(idUtente)
+
+    this.oneSignal.startInit('8efdc866-9bea-4b12-a371-aa01f421c4f7', '424760060101');
+    this.oneSignal.sendTag('email', idUtente)
+    this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.None);
+
+
+
+    this.oneSignal.handleNotificationReceived().subscribe(data => {
+      
+     /*  let msg = data.payload.body;
+      let title = data.payload.title;  */
+      
+      const toast = document.createElement("ion-toast");
+      toast.message = 'Hai ricevuto un messaggio';
+      toast.duration = 2000;
+      toast.position = "top";
+     // toast.style.fontSize = "20px";
+      toast.color = "danger";
+      toast.style.textAlign = "center";
+      document.body.appendChild(toast);
+     
+      return toast.present();
+
+    });
+
+
+    this.oneSignal.handleNotificationOpened().subscribe(data => {     
+    this.router.navigate(['visualizza-chat']);
+    });
+
+    this.oneSignal.endInit();
+    
+  }
+
+
+
+
+
+
+
+
 }

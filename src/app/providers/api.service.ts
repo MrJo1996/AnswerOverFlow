@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders} from '@angular/common/http';
 import { resolve } from 'url';
 import { Data } from '@angular/router';
 
@@ -10,6 +10,47 @@ import { Data } from '@angular/router';
 export class ApiService {
 
   constructor(public http: HttpClient) { }
+
+
+  async inviaNotifica(emailTag: string, username: string) {
+
+ 
+     const post_data = {
+         'app_id': '8efdc866-9bea-4b12-a371-aa01f421c4f7',
+         'contents': {
+             'en': 'Ti ha inviato un messaggio'
+         },
+         'headings': {
+             'en': username
+         },
+         'filters': [
+           {"field": "tag", "key": "email", "relation": "=", "value": emailTag},
+           {"operator": "AND"}, {"field": "tag", "key": "logState", "relation": "=", "value": 'logged'}
+         ],
+     }
+     const httpOptions2 = {
+         headers: new HttpHeaders({
+             'Content-Type': 'application/json',
+             'Authorization': 'Basic N2M2ZThjOTUtM2YyOS00NGY3LTk4YTYtY2ZmYzkwZGJlZGQz'
+         })
+     };
+ 
+ 
+     this.http.post('https://onesignal.com/api/v1/notifications', post_data, httpOptions2)
+     .subscribe(new_data => {
+         console.log(new_data)
+     }, error => {
+         console.log(error);
+     });
+ 
+   
+ }
+
+
+
+
+
+
 
   getDomanda(codice_domanda: number) {
     const body = {

@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
-import { IonContent } from "@ionic/angular";
+import { IonContent, NavController } from "@ionic/angular";
 import { Promise } from "q";
 import { PostServiceService } from "../services/post-service.service";
+import { ApiService } from 'src/app/providers/api.service'; 
 import { DataService } from "../services/data.service";
-import { NavController } from "@ionic/angular";
 import { Router } from "@angular/router";
 import {Storage} from '@ionic/storage';
 
@@ -37,7 +37,8 @@ export class ChatPage implements OnInit {
     private dataService: DataService,
     private router: Router,
     private navCtrl: NavController,
-    public storage: Storage
+    public storage: Storage,
+    private apiservice: ApiService
   ) {
       this.storage.get('utente').then(data => {
         this.msg_utente_id = data.email;
@@ -47,27 +48,21 @@ export class ChatPage implements OnInit {
       this.chatFriend_id = this.dataService.getEmailOthers();     
       this.cod_chat = this.dataService.getCodice_chat();
 
-
-
-
   }
   
 
   avatarFriend: any;
   chatFriend: string;
-  chatFriend_id: string; // = "pippo.cocainasd.com";
-  msg_utente_id: string; //gmailverificata giorgiovanni
+  chatFriend_id: string; 
+  msg_utente_id: string; 
   cod_chat = null;
   textMessage;
-  testo = "";
-  
+  testo: string = "";
   messages = new Array();
-  oggi;
-  ieri;
+  oggi:any;
+  ieri:any;
   
-  //visualizzato = 0;
 
-  
   ngOnInit() {
     //this.cod_chat = this.dataService.codice_chat;
     
@@ -87,7 +82,6 @@ export class ChatPage implements OnInit {
       this.refreshMessages(); 
   }
 
-  
  
   /////////////////////////////////////////
 
@@ -186,6 +180,7 @@ export class ChatPage implements OnInit {
 
   /////////////////////////////////////////
   sendMessage() {
+
     if (this.cod_chat === null) {
       this.createChat();
       console.log(this.cod_chat);
@@ -215,6 +210,7 @@ export class ChatPage implements OnInit {
 
             this.showMessages();
             this.scrollToBottoms(300);
+            this.apiservice.inviaNotifica(this.chatFriend_id,this.dataService.getUsername())
           },
           (err) => {
             console.log(err.message);

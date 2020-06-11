@@ -31,6 +31,8 @@ export class DataService {
   //Var Ricerca
   keywordToSearch;
   filters = [];
+  NotificationsState: boolean = false;
+  
 
 
   constructor(private http: HttpClient) { }
@@ -105,6 +107,17 @@ export class DataService {
     this.cod_domanda = domanda.codice_domanda;
     this.user_domanda = domanda.cod_utente;
   }
+
+  
+  setNotificationsState(value: boolean) {
+    this.NotificationsState = value;
+  }
+
+
+  getNotificationsState(): boolean {
+    return this.NotificationsState;
+  }
+
 
   getSession() {
     return this.session;

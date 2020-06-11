@@ -54,6 +54,7 @@
                 detail="false" [class.selected]="selectedIndexAccount == id">
                 <ion-icon slot="start" [ios]="page.icon + '-outline'" [md]="page.icon + '-sharp'"></ion-icon>
                 <ion-label [class.blocked]="page.blocked">{{ page.title }}</ion-label>
+                <ion-badge *ngIf="page.title === 'Chat' && this.dataService.getNotificationsState()"  color="danger"></ion-badge>
               </ion-item>
             </ion-menu-toggle>
           </div>

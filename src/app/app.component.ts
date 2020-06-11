@@ -153,6 +153,7 @@ export class AppComponent implements OnInit {
             loading.present();
 
             this.router.navigate(["login"]);
+            this.setupPush()
 
             setTimeout(() => {
               this.storage.get("session").then((data) => {
@@ -390,48 +391,7 @@ export class AppComponent implements OnInit {
     });
   }
 
-  setupPush() {
-
-    this.oneSignal.startInit('8efdc866-9bea-4b12-a371-aa01f421c4f7', '424760060101');
-
-    this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.None);
-
-
-    this.oneSignal.handleNotificationReceived().subscribe(data => {
-      let msg = data.payload.body;
-      let title = data.payload.title;
-      let additionalData = data.payload.additionalData;
-      this.showAlert(title, msg, additionalData.task);
-    });
-
-
-    this.oneSignal.handleNotificationOpened().subscribe(data => {
-      // Just a note that the data is a different place here!
-      let additionalData = data.notification.payload.additionalData;
-
-      this.showAlert('Notification opened', 'You already read this before', additionalData.task);
-    });
-
-    this.oneSignal.endInit();
-  }
-
-  async showAlert(title, msg, task) {
-    const alert = await this.alertController.create({
-      header: title,
-      subHeader: msg,
-      buttons: [
-        {
-          text: `Action: ${task}`,
-          handler: () => {
-
-          }
-        }
-      ]
-    })
-    alert.present();
-
-
-  }
+  
 
 
 
@@ -471,4 +431,49 @@ export class AppComponent implements OnInit {
 
     this.router.navigate(["info"]);
   }
+
+  setupPush() {
+
+    //console.log(idUtente)
+
+    this.oneSignal.startInit('8efdc866-9bea-4b12-a371-aa01f421c4f7', '424760060101');
+    //this.oneSignal.sendTag('email', idUtente);
+    this.oneSignal.sendTag('logState','unlogged');
+    this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.None);
+
+
+    this.oneSignal.handleNotificationReceived().subscribe(data => {
+      
+    
+      this.dataService.setNotificationsState(true);
+    
+            
+     const toast = document.createElement("ion-toast");
+    
+    toast.message = 'Hai ricevuto un messaggio';
+      toast.duration = 2000;
+      toast.position = "top";
+     // toast.style.fontSize = "20px";
+      toast.color = "danger";
+      toast.style.textAlign = "center";
+      document.body.appendChild(toast);
+     
+      return toast.present(); 
+
+    });
+
+
+    this.oneSignal.handleNotificationOpened().subscribe(data => {
+
+    this.router.navigate(['chat']);
+    
+
+
+    });
+
+    this.oneSignal.endInit();
+    
+  }
+
+
 }
