@@ -1,17 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { TransitiveCompileNgModuleMetadata, ThrowStmt } from '@angular/compiler';
-import { NOMEM } from 'dns';
-
 import { ApiService } from '../providers/api.service';
 import { AlertController, MenuController } from '@ionic/angular';
 import { DataService } from "../services/data.service";
 import { NavController } from "@ionic/angular";
-import { resolve } from 'url';
 import { Storage } from "@ionic/storage";
 import { ToastController } from '@ionic/angular';
-import { element } from 'protractor';
 import { LoadingController } from '@ionic/angular';
-import { __await } from 'tslib';
+import { element } from 'protractor';
+
 
 @Component({
   selector: 'app-visualizza-domanda',
@@ -38,7 +34,7 @@ export class VisualizzaDomandaPage implements OnInit {
  
 
   risposte = new Array();
-  profiliUtentiRisposte = new Array();
+  //profiliUtentiRisposte = new Array();
   descrizioneRispostaView;
   descrizioneRispostaToPass;
   risposta = {};
@@ -49,7 +45,7 @@ export class VisualizzaDomandaPage implements OnInit {
   private buttonColorBest: string = "gold";
   descrizione_risposta = "";
 
-  likes = new Array();
+  //likes = new Array();
   coloriLikeDislike = new Array();
 
   categoria = {};
@@ -65,7 +61,7 @@ export class VisualizzaDomandaPage implements OnInit {
   minuti;
   secondi;
 
-
+  valutazioni = new Array();
 
   constructor(
     private navCtrl: NavController,
@@ -82,10 +78,10 @@ export class VisualizzaDomandaPage implements OnInit {
 
   ngOnInit() {
 
-    this.storage.get('utente').then(data => { this.currentMailUser = data.email });
+    //this.storage.get('utente').then(data => { this.currentMailUser = data.email });
     this.visualizzaDomanda();
     this.showRisposte();
-    console.log(this.currentMailUser);
+   
     this.allVisible = true;
     
   }
@@ -113,8 +109,10 @@ export class VisualizzaDomandaPage implements OnInit {
 
 
   async visualizzaDomanda() {
-    console.log(this.dataService.codice_domanda);
+   
     this.codice_domanda = this.dataService.codice_domanda;
+    this.currentMailUser = this.dataService.getEmail_Utente();
+
     this.apiService.getDomanda(this.codice_domanda).then(
       (domanda) => {
 
@@ -127,8 +125,7 @@ export class VisualizzaDomandaPage implements OnInit {
         this.domandaMailUser = this.domanda['0'].cod_utente;
         this.cod_preferita = this.domanda['0'].cod_preferita;
         this.codice_categoria = this.domanda['0'].cod_categoria;
-        console.log('Domanda: ', this.domanda['0']);
-        console.log("TIMER VIEW: ", this.timerView2);
+    
         this.getUserDomanda();
         this.visualizzaCategoria();
 
@@ -180,53 +177,57 @@ export class VisualizzaDomandaPage implements OnInit {
     this.codice_domanda = this.dataService.codice_domanda;
     this.apiService.getRispostePerDomanda(this.codice_domanda).then(
       (risposte) => {
-        console.log('Visualizzato con successo');
-
+        //Prendo le risposte dal db
         this.risposte = risposte['Risposte']['data'];
-        this.risposte.forEach(element => {
-          this.trovaProfiliUtentiRisposte(element.cod_utente);
-        });
-        let i = 0;
-        this.risposte.forEach(element => {
-          console.log('CHECK CONSOLE LOG', element);
-          if (element.codice_risposta === this.cod_preferita) {
+
+       
+        for(let i = 0; i<this.risposte.length; i++){
+        
+          if (this.risposte[i].codice_risposta === this.cod_preferita) {
             let aux = this.risposte[0];
+            this.risposte[0] = null;
             this.risposte[0] = this.risposte[i];
+            this.risposte[i] = null;
             this.risposte[i] = aux;
+
+
+    
             for (let j = 1; j < i; j++) {
               let aux = this.risposte[j];
               this.risposte[j] = this.risposte[i];
               this.risposte[i] = aux;
             }
           }
+         
+        }
 
-          i++;
+            for(let i = 0; i < this.risposte.length; i++){
+              
+                    this.cercaValutazione(this.currentMailUser, this.risposte, i);
 
-        });
+                  }
 
-        let j = 0;
-        this.likes = new Array();
+        
+          for(let i = 0; i < this.risposte.length; i++){
+                    this.trovaProfiliUtentiRisposte(this.risposte[i].cod_utente, i);
 
-        this.risposte.forEach(element => {
-          console.log("CONSOLE LOG PER VEDERE cod risposta: ", element.codice_risposta);
-            this.cercaValutazione(this.currentMailUser, element.codice_risposta);
+          }
 
-        });
-
-
-        console.log("CONSOLE LOG PER VEDERE DOVE STANNO I LIKES: ", this.likes);
+  
       },
       (rej) => {
-        console.log("C'è stato un errore durante la visualizzazione");
+        //console.log("C'è stato un errore durante la visualizzazione");
       }
     );
   }
 
-  async trovaProfiliUtentiRisposte(mailUtenteRisposta) {
+  async trovaProfiliUtentiRisposte(mailUtenteRisposta, i) {
     this.apiService.getProfilo(mailUtenteRisposta).then(
       (profilo) => {
-        this.profiliUtentiRisposte.push(profilo['data']['0']);
-        console.log('profilo trovato con successo', this.profiliUtentiRisposte);
+        //this.profiliUtentiRisposte.push(profilo['data']['0']);
+        this.risposte[i]['avatar'] =profilo['data']['0']['avatar'] ;
+        this.risposte[i]['username'] =profilo['data']['0']['username'] ;
+     
 
       },
       (rej) => {
@@ -243,9 +244,6 @@ export class VisualizzaDomandaPage implements OnInit {
     this.apiService.getCategoria(this.codice_categoria).then(
       (categoria) => {
         this.categoria = categoria['Categoria']['data']['0'].titolo;
-        console.log(categoria);
-        console.log("questa è datacategoria", categoria['Categoria']['data']['0'].titolo);
-        console.log(this.categoria);
       },
       (rej) => {
         console.log("C'è stato un errore durante la visualizzazione");
@@ -272,7 +270,7 @@ export class VisualizzaDomandaPage implements OnInit {
     this.apiService.getProfilo(this.domandaMailUser).then(
       (profilo) => {
         this.profiloUserDomanda = profilo['data']['0'];
-        console.log(profilo['data']['0'])
+  
       },
       (rej) => {
         //console.log("C'è stato un errore durante la visualizzazione del profilo");
@@ -554,6 +552,79 @@ export class VisualizzaDomandaPage implements OnInit {
   //AZIONI CHE RIGUARDANO I LIKE
   async modificaLike(codice_risposta, i){
     // L'UTENTE VUOLE TOGLIERE IL LIKE
+    if(this.risposte[i]['tipo_like']===1  ){
+      this.risposte[i].num_like = this.risposte[i].num_like - 1;
+    
+
+      for(let j = 0; j<this.valutazioni.length; j++){
+          if(this.risposte[i].codice_risposta === this.valutazioni[j].cod_risposta)
+            this.codice_valutazione = this.valutazioni[j].codice_valutazione;
+
+      }
+      this.valutazioni = new Array();
+      for(let i = 0; i < this.risposte.length; i++){
+        this.cercaValutazione(this.currentMailUser, this.risposte, i);
+      }
+      this.cancellaValutazione(this.codice_valutazione);
+      this.togliLike(codice_risposta);
+      console.log("Stato dei likes", this.risposte[i]['tipo_like'] , this.risposte);
+    }
+
+ 
+    // VUOLE METTERE IL LIKE MA GIA' C'E' IL DISLIKE
+    else if(this.risposte[i]['tipo_like']===2){
+      this.risposte[i].num_like = this.risposte[i].num_like + 1;
+      this.risposte[i].num_dislike = this.risposte[i].num_dislike - 1;
+   
+      for(let j = 0; j<this.valutazioni.length; j++){
+        if(this.risposte[i].codice_risposta === this.valutazioni[j].cod_risposta)
+          this.codice_valutazione = this.valutazioni[j].codice_valutazione;
+      }
+      this.cancellaValutazione(this.codice_valutazione);
+      this.togliDislike(codice_risposta);
+      this.inserisciValutazione(codice_risposta, 1);
+      this.valutazioni = new Array();
+      for(let i = 0; i < this.risposte.length; i++){
+        this.cercaValutazione(this.currentMailUser, this.risposte, i);
+
+      }
+      console.log("Stato dei likes", this.risposte[i]['tipo_like'] , this.risposte);
+      this.apiService.modificaNumLike(codice_risposta).then(
+        (result) => {
+          
+        },
+        (rej) => {
+          console.log('like non effetutata', codice_risposta, this.currentMailUser); 
+        }
+      );
+
+    }
+    else{ 
+      // VUOLE METTERE IL LIKE E ANCORA NON HA MESSO NULLA
+
+      this.risposte[i].num_like = this.risposte[i].num_like + 1;
+     
+      this.inserisciValutazione(codice_risposta, 1);
+      this.valutazioni = new Array();
+      for(let i = 0; i < this.risposte.length; i++){
+            this.cercaValutazione(this.currentMailUser, this.risposte, i);
+
+              }
+              console.log("Stato dei likes", this.risposte[i]['tipo_like'] , this.risposte);
+      this.apiService.modificaNumLike(codice_risposta).then(
+        (result) => {
+          
+        },
+        (rej) => {
+          console.log('like non effetutata', codice_risposta, this.currentMailUser); 
+        }
+      );}
+
+  }
+
+
+/*   async modificaLike(codice_risposta, i){
+    // L'UTENTE VUOLE TOGLIERE IL LIKE
     if(this.likes[i]===1  ){
       this.risposte[i].num_like = this.risposte[i].num_like - 1;
       this.likes[i] = -1;
@@ -600,12 +671,11 @@ export class VisualizzaDomandaPage implements OnInit {
         }
       );}
 
-  }
-
+  } */
 
 
 //AZIONI CHE RIGUARDANO I DISLIKE
- async modificaDislike(codice_risposta, i){
+/*  async modificaDislike(codice_risposta, i){
    // L'UTENTE VUOLE TOGLIERE IL DISLIKE
   if(this.likes[i]===2){
     this.risposte[i].num_dislike = this.risposte[i].num_dislike - 1;
@@ -653,6 +723,81 @@ export class VisualizzaDomandaPage implements OnInit {
       }
     );}
   }
+ */
+  
+ async modificaDislike(codice_risposta, i){
+  // L'UTENTE VUOLE TOGLIERE IL DISLIKE
+ if(this.risposte[i]['tipo_like']===2){
+  for(let j = 0; j<this.valutazioni.length; j++){
+    if(this.risposte[i].codice_risposta === this.valutazioni[j].cod_risposta)
+      this.codice_valutazione = this.valutazioni[j].codice_valutazione;
+      }
+   this.risposte[i].num_dislike = this.risposte[i].num_dislike - 1;
+  
+   this.cancellaValutazione(this.codice_valutazione);
+   this.togliDislike(codice_risposta);
+   this.valutazioni = new Array();
+   for(let i = 0; i < this.risposte.length; i++){
+    
+    this.cercaValutazione(this.currentMailUser, this.risposte, i);
+  }
+
+
+  console.log("Stato dei likes", this.risposte[i]['tipo_like'] , this.risposte);
+ } 
+ // VUOLE METTERE IL DISLIKE MA GIA' C'E' IL LIKE
+ else if( this.risposte[i]['tipo_like'] ===1){
+  for(let j = 0; j<this.valutazioni.length; j++){
+    if(this.risposte[i].codice_risposta === this.valutazioni[j].cod_risposta)
+      this.codice_valutazione = this.valutazioni[j].codice_valutazione;
+}
+   this.risposte[i].num_like = this.risposte[i].num_like - 1;
+   this.risposte[i].num_dislike = this.risposte[i].num_dislike + 1;
+
+   this.cancellaValutazione(this.codice_valutazione);
+   this.togliLike(codice_risposta);
+   this.inserisciValutazione(codice_risposta, 2);
+   this.valutazioni = new Array();
+   for(let i = 0; i < this.risposte.length; i++){
+    
+    this.cercaValutazione(this.currentMailUser, this.risposte, i);
+  }
+
+
+  console.log("Stato dei likes", this.risposte[i]['tipo_like'] , this.risposte);
+   this.apiService.modificaNumDislike(codice_risposta).then(
+     (result) => { 
+       
+     },
+     (rej) => {
+       console.log('dislike non effetutata', codice_risposta, this.currentMailUser); 
+     }
+   );
+ }
+ else{
+
+    // VUOLE METTERE IL DISLIKE E ANCORA NON HA MESSO NULLA
+   this.risposte[i].num_dislike = this.risposte[i].num_dislike + 1;
+ 
+   this.inserisciValutazione(codice_risposta, 2);
+   this.valutazioni = new Array();
+   for(let i = 0; i < this.risposte.length; i++){
+    
+    this.cercaValutazione(this.currentMailUser, this.risposte, i);
+  }
+
+
+  console.log("Stato dei likes", this.risposte[i]['tipo_like'] , this.risposte);
+   this.apiService.modificaNumDislike(codice_risposta).then(
+     (result) => { 
+       
+     },
+     (rej) => {
+       console.log('dislike non effetutata', codice_risposta, this.currentMailUser); 
+     }
+   );}
+ }
+
 
 
 
@@ -671,14 +816,13 @@ export class VisualizzaDomandaPage implements OnInit {
 
 
 
-   cercaValutazione(cod_utente, cod_risposta){
+/*    cercaValutazione(cod_utente, cod_risposta){
     this.apiService.controllaGiaValutatoRisposta(cod_utente, cod_risposta).then(
       (result) => { 
        
         if(result["0"]["data"] !== null){
           this.codice_valutazione =  result["0"]["data"]["0"]["codice_valutazione"];      
-          console.log("valutazione effettuata: ", result);
-          console.log("codice valutazione", this.codice_valutazione)  ;
+       
                 }
 
         if(result["0"]["data"] === null){
@@ -696,6 +840,33 @@ export class VisualizzaDomandaPage implements OnInit {
     );
 
   }
+ */
+  cercaValutazione(cod_utente, risposte, i){
+    this.apiService.controllaGiaValutatoRisposta(cod_utente, risposte[i].codice_risposta).then(
+      (result) => { 
+        if(result["0"]["data"] !== null){
+          this.codice_valutazione =  result["0"]["data"]["0"]["codice_valutazione"];      
+          this.valutazioni.push(result["0"]["data"]["0"]);
+      
+                }
+
+        if(result["0"]["data"] === null){
+          risposte[i]['tipo_like'] = -1;
+         
+        }
+         else if(result["0"]["data"]["0"]["tipo_like"] === 1)
+         risposte[i]['tipo_like'] = 1;
+
+        else if(result["0"]["data"]["0"]["tipo_like"] === 2)
+        risposte[i]['tipo_like'] = 2;
+      },
+      (rej) => {
+     
+      }
+    );
+
+  }
+
 
 
 
@@ -779,7 +950,7 @@ export class VisualizzaDomandaPage implements OnInit {
       var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-        console.log("GIORNI ORE MINUTI SECONDI: ", days, hours, minutes, seconds);
+        //console.log("GIORNI ORE MINUTI SECONDI: ", days, hours, minutes, seconds);
       // Risultato delle conversioni messo nell'elemento con id="timeLeft"
       //TODO non mostrare valori se non avvalorati o pari a zero
      document.getElementById("timeLeft").innerHTML = days + "d " + hours + "h "
@@ -868,7 +1039,8 @@ export class VisualizzaDomandaPage implements OnInit {
 
 
   ionViewDidLeave() {
-    clearInterval(this.interval)
+    clearInterval(this.interval);
+    //this.likes = new Array();
   } 
 
  
@@ -879,6 +1051,7 @@ export class VisualizzaDomandaPage implements OnInit {
   ionViewDidEnter(){
     clearInterval(this.interval);
     this.mappingIncrement(this.timerView2);
+
   } 
  
 
