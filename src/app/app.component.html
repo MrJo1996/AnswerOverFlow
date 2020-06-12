@@ -11,9 +11,7 @@
 
     <ion-menu contentId="main-content" type="overlay" swipe-gesture="false">
 
-
       <ion-content>
-
         <div
           style="position: -webkit-sticky; position: sticky; top: 0; background-color: var(--ion-item-background);  width:100%; height: 50px; border-radius: 0px 0px 140px 140px; padding-top: 3px;">
           <ion-img id=logo src="/assets/img/logo AnswerOverFlow.png"
@@ -42,6 +40,8 @@
               [class.selected]="selectedIndex === i">
               <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
               <ion-label [class.blocked]="p.blocked">{{ p.title }}</ion-label>
+              <ion-icon *ngIf="p.title === 'Chat' && this.dataService.getNotificationsState()" color="danger" name="ellipse" style="width: 15px; height: 15px;">               
+              </ion-icon>
             </ion-item>
 
             <!-- <ion-label *ngIf="p.title === 'Chat'"><br></ion-label> -->
@@ -54,7 +54,6 @@
                 detail="false" [class.selected]="selectedIndexAccount == id">
                 <ion-icon slot="start" [ios]="page.icon + '-outline'" [md]="page.icon + '-sharp'"></ion-icon>
                 <ion-label [class.blocked]="page.blocked">{{ page.title }}</ion-label>
-                <ion-badge *ngIf="page.title === 'Chat' && this.dataService.getNotificationsState()"  color="danger"></ion-badge>
               </ion-item>
             </ion-menu-toggle>
           </div>
@@ -68,7 +67,6 @@
           </ion-icon>
           Info
         </ion-button>
-
       </ion-content>
 
 

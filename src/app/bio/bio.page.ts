@@ -175,8 +175,7 @@ export class BioPage implements OnInit {
   }
 
 
-
-
+  
   setupPush(idUtente:string) {
 
     console.log(idUtente)
@@ -192,6 +191,9 @@ export class BioPage implements OnInit {
      /*  let msg = data.payload.body;
       let title = data.payload.title;  */
       
+      this.dataService.setNotificationsState(true);
+
+
       const toast = document.createElement("ion-toast");
       toast.message = 'Hai ricevuto un messaggio';
       toast.duration = 2000;

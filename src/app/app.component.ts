@@ -283,17 +283,19 @@ export class AppComponent implements OnInit {
       switch (page) {
         case "app":
           this.selectedIndex = index;
+          if(this.appPages[index].title === 'Chat'){
+            this.dataService.setNotificationsState(false)
+          }
           this.router.navigateByUrl(this.appPages[index].url);
           this.selectedIndexAccount = -1;
           break;
         case "account":
           this.selectedIndexAccount = index;
-
           if (this.accountPages[index].title === "Logout") {
             this.alert();
           } else if (this.accountPages[index].title === "Profilo") {
-            //console.log(window.location.pathname)
-            this.dataService.emailOthers = "undefined";
+           // console.log(window.location.pathname)
+            //this.dataService.emailOthers = "undefined";
             this.router.navigateByUrl("/visualizza-profiloutente");
 
             //this.router.navigateByUrl(this.accountPages[index].url);
@@ -366,7 +368,7 @@ export class AppComponent implements OnInit {
 
       this.storage.get("utente").then((utente) => {
         //check utente logged
-        if (utente.username == null) { // login
+        if (utente.username === null) { // login
           console.log("utente non loggato", utente.username);
           this.router.navigate(['login']);
 
@@ -437,8 +439,8 @@ export class AppComponent implements OnInit {
     //console.log(idUtente)
 
     this.oneSignal.startInit('8efdc866-9bea-4b12-a371-aa01f421c4f7', '424760060101');
-    //this.oneSignal.sendTag('email', idUtente);
     this.oneSignal.sendTag('logState','unlogged');
+   
     this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.None);
 
 
@@ -450,7 +452,7 @@ export class AppComponent implements OnInit {
             
      const toast = document.createElement("ion-toast");
     
-    toast.message = 'Hai ricevuto un messaggio';
+      toast.message = 'Hai ricevuto un messaggio';
       toast.duration = 2000;
       toast.position = "top";
      // toast.style.fontSize = "20px";
@@ -465,7 +467,7 @@ export class AppComponent implements OnInit {
 
     this.oneSignal.handleNotificationOpened().subscribe(data => {
 
-    this.router.navigate(['chat']);
+    this.router.navigate(['visualizza-chat']);
     
 
 

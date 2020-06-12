@@ -18,12 +18,29 @@ export class VisualizzaProfiloPage implements OnInit {
 
   ngOnInit(){
     //visualizza frame caricamento
+
+    this.userProfileId = this.dataService.getEmailOthers();
+    this .userId = this.dataService.getEmail_Utente();
+    
     const loading = document.createElement('ion-loading');
     loading.cssClass = 'loading';
     loading.spinner = 'crescent';
-    loading.duration = 3000;
+    loading.duration = 800;
     document.body.appendChild(loading);
     loading.present();
+
+
+
+    
+    //console.log(this.userProfileId);
+    setTimeout(() => {
+    if( window.location.pathname === '/visualizza-profiloutente'){    
+        this.selectProfile(this.userId);    
+    }else{    
+        this.selectProfile(this.userProfileId);  
+    }   
+  },800)
+
   }
   
   
@@ -45,33 +62,9 @@ export class VisualizzaProfiloPage implements OnInit {
       this.userProfileId = this.dataService.getEmailOthers();
       this.userId = this.dataService.getEmail_Utente();
       
-      // this.storage.get('utente').then(data => {
-      //   this.userId = data.email;
-
-//           #172c3d
-
-// #15293a
-// #19314A
-    // }); 
      }
 
 
-     
-  ionViewWillEnter() {
-    
-    //this.userProfileId = "email"  /* this.dataService.getEmailOthers() */
-
-    this.userProfileId = this.dataService.getEmailOthers();
-    this .userId = this.dataService.getEmail_Utente();
-    console.log(this.userProfileId);
-    setTimeout(() => {
-    if(this.userProfileId === "undefined"){    
-        this.selectProfile(this.userId);    
-    }else{    
-        this.selectProfile(this.userProfileId);  
-    }   
-  },800)
-}
 
   goBack(){
     //visualizza frame caricamento
@@ -255,7 +248,7 @@ goToSettingProfile(){
   const loading = document.createElement('ion-loading');
   loading.cssClass = 'loading';
   loading.spinner = 'crescent';
-  loading.duration = 3000;
+  loading.duration = 1000;
   document.body.appendChild(loading);
   loading.present();
 

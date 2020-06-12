@@ -16,6 +16,7 @@
     background: var(--ion-color-primary);
     color:white;
     border-bottom-right-radius: 0px;;
+
 }
 
 
@@ -65,5 +66,20 @@ font-size: small;
     margin-right: 7px;
     padding: 3px;
 
+}
 
+.backgroud-chat{
+    ion-view.pane::before {
+        content: '';
+        position: absolute;
+        height: 100%;
+        width: 100%;
+       
+        background-position: top right;
+        background-repeat: no-repeat;
+        background-size: 280%;
+  }
+
+  --background: url('/assets/img/sfondo_doodle_answeroverflow_grigio_piccola4.png') no-repeat center center / cover;
+   overflow: scroll; 
 }
