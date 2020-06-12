@@ -26,7 +26,7 @@
 
 </ion-toolbar>
 
-<ion-content class="backgrounds" *ngIf="check1">
+<ion-content *ngIf="check1" style="--background: url('/assets/img/provaBack.png') no-repeat center center / cover;">
 
   <ion-segment [(ngModel)]="sezione" (ionChange)="segmentChanged($event)" value="Domande" scrollable>
     <ion-segment-button value="Domande" (click)="caricaDomande()">
@@ -125,7 +125,7 @@
 
 </ion-content>
 
-<ion-content class="backgrounds" *ngIf="check2">
+<ion-content *ngIf="check2" style="--background: url('/assets/img/provaBack.png') no-repeat center center / cover;">
 
   <ion-segment [(ngModel)]="sezione" (ionChange)="segmentChanged($event)" value="Domande" scrollable>
     <ion-segment-button value="Domande" (click)="caricaDomande()">
