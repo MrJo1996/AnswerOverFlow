@@ -923,6 +923,7 @@ export class ApiService {
     const body = {
       codice_risposta
     };
+    console.log(codice_risposta)
     return new Promise((resolve, reject) => {
       this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/togli_like', body).subscribe(
         data => {
