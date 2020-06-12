@@ -93,27 +93,11 @@ export class ProponiCategoriaPage implements OnInit {
   }
 
   goToConfirm(){
-    //Visualizza il frame di caricamento
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 1500;
-    document.body.appendChild(loading);
-    loading.present();
-
     this.dataService.setNuovaProposta(this.proposta);
     this.router.navigate(['conferma-invio-proposta']);
   }
 
   goback(){
-    //Visualizza il frame di caricamento
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 1500;
-    document.body.appendChild(loading);
-    loading.present();
-
     this.navCtrl.back();
   }
 

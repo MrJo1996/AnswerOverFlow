@@ -48,14 +48,6 @@ export class InserisciDomandaPage implements OnInit {
     public toastController: ToastController) { }
 
   ngOnInit() {
-    //Visualizza il frame di caricamento
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 1500;
-    document.body.appendChild(loading);
-    loading.present();
-
     this.apiService.prendiCategorie(this.urlCategorie).then(
       (categories) => {
         this.categoriaSettings = categories;
@@ -336,14 +328,6 @@ export class InserisciDomandaPage implements OnInit {
   //ROUTING
 
   goToCategoria() {
-    //visualizza frame caricamento
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 1500;
-    document.body.appendChild(loading);
-    loading.present();   
-
     this.router.navigate(['proponi-categoria']);
   }
 
