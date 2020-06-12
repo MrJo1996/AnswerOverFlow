@@ -1,4 +1,4 @@
-import { Component, OnInit,ViewChild,ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { PostServiceService } from "../services/post-service.service";
 import { DataService } from "../services/data.service";
 import { ApiService } from '../providers/api.service';
@@ -41,7 +41,7 @@ export class HomePage implements OnInit {
   categorie_domande = Array();
   categoria_sondaggi = Array();
   voti_sondaggi = Array();
-  titolo =  Array();
+  titolo = Array();
   sondaggi;
   domandaMailUser;//mail dell'utente che ha fatto la domanda
   domandaNomeUser = " ";//nome e cognome dell'utente che ha fatto la domanda
@@ -49,6 +49,11 @@ export class HomePage implements OnInit {
   searchingResults;
   request: Promise<any>;
   timer;
+
+  sondaggioChecker;
+  domandaChecker
+  interval;
+
   constructor(public popoverController: PopoverController,
     private menuSet: AppComponent,
     private menuCtrl: MenuController,
@@ -63,86 +68,89 @@ export class HomePage implements OnInit {
   ionViewWillEnter() {
     this.menuCtrl.enable(true);
     this.menuSet.checkUserLogged();
-    this.refresh_index=this.dataService.getRefreshIndex();
-    if(this.refresh_index == true){
+    this.refresh_index = this.dataService.getRefreshIndex();
+    if (this.refresh_index == true) {
+    }
   }
-  }
-  
-  ngOnInit(){
-   this.timer= setInterval(()=>{
-    this.update.detectChanges();
 
-    },500)
+
+  ngOnInit() {
+    this.timer.setInterval(() => {
+      this.update.detectChanges();
+
+    }, 500)
 
     this.storage.get('utente').then(data => { this.currentMailUser = data.email });
     this.visualizzaDomandaHome();
     this.visualizzaSondaggiHome();
+
   }
-  switch1_(switch_){
-    if(switch_==true)
-    this.switch = this.switch;
+  switch1_(switch_) {
+    if (switch_ == true)
+      this.switch = this.switch;
     else
-    this.switch = !(this.switch);
+      this.switch = !(this.switch);
   }
-  switch2_(switch_){
-    if(switch_==false)
-    this.switch = this.switch;
+  switch2_(switch_) {
+    if (switch_ == false)
+      this.switch = this.switch;
     else
-    this.switch = !(this.switch);
+      this.switch = !(this.switch);
   }
   //POPOVER
-  async presentPopover(ev,index,user,codice) {
+  async presentPopover(ev, index, user, codice) {
 
     if (user == this.currentMailUser) {
-      this.setPopoverMod(true,index);
+      this.setPopoverMod(true, index);
     }
     else {
-      this.setPopoverMod(false,index);
+      this.setPopoverMod(false, index);
     }
     const popover = await this.popoverController.create({
       component: PopoverComponent,
       event: ev,
       translucent: true,
-      
+
       mode: 'md',
       cssClass: 'popOver'
     });
     await popover.present();
     const { data } = await popover.onDidDismiss();
     if (data != undefined) {
-      this.checkClick1(data,index,codice);
+      this.checkClick1(data, index, codice);
     }
   }
-  checkClick1(data,index,codice){
-    if(data.item == 1){
+  checkClick1(data, index, codice) {
+    if (data.item == 1) {
       this.clickSondaggio(codice);
-    }else
-    if (data.item == 2) {
-      this.clickDomanda(codice);
-    }
+    } else
+      if (data.item == 2) {
+        this.clickDomanda(codice);
+      }
   }
-  setPopoverMod(bool,indice){
-    this.dataService.setPopoverModifica(bool,indice);
+  setPopoverMod(bool, indice) {
+    this.dataService.setPopoverModifica(bool, indice);
 
   }
   //IFINITE SCROLL
   loadMore(event) {
     setTimeout(() => {
-      if(this.switch==true){
+      if (this.switch == true) {
         this.regola_domande();
-      }else{
+      } else {
         this.regola_sondaggi();
       }
       console.log('Done');
       event.target.complete();
     }, 500);
-    
+
   }
   ionViewDidLeave() {
     clearInterval(this.timer)
   }  
   //VISUALIZZA LE ULTIME DOMANDE APERTE
   async visualizzaDomandaHome() {
+
     this.apiService.getDomandaHome().then(
       (domande) => {
         this.domande = domande;
@@ -160,25 +168,26 @@ export class HomePage implements OnInit {
     this.getUser2(domande);
     this.titoloo(domande);
   }
-titoloo(domande){
-  for(let i =0; i<domande.length; i++){
-    this.titolo[i]=domande[i].titolo;
+  titoloo(domande) {
+    for (let i = 0; i < domande.length; i++) {
+      this.titolo[i] = domande[i].titolo;
+    }
   }
-}
-  getUser1(domande){
-    for(let i =0; i<domande.length; i++){
+  getUser1(domande) {
+    for (let i = 0; i < domande.length; i++) {
       this.apiService.getProfilo(domande[i].cod_utente).then(
         (profilo1) => {
-          domande[i]['avatar']=profilo1['data']['0'].avatar;
-          domande[i]['username']=profilo1['data']['0'].username;
+          domande[i]['avatar'] = profilo1['data']['0'].avatar;
+          domande[i]['username'] = profilo1['data']['0'].username;
         },
         (rej) => {
           console.log("C'è stato un errore durante la visualizzazione del profilo");
         }
-      );}
+      );
+    }
   }
-  getUser2(domande){
-    for(let i =0; i<domande.length; i++){
+  getUser2(domande) {
+    for (let i = 0; i < domande.length; i++) {
       this.apiService.getCategoria(domande[i].cod_categoria).then(
         (categoria1) => {
           domande[i]['categoria'] = categoria1['Categoria']['data']['0'].titolo;
@@ -202,13 +211,13 @@ titoloo(domande){
   }
 
 
-  regolatore_infinite_scroll(){
+  regolatore_infinite_scroll() {
     for (this.i_domande = 0; this.i_domande < 2; this.i_domande++) {
-      if(this.domande[this.y_domande]){
+      if (this.domande[this.y_domande]) {
 
-      this.domande_regolate[this.y_domande] = this.domande[this.y_domande];
-      this.y_domande++;
-      this.update.detectChanges();
+        this.domande_regolate[this.y_domande] = this.domande[this.y_domande];
+        this.y_domande++;
+        this.update.detectChanges();
       }
       this.update.detectChanges();
 
@@ -217,25 +226,32 @@ titoloo(domande){
 
       this.sondaggi_regolati[this.y_sondaggi] = this.sondaggi[this.y_sondaggi];
 
+
+
       this.y_sondaggi++;
+
+
     }
   }
 
   regola_domande() {
     for (this.i_domande = 0; this.i_domande < 3; this.i_domande++) {
-      if(this.domande[this.y_domande]){
-      this.domande_regolate[this.y_domande] = this.domande[this.y_domande];
-      this.y_domande++;
-    }}
+      if (this.domande[this.y_domande]) {
+        this.domande_regolate[this.y_domande] = this.domande[this.y_domande];
+        this.domandaDeadlineCheck();
+        this.y_domande++;
+      }
+    }
   }
 
   regola_sondaggi() {
     for (this.i_sondaggi = 0; this.i_sondaggi < 3; this.i_sondaggi++) {
-      if(this.sondaggi[this.y_sondaggi]){
-      this.sondaggi_regolati[this.y_sondaggi] = this.sondaggi[this.y_sondaggi];
-      this.y_sondaggi++;
+      if (this.sondaggi[this.y_sondaggi]) {
+        this.sondaggi_regolati[this.y_sondaggi] = this.sondaggi[this.y_sondaggi];
+        this.sondaggioDeadlineCheck();
+        this.y_sondaggi++;
+      }
     }
-  }
   }
 
   //VISUALIZZA GLI ULTIMI SONDAGGI APERTI
@@ -246,6 +262,7 @@ titoloo(domande){
         this.sondaggi = sondaggi; //assegno alla variabile locale il risultato della chiamata. la variabile sarà utilizzata nella stampa in HTML
         this.getUserSondaggio(this.sondaggi);
         this.regola_sondaggi();
+
       },
       (rej) => {
         console.log("C'è stato un errore durante la visualizzazione");
@@ -257,23 +274,24 @@ titoloo(domande){
     this.getUser4(sondaggi)
   }
 
-  getUser3(sondaggi){
-    for(let i =0; i<sondaggi.length; i++){
+  getUser3(sondaggi) {
+    for (let i = 0; i < sondaggi.length; i++) {
       this.apiService.getProfilo(sondaggi[i].cod_utente).then(
         (profilo1) => {
-          sondaggi[i]['username']=profilo1['data']['0'].username;
-          sondaggi[i]['avatar']=profilo1['data']['0'].avatar;
+          sondaggi[i]['username'] = profilo1['data']['0'].username;
+          sondaggi[i]['avatar'] = profilo1['data']['0'].avatar;
         },
         (rej) => {
           console.log("C'è stato un errore durante la visualizzazione del profilo");
         }
       );
-  }}
-  getUser4(sondaggi){
-    for(let i =0; i<sondaggi.length; i++){
+    }
+  }
+  getUser4(sondaggi) {
+    for (let i = 0; i < sondaggi.length; i++) {
       this.apiService.getCategoria(sondaggi[i].cod_categoria).then(
         (categoria2) => {
-          sondaggi[i]['categoria']=categoria2['Categoria']['data']['0'].titolo;
+          sondaggi[i]['categoria'] = categoria2['Categoria']['data']['0'].titolo;
         },
         (rej) => {
           console.log("C'è stato un errore durante la visualizzazione");
@@ -293,7 +311,7 @@ titoloo(domande){
       }
     );
   }
-  
+
   //LINK ALLE PAGINE
   //link a visualizza domanda
   clickDomanda(domanda_codice) {
@@ -332,6 +350,10 @@ titoloo(domande){
     console.log(this.dataService.setEmailOthers);
     this.router.navigate(['/visualizza-profilo']);
   }
+
+  clickProfiloUtente() {
+    this.router.navigate(['/visualizza-profiloutente']);
+  }
   //link a modifica domanda
   clickModificaDomanda(domanda_codice) {
     this.dataService.setCod_domanda(domanda_codice);
@@ -351,7 +373,7 @@ titoloo(domande){
     }, 2000);
   }
 
-  doRefresh2(){
+  doRefresh2() {
     window.location.reload();
   }
   refresh() {
@@ -366,10 +388,52 @@ titoloo(domande){
     this.router.navigate(['/search-results']);
   }
 
-  openMenu(){
+  openMenu() {
     this.menuCtrl.open();
   }
+
   formatsDate: string[] = [
-    'd MMM y, H:mm'    ];
+    'd MMM y, H:mm'];
+
+
+  sondaggioDeadlineCheck() {
+
+    var appoggio1 = [];
+    appoggio1 = this.sondaggi_regolati;
+
+      for (var i = 0; i < appoggio1.length; i++) {
+
+        var date = new Date(appoggio1[i].dataeora.toLocaleString());
+        var timer = appoggio1[i].timer;
+        var dateNow = new Date().getTime();
+        var time2 = date.getTime();
+        var seconds = new Date('1970-01-01T' + timer + 'Z').getTime();
+        var diff = dateNow - time2;
+
+        this.sondaggi_regolati[i].sondaggioChecker = diff > seconds;
+      
+    }
+  }
+
+  domandaDeadlineCheck() {
+
+    var appoggio2 = [];
+    appoggio2 = this.domande_regolate;
+
+      for (var i = 0; i < appoggio2.length; i++) {
+
+        var date = new Date(appoggio2[i].dataeora.toLocaleString());
+        var timer = appoggio2[i].timer;
+        var dateNow = new Date().getTime();
+        var time2 = date.getTime();
+        var seconds = new Date('1970-01-01T' + timer + 'Z').getTime();
+        var diff = dateNow - time2;
+
+        this.domande_regolate[i].domandaChecker = diff > seconds;
+      
+    }
+  }
+
+
 }
 

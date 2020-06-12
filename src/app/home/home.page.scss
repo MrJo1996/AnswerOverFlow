@@ -40,31 +40,21 @@
     color: #97a9c5
 }
 
-.username_text_style{
-    //font-size: 1.8rem;
-    font-size: 1rem;
-    //color: white;
-    color: DodgerBlue;
-}
 
-.icon-avatar{
-    max-width: 30px; 
-    max-height: 30px;
-   margin-right: 7px;
-   //padding: 3px;
-
-
-}
 
 .icon_list_style{
     //padding-left: 0.5rem;
     padding-right: 0.5rem;
     font-size: 1.5rem;
-    color: #97a9c5
-
+    color: #97a9c5;
 
 }
-.searchbar-search-icon { display:none; width:0; height:0; }
+.searchbar-search-icon {
+   display:none; 
+   /* width:0; 
+   height:0; */
+   align-items: center;
+  }
 
 ion-title {
     text-align: center;
@@ -93,41 +83,42 @@ ion-slides{
     background-color: transparent;
   }
 
-  .homebarup {
-    width: 100%;
-    height: 15px;
-    background-size: 100%;
-    background: -webkit-linear-gradient(rgb(123, 131, 146),transparent);
-  }
+//CLASS
 
-  .homebar {
+.cardClass {
     background-size: 100%;
     background: -webkit-linear-gradient(#19314A,transparent);
-  }
-
-  .homebardown {
-    width: 100%;
-    height: 15px;
-    background-size: 100%;
-    background: -webkit-linear-gradient(0.25turn,DodgerBlue,transparent);
-  }
-
-  .backgrounds2 {
-    background-size: 100%;
-    background: -webkit-linear-gradient(0.25turn,DodgerBlue,transparent);
-  }
-
-  .iconClass1{
-
-    font-size: 1.5rem;
-    color: #97a9c5
-
-  }
-  
-  .description_text{
-
-    font-size: 1rem;
-    color: #97a9c5
-
 }
 
+.description_text{
+  font-size: 1rem;
+  color: #97a9c5
+}
+
+.lockOpen{
+  font-size: 25px;
+  padding-right: 5px;
+  color:green
+}
+
+.lockClosed{
+  font-size: 25px;
+  color: red
+}
+
+.usernameClass{
+    font-size: 1rem;
+    color: DodgerBlue;
+}
+
+.avatarClass{
+    width: 23px;
+    height: 23px;
+    border: 1px solid !important;
+    border-radius: 50% !important;
+    margin: 5px;
+} 
+
+.iconClass{
+  font-size: 25px;
+} 
