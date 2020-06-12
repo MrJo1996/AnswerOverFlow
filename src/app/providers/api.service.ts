@@ -456,10 +456,9 @@ export class ApiService {
     });
   }
 
-  inserisciSondaggio(URL: string, timer: string, dataeora: Data, cod_utente: string, titolo: string, cod_categoria: number) {
+  inserisciSondaggio(URL: string, timer: string, cod_utente: string, titolo: string, cod_categoria: number) {
     const body = {
       timer,
-      dataeora,
       titolo,
       cod_utente,
       cod_categoria

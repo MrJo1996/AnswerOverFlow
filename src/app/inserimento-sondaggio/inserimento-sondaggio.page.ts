@@ -27,10 +27,9 @@ export class InserimentoSondaggioPage implements OnInit {
   categorie: any;
   //parametri per le funzioni
   sondaggioInserito: number;
-  categoriaScelta;
   titolo: string = "";
   timerToPass: string = "";
-  dataeora: any;
+  categoriaScelta;
 
   categoriaView;
   categoriaSettings: any = [];
@@ -59,22 +58,13 @@ export class InserimentoSondaggioPage implements OnInit {
     private menuCtrl: MenuController
   ) {}
 
-ngOnInit() {
-  //visualizza frame caricamento
-  const loading = document.createElement('ion-loading');
-  loading.cssClass = 'loading';
-  loading.spinner = 'crescent';
-  loading.duration = 1500;
-  document.body.appendChild(loading);
-  loading.present();
-}
+ngOnInit() {}
 
   ionViewWillEnter() {
-    // this.storage.get("utente").then((data) => {
-    //   console.log(data)
-    //   this.emailUtente = data.email;
-    // });
-    this.emailUtente = this.dataService.getEmail_Utente();
+    this.storage.get("utente").then((data) => {
+      console.log(data);
+      this.emailUtente = data.email;
+    });
     this.service.prendiCategorie(this.urlCategorie).then(
       (categories) => {
         this.categoriaSettings = categories;
@@ -103,14 +93,6 @@ ngOnInit() {
 
   //----------------Routers----------------
   switchCategoria() {
-    //visualizza frame caricamento
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 1500;
-    document.body.appendChild(loading);
-    loading.present();
-
     this.router.navigate(["proponi-categoria"]);
   }
   goHome() {
@@ -145,27 +127,20 @@ ngOnInit() {
     let scelteScorrette = false;
     let errMex = "Non hai inserito";
 
-    var today = new Date();
-    var date =
-      today.getFullYear() +
-      "-" +
-      (today.getMonth() + 1) +
-      "-" +
-      today.getDate();
-    var time =
-      today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-    this.dataeora = date + " " + time;
-
     if (this.stringDescriptionChecker(this.titolo)) {
       datoMancante = true;
       errMex = errMex + " il titolo";
     }
+
     if (this.titolo.length > 299) {
       troppoLungo = true;
     }
 
     for (let scelta of this.scelte) {
-      if (this.checkIfThereAreItalianBadWords(scelta["value"]) || this.checkIfThereAreEnglishBadWords(scelta["value"])) {
+      if (
+        this.checkIfThereAreItalianBadWords(scelta["value"]) ||
+        this.checkIfThereAreEnglishBadWords(scelta["value"])
+      ) {
         scelteScorrette = true;
       }
       if (this.stringDescriptionChecker(scelta["value"])) {
@@ -212,7 +187,7 @@ ngOnInit() {
     }
   }
 
-  //----------------Alert----------------
+  //----------------Alert di inserimento----------------
   async inserisciSondaggio(
     datiMancanti: Boolean,
     troppoLungo: Boolean,
@@ -220,31 +195,21 @@ ngOnInit() {
     textAlert: string
   ) {
     if (datiMancanti) {
-      const toast = document.createElement("ion-toast");
-      toast.message = "ERRORE! " + textAlert + "!";
-      toast.duration = 2000;
-      toast.position = "top";
-      toast.color = "danger";
-      document.body.appendChild(toast);
-      return toast.present();
-    } else if (this.checkIfThereAreItalianBadWords(this.titolo) || this.checkIfThereAreEnglishBadWords(this.titolo) || scelteScorrette) {
-      const toast = document.createElement("ion-toast");
-      toast.message =
-        "ERRORE! Hai inserito una o più parole non consentite. Rimuoverle per andare avanti!";
-      toast.duration = 2000;
-      toast.position = "top";
-      toast.color = "danger";
-      document.body.appendChild(toast);
-      return toast.present();
+      this.toast("ERRORE! " + textAlert + "!", "danger");
+    } else if (
+      this.checkIfThereAreItalianBadWords(this.titolo) ||
+      this.checkIfThereAreEnglishBadWords(this.titolo) ||
+      scelteScorrette
+    ) {
+      this.toast(
+        "ERRORE! Hai inserito una o più parole non consentite. Rimuoverle per andare avanti!",
+        "danger"
+      );
     } else if (troppoLungo) {
-      const toast = document.createElement("ion-toast");
-      toast.message =
-        "ERRORE! Uno dei campi inseriti è troppo lungo, eliminare dei caratteri per inserire il sondaggio!";
-      toast.duration = 2000;
-      toast.position = "top";
-      toast.color = "danger";
-      document.body.appendChild(toast);
-      return toast.present();
+      this.toast(
+        "ERRORE! Uno dei campi inseriti è troppo lungo, eliminare dei caratteri per inserire il sondaggio!",
+        "danger"
+      );
     } else {
       const alert = await this.alertController.create({
         header: "Confermi il sondaggio?",
@@ -263,7 +228,7 @@ ngOnInit() {
               console.log("Confirm Okay");
               this.postInvio();
               this.goHome();
-              this.toastPositivo();
+              this.toast("Sondaggio pubblicato!", "success");
             },
           },
         ],
@@ -272,24 +237,12 @@ ngOnInit() {
     }
   }
 
-  toastPositivo() {
-    const toast = document.createElement("ion-toast");
-    toast.message =
-      "Sondaggio pubblicato!";
-    toast.duration = 2000;
-    toast.position = "top";
-    toast.color = "success";
-    document.body.appendChild(toast);
-    return toast.present();
-  }
-
   //----------------Post Finale----------------
   async postInvio() {
     this.service
       .inserisciSondaggio(
         this.url,
         this.timerToPass,
-        this.dataeora,
         this.emailUtente,
         this.titolo,
         this.categoriaScelta
@@ -459,7 +412,17 @@ ngOnInit() {
     return check;
   }
 
-  openMenu(){
+  toast(txt: string, color: string) {
+    const toast = document.createElement("ion-toast");
+    toast.message = txt;
+    toast.duration = 2000;
+    toast.position = "top";
+    toast.color = color;
+    document.body.appendChild(toast);
+    return toast.present();
+  }
+
+  openMenu() {
     this.menuCtrl.open();
   }
 }
