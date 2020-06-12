@@ -150,7 +150,7 @@ async salvaPassword() {
         loading.duration = 2500;
         document.body.appendChild(loading);
         loading.present();
-          this.router.navigate(['visualizza-profilo']);
+        this.navCtrl.back();
         }
       }
     ]
@@ -168,14 +168,7 @@ openMenu(){
 }
 
 goback(){
-  //visualizza frame caricamento
-  const loading = document.createElement('ion-loading');
-  loading.cssClass = 'loading';
-  loading.spinner = 'crescent';
-  loading.duration = 2500;
-  document.body.appendChild(loading);
-  loading.present();
-  this.router.navigate(['modifica-profilo']);
+  this.navCtrl.back();
 }
 
 }

@@ -16,7 +16,9 @@ import {Storage} from '@ionic/storage';
 })
 export class VisualizzaProfiloPage implements OnInit {
 
-  ngOnInit(){
+
+  ngOnInit() {}
+  ionViewWillEnter(){
     //visualizza frame caricamento
 
     this.userProfileId = this.dataService.getEmailOthers();

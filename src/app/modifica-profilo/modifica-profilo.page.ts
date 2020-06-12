@@ -18,14 +18,14 @@ import { PostServiceService } from "../services/post-service.service";
 export class ModificaProfiloPage implements OnInit {
   email: string;
   avatar: string;
-  objUtente: any[] = [
+  objUtente: any = 
     {
       username: "",
       nome: "",
       cognome: "",
       avatar: "",
-    },
-  ];
+      email: ""
+    };
 
   usernameToPass: string;
   nomeToPass: string;
@@ -59,6 +59,7 @@ export class ModificaProfiloPage implements OnInit {
   ngOnInit() {
   }
 
+  //Controlla se l'username inserito è disponibile, illumina l'icon in base alla risposta del server
   checkForUser(usernameInserted) {
     console.log(this.usernameToPass);
     let postData = {
@@ -140,16 +141,9 @@ export class ModificaProfiloPage implements OnInit {
   }
 
   goBack() {
-    //visualizza frame caricamento
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 3000;
-    document.body.appendChild(loading);
-    loading.present();
-
     this.dataService.settaTemporaryAvatar(undefined);
-    this.router.navigate(['/visualizza-profilo'])
+    // this.router.navigate(['/visualizza-profilo'])
+    this.navCtrl.back();
   }
 
   async popupConfermaModificaProfilo() {
@@ -216,6 +210,7 @@ export class ModificaProfiloPage implements OnInit {
       this.dataService.setNome(this.nomeToPass);
       this.dataService.setCognome(this.cognomeToPass);
       this.dataService.setAvatarUtente(this.avatar);
+      this.dataService.setEmail_Utente(this.email);
       console.log(this.usernameToPass);
       this.objUtente["username"] = this.usernameToPass;
       this.objUtente["nome"] = this.nomeToPass;
@@ -223,6 +218,8 @@ export class ModificaProfiloPage implements OnInit {
       this.objUtente["avatar"] = this.avatar;
       this.objUtente["email"] = this.email;
       this.storage.set("utente", this.objUtente);
+      this.storage.get("utente").then ((data) => {console.log("STORAGE ATTUALE", data)})
+      console.log("Email attuale nel data service",this.dataService.getEmail_Utente())
 
       if (this.password) {
         this.apiService
