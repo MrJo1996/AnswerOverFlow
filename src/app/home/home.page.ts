@@ -75,7 +75,7 @@ export class HomePage implements OnInit {
 
 
   ngOnInit() {
-    this.timer.setInterval(() => {
+    this.timer=setInterval(() => {
       this.update.detectChanges();
 
     }, 500)
