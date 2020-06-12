@@ -113,9 +113,12 @@ export class AppComponent implements OnInit {
     public navCtrl: NavController,
     private menuCtrl: MenuController,
     private oneSignal: OneSignal
-
   ) {
     this.initializeApp();
+
+    //Do task when no internet connection
+    this.toast("Connessione di rete assente", "danger");
+
   }
 
   ionViewWillEnter() { }
@@ -283,7 +286,7 @@ export class AppComponent implements OnInit {
       switch (page) {
         case "app":
           this.selectedIndex = index;
-          if(this.appPages[index].title === 'Chat'){
+          if (this.appPages[index].title === 'Chat') {
             this.dataService.setNotificationsState(false)
           }
           this.router.navigateByUrl(this.appPages[index].url);
@@ -294,7 +297,7 @@ export class AppComponent implements OnInit {
           if (this.accountPages[index].title === "Logout") {
             this.alert();
           } else if (this.accountPages[index].title === "Profilo") {
-           // console.log(window.location.pathname)
+            // console.log(window.location.pathname)
             //this.dataService.emailOthers = "undefined";
             this.router.navigateByUrl("/visualizza-profiloutente");
 
@@ -373,13 +376,15 @@ export class AppComponent implements OnInit {
           this.router.navigate(['login']);
 
         } else { //  home
-         /*  this.dataService.setUsername(utente.username);
-          this.dataService.setNome(utente.nome);
-          this.dataService.setCognome(utente.cognome); */
+          /*  this.dataService.setUsername(utente.username);
+           this.dataService.setNome(utente.nome);
+           this.dataService.setCognome(utente.cognome); */
           // this.dataService.setAvatarUtente(data.data[0]["avatar"]);
           // console.log(this.dataService.getAvatar());
+          //SET VAR AL SERVICE 
 
           this.router.navigate(['home']);
+          this.toast("Bentornato " + utente.username + "!", "success");
           console.log("utente logged in", utente.username, " ", utente.nome, " ", utente.cognome);
         }
         console.log("STORAGE JO user: ", utente.username);
@@ -393,7 +398,7 @@ export class AppComponent implements OnInit {
     });
   }
 
-  
+
 
 
 
@@ -439,43 +444,51 @@ export class AppComponent implements OnInit {
     //console.log(idUtente)
 
     this.oneSignal.startInit('8efdc866-9bea-4b12-a371-aa01f421c4f7', '424760060101');
-    this.oneSignal.sendTag('logState','unlogged');
-   
+    this.oneSignal.sendTag('logState', 'unlogged');
+
     this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.None);
 
 
     this.oneSignal.handleNotificationReceived().subscribe(data => {
-      
-    
+
+
       this.dataService.setNotificationsState(true);
-    
-            
-     const toast = document.createElement("ion-toast");
-    
+
+
+      const toast = document.createElement("ion-toast");
+
       toast.message = 'Hai ricevuto un messaggio';
       toast.duration = 2000;
       toast.position = "top";
-     // toast.style.fontSize = "20px";
+      // toast.style.fontSize = "20px";
       toast.color = "danger";
       toast.style.textAlign = "center";
       document.body.appendChild(toast);
-     
-      return toast.present(); 
+
+      return toast.present();
 
     });
 
 
     this.oneSignal.handleNotificationOpened().subscribe(data => {
 
-    this.router.navigate(['visualizza-chat']);
-    
+      this.router.navigate(['visualizza-chat']);
+
 
 
     });
 
     this.oneSignal.endInit();
-    
+
   }
 
-
+  toast(txt: string, color: string) {
+    const toast = document.createElement("ion-toast");
+    toast.message = txt;
+    toast.duration = 2000;
+    toast.position = "top";
+    toast.color = color;
+    document.body.appendChild(toast);
+    return toast.present();
+  }
 }
