@@ -16,9 +16,10 @@ import { IonicStorageModule } from '@ionic/storage';
 import { PopoverComponent } from "./popover/popover.component"
 
 import { OneSignal } from '@ionic-native/onesignal/ngx';
+import { Network } from '@ionic-native/network/ngx';
 
 @NgModule({
-  declarations: [AppComponent,PopoverComponent],
+  declarations: [AppComponent, PopoverComponent],
   entryComponents: [PopoverComponent],
   imports: [
     BrowserModule,
@@ -32,8 +33,9 @@ import { OneSignal } from '@ionic-native/onesignal/ngx';
     StatusBar,
     SplashScreen,
     OneSignal,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    Network
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

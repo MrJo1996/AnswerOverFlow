@@ -7,11 +7,9 @@ import { DataService } from "../app/services/data.service";
 import { Router } from "@angular/router";
 import { Storage } from "@ionic/storage";
 import { AlertController } from "@ionic/angular";
-
 import { OneSignal } from '@ionic-native/onesignal/ngx';
-
-
 import { timer } from "rxjs/observable/timer"; //splash
+import { Network } from '@ionic-native/network/ngx';
 
 @Component({
   selector: "app-root",
@@ -112,13 +110,17 @@ export class AppComponent implements OnInit {
     public dataService: DataService,
     public navCtrl: NavController,
     private menuCtrl: MenuController,
-    private oneSignal: OneSignal
+    private oneSignal: OneSignal,
+    private network: Network
   ) {
+
     this.initializeApp();
 
-    //Do task when no internet connection
-    this.toast("Connessione di rete assente", "danger");
-
+    //Check connessione (provider in app.module)
+    this.network.onDisconnect().subscribe(() => {
+      console.log("Ombo");
+      this.toast("Nessuna connessione ad Internet.", "danger");
+    });
   }
 
   ionViewWillEnter() { }
@@ -256,30 +258,8 @@ export class AppComponent implements OnInit {
     this.cognome = this.dataService.getCognome()
     this.username = this.dataService.getUsername()
     this.avatar = this.dataService.getAvatar()
-    // this.storage.get('utente').then(utente => {
-    //   this.nome = utente.nome;
-    //   this.cognome = utente.cognome;
-    //   this.username = utente.username;
-    //   this.avatar = utente.avatar;
-    // });
   }
 
-  /*  switch2 (index) {
-
-    //this.selectedIndexAccount = index;
-    this.selectedIndex = index;
-
-    
-    if (this.appPages[index].title === "Logout") {
-      this.alert();
-    } else  if(this.appPages[index].title === "Visualizza profilo") {
-      this.dataService.emailOthers = "undefined";
-      this.router.navigateByUrl(this.appPages[index].url);
-    } else{
-        this.router.navigateByUrl(this.appPages[index].url);
-      }
-
-  } */
 
   switch(index, page) {
     if (this.utenteLogged) {
@@ -370,22 +350,18 @@ export class AppComponent implements OnInit {
       }
 
       this.storage.get("utente").then((utente) => {
-        //check utente logged
-        if (utente.username === null) { // login
+        //Check utente logged
+        if (utente.username === null) { // LOGIN
           console.log("utente non loggato", utente.username);
           this.router.navigate(['login']);
 
-        } else { //  home
-          /*  this.dataService.setUsername(utente.username);
-           this.dataService.setNome(utente.nome);
-           this.dataService.setCognome(utente.cognome); */
-          // this.dataService.setAvatarUtente(data.data[0]["avatar"]);
-          // console.log(this.dataService.getAvatar());
+        } else { //  HOME
           //SET VAR AL SERVICE 
+          this.dataService.setEmail_Utente(utente.email);
 
           this.router.navigate(['home']);
           this.toast("Bentornato " + utente.username + "!", "success");
-          console.log("utente logged in", utente.username, " ", utente.nome, " ", utente.cognome);
+
         }
         console.log("STORAGE JO user: ", utente.username);
       });
@@ -393,7 +369,6 @@ export class AppComponent implements OnInit {
     });
 
     this.storage.get("session").then((data) => {
-      console.log("SESSION:" + data);
       this.dataService.setSession(data);
     });
   }
