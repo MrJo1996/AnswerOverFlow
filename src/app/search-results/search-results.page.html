@@ -1,251 +1,252 @@
 <ion-header>
 
   <ion-searchbar placeholder={{keyRicerca}} [(ngModel)]="keywordToSearch" (search)="ricerca($event)"></ion-searchbar>
- 
-   
- 
- <ion-chip (click)="clickFilter()" color="primary">
-   <ion-icon name="filter"></ion-icon>
-   <ion-label>FILTRI</ion-label>
- </ion-chip>
- 
- 
- 
-   <div *ngIf="!isFiltered">
-     <div *ngIf="filters['tipo'] != 'utente'">
-       <ion-segment value="domande">
-         <ion-segment-button value="domande" (click)="viewDomande()">
-           <ion-label>Domande({{numDomande}})</ion-label>
-         </ion-segment-button>
-         <ion-segment-button value="sondaggi" (click)="viewSondaggi()">
-           <ion-label>Sondaggi({{numSondaggi}})</ion-label>
-         </ion-segment-button>
-         <ion-segment-button value="utenti" (click)="viewUtenti()">
-           <ion-label>Utenti({{numUtenti}})</ion-label>
-         </ion-segment-button>
-       </ion-segment>
-     </div>
-   </div>
- 
- 
-   <div *ngIf="isFiltered">
-     <ion-grid>
-       <ion-row>
-         <div *ngIf="filters['tipo'] != '' ">
-           <div *ngIf="filters['tipo'] == 'domanda' ">
-             <ion-chip color="primary">
-               <ion-icon name="reader"></ion-icon>
-               <ion-label>{{filters['tipo']}}</ion-label>
-             </ion-chip>
-           </div>
-           <div *ngIf="filters['tipo'] == 'sondaggio' ">
-             <ion-chip color="primary">
-               <ion-icon name="trail-sign"></ion-icon>
-               <ion-label>{{filters['tipo']}}</ion-label>
-             </ion-chip>
-           </div>
-           <div *ngIf="filters['tipo'] == 'utente' ">
-             <ion-chip color="primary">
-               <ion-icon name="person"></ion-icon>
-               <ion-label>{{filters['tipo']}}</ion-label>
-             </ion-chip>
-           </div>
-         </div>
-         &nbsp;
- 
-         <div *ngIf="filters['categoria'] != '' ">
-           <ion-chip color="secondary">
-             <ion-icon name="file-tray-full-outline"></ion-icon>
-             <ion-label>{{filters['categoria']}}</ion-label>
-           </ion-chip>
-         </div>
-         &nbsp;
- 
-         <div *ngIf="filters['status'] == 'both' ">
-           <ion-chip color="tertiary">
-             <ion-icon name="repeat-outline"></ion-icon>
-             <ion-label>aperti/chiusi</ion-label>
-           </ion-chip>
-         </div>
- 
-         <div *ngIf="filters['status'] == 'closed' ">
-           <ion-chip color="tertiary">
-             <ion-icon name="lock-closed-outline"></ion-icon>
-             <ion-label>chiusi</ion-label>
-           </ion-chip>
-         </div>
- 
-         <div *ngIf="filters['status'] == 'open' ">
-           <ion-chip color="tertiary">
-             <ion-icon name="lock-open-outline"></ion-icon>
-             <ion-label>aperti</ion-label>
-           </ion-chip>
-         </div>
-       </ion-row>
-     </ion-grid>
-   </div>
- 
-   <div *ngIf="filters['tipo'] == 'utente'">
-     <ion-chip color="primary">
-       <ion-icon name="person"></ion-icon>
-       <ion-label>{{filters['tipo']}}</ion-label>
-     </ion-chip>
-   </div>
- 
- </ion-header>
- 
- 
- <ion-content>
- 
-   <div *ngIf="domandeButton == true || filters['tipo'] == 'domanda'">
- <div *ngIf="numDomande != 0; else nullArrayDomande">
-     <ion-list *ngFor="let domanda of domandeSearched; let i = index">
- 
-     <!--   <div *ngIf="categorie[i] == filters['categoria']"> -->
- 
-         <ion-card (click)="clickDomanda(domanda.codice_domanda)" class= "card">
-           <ion-card-header>
-             <ion-card-title>{{domanda.titolo}}</ion-card-title>
-             <ion-card-subtitle> <ion-chip color="primary" style="
-              margin-left: 0px"><ion-icon name="file-tray-full-outline"></ion-icon><ion-label>
-              {{categorie[i]}}</ion-label></ion-chip></ion-card-subtitle>
 
- 
-           </ion-card-header>
- 
-           <ion-card-content>
-             <div *ngIf="domanda.descrizione.length>80; else noLongerThan80">
-               {{domanda.descrizione.substring(0,80)}}...
-             </div>
- 
-             <!-- ELSE -->
-             <ng-template #noLongerThan80>
-               <div>
-                 {{domanda.descrizione}}
-               </div>
-             </ng-template>
- 
-           </ion-card-content>
-         </ion-card>
- <!--       </div>
-  -->    </ion-list>
- </div>
- </div>
- <ng-template #nullArrayDomande>
-  <ion-card
-  style="position:absolute; width: 390px; text-align: center;">
-    <ion-text><h1 style= "margin-bottom:20px; margin-left: 10px; margin-right: 10px; font-size: 1.2rem">
-        Nessun risultato di ricerca trovato</h1>
-    </ion-text>
-  </ion-card>
- </ng-template>
- 
- 
- 
- 
-   <div *ngIf="sondaggiButton == true || filters['tipo'] == 'sondaggio'">
- 
-     <div *ngIf="numSondaggi != 0; else nullArraySondaggi">
- 
-     <ion-list *ngFor="let sondaggio of sondaggiSearched; let i = index">
- 
-       <ion-card (click)="clickSondaggio(sondaggio.codice_sondaggio)" class= "card">
-         <ion-card-header>
-           <ion-card-title>{{sondaggio.titolo}}</ion-card-title>
-           <ion-card-subtitle><ion-chip color="primary" style="
-            margin-left: 0px"><ion-icon name="file-tray-full-outline"></ion-icon><ion-label>
-            {{categorieSondaggi[i]}}</ion-label></ion-chip></ion-card-subtitle>
- 
-         </ion-card-header>
- 
- 
-       </ion-card>
- 
-     </ion-list>
-   </div>
- 
- </div>
- <ng-template #nullArraySondaggi>
-  <ion-card
-  style="position:absolute; width: 390px; text-align: center;">
-    <ion-text><h1 style= "margin-bottom:20px; margin-left: 10px; margin-right: 10px; font-size: 1.2rem">
-        Nessun risultato di ricerca trovato</h1>
-    </ion-text>
-  </ion-card>
- </ng-template>
- 
-   <div *ngIf="utentiButton == true || filters['tipo'] == 'utente'">
- 
-     <div *ngIf="numUtenti != 0; else nullArrayUtenti">
-     <ion-list *ngFor="let utente of utentiSearched; let i = index">
+  <ion-chip (click)="clickFilter()" color="primary">
+    <ion-icon name="filter"></ion-icon>
+    <ion-label>FILTRI</ion-label>
+  </ion-chip>
 
-      <div *ngIf="currentMailUser!==utente.email">
 
-        <ion-card class= "card">
+  <!-- Se non è filtrata -->
+  <div *ngIf="!isFiltered">
+    <div *ngIf="filters['tipo'] != 'utente'">
+      <ion-segment value="domande">
+        <ion-segment-button value="domande" (click)="viewDomande()">
+          <ion-label>Domande({{numDomande}})</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="sondaggi" (click)="viewSondaggi()">
+          <ion-label>Sondaggi({{numSondaggi}})</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="utenti" (click)="viewUtenti()">
+          <ion-label>Utenti({{numUtenti}})</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </div>
+  </div>
+
+  <div *ngIf="isFiltered">
+    <ion-grid>
+      <ion-row>
+        <!-- Set icona tipo filtro -->
+        <div *ngIf="filters['tipo'] != '' ">
+          <div *ngIf="filters['tipo'] == 'domanda' ">
+            <ion-chip color="primary">
+              <ion-icon name="reader"></ion-icon>
+              <ion-label>{{filters['tipo']}}</ion-label>
+            </ion-chip>
+          </div>
+          <div *ngIf="filters['tipo'] == 'sondaggio' ">
+            <ion-chip color="primary">
+              <ion-icon name="trail-sign"></ion-icon>
+              <ion-label>{{filters['tipo']}}</ion-label>
+            </ion-chip>
+          </div>
+          <div *ngIf="filters['tipo'] == 'utente' ">
+            <ion-chip color="primary">
+              <ion-icon name="person"></ion-icon>
+              <ion-label>{{filters['tipo']}}</ion-label>
+            </ion-chip>
+          </div>
+        </div>
+        &nbsp;
+
+        <!-- Set icona Categoria filtro -->
+        <div *ngIf="filters['categoria'] != '' ">
+          <ion-chip color="secondary">
+            <ion-icon name="file-tray-full-outline"></ion-icon>
+            <ion-label>{{filters['categoria']}}</ion-label>
+          </ion-chip>
+        </div>
+        &nbsp;
+
+        <!-- Set icona status (chiuso, aperto, entrambi) -->
+        <div *ngIf="filters['status'] == 'both' ">
+          <ion-chip color="tertiary">
+            <ion-icon name="repeat-outline"></ion-icon>
+            <ion-label>aperti/chiusi</ion-label>
+          </ion-chip>
+        </div>
+
+        <div *ngIf="filters['status'] == 'closed' ">
+          <ion-chip color="tertiary">
+            <ion-icon name="lock-closed-outline"></ion-icon>
+            <ion-label>chiusi</ion-label>
+          </ion-chip>
+        </div>
+
+        <div *ngIf="filters['status'] == 'open' ">
+          <ion-chip color="tertiary">
+            <ion-icon name="lock-open-outline"></ion-icon>
+            <ion-label>aperti</ion-label>
+          </ion-chip>
+        </div>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <div *ngIf="filters['tipo'] == 'utente'">
+    <ion-chip color="primary">
+      <ion-icon name="person"></ion-icon>
+      <ion-label>{{filters['tipo']}}</ion-label>
+    </ion-chip>
+  </div>
+
+</ion-header>
+
+
+<ion-content>
+  <!-- Stampa domanda -->
+  <div *ngIf="domandeButton == true || filters['tipo'] == 'domanda'">
+    <div *ngIf="numDomande != 0; else nullArrayDomande">
+      <ion-list *ngFor="let domanda of domandeSearched; let i = index">
+
+        <ion-card (click)="clickDomanda(domanda.codice_domanda)" class="card">
+          <ion-card-header>
+            <ion-card-title>{{domanda.titolo}}</ion-card-title>
+            <ion-card-subtitle>
+              <ion-chip color="primary" style="
+              margin-left: 0px">
+                <ion-icon name="file-tray-full-outline"></ion-icon>
+                <ion-label>
+                  {{categorie[i]}}</ion-label>
+              </ion-chip>
+            </ion-card-subtitle>
+          </ion-card-header>
           <ion-card-content>
- 
-        <ion-item (click)="clickUtente(utente.email)" style="--background:none">
-          <ion-avatar slot="start" class="icon-avatar">
-            <img src="{{utente.avatar}}">
-          </ion-avatar>
-          <ion-label class="username_text_style">{{utente.username}}</ion-label>
-        </ion-item>
-         <div *ngIf= "utente.bio; else nullBio">
-         <ion-item style="--background:none">
-           
-           <ion-label>{{utente.bio}}</ion-label>
-       </ion-item>
-</div>
-       <ng-template #nullBio>
-        <ion-item style="--background:none">
-          <ion-label>L'utente non ha ancora una bio.</ion-label>
-      </ion-item>
-       </ng-template>
-      </ion-card-content>
-      </ion-card>
+            <div *ngIf="domanda.descrizione.length>80; else noLongerThan80">
+              {{domanda.descrizione.substring(0,80)}}...
+            </div>
 
-      </div>
+            <!-- ELSE -->
+            <ng-template #noLongerThan80>
+              <div>
+                {{domanda.descrizione}}
+              </div>
+            </ng-template>
 
-      <div *ngIf="currentMailUser==utente.email" >
+          </ion-card-content>
+        </ion-card>
+        
+      </ion-list>
+    </div>
+  </div>
 
-        <ion-card class= "card">
-          <ion-card-content>
- 
-        <ion-item (click)="clickUtente(utente.email)" style="--background:none">
-          <ion-avatar slot="start" class="icon-avatar">
-            <img src="{{utente.avatar}}">
-          </ion-avatar>
-          <ion-label class="username_text_style">TU</ion-label>
-        </ion-item >
-        <div *ngIf= "utente.bio; else nullBio">
-          <ion-item style="--background:none">    
-            <ion-label>{{utente.bio}}</ion-label>
-        </ion-item>
- </div>
-        <ng-template #nullBio>
-         <ion-item style="--background:none">
-           <ion-label>Non hai ancora una bio.</ion-label>
-       </ion-item>
-        </ng-template>
-      </ion-card-content>
+  <ng-template #nullArrayDomande>
+    <ion-card style="position:absolute; width: 390px; text-align: center;">
+      <ion-text>
+        <h1 style="margin-bottom:20px; margin-left: 10px; margin-right: 10px; font-size: 1.2rem">
+          Nessun risultato di ricerca trovato</h1>
+      </ion-text>
     </ion-card>
-       </div>
- 
-     </ion-list>
-   </div>
- </div>
- <ng-template #nullArrayUtenti>
-  <ion-card
-  style="position:absolute; width: 390px; text-align: center;">
-    <ion-text><h1 style= "margin-bottom:20px; margin-left: 10px; margin-right: 10px; font-size: 1.2rem">
-        Nessun risultato di ricerca trovato</h1>
-    </ion-text>
-  </ion-card>
- </ng-template>
+  </ng-template>
 
- <ion-fab vertical="bottom" horizontal="start" slot="fixed" style="opacity: 70%;">
-  <ion-fab-button size="small" (click)="openMenu()" color="light">
-    <ion-icon name="arrow-forward-circle-outline" style="opacity: 100%;"></ion-icon>
-  </ion-fab-button>
-</ion-fab>  
- </ion-content>
+
+
+  <!-- Stampa Sondaggi -->
+  <div *ngIf="sondaggiButton == true || filters['tipo'] == 'sondaggio'">
+
+    <div *ngIf="numSondaggi != 0; else nullArraySondaggi">
+
+      <ion-list *ngFor="let sondaggio of sondaggiSearched; let i = index">
+
+        <ion-card (click)="clickSondaggio(sondaggio.codice_sondaggio)" class="card">
+          <ion-card-header>
+            <ion-card-title>{{sondaggio.titolo}}</ion-card-title>
+            <ion-card-subtitle>
+              <ion-chip color="primary" style="
+            margin-left: 0px">
+                <ion-icon name="file-tray-full-outline"></ion-icon>
+                <ion-label>
+                  {{categorieSondaggi[i]}}</ion-label>
+              </ion-chip>
+            </ion-card-subtitle>
+          </ion-card-header>
+        </ion-card>
+      </ion-list>
+    </div>
+
+  </div>
+  <ng-template #nullArraySondaggi>
+    <ion-card style="position:absolute; width: 390px; text-align: center;">
+      <ion-text>
+        <h1 style="margin-bottom:20px; margin-left: 10px; margin-right: 10px; font-size: 1.2rem">
+          Nessun risultato di ricerca trovato</h1>
+      </ion-text>
+    </ion-card>
+  </ng-template>
+
+  <!-- Stampa utenti -->
+  <div *ngIf="utentiButton == true || filters['tipo'] == 'utente'">
+    <div *ngIf="numUtenti != 0; else nullArrayUtenti">
+      <ion-list *ngFor="let utente of utentiSearched; let i = index">
+
+        <div *ngIf="currentMailUser!==utente.email">
+
+          <ion-card class="card">
+            <ion-card-content>
+              <ion-item (click)="clickUtente(utente.email)" style="--background:none">
+                <ion-avatar slot="start" class="icon-avatar">
+                  <img src="{{utente.avatar}}">
+                </ion-avatar>
+                <ion-label class="username_text_style">{{utente.username}}</ion-label>
+              </ion-item>
+              <div *ngIf="utente.bio; else nullBio">
+                <ion-item style="--background:none">
+
+                  <ion-label>{{utente.bio}}</ion-label>
+                </ion-item>
+              </div>
+              <ng-template #nullBio>
+                <ion-item style="--background:none">
+                  <ion-label>L'utente non ha ancora una bio.</ion-label>
+                </ion-item>
+              </ng-template>
+            </ion-card-content>
+          </ion-card>
+
+        </div>
+
+        <div *ngIf="currentMailUser==utente.email">
+
+          <ion-card class="card">
+            <ion-card-content>
+
+              <ion-item (click)="clickUtente(utente.email)" style="--background:none">
+                <ion-avatar slot="start" class="icon-avatar">
+                  <img src="{{utente.avatar}}">
+                </ion-avatar>
+                <ion-label class="username_text_style">TU</ion-label>
+              </ion-item>
+              <div *ngIf="utente.bio; else nullBio">
+                <ion-item style="--background:none">
+                  <ion-label>{{utente.bio}}</ion-label>
+                </ion-item>
+              </div>
+              <ng-template #nullBio>
+                <ion-item style="--background:none">
+                  <ion-label>Non hai ancora una bio.</ion-label>
+                </ion-item>
+              </ng-template>
+            </ion-card-content>
+          </ion-card>
+        </div>
+      </ion-list>
+    </div>
+  </div>
+  <ng-template #nullArrayUtenti>
+    <ion-card style="position:absolute; width: 390px; text-align: center;">
+      <ion-text>
+        <h1 style="margin-bottom:20px; margin-left: 10px; margin-right: 10px; font-size: 1.2rem">
+          Nessun risultato di ricerca trovato</h1>
+      </ion-text>
+    </ion-card>
+  </ng-template>
+
+  <!-- Side menu -->
+  <ion-fab vertical="bottom" horizontal="start" slot="fixed" style="opacity: 70%;">
+    <ion-fab-button size="small" (click)="openMenu()" color="light">
+      <ion-icon name="arrow-forward-circle-outline" style="opacity: 100%;"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

@@ -17,7 +17,6 @@ export class AdvancedSearchPage implements OnInit {
   utentiBtn;
 
   //Filtri ricerca vars
-  catFilter;
   tipoFilter;
   codCategoriaFilter;
   statusOpen: boolean = false;
@@ -96,7 +95,6 @@ export class AdvancedSearchPage implements OnInit {
   clickUtente() {
     this.utentiBtn = true;
     console.log("CLICK Utente RADIO BTN")
-    this.catFilter = "utente";
 
     this.tipoFilter = "utente";
     this.codCategoriaFilter = "";
@@ -128,27 +126,12 @@ export class AdvancedSearchPage implements OnInit {
     console.log("checked Close: " + this.statusClosed);
   }
 
-  openMenu(){
+  openMenu() {
     this.menuCtrl.open();
   }
 
   //RICERCA
   ricerca() {
-    /*  var url;
-     switch (this.catFilter) {
-       case "domanda":
-         url = "ricercaDomandaKeyword";
-         console.log(url);
-         break;
-       case "utente":
-         url = "ricercaUserKeyword";
-         console.log(url);
-         break;
-       case "sondaggio":
-         url = "ricercaSondaggioKeyword";
-         console.log(url);
-         break;
-     } */
 
     //checkStatus
     if (this.statusClosed && this.statusOpen) {
@@ -185,7 +168,6 @@ export class AdvancedSearchPage implements OnInit {
   initFilters() {
     this.utentiBtn = false;
 
-    this.catFilter = "";
     this.tipoFilter = "";
     this.codCategoriaFilter = "";
     this.statusOpen = false;
