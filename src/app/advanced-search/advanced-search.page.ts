@@ -32,7 +32,9 @@ export class AdvancedSearchPage implements OnInit {
     private menuCtrl: MenuController
   ) { }
 
-  ngOnInit() {
+  ngOnInit() { this.initFilters(); }
+
+  ionViewWillEnter() {
     //visualizza frame caricamento
     const loading = document.createElement('ion-loading');
     loading.cssClass = 'loading';
@@ -42,7 +44,6 @@ export class AdvancedSearchPage implements OnInit {
     loading.present();
 
     this.initFilters();
-    console.log("onit");
     this.apiService.prendiCategorie("http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaCategorie").then(
       (categories) => {
         this.categoriaSettings = categories;
@@ -53,7 +54,6 @@ export class AdvancedSearchPage implements OnInit {
       }
     );
   }
-
   //CATEGORIA PICKER
   async showCategoriaPicker() {
 
@@ -84,6 +84,7 @@ export class AdvancedSearchPage implements OnInit {
     let picker = await this.pickerController.create(options);
     picker.present()
   }
+
   getCategorieOptions() {
     let options = [];
     this.categoriaSettings.forEach(x => {

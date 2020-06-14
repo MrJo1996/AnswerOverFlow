@@ -108,9 +108,7 @@ export class SearchResultsPage implements OnInit {
             this.numDomande = this.domandeSearched.length;
 
           } else {
-            /////////////////////77iasbflhkasbajfasblfasfaslbfadfadsgasdgadgasgsdagadggadgsdadgadgasgasgasgasgasgòadkgj. adnjadlg.bashglasgslfjasòashòfoaògohasgpòaf
-/*             this.domandeSearched = result['data'];
- */            this.checkDeadLineNotFiltered(result['data'], this.domandeSearched);
+            this.checkDeadLineNotFiltered(result['data'], this.domandeSearched);
             this.numDomande = this.domandeSearched.length;
           }
 
@@ -151,8 +149,7 @@ export class SearchResultsPage implements OnInit {
             this.numSondaggi = this.sondaggiSearched.length;
           } else {
             this.checkDeadLineNotFiltered(result['data'], this.sondaggiSearched);
-/*             this.sondaggiSearched = result['data'];
- */            this.numSondaggi = this.sondaggiSearched.length;
+            this.numSondaggi = this.sondaggiSearched.length;
           }
 
           for (var i = 0; i < this.numSondaggi; i++) {
@@ -188,8 +185,6 @@ export class SearchResultsPage implements OnInit {
         console.log('rej utenti search-res');
       }
     );
-
-
   }
 
   ionViewDidEnter() {
@@ -266,6 +261,8 @@ export class SearchResultsPage implements OnInit {
 
   ionViewDidLeave() {
     this.resetVars();
+    this.dataService.setFilters("", "", "", false); //mettere in back o btn menu
+
   }
 
   ngOnDestroy() {
