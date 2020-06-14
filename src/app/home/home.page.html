@@ -96,7 +96,7 @@
 
                                                    <!-- OTHER USER -->
 
-          <ion-toolbar *ngIf="currentMailUser!==sondaggi.cod_utente" style="--background:none; padding-bottom: 5px;">    
+          <ion-toolbar *ngIf="currentMailUser!==sondaggio.cod_utente" style="--background:none; padding-bottom: 5px;">    
 
             <ion-icon *ngIf="sondaggio.sondaggioChecker" class="lockClosed" slot="start" name="lock-closed-outline"></ion-icon>
             <ion-icon *ngIf="!sondaggio.sondaggioChecker" class="lockOpen" slot="start" name="lock-open-outline"></ion-icon>
@@ -111,7 +111,7 @@
 
                                                    <!-- CURRENT USER -->
 
-        <ion-toolbar *ngIf="currentMailUser===sondaggi.cod_utente" style="--background:none; padding-bottom: 5px;">    
+        <ion-toolbar *ngIf="currentMailUser===sondaggio.cod_utente" style="--background:none; padding-bottom: 5px;">    
 
           <ion-icon *ngIf="sondaggio.sondaggioChecker" class="lockClosed" slot="start" name="lock-closed-outline"></ion-icon>
           <ion-icon *ngIf="!sondaggio.sondaggioChecker" class="lockOpen" slot="start" name="lock-open-outline"></ion-icon>
