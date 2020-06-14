@@ -58,7 +58,7 @@ export class InserimentoSondaggioPage implements OnInit {
     private menuCtrl: MenuController
   ) {}
 
-ngOnInit() {}
+  ngOnInit() {}
 
   ionViewWillEnter() {
     this.storage.get("utente").then((data) => {
@@ -96,26 +96,13 @@ ngOnInit() {}
     this.router.navigate(["proponi-categoria"]);
   }
   goHome() {
-    //visualizza frame caricamento
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 3500;
-    document.body.appendChild(loading);
-    loading.present();
-
+    this.loadingView();
     this.router.navigate(["home"]);
     this.dataService.setRefreshIndex(true);
   }
   backButton() {
-    //visualizza frame caricamento
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 3500;
-    document.body.appendChild(loading);
-    loading.present();
-    
+    this.loadingView();
+
     this.navCtrl.back();
   }
 
@@ -424,5 +411,15 @@ ngOnInit() {}
 
   openMenu() {
     this.menuCtrl.open();
+  }
+
+  loadingView() {
+    //visualizza frame caricamento
+    const loading = document.createElement("ion-loading");
+    loading.cssClass = "loading";
+    loading.spinner = "crescent";
+    loading.duration = 3500;
+    document.body.appendChild(loading);
+    loading.present();
   }
 }
