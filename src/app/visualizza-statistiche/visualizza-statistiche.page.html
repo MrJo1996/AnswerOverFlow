@@ -12,30 +12,23 @@
 </ion-header>
 <ion-content  style="--background: url('/assets/img/provaBack.png') no-repeat center center / cover;">
 
-<ion-segment [(ngModel)]="segment" >
-  <ion-segment-button value="Domande" (click)="carica()">
+<ion-segment value="Domande" >
+  <ion-segment-button value="Domande" (click)="viewDomande()">
     <ion-label>Domande</ion-label>
   </ion-segment-button>
-  <ion-segment-button value="Risposte" (click)="caricaR()">
+  <ion-segment-button value="Risposte" (click)="viewRisposte()">
     <ion-label>Risposte</ion-label>
   </ion-segment-button>
-  <ion-segment-button value="LikeDislike" (click)="caricaLD()">
+  <ion-segment-button value="LikeDislike" (click)="viewLike()">
     <ion-label>Like&Dislike</ion-label>
   </ion-segment-button>
 </ion-segment>
 
-<ion-card-subtitle>
-<ion-textarea readonly *ngIf="check===false" class="ion-text-center">
-  Cliccando su Domande/Risposte/Like&Dislike hai la possibilità di scoprire le statistiche che stai cercando!
-</ion-textarea>
-</ion-card-subtitle>
 
-<div [ngSwitch]="segment" (ionChange)=" segmentChanged($event)" >
+
+<div *ngIf="domandeBtn == true">
   
 
-
-
-  <div *ngSwitchCase= "'Domande'">
   <ion-card color="primary">
     <ion-card>
     <ion-card-header>
@@ -65,8 +58,9 @@
     </ion-card>
     </ion-card>
 </div>
+
+<div *ngIf="risposteBtn == true">
    
-<div *ngSwitchCase= "'Risposte'">
     <ion-card  color="primary">
       <ion-card>
       <ion-card-header>
@@ -99,7 +93,7 @@
 
 
 
-    <div *ngSwitchCase= "'LikeDislike'">
+  <div *ngIf="likeBtn == true">
      
     <ion-card color="primary">
     <ion-card>
@@ -115,7 +109,7 @@
     </ion-card>
       </ion-card>
     </div>
-  </div>
+  
 
   <ion-fab vertical="bottom" horizontal="start"   slot="fixed" style="opacity: 70%; ">
     <ion-fab-button  size="small" (click)="openMenu()"  color="light">
