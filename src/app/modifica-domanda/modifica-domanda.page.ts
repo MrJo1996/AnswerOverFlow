@@ -212,7 +212,7 @@ export class ModificaDomandaPage implements OnInit {
   }
 
   stringDescriptionChecker():boolean {
-    if ((this.descrizioneToPass.length > 200) || !(this.descrizioneToPass.match(/[a-zA-Z0-9_]+/))) {
+    if (this.descrizioneToPass.length > 200) {
       return true;
     } else {
       return false;
@@ -228,7 +228,7 @@ export class ModificaDomandaPage implements OnInit {
 }
 async popupInvalidDescription(){
   const toast = document.createElement('ion-toast');
-  toast.message = 'ERRORE! Hai lasciato la descrizione vuota o hai superato la lunghezza massima!';
+  toast.message = 'ERRORE! Hai superato la lunghezza massima!';
   toast.duration = 2000;
   toast.position = "top";
   toast.style.fontSize = '20px';
