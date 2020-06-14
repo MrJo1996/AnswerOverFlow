@@ -141,8 +141,11 @@ export class VisualizzaProfiloPage implements OnInit {
     this.apiService.segnala_utente(this.segnalazione, this.profilo.username, this.profilo.email).then(
       (result) => {
         console.log("Segnalazione inviata con successo")
+        this.toast("Segnalazione inviata.", "success");
       }, (rej) => {
         console.log("Invio segnalazione non riuscito")
+        this.toast("Segnalazione non riuscita, riprovare.", "danger");
+
       }
     );
   }
@@ -265,6 +268,14 @@ export class VisualizzaProfiloPage implements OnInit {
   }
 
 
-
+  toast(txt: string, color: string) {
+    const toast = document.createElement("ion-toast");
+    toast.message = txt;
+    toast.duration = 2000;
+    toast.position = "top";
+    toast.color = color;
+    document.body.appendChild(toast);
+    return toast.present();
+  }
 
 }
