@@ -256,12 +256,15 @@ export class SearchResultsPage implements OnInit {
     this.dataService.setKeywordToSearch(this.keywordToSearch);
     this.isFiltered = false;
     this.domandeSearched = [];
+    this.sondaggiSearched=[];
+    this.utentiSearched=[];
+    
     this.ionViewWillEnter();
   }
 
   ionViewDidLeave() {
     this.resetVars();
-    this.dataService.setFilters("", "", "", false); //mettere in back o btn menu
+    //this.dataService.setFilters("", "", "", false); //da qui non permette di ricercare nuovamente secondo quei filtri
 
   }
 
@@ -294,8 +297,8 @@ export class SearchResultsPage implements OnInit {
     this.dataService.setEmailOthers(cod_utente);
     console.log(this.dataService.setEmailOthers);
 
-    this.dataService.setFilters(this.filters['tipo'], this.filters['codCategoria'], this.filters['status'], this.filters['isFiltered']);
-
+/*     this.dataService.setFilters(this.filters['tipo'], this.filters['codCategoria'], this.filters['status'], this.filters['isFiltered']);
+ */
     this.router.navigate(['/visualizza-profilo']);
   }
 
@@ -308,8 +311,8 @@ export class SearchResultsPage implements OnInit {
     loading.present();
 
     this.dataService.setCod_domanda(domanda_codice);
-    this.dataService.setFilters(this.filters['tipo'], this.filters['codCategoria'], this.filters['status'], this.filters['isFiltered']);
-
+/*     this.dataService.setFilters(this.filters['tipo'], this.filters['codCategoria'], this.filters['status'], this.filters['isFiltered']);
+ */
     this.router.navigate(['/visualizza-domanda']);
 
   }
@@ -323,8 +326,8 @@ export class SearchResultsPage implements OnInit {
     loading.present();
 
     this.dataService.codice_sondaggio = codice_sondaggio;
-    this.dataService.setFilters(this.filters['tipo'], this.filters['codCategoria'], this.filters['status'], this.filters['isFiltered']);
-
+/*     this.dataService.setFilters(this.filters['tipo'], this.filters['codCategoria'], this.filters['status'], this.filters['isFiltered']);
+ */
     this.router.navigate(['/visualizza-sondaggio']);
 
   }
