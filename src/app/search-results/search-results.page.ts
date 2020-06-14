@@ -3,7 +3,6 @@ import { DataService } from "../services/data.service";
 import { Router } from '@angular/router';
 import { ApiService } from '../providers/api.service';
 import { Storage } from "@ionic/storage";
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { MenuController } from '@ionic/angular';
 
 @Component({
@@ -109,7 +108,9 @@ export class SearchResultsPage implements OnInit {
             this.numDomande = this.domandeSearched.length;
 
           } else {
-            this.domandeSearched = result['data'];
+            /////////////////////77iasbflhkasbajfasblfasfaslbfadfadsgasdgadgasgsdagadggadgsdadgadgasgasgasgasgasgòadkgj. adnjadlg.bashglasgslfjasòashòfoaògohasgpòaf
+/*             this.domandeSearched = result['data'];
+ */            this.checkDeadLineNotFiltered(result['data'], this.domandeSearched);
             this.numDomande = this.domandeSearched.length;
           }
 
@@ -134,8 +135,7 @@ export class SearchResultsPage implements OnInit {
 
           if (this.isFiltered) {
 
-            var i;
-            for (i = 0; i < result['data'].length; i++) {
+            for (var i = 0; i < result['data'].length; i++) {
               if (this.filters['codCategoria'] != "") {
                 if (result['data'][i].cod_categoria == this.filters['codCategoria'] && result['data'][i] != undefined) {
                   //Chech stato (Aperto/Chiuso/Entrambi)
@@ -150,12 +150,12 @@ export class SearchResultsPage implements OnInit {
             }
             this.numSondaggi = this.sondaggiSearched.length;
           } else {
-            this.sondaggiSearched = result['data'];
-            this.numSondaggi = this.sondaggiSearched.length;
+            this.checkDeadLineNotFiltered(result['data'], this.sondaggiSearched);
+/*             this.sondaggiSearched = result['data'];
+ */            this.numSondaggi = this.sondaggiSearched.length;
           }
 
-          var i;
-          for (i = 0; i < this.numSondaggi; i++) {
+          for (var i = 0; i < this.numSondaggi; i++) {
             this.parseCodCatSondaggi(this.sondaggiSearched[i].cod_categoria, i);
           }
         } else {
@@ -268,6 +268,12 @@ export class SearchResultsPage implements OnInit {
     this.resetVars();
   }
 
+  ngOnDestroy() {
+    this.resetVars;
+    this.dataService.setFilters("", "", "", false); //mettere in back o btn menu
+    console.log("NEL DESTROY");
+  }
+
   clickFilter() {
     const loading = document.createElement('ion-loading');
     loading.cssClass = 'loading';
@@ -290,6 +296,7 @@ export class SearchResultsPage implements OnInit {
 
     this.dataService.setEmailOthers(cod_utente);
     console.log(this.dataService.setEmailOthers);
+
     this.dataService.setFilters(this.filters['tipo'], this.filters['codCategoria'], this.filters['status'], this.filters['isFiltered']);
 
     this.router.navigate(['/visualizza-profilo']);
@@ -369,12 +376,36 @@ export class SearchResultsPage implements OnInit {
     }
   }
 
+  checkDeadLineNotFiltered(arrayToCheck, array) {
+    for (var i = 0; i < arrayToCheck.length; i++) {
+      var date = new Date(arrayToCheck[i].dataeora.toLocaleString());
+      var timer = arrayToCheck[i].timer;
+      var dateNow = new Date().getTime();
+      var time2 = date.getTime();
+      var seconds = new Date('1970-01-01T' + timer + 'Z').getTime();
+      var diff = dateNow - time2;
+
+      var isOpen = diff > seconds;
+
+      console.log(isOpen);
+
+      if (isOpen) {
+        arrayToCheck[i]['isOpen'] = true;
+        array.push(arrayToCheck[i]);
+        console.log(arrayToCheck[i]);
+      }
+      if (!isOpen) {
+        arrayToCheck[i]['isOpen'] = false;
+        array.push(arrayToCheck[i]);
+      }
+    }
+  }
+
   resetVars() {
     //reset
     this.filters = [];
     this.filters['categoria'] = '';
     this.isFiltered = false;
-    //this.dataService.setFilters("", "", "", false); //mettere in back o btn menu
     this.domandeSearched = [];
     this.sondaggiSearched = [];
   }

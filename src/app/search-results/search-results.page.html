@@ -105,8 +105,8 @@
         <ion-card (click)="clickDomanda(domanda.codice_domanda)" class="card">
           <ion-card-header>
             <ion-toolbar style="--background:none; padding-bottom: 5px;">
-              <ion-icon *ngIf="!domanda.isOpen" class="lockOpen" slot="start" name="lock-closed-outline"></ion-icon>
-              <ion-icon *ngIf="domanda.isOpen" class="lockClosed" slot="start" name="lock-open-outline"></ion-icon>
+              <ion-icon *ngIf="!domanda.isOpen" class="lockOpen" slot="start" name="lock-open-outline"></ion-icon>
+              <ion-icon *ngIf="domanda.isOpen" class="lockClosed" slot="start" name="lock-closed-outline"></ion-icon>
               <ion-card-title>{{domanda.titolo}}</ion-card-title>
             </ion-toolbar>
             <ion-card-subtitle>
@@ -157,8 +157,8 @@
         <ion-card (click)="clickSondaggio(sondaggio.codice_sondaggio)" class="card">
           <ion-card-header>
             <ion-toolbar style="--background:none; padding-bottom: 5px;">
-            <ion-icon *ngIf="!sondaggio.isOpen" class="lockOpen" slot="start" name="lock-closed-outline"></ion-icon>
-            <ion-icon *ngIf="sondaggio.isOpen" class="lockClosed" slot="start" name="lock-open-outline"></ion-icon>
+            <ion-icon *ngIf="!sondaggio.isOpen" class="lockOpen" slot="start" name="lock-open-outline"></ion-icon>
+            <ion-icon *ngIf="sondaggio.isOpen" class="lockClosed" slot="start" name="lock-closed-outline"></ion-icon>
             <ion-card-title>{{sondaggio.titolo}}</ion-card-title>
           </ion-toolbar>
             <ion-card-subtitle>
