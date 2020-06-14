@@ -16,10 +16,6 @@ const routes: Routes = [
     loadChildren: () => import('./modifica-sondaggio/modifica-sondaggio.module').then(m => m.ModificaSondaggioPageModule)
   },
   {
-    path: 'modifica-risposta',
-    loadChildren: () => import('./modifica-risposta/modifica-risposta.module').then(m => m.ModificaRispostaPageModule)
-  },
-  {
     path: 'modifica-profilo',
     loadChildren: () => import('./modifica-profilo/modifica-profilo.module').then(m => m.ModificaProfiloPageModule)
   },
@@ -109,27 +105,27 @@ const routes: Routes = [
   },
   {
     path: 'conferma-invio-proposta',
-    loadChildren: () => import('./conferma-invio-proposta/conferma-invio-proposta.module').then( m => m.ConfermaInvioPropostaPageModule)
+    loadChildren: () => import('./conferma-invio-proposta/conferma-invio-proposta.module').then(m => m.ConfermaInvioPropostaPageModule)
   },
   {
     path: 'search-results',
-    loadChildren: () => import('./search-results/search-results.module').then( m => m.SearchResultsPageModule)
+    loadChildren: () => import('./search-results/search-results.module').then(m => m.SearchResultsPageModule)
   },
   {
     path: 'mie-attivita',
-    loadChildren: () => import('./mie-attivita/mie-attivita.module').then( m => m.MieAttivitaPageModule)
+    loadChildren: () => import('./mie-attivita/mie-attivita.module').then(m => m.MieAttivitaPageModule)
   },
   {
     path: 'scegli-avatar',
-    loadChildren: () => import('./scegli-avatar/scegli-avatar.module').then( m => m.ScegliAvatarPageModule)
+    loadChildren: () => import('./scegli-avatar/scegli-avatar.module').then(m => m.ScegliAvatarPageModule)
   },
   {
     path: 'modifica-avatar',
-    loadChildren: () => import('./modifica-avatar/modifica-avatar.module').then( m => m.ModificaAvatarPageModule)
+    loadChildren: () => import('./modifica-avatar/modifica-avatar.module').then(m => m.ModificaAvatarPageModule)
   },
   {
     path: 'advanced-search',
-    loadChildren: () => import('./advanced-search/advanced-search.module').then( m => m.AdvancedSearchPageModule)
+    loadChildren: () => import('./advanced-search/advanced-search.module').then(m => m.AdvancedSearchPageModule)
   }
 
 

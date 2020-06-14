@@ -77,8 +77,8 @@ export class HomePage implements OnInit {
 
 
   ngOnInit() {
-  // window.home = this;
-  this.timer=setInterval(() => {
+    // window.home = this;
+    this.timer = setInterval(() => {
       this.update.detectChanges();
 
     }, 500)
@@ -134,7 +134,7 @@ export class HomePage implements OnInit {
     this.dataService.setPopoverModifica(bool, indice);
 
   }
-  //IFINITE SCROLL
+  //INFINITE SCROLL
   loadMore(event) {
     setTimeout(() => {
       if (this.switch == true) {
@@ -155,7 +155,7 @@ export class HomePage implements OnInit {
     //Svuoto l'array che viene visualizzato
     this.sondaggi_regolati = []
     this.domande_regolate = [];
-  }  
+  }
   //VISUALIZZA LE ULTIME DOMANDE APERTE
   async visualizzaDomandaHome() {
 
@@ -384,7 +384,7 @@ export class HomePage implements OnInit {
     //Richiamo le funzioni che riempiono lo stack di dati da visualizzare
     this.visualizzaSondaggiHome()
     this.visualizzaDomandaHome();
-    
+
     setTimeout(() => {
       event.target.complete();
     }, 1000);
@@ -418,17 +418,17 @@ export class HomePage implements OnInit {
     var appoggio1 = [];
     appoggio1 = this.sondaggi_regolati;
 
-      for (var i = 0; i < appoggio1.length; i++) {
+    for (var i = 0; i < appoggio1.length; i++) {
 
-        var date = new Date(appoggio1[i].dataeora.toLocaleString());
-        var timer = appoggio1[i].timer;
-        var dateNow = new Date().getTime();
-        var time2 = date.getTime();
-        var seconds = new Date('1970-01-01T' + timer + 'Z').getTime();
-        var diff = dateNow - time2;
+      var date = new Date(appoggio1[i].dataeora.toLocaleString());
+      var timer = appoggio1[i].timer;
+      var dateNow = new Date().getTime();
+      var time2 = date.getTime();
+      var seconds = new Date('1970-01-01T' + timer + 'Z').getTime();
+      var diff = dateNow - time2;
 
-        this.sondaggi_regolati[i].sondaggioChecker = diff > seconds;
-      
+      this.sondaggi_regolati[i].sondaggioChecker = diff > seconds;
+
     }
   }
 
@@ -437,17 +437,17 @@ export class HomePage implements OnInit {
     var appoggio2 = [];
     appoggio2 = this.domande_regolate;
 
-      for (var i = 0; i < appoggio2.length; i++) {
+    for (var i = 0; i < appoggio2.length; i++) {
 
-        var date = new Date(appoggio2[i].dataeora.toLocaleString());
-        var timer = appoggio2[i].timer;
-        var dateNow = new Date().getTime();
-        var time2 = date.getTime();
-        var seconds = new Date('1970-01-01T' + timer + 'Z').getTime();
-        var diff = dateNow - time2;
+      var date = new Date(appoggio2[i].dataeora.toLocaleString());
+      var timer = appoggio2[i].timer;
+      var dateNow = new Date().getTime();
+      var time2 = date.getTime();
+      var seconds = new Date('1970-01-01T' + timer + 'Z').getTime();
+      var diff = dateNow - time2;
 
-        this.domande_regolate[i].domandaChecker = diff > seconds;
-      
+      this.domande_regolate[i].domandaChecker = diff > seconds;
+
     }
   }
 

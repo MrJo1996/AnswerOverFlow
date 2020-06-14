@@ -15,6 +15,8 @@ export class SearchResultsPage implements OnInit {
 
   keyRicerca;
 
+  currentMailUser;
+
   domandeSearched = [];
   sondaggiSearched = [];
   utentiSearched;
@@ -24,7 +26,6 @@ export class SearchResultsPage implements OnInit {
   numUtenti;
 
   categorie = [];
-
   categorieSondaggi = [];
 
   keywordToSearch;
@@ -36,10 +37,6 @@ export class SearchResultsPage implements OnInit {
   isFiltered: boolean = false;
   filters = [];
 
-  currentMailUser;
-
-  domandeFiltrate;
-  sondaggiFiltrati
 
   constructor(private dataService: DataService, private menuCtrl: MenuController, private router: Router, private apiService: ApiService, private storage: Storage) { }
 
@@ -61,7 +58,7 @@ export class SearchResultsPage implements OnInit {
 
     //check presenza filtri
     this.filters = this.dataService.getFilters();
-    console.log("FILTRI JO ", this.filters);
+    console.log("FILTRI ", this.filters);
 
     if (this.filters['isFiltered']) {
       this.domandeButton = false;
@@ -74,6 +71,8 @@ export class SearchResultsPage implements OnInit {
         }
       );
       this.isFiltered = true;
+    } else {
+      this.domandeButton = true;
     }
 
 
@@ -89,11 +88,24 @@ export class SearchResultsPage implements OnInit {
             var i;
             for (i = 0; i < result['data'].length; i++) {
               if (this.filters['codCategoria'] != "") {
+                //Check Categoria
                 if (result['data'][i].cod_categoria == this.filters['codCategoria'] && result['data'][i] != undefined) {
-                  this.domandeSearched.push(result['data'][i]);
+
+                  //Chech stato (Aperto/Chiuso/Entrambi)
+                  if (this.filters['status'] != 'both') {
+                    //Stato aperto/chiuso che combaciano con la categoria
+                    this.checkDeadLine(result['data'][i], this.domandeSearched);
+                  } else { //sia aperti che chiusi che combaciano con la categoria
+                    //this.domandeSearched.push(result['data'][i]);
+                    this.checkDeadLine(result['data'][i], this.domandeSearched);
+
+                  }
+
                 }
               }
             }
+            console.log("CHECK DEADLINE DOMANDE", this.domandeSearched);
+
             this.numDomande = this.domandeSearched.length;
 
           } else {
@@ -107,11 +119,9 @@ export class SearchResultsPage implements OnInit {
           }
         } else {
           this.numDomande = 0;
-          console.log("Non ci sono domande");
         }
       },
-      (rej) => {// nel caso non vada a buon fine la chiamata
-        console.log('rej domande search-res');
+      (rej) => {
       }
     );
 
@@ -128,11 +138,16 @@ export class SearchResultsPage implements OnInit {
             for (i = 0; i < result['data'].length; i++) {
               if (this.filters['codCategoria'] != "") {
                 if (result['data'][i].cod_categoria == this.filters['codCategoria'] && result['data'][i] != undefined) {
-                  this.sondaggiSearched.push(result['data'][i]);
+                  //Chech stato (Aperto/Chiuso/Entrambi)
+                  if (this.filters['status'] != 'both') {
+                    //Stato aperto/chiuso che combaciano con la categoria
+                    this.checkDeadLine(result['data'][i], this.sondaggiSearched);
+                  } else { //sia aperti che chiusi che combaciano con la categoria
+                    this.checkDeadLine(result['data'][i], this.sondaggiSearched);
+                  }
                 }
               }
             }
-
             this.numSondaggi = this.sondaggiSearched.length;
           } else {
             this.sondaggiSearched = result['data'];
@@ -145,17 +160,15 @@ export class SearchResultsPage implements OnInit {
           }
         } else {
           this.numSondaggi = 0;
-          console.log("non ci sono sondaggi");
         }
       },
-      (rej) => {// nel caso non vada a buon fine la chiamata
-        console.log('rej sondaggi search-res');
+      (rej) => {
       }
     );
 
     //UTENTI
     this.apiService.ricercaUtente(this.keyRicerca).then(
-      (result) => { // nel caso in cui va a buon fine la chiamata
+      (result) => {
 
         if (result != undefined) {
 
@@ -171,7 +184,7 @@ export class SearchResultsPage implements OnInit {
         }
 
       },
-      (rej) => {// nel caso non vada a buon fine la chiamata
+      (rej) => {
         console.log('rej utenti search-res');
       }
     );
@@ -252,14 +265,7 @@ export class SearchResultsPage implements OnInit {
   }
 
   ionViewDidLeave() {
-    //reset
-    this.filters = [];
-    this.filters['categoria'] = '';
-    this.isFiltered = false;
-    //this.dataService.setFilters("", "", "", false); //mettere in back o btn menu
-    this.domandeSearched = [];
-    this.sondaggiSearched = [];
-
+    this.resetVars();
   }
 
   clickFilter() {
@@ -270,6 +276,7 @@ export class SearchResultsPage implements OnInit {
     document.body.appendChild(loading);
     loading.present();
 
+    this.resetVars();
     this.router.navigate(['/advanced-search']);
   }
 
@@ -321,5 +328,58 @@ export class SearchResultsPage implements OnInit {
   openMenu() {
     this.menuCtrl.open();
   }
+
+  checkDeadLine(itemToCheck, array) {
+
+    var date = new Date(itemToCheck.dataeora.toLocaleString());
+    var timer = itemToCheck.timer;
+    var dateNow = new Date().getTime();
+    var time2 = date.getTime();
+    var seconds = new Date('1970-01-01T' + timer + 'Z').getTime();
+    var diff = dateNow - time2;
+
+    var isOpen = diff > seconds;
+
+    console.log(isOpen);
+
+    if (this.filters['status'] == 'closed') {
+      if (isOpen) {
+        itemToCheck['isOpen'] = true;
+        array.push(itemToCheck);
+        console.log(itemToCheck);
+      }
+    }
+
+    if (this.filters['status'] == 'open') {
+      if (!isOpen) {
+        itemToCheck['isOpen'] = false;
+        array.push(itemToCheck);
+      }
+    }
+
+    if (this.filters['status'] == 'both') {
+      if (isOpen) {
+        itemToCheck['isOpen'] = true;
+        array.push(itemToCheck);
+        console.log(itemToCheck);
+      } else {
+        itemToCheck['isOpen'] = false;
+        array.push(itemToCheck);
+      }
+    }
+  }
+
+  resetVars() {
+    //reset
+    this.filters = [];
+    this.filters['categoria'] = '';
+    this.isFiltered = false;
+    //this.dataService.setFilters("", "", "", false); //mettere in back o btn menu
+    this.domandeSearched = [];
+    this.sondaggiSearched = [];
+  }
+
 }
+
+
 
