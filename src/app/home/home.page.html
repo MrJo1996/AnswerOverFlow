@@ -12,7 +12,9 @@
 
 <ion-content>
 
-  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)"></ion-refresher>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+    refreshingSpinner="bubbles"></ion-refresher-content></ion-refresher>
 
   <div *ngIf="switch === true">
     <ion-row>

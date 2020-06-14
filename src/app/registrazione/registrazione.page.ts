@@ -121,147 +121,36 @@ export class RegistrazionePage implements OnInit {
       this.username.length < 1
     ) {
 
-
-      this.toastView('Compilare tutti i campi contrassegnati da * ','danger')
-
-     /*  const toast = document.createElement("ion-toast");
-
-      toast.message = "Compilare tutti i campi contrassegnati da * ";
-      toast.duration = 2000;
-      toast.position = "top";
-      toast.style.fontSize = "20px";
-      toast.color = "danger";
-      toast.style.textAlign = "center";
-
-      document.body.appendChild(toast);
-      return toast.present(); */
-
+      this.toastView('Compilare tutti i campi contrassegnati da * ','danger');
 
     } else if (this.nome.length > 19) {
 
       this.toastView('Nome troppo lungo','danger')
-/* 
-      const toast = document.createElement("ion-toast");
-
-      toast.message = "Nome troppo lungo";
-      toast.duration = 2000;
-      toast.position = "top";
-      toast.style.fontSize = "20px";
-      toast.color = "danger";
-      toast.style.textAlign = "center";
-
-      document.body.appendChild(toast);
-      return toast.present(); */
-
 
     } else if (this.cognome.length > 19) {
 
       this.toastView('Cognome troppo lungo','danger');
-    /*   
-      const toast = document.createElement("ion-toast");
-
-      toast.message = "Cognome troppo lungo";
-      toast.duration = 2000;
-      toast.position = "top";
-      toast.style.fontSize = "20px";
-      toast.color = "danger";
-      toast.style.textAlign = "center";
-
-      document.body.appendChild(toast);
-      return toast.present();
-
-       */
-
 
     } else if (this.username.length > 19) {
 
-
       this.toastView('Username troppo lungo','danger');
-
-/* 
-      const toast = document.createElement("ion-toast");
-
-      toast.message = "Username troppo lungo!";
-      toast.duration = 2000;
-      toast.position = "top";
-      toast.style.fontSize = "20px";
-      toast.color = "danger";
-      toast.style.textAlign = "center";
-
-      document.body.appendChild(toast);
-      return toast.present(); */
-
 
     } else if (this.password.length < 8) {
 
       this.toastView('Password troppo corta. Utilizzare una password composta da almeno 8 caratteri','danger');
 
-/* 
-      const toast = document.createElement("ion-toast");
-      toast.message =
-        "Password troppo corta. Utilizzare una password composta da almeno 8 caratteri";
-      toast.duration = 2000;
-      toast.position = "top";
-      toast.style.fontSize = "20px";
-      toast.color = "danger";
-      toast.style.textAlign = "center";
-
-      document.body.appendChild(toast);
-      return toast.present(); */
-
     } else if (!this.emailAvailable) {
 
-
       this.toastView('Email non disponibile','danger');
-
-/* 
-      const toast = document.createElement("ion-toast");
-
-      toast.message = "Email non disponibile";
-      toast.duration = 2000;
-      toast.position = "top";
-      toast.style.fontSize = "20px";
-      toast.color = "danger";
-      toast.style.textAlign = "center";
-
-      document.body.appendChild(toast);
-      return toast.present(); */
-
 
     } else if (!this.usernameAvailable) {
 
 
       this.toastView('Username non disponibile','danger');
 
-
-      /* const toast = document.createElement("ion-toast");
-
-      toast.message = "Username non disponibile";
-      toast.duration = 2000;
-      toast.position = "top";
-      toast.style.fontSize = "20px";
-      toast.color = "danger";
-      toast.style.textAlign = "center";
-
-      document.body.appendChild(toast);
-      return toast.present(); */
-
     } else if (this.password != this.confermapassword) {
 
       this.toastView('Le password non coincidono','danger');
-
-     /*  const toast = document.createElement("ion-toast");
-
-      toast.message = "'Le password non coincidono";
-      toast.duration = 2000;
-      toast.position = "top";
-      toast.style.fontSize = "20px";
-      toast.color = "danger";
-      toast.style.textAlign = "center";
-
-      document.body.appendChild(toast);
-      return toast.present(); */
-
     } else {
 
       const alert = await this.alertController.create({

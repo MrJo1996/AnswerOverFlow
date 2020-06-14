@@ -69,13 +69,16 @@ export class HomePage implements OnInit {
     this.menuCtrl.enable(true);
     this.menuSet.checkUserLogged();
     this.refresh_index = this.dataService.getRefreshIndex();
+    this.visualizzaDomandaHome();
+    this.visualizzaSondaggiHome();
     if (this.refresh_index == true) {
     }
   }
 
 
   ngOnInit() {
-    this.timer=setInterval(() => {
+  // window.home = this;
+  this.timer=setInterval(() => {
       this.update.detectChanges();
 
     }, 500)
@@ -83,7 +86,6 @@ export class HomePage implements OnInit {
     this.storage.get('utente').then(data => { this.currentMailUser = data.email });
     this.visualizzaDomandaHome();
     this.visualizzaSondaggiHome();
-
   }
   switch1_(switch_) {
     if (switch_ == true)
@@ -147,6 +149,12 @@ export class HomePage implements OnInit {
   }
   ionViewDidLeave() {
     clearInterval(this.timer)
+    //Resetto l'indice dell'infinity scroll
+    this.y_sondaggi = 0;;
+    this.y_domande = 0;
+    //Svuoto l'array che viene visualizzato
+    this.sondaggi_regolati = []
+    this.domande_regolate = [];
   }  
   //VISUALIZZA LE ULTIME DOMANDE APERTE
   async visualizzaDomandaHome() {
@@ -235,7 +243,7 @@ export class HomePage implements OnInit {
   }
 
   regola_domande() {
-    for (this.i_domande = 0; this.i_domande < 3; this.i_domande++) {
+    for (this.i_domande = 0; this.i_domande < 4; this.i_domande++) {
       if (this.domande[this.y_domande]) {
         this.domande_regolate[this.y_domande] = this.domande[this.y_domande];
         this.domandaDeadlineCheck();
@@ -245,7 +253,7 @@ export class HomePage implements OnInit {
   }
 
   regola_sondaggi() {
-    for (this.i_sondaggi = 0; this.i_sondaggi < 3; this.i_sondaggi++) {
+    for (this.i_sondaggi = 0; this.i_sondaggi < 4; this.i_sondaggi++) {
       if (this.sondaggi[this.y_sondaggi]) {
         this.sondaggi_regolati[this.y_sondaggi] = this.sondaggi[this.y_sondaggi];
         this.sondaggioDeadlineCheck();
@@ -367,10 +375,19 @@ export class HomePage implements OnInit {
 
   //REFRESH
   doRefresh(event) {
-    this.ngOnInit();
+    //Resetto l'indice dell'infinity scroll
+    this.y_sondaggi = 0;;
+    this.y_domande = 0;
+    //Svuoto l'array che viene visualizzato
+    this.sondaggi_regolati = []
+    this.domande_regolate = [];
+    //Richiamo le funzioni che riempiono lo stack di dati da visualizzare
+    this.visualizzaSondaggiHome()
+    this.visualizzaDomandaHome();
+    
     setTimeout(() => {
       event.target.complete();
-    }, 2000);
+    }, 1000);
   }
 
   doRefresh2() {

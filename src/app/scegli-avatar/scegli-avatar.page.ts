@@ -127,13 +127,6 @@ export class ScegliAvatarPage implements OnInit {
     if (this.avatar === "" || this.avatar === undefined) {
       this.toastUnsuccess();
     } else {
-      const loading = document.createElement('ion-loading');
-      loading.cssClass = 'loading';
-      loading.spinner = 'crescent';
-      loading.duration = 2000;
-      document.body.appendChild(loading);
-      loading.present();
-      
       this.dataService.setAvatar(this.avatar);
       console.log(this.dataService.utente);
       this.router.navigate(["bio"]);

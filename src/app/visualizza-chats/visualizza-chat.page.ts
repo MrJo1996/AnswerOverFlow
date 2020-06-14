@@ -72,8 +72,10 @@ export class VisualizzaChatPage implements OnInit {
 
   //ricarica l'array delle chat e le ordina
   doRefresh(event) {
+    $("#ionCard").css("display", "none");
     this.caricaChat();
     setTimeout(() => {
+      $("#ionCard").css("display", "block");
       event.target.complete();
     }, 2500);
   }
@@ -168,31 +170,27 @@ export class VisualizzaChatPage implements OnInit {
     // console.log(chatter)
     this.data.setCodice_chat(codiceChat);
     this.data.setEmailOthers(chatter);
-    //Visualizza il frame di caricamento
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 3500;
-    document.body.appendChild(loading);
-    loading.present();
-
+    this.loading();
     this.router.navigate(["chat"]);
   }
 
   //-----------------------Torna indietro
   goBack() {
-    //Visualizza il frame di caricamento
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 3500;
-    document.body.appendChild(loading);
-    loading.present();
-
+    this.loading();
     this.navCtrl.back();
   }
 
-  openMenu(){
+  //Visualizza il frame di caricamento
+  loading() {
+    const loading = document.createElement("ion-loading");
+    loading.cssClass = "loading";
+    loading.spinner = "crescent";
+    loading.duration = 3500;
+    document.body.appendChild(loading);
+    loading.present();
+  }
+
+  openMenu() {
     this.menuCtrl.open();
   }
 }
