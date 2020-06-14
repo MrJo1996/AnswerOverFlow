@@ -71,10 +71,11 @@
       emailProva;
       segment;
       refresh_index;
-      check: boolean;
-     
-    
       
+      domandeBtn;
+      risposteBtn;
+      likeBtn;
+    
       provaDomandeTOP = new Array();
      
     
@@ -96,25 +97,24 @@
         setTimeout(() => {
           if(this.emailOther === "undefined"){    
               this.cod_utente=this.emailProva;
+
+              console.log("email prova", this.emailProva);
           }else{    
             this.cod_utente=this.emailOther;  
+
+            console.log("codice utente", this.cod_utente);
+
+            //VISUALIZZA STATISTICHE DOMANDE 
+            this.viewDomande();
           }   
         },800)
         
       }
 
-      ionViewWillEnter() {
-        this.check  = false;
-      
-        }
+      ionViewWillEnter() {}
 
       ionViewDidEnter() {
-    
-    
-    
-        this.visualizzaStatisticheDomanda();
-        this.visualizzaCategoria();
-        this.visualizzaTOTStatisticheDomanda();
+
         this.visualizzaStatitischeRisposta();
         this.visualizzaTOTStatitischeRisposta();
         this.generateColorArray(8);
@@ -124,34 +124,45 @@
         this.sdoughnutChartMethod();
         this.lineChartMethod();
         this.Valutazioni();
-        this.carica();
-        this.caricaR();
-        this.caricaLD();
-       
-      
-    
-      }
+        this.viewDomande();
+        this.viewRisposte();
+        this.viewLike();
+       }
 
       doRefresh2(){
         window.location.reload();//ricaricapage page
       }
     
   //_________________________________________________________________
-      carica() {
 
-        this.visualizzaStatisticheDomanda();
-        this.visualizzaTOTStatisticheDomanda();
-        this.check= true;
-      }
+  viewDomande() {
+        
+    this.visualizzaStatisticheDomanda();
+    this.visualizzaTOTStatisticheDomanda();
     
-      caricaR() {
-        this.visualizzaStatitischeRisposta();
-        this.visualizzaTOTStatitischeRisposta();
-      }
+    this.risposteBtn = false;
+    this.domandeBtn = true;
+    this.likeBtn = false;
+
+  }
+
+  viewRisposte() {
+    this.risposteBtn = true;
+    this.domandeBtn = false;
+    this.likeBtn = false;
+
+    this.visualizzaStatitischeRisposta();
+    this.visualizzaTOTStatitischeRisposta();
+  }
+
+  viewLike() {
+    this.likeBtn = true;
+    this.risposteBtn = false;
+    this.domandeBtn = false;
     
-      caricaLD() {
-         this.Valutazioni();
-      }
+
+    this.Valutazioni();
+  }
     //_____________________________________________________________________Carica al click del segmentB
     
       goBack() {
@@ -182,6 +193,8 @@
     
     
       async Valutazioni() {
+
+         
         this.apiService.get_tot_Risposte(this.cod_utente).then(
           (risposte) => {
             for (let j = 0; j < risposte['Risposte']['data'].length; j++) {
@@ -228,6 +241,8 @@
       async visualizzaStatisticheDomanda() {
     
         this.apiService.get_top_Domande(this.cod_utente).then(
+
+         
           (domande) => {
             console.log("CLOG domande ", domande);
     
@@ -424,6 +439,8 @@
     
             console.log("Clog RIsposte top", risposte['Risposte']);
             this.risposteTOP = risposte['Risposte']['data'];
+
+            
     
     
     
@@ -466,12 +483,6 @@
             this.visualizzaCategoriaR();
             this.visualizzaCategoriaR1();
             this.visualizzaCategoriaR2();
-    
-    
-    
-    
-    
-    
     
           },
           (rej) => {
@@ -639,6 +650,8 @@
           });
         
       }
+
+      
     
     
     

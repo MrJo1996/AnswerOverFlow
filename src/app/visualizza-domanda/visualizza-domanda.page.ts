@@ -93,7 +93,7 @@ export class VisualizzaDomandaPage implements OnInit {
   goModificaDomanda() {
     if (this.risposte.length > 0)
       this.showErrorToast();
-    if (this.deadlineCheck) {
+    if (this.deadlineCheck()) {
       this.toastModificaDomandaScaduta();
     }
     else {
@@ -312,7 +312,9 @@ export class VisualizzaDomandaPage implements OnInit {
       this.toastParolaScoretta();
     } else if (this.stringLengthChecker(this.descrizioneRispostaToPass)) {
       this.toastInvalidString();
-    } else {
+    } else if (this.deadlineCheck()){
+      this.toastModificaDomandaScaduta();
+     } else {
       this.apiService.modificaRisposta(this.dataService.codice_risposta, this.descrizioneRispostaToPass).then(
         (result) => { // nel caso in cui va a buon fine la chiamata
         },

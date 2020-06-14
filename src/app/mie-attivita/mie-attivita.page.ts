@@ -122,53 +122,6 @@ export class MieAttivitaPage implements OnInit {
   
   }
 
-  /* async presentAlertRadio() {
-    const alert = await this.alertController.create({
-      header: 'Vista',
-      inputs: [
-        {
-          name: 'radio1',
-          type: 'radio',
-          label: 'Domande',
-          value: 'value1',
-        },
-        {
-          name: 'radio2',
-          type: 'radio',
-          label: 'Sondaggi',
-          value: 'value2'
-        }
-      ],
-      buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel',
-          cssClass: 'secondary',
-          handler: () => {
-            console.log('Confirm Cancel');
-          }
-        }, {
-          text: 'Ok',
-          handler: (data) => {
-            console.log('Confirm Ok');
-            if (data === 'value2') {
-            this.check2 = false;
-            this.check1 = true;
-            this.visualizzaMieiSondaggi();
-             } else if (data === 'value1') {
-              this.check1 = false;
-              this.check2 = true;
-              this.visualizzaMieDomande();
-             }
-          }
-        }
-      ]
-    });
-    await alert.present();
-    let result = await alert.onDidDismiss();
-    console.log(result);
-  } */
-
   checkDataeoraDomande() {
     this.domande1g = [];
     this.domande1s = [];
