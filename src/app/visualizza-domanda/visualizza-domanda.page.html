@@ -55,10 +55,10 @@
 
       <ion-row *ngIf="currentMailUser!==domandaMailUser">
         
-        <ion-avatar  class="icon-avatar" >
+        <ion-avatar  (click)="clickProfilo(domandaMailUser)" class="icon-avatar" >
           <img src= {{profiloUserDomanda.avatar}}>
         </ion-avatar>
-        <ion-label class = "username_text_style" (click)="clickProfilo(domandaMailUser)">{{profiloUserDomanda.username}}</ion-label>
+        <ion-label class = "usernameClass" (click)="clickProfilo(domandaMailUser)">{{profiloUserDomanda.username}}</ion-label>
        
       </ion-row>
 
@@ -103,12 +103,12 @@
          
         <ion-card *ngFor="let risposta of risposte; let i = index" class = "backgrounds">    
           <ion-card-header>
-            <ion-toolbar class="backgrounds">
-              <ion-avatar slot="start" class="icon-avatar" >
+            <ion-toolbar class="backgrounds"> 
+              <ion-avatar (click)="clickProfilo(risposta.cod_utente)" slot="start" class="icon-avatar" >
                 <img src= {{risposta.avatar}}>
               </ion-avatar>
-              <ion-label *ngIf="currentMailUser!==risposta.cod_utente" class = "username_text_style">{{risposta.username}}</ion-label>
-              <ion-label *ngIf="currentMailUser===risposta.cod_utente " class = "username_text_style">Tu</ion-label>
+              <ion-label (click)="clickProfilo(risposta.cod_utente)" *ngIf="currentMailUser!==risposta.cod_utente" class = "usernameClass">{{risposta.username}}</ion-label>
+              <ion-label (click)="clickProfilo(risposta.cod_utente)" *ngIf="currentMailUser===risposta.cod_utente " class = "usernameClass">Tu</ion-label>
              
              
                <!--pulsante del like disattivato -->

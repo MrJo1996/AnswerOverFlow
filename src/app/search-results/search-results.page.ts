@@ -3,7 +3,6 @@ import { DataService } from "../services/data.service";
 import { Router } from '@angular/router';
 import { ApiService } from '../providers/api.service';
 import { Storage } from "@ionic/storage";
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { MenuController } from '@ionic/angular';
 
 @Component({
@@ -15,6 +14,8 @@ export class SearchResultsPage implements OnInit {
 
   keyRicerca;
 
+  currentMailUser;
+
   domandeSearched = [];
   sondaggiSearched = [];
   utentiSearched;
@@ -24,7 +25,6 @@ export class SearchResultsPage implements OnInit {
   numUtenti;
 
   categorie = [];
-
   categorieSondaggi = [];
 
   keywordToSearch;
@@ -36,10 +36,6 @@ export class SearchResultsPage implements OnInit {
   isFiltered: boolean = false;
   filters = [];
 
-  currentMailUser;
-
-  domandeFiltrate;
-  sondaggiFiltrati
 
   constructor(private dataService: DataService, private menuCtrl: MenuController, private router: Router, private apiService: ApiService, private storage: Storage) { }
 
@@ -61,7 +57,7 @@ export class SearchResultsPage implements OnInit {
 
     //check presenza filtri
     this.filters = this.dataService.getFilters();
-    console.log("FILTRI JO ", this.filters);
+    console.log("FILTRI ", this.filters);
 
     if (this.filters['isFiltered']) {
       this.domandeButton = false;
@@ -74,6 +70,8 @@ export class SearchResultsPage implements OnInit {
         }
       );
       this.isFiltered = true;
+    } else {
+      this.domandeButton = true;
     }
 
 
@@ -89,15 +87,28 @@ export class SearchResultsPage implements OnInit {
             var i;
             for (i = 0; i < result['data'].length; i++) {
               if (this.filters['codCategoria'] != "") {
+                //Check Categoria
                 if (result['data'][i].cod_categoria == this.filters['codCategoria'] && result['data'][i] != undefined) {
-                  this.domandeSearched.push(result['data'][i]);
+
+                  //Chech stato (Aperto/Chiuso/Entrambi)
+                  if (this.filters['status'] != 'both') {
+                    //Stato aperto/chiuso che combaciano con la categoria
+                    this.checkDeadLine(result['data'][i], this.domandeSearched);
+                  } else { //sia aperti che chiusi che combaciano con la categoria
+                    //this.domandeSearched.push(result['data'][i]);
+                    this.checkDeadLine(result['data'][i], this.domandeSearched);
+
+                  }
+
                 }
               }
             }
+            console.log("CHECK DEADLINE DOMANDE", this.domandeSearched);
+
             this.numDomande = this.domandeSearched.length;
 
           } else {
-            this.domandeSearched = result['data'];
+            this.checkDeadLineNotFiltered(result['data'], this.domandeSearched);
             this.numDomande = this.domandeSearched.length;
           }
 
@@ -107,11 +118,9 @@ export class SearchResultsPage implements OnInit {
           }
         } else {
           this.numDomande = 0;
-          console.log("Non ci sono domande");
         }
       },
-      (rej) => {// nel caso non vada a buon fine la chiamata
-        console.log('rej domande search-res');
+      (rej) => {
       }
     );
 
@@ -124,38 +133,39 @@ export class SearchResultsPage implements OnInit {
 
           if (this.isFiltered) {
 
-            var i;
-            for (i = 0; i < result['data'].length; i++) {
+            for (var i = 0; i < result['data'].length; i++) {
               if (this.filters['codCategoria'] != "") {
                 if (result['data'][i].cod_categoria == this.filters['codCategoria'] && result['data'][i] != undefined) {
-                  this.sondaggiSearched.push(result['data'][i]);
+                  //Chech stato (Aperto/Chiuso/Entrambi)
+                  if (this.filters['status'] != 'both') {
+                    //Stato aperto/chiuso che combaciano con la categoria
+                    this.checkDeadLine(result['data'][i], this.sondaggiSearched);
+                  } else { //sia aperti che chiusi che combaciano con la categoria
+                    this.checkDeadLine(result['data'][i], this.sondaggiSearched);
+                  }
                 }
               }
             }
-
             this.numSondaggi = this.sondaggiSearched.length;
           } else {
-            this.sondaggiSearched = result['data'];
+            this.checkDeadLineNotFiltered(result['data'], this.sondaggiSearched);
             this.numSondaggi = this.sondaggiSearched.length;
           }
 
-          var i;
-          for (i = 0; i < this.numSondaggi; i++) {
+          for (var i = 0; i < this.numSondaggi; i++) {
             this.parseCodCatSondaggi(this.sondaggiSearched[i].cod_categoria, i);
           }
         } else {
           this.numSondaggi = 0;
-          console.log("non ci sono sondaggi");
         }
       },
-      (rej) => {// nel caso non vada a buon fine la chiamata
-        console.log('rej sondaggi search-res');
+      (rej) => {
       }
     );
 
     //UTENTI
     this.apiService.ricercaUtente(this.keyRicerca).then(
-      (result) => { // nel caso in cui va a buon fine la chiamata
+      (result) => {
 
         if (result != undefined) {
 
@@ -171,12 +181,10 @@ export class SearchResultsPage implements OnInit {
         }
 
       },
-      (rej) => {// nel caso non vada a buon fine la chiamata
+      (rej) => {
         console.log('rej utenti search-res');
       }
     );
-
-
   }
 
   ionViewDidEnter() {
@@ -248,18 +256,22 @@ export class SearchResultsPage implements OnInit {
     this.dataService.setKeywordToSearch(this.keywordToSearch);
     this.isFiltered = false;
     this.domandeSearched = [];
+    this.sondaggiSearched=[];
+    this.utentiSearched=[];
+    
     this.ionViewWillEnter();
   }
 
   ionViewDidLeave() {
-    //reset
-    this.filters = [];
-    this.filters['categoria'] = '';
-    this.isFiltered = false;
-    //this.dataService.setFilters("", "", "", false); //mettere in back o btn menu
-    this.domandeSearched = [];
-    this.sondaggiSearched = [];
+    this.resetVars();
+    //this.dataService.setFilters("", "", "", false); //da qui non permette di ricercare nuovamente secondo quei filtri
 
+  }
+
+  ngOnDestroy() {
+    this.resetVars;
+    this.dataService.setFilters("", "", "", false); //mettere in back o btn menu
+    console.log("NEL DESTROY");
   }
 
   clickFilter() {
@@ -270,7 +282,11 @@ export class SearchResultsPage implements OnInit {
     document.body.appendChild(loading);
     loading.present();
 
-    this.router.navigate(['/advanced-search']);
+    this.resetVars();
+/*     this.router.navigate(['/advanced-search']);
+ */
+    this.router.navigateByUrl("/advanced-search");
+
   }
 
   clickUtente(cod_utente) {
@@ -283,8 +299,9 @@ export class SearchResultsPage implements OnInit {
 
     this.dataService.setEmailOthers(cod_utente);
     console.log(this.dataService.setEmailOthers);
-    this.dataService.setFilters(this.filters['tipo'], this.filters['codCategoria'], this.filters['status'], this.filters['isFiltered']);
 
+/*     this.dataService.setFilters(this.filters['tipo'], this.filters['codCategoria'], this.filters['status'], this.filters['isFiltered']);
+ */
     this.router.navigate(['/visualizza-profilo']);
   }
 
@@ -297,9 +314,10 @@ export class SearchResultsPage implements OnInit {
     loading.present();
 
     this.dataService.setCod_domanda(domanda_codice);
-    this.dataService.setFilters(this.filters['tipo'], this.filters['codCategoria'], this.filters['status'], this.filters['isFiltered']);
-
+/*     this.dataService.setFilters(this.filters['tipo'], this.filters['codCategoria'], this.filters['status'], this.filters['isFiltered']);
+ */
     this.router.navigate(['/visualizza-domanda']);
+    
 
   }
 
@@ -312,8 +330,8 @@ export class SearchResultsPage implements OnInit {
     loading.present();
 
     this.dataService.codice_sondaggio = codice_sondaggio;
-    this.dataService.setFilters(this.filters['tipo'], this.filters['codCategoria'], this.filters['status'], this.filters['isFiltered']);
-
+/*     this.dataService.setFilters(this.filters['tipo'], this.filters['codCategoria'], this.filters['status'], this.filters['isFiltered']);
+ */
     this.router.navigate(['/visualizza-sondaggio']);
 
   }
@@ -321,5 +339,82 @@ export class SearchResultsPage implements OnInit {
   openMenu() {
     this.menuCtrl.open();
   }
+
+  checkDeadLine(itemToCheck, array) {
+
+    var date = new Date(itemToCheck.dataeora.toLocaleString());
+    var timer = itemToCheck.timer;
+    var dateNow = new Date().getTime();
+    var time2 = date.getTime();
+    var seconds = new Date('1970-01-01T' + timer + 'Z').getTime();
+    var diff = dateNow - time2;
+
+    var isOpen = diff > seconds;
+
+    console.log(isOpen);
+
+    if (this.filters['status'] == 'closed') {
+      if (isOpen) {
+        itemToCheck['isOpen'] = true;
+        array.push(itemToCheck);
+        console.log(itemToCheck);
+      }
+    }
+
+    if (this.filters['status'] == 'open') {
+      if (!isOpen) {
+        itemToCheck['isOpen'] = false;
+        array.push(itemToCheck);
+      }
+    }
+
+    if (this.filters['status'] == 'both') {
+      if (isOpen) {
+        itemToCheck['isOpen'] = true;
+        array.push(itemToCheck);
+        console.log(itemToCheck);
+      } else {
+        itemToCheck['isOpen'] = false;
+        array.push(itemToCheck);
+      }
+    }
+  }
+
+  checkDeadLineNotFiltered(arrayToCheck, array) {
+    for (var i = 0; i < arrayToCheck.length; i++) {
+      var date = new Date(arrayToCheck[i].dataeora.toLocaleString());
+      var timer = arrayToCheck[i].timer;
+      var dateNow = new Date().getTime();
+      var time2 = date.getTime();
+      var seconds = new Date('1970-01-01T' + timer + 'Z').getTime();
+      var diff = dateNow - time2;
+
+      var isOpen = diff > seconds;
+
+      console.log(isOpen);
+
+      if (isOpen) {
+        arrayToCheck[i]['isOpen'] = true;
+        array.push(arrayToCheck[i]);
+        console.log(arrayToCheck[i]);
+      }
+      if (!isOpen) {
+        arrayToCheck[i]['isOpen'] = false;
+        array.push(arrayToCheck[i]);
+      }
+    }
+  }
+
+  resetVars() {
+    //reset
+    this.filters = [];
+    this.filters['categoria'] = '';
+    this.isFiltered = false;
+    this.domandeSearched = [];
+    this.sondaggiSearched = [];
+  }
+
 }
+
+
 

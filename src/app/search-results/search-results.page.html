@@ -25,6 +25,7 @@
     </div>
   </div>
 
+  <!-- Ricerca filtrata -->
   <div *ngIf="isFiltered">
     <ion-grid>
       <ion-row>
@@ -33,19 +34,19 @@
           <div *ngIf="filters['tipo'] == 'domanda' ">
             <ion-chip color="primary">
               <ion-icon name="reader"></ion-icon>
-              <ion-label>{{filters['tipo']}}</ion-label>
+              <ion-label>{{filters['tipo']}} <i>({{numDomande}})</i></ion-label>
             </ion-chip>
           </div>
           <div *ngIf="filters['tipo'] == 'sondaggio' ">
             <ion-chip color="primary">
               <ion-icon name="trail-sign"></ion-icon>
-              <ion-label>{{filters['tipo']}}</ion-label>
+              <ion-label>{{filters['tipo']}}<i>({{numSondaggi}})</i></ion-label>
             </ion-chip>
           </div>
           <div *ngIf="filters['tipo'] == 'utente' ">
             <ion-chip color="primary">
               <ion-icon name="person"></ion-icon>
-              <ion-label>{{filters['tipo']}}</ion-label>
+              <ion-label>{{filters['tipo']}}<i>({{numUtenti}})</i></ion-label>
             </ion-chip>
           </div>
         </div>
@@ -88,7 +89,7 @@
   <div *ngIf="filters['tipo'] == 'utente'">
     <ion-chip color="primary">
       <ion-icon name="person"></ion-icon>
-      <ion-label>{{filters['tipo']}}</ion-label>
+      <ion-label>{{filters['tipo']}}<i>({{numUtenti}})</i></ion-label>
     </ion-chip>
   </div>
 
@@ -103,10 +104,13 @@
 
         <ion-card (click)="clickDomanda(domanda.codice_domanda)" class="card">
           <ion-card-header>
-            <ion-card-title>{{domanda.titolo}}</ion-card-title>
+            <ion-toolbar style="--background:none; padding-bottom: 5px;">
+              <ion-icon *ngIf="!domanda.isOpen" class="lockOpen" slot="start" name="lock-open-outline"></ion-icon>
+              <ion-icon *ngIf="domanda.isOpen" class="lockClosed" slot="start" name="lock-closed-outline"></ion-icon>
+              <ion-card-title>{{domanda.titolo}}</ion-card-title>
+            </ion-toolbar>
             <ion-card-subtitle>
-              <ion-chip color="primary" style="
-              margin-left: 0px">
+              <ion-chip color="primary" style="margin-left: 0px">
                 <ion-icon name="file-tray-full-outline"></ion-icon>
                 <ion-label>
                   {{categorie[i]}}</ion-label>
@@ -127,7 +131,7 @@
 
           </ion-card-content>
         </ion-card>
-        
+
       </ion-list>
     </div>
   </div>
@@ -152,10 +156,13 @@
 
         <ion-card (click)="clickSondaggio(sondaggio.codice_sondaggio)" class="card">
           <ion-card-header>
+            <ion-toolbar style="--background:none; padding-bottom: 5px;">
+            <ion-icon *ngIf="!sondaggio.isOpen" class="lockOpen" slot="start" name="lock-open-outline"></ion-icon>
+            <ion-icon *ngIf="sondaggio.isOpen" class="lockClosed" slot="start" name="lock-closed-outline"></ion-icon>
             <ion-card-title>{{sondaggio.titolo}}</ion-card-title>
+          </ion-toolbar>
             <ion-card-subtitle>
-              <ion-chip color="primary" style="
-            margin-left: 0px">
+              <ion-chip color="primary" style="margin-left: 0px">
                 <ion-icon name="file-tray-full-outline"></ion-icon>
                 <ion-label>
                   {{categorieSondaggi[i]}}</ion-label>
@@ -212,7 +219,7 @@
           <ion-card class="card">
             <ion-card-content>
 
-              <ion-item (click)="clickUtente(utente.email)" style="--background:none">
+              <ion-item style="--background:none">
                 <ion-avatar slot="start" class="icon-avatar">
                   <img src="{{utente.avatar}}">
                 </ion-avatar>

@@ -338,34 +338,27 @@ export class AppComponent implements OnInit {
 
   initializeApp() {
     this.platform.ready().then(() => {
-      //this.statusBar.styleDefault();
       this.statusBar.overlaysWebView(false);
-      this.statusBar.backgroundColorByHexString('#2a2a2a'); //stesso colore toolbar
+      this.statusBar.backgroundColorByHexString('#2a2a2a');
+      this.splashScreen.hide();
 
-      this.splashScreen.hide(); //////////////////////////
-      timer(2000).subscribe(() => (this.showSplash = false)); //durata animazione definita in app.component.html -> 2s (era 3.5s)
-
+      timer(2000).subscribe(() => (this.showSplash = false)); //durata animazione definita in app.component.html -> 2s 
       if (this.platform.is('cordova')) {
         this.setupPush();
       }
-
       this.storage.get("utente").then((utente) => {
         //Check utente logged
-        if (utente.username === null) { // LOGIN
-          console.log("utente non loggato", utente.username);
+        if (utente.username === null || utente.username == undefined) { // LOGIN
           this.router.navigate(['login']);
-
         } else { //  HOME
           //SET VAR AL SERVICE 
           this.dataService.setEmail_Utente(utente.email);
 
           this.router.navigate(['home']);
           this.toast("Bentornato " + utente.username + "!", "success");
-
         }
         console.log("STORAGE JO user: ", utente.username);
       });
-
     });
 
     this.storage.get("session").then((data) => {

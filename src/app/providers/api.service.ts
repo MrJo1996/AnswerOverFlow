@@ -64,7 +64,6 @@ export class ApiService {
           let domanda = data['Domande'];
 
           resolve(domanda);
-          console.log(domanda);
 
         },
         (err) => {
@@ -229,8 +228,8 @@ export class ApiService {
       this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaSondaggio', body).subscribe(
         data => {
           let sondaggio = data['Sondaggio'];
-          resolve(sondaggio); //restituirò al ts un oggetto di nome "sondaggio" con accesso già alla posizione "Sondaggio" avendo visto il json di data
-          console.log('ciao', sondaggio);
+          resolve(sondaggio); 
+         
 
         },
         (err) => {
@@ -249,8 +248,8 @@ export class ApiService {
       this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaScelteSondaggio', body).subscribe(
         data => {
           let scelte = data;
-          resolve(scelte); //restituirò al ts un oggetto di nome "sondaggio" con accesso già alla posizione "Sondaggio" avendo visto il json di data
-          console.log(scelte);
+          resolve(scelte); 
+        
 
         },
         (err) => {
@@ -668,7 +667,7 @@ export class ApiService {
   }
 
 
-  get_tot_Domande(cod_utente: string) {
+  getDomande(cod_utente: string) {
     const body = {
       cod_utente: cod_utente
 
@@ -677,10 +676,11 @@ export class ApiService {
     return new Promise((resolve, reject) => {
       this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaTOTStatisticheDomanda', body).subscribe(
         data => {
-          let domande = data;
-          resolve(domande);
-          console.log(domande)
+          let domandeT = data;
+          resolve(domandeT);
+          console.log(domandeT)
 
+          
         },
         (err) => {
           reject();
@@ -866,7 +866,6 @@ export class ApiService {
         (data) => {
           let risultato = data;
           
-          console.log("API SERVICE GIA VOTATO: ", body, data)
           resolve(risultato); 
 
 

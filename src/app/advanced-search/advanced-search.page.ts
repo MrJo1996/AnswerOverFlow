@@ -16,12 +16,16 @@ export class AdvancedSearchPage implements OnInit {
   categoriaSettings: any = [];
   utentiBtn;
 
+  globalSearch = false;
+  keywordSearch = true;
+
   //Filtri ricerca vars
   tipoFilter;
   codCategoriaFilter;
   statusOpen: boolean = false;
   statusClosed: boolean = false;
   isFiltered: boolean = false;
+  status;
 
   constructor(
     private router: Router,
@@ -31,7 +35,10 @@ export class AdvancedSearchPage implements OnInit {
     private menuCtrl: MenuController
   ) { }
 
-  ngOnInit() {
+  ngOnInit() { this.initFilters(); }
+
+  ionViewWillEnter() {
+    (console.log("ion will enter"));
     //visualizza frame caricamento
     const loading = document.createElement('ion-loading');
     loading.cssClass = 'loading';
@@ -41,7 +48,6 @@ export class AdvancedSearchPage implements OnInit {
     loading.present();
 
     this.initFilters();
-
     this.apiService.prendiCategorie("http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaCategorie").then(
       (categories) => {
         this.categoriaSettings = categories;
@@ -52,7 +58,6 @@ export class AdvancedSearchPage implements OnInit {
       }
     );
   }
-
   //CATEGORIA PICKER
   async showCategoriaPicker() {
 
@@ -83,6 +88,7 @@ export class AdvancedSearchPage implements OnInit {
     let picker = await this.pickerController.create(options);
     picker.present()
   }
+
   getCategorieOptions() {
     let options = [];
     this.categoriaSettings.forEach(x => {
@@ -133,36 +139,40 @@ export class AdvancedSearchPage implements OnInit {
   //RICERCA
   ricerca() {
 
-    //checkStatus
-    if (this.statusClosed && this.statusOpen) {
-      var status = "both";
-    }
-    if (this.statusClosed && !this.statusOpen) {
-      var status = "closed";
-    }
-    if (!this.statusClosed && this.statusOpen) {
-      var status = "open";
+    if (this.checkFilters()) {
+      //checkStatus
+      if (this.statusClosed && this.statusOpen) {
+        this.status = "both";
+      }
 
-    }
+      if (this.statusClosed && !this.statusOpen) {
+        this.status = "closed";
+      }
+      if (!this.statusClosed && this.statusOpen) {
+        this.status = "open";
+      }
 
-    this.isFiltered = true;
-    if (this.tipoFilter == "utente") {
-      console.log("HAI SCELTO UTENTE");
-      this.dataService.setFilters("utente", "", "", false);
+      this.isFiltered = true;
+      if (this.tipoFilter == "utente") {
+        console.log("HAI SCELTO UTENTE");
+        this.dataService.setFilters("utente", "", "", false);
+      } else {
+        this.dataService.setFilters(this.tipoFilter, this.codCategoriaFilter, this.status, this.isFiltered);
+      }
+      this.dataService.setKeywordToSearch(this.keywordToSearch);
+      console.log("Input: ", this.keywordToSearch);
+
+      const loading = document.createElement('ion-loading');
+      loading.cssClass = 'loading';
+      loading.spinner = 'crescent';
+      loading.duration = 3500;
+      document.body.appendChild(loading);
+      loading.present();
+
+      this.router.navigate(['/search-results']);
     } else {
-      this.dataService.setFilters(this.tipoFilter, this.codCategoriaFilter, status, this.isFiltered);
+      this.toast("Per favore compila tutti i campi.", "danger");
     }
-    this.dataService.setKeywordToSearch(this.keywordToSearch);
-    console.log("Input: ", this.keywordToSearch);
-
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 3500;
-    document.body.appendChild(loading);
-    loading.present();
-
-    this.router.navigate(['/search-results']);
   }
 
   initFilters() {
@@ -174,8 +184,8 @@ export class AdvancedSearchPage implements OnInit {
     this.statusClosed = false;
     this.isFiltered = false
   }
-  goBack() {
 
+  goBack() {
     this.router.navigate(['/home']);
   }
 
@@ -183,4 +193,41 @@ export class AdvancedSearchPage implements OnInit {
     //reset
     this.initFilters();
   }
+
+  checkFilters() {
+    if (this.tipoFilter == "utente") { return true }
+    if (this.tipoFilter == "" || this.codCategoriaFilter == "" || (this.statusOpen == false && this.statusClosed == false)) {
+      return false; //non tutti i campi compilati
+    } return true;
+  }
+
+  toast(txt: string, color: string) {
+    const toast = document.createElement("ion-toast");
+    toast.message = txt;
+    toast.duration = 2000;
+    toast.position = "top";
+    toast.color = color;
+    document.body.appendChild(toast);
+    return toast.present();
+  }
+
+  ngOnDestroy() {
+    console.log("DESTROY ADVANCED");
+    this.initFilters();
+  }
+  clickGlobalSearch(){
+
+    this.globalSearch = true;
+    this.keywordSearch = false;
+    this.utentiBtn = false;
+
+  }
+
+  clickKeywordSearch(){
+    this.globalSearch = false;
+    this.keywordSearch = true;
+
+
+  }
+
 }

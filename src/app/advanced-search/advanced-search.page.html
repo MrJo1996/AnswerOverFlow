@@ -5,10 +5,22 @@
       <ion-icon color="primary" slot="start" slot="icon-only" name="arrow-back-outline"></ion-icon>
     </ion-button>
 
-    <ion-searchbar show-cancel-button="never" placeholder="Ricerca..." [(ngModel)]="keywordToSearch"
-      (search)="ricerca($event)">
+    <ion-searchbar *ngIf= "keywordSearch" show-cancel-button="never" placeholder="Ricerca..."  [(ngModel)]="keywordToSearch"
+      (search)="ricerca($event)" > 
+    </ion-searchbar>
+
+    <ion-searchbar *ngIf= "globalSearch" show-cancel-button="never" placeholder="Ricerca..." disabled = "true"  > 
     </ion-searchbar>
   </ion-toolbar>
+
+  <ion-segment value="keyword">
+    <ion-segment-button value="keyword" (click)="clickKeywordSearch()">
+      <ion-label>Ricerca keywords</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="globale" (click)="clickGlobalSearch()">
+      <ion-label>Ricerca globale</ion-label>
+    </ion-segment-button>
+  </ion-segment>
 </ion-header>
 
 <ion-content>
@@ -16,14 +28,14 @@
     <!-- TIPO -->
     <ion-card class="backgrounds">
       <ion-list>
-        <ion-radio-group value="biff">
+        <ion-radio-group>
           <ion-list-header>
             <ion-label><u><strong>Tipo</strong></u></ion-label>
           </ion-list-header>
 
           <ion-item>
             <ion-label>Domande</ion-label>
-            <ion-radio slot="start" (click)="clickDomanda()" checked="true"></ion-radio>
+            <ion-radio slot="start" (click)="clickDomanda()"></ion-radio>
           </ion-item>
 
           <ion-item>
@@ -31,10 +43,13 @@
             <ion-radio slot="start" (click)="clickSondaggio()"></ion-radio>
           </ion-item>
 
-          <ion-item>
-            <ion-label>Utenti</ion-label>
-            <ion-radio slot="start" (click)="clickUtente()"></ion-radio>
-          </ion-item>
+          <div *ngIf="globalSearch == false">
+
+            <ion-item>
+              <ion-label>Utenti</ion-label>
+              <ion-radio slot="start" (click)="clickUtente()"></ion-radio>
+            </ion-item>
+          </div>
         </ion-radio-group>
       </ion-list>
     </ion-card>
@@ -66,12 +81,12 @@
           </ion-list-header>
           <ion-item>
             <ion-label>Chiuso</ion-label>
-            <ion-checkbox (click)="toggleClose($event)" slot="end"></ion-checkbox >
+            <ion-checkbox (click)="toggleClose($event)" slot="end"></ion-checkbox>
           </ion-item>
 
           <ion-item>
             <ion-label>Aperto</ion-label>
-            <ion-checkbox  (click)="toggleOpen($event)" slot="end"></ion-checkbox >
+            <ion-checkbox (click)="toggleOpen($event)" slot="end"></ion-checkbox>
           </ion-item>
         </ion-list>
       </ion-card>
@@ -79,10 +94,10 @@
     </div>
 
   </ion-grid>
-  
+
   <ion-fab vertical="bottom" horizontal="start" slot="fixed" style="opacity: 70%;">
     <ion-fab-button size="small" (click)="openMenu()" color="light">
       <ion-icon name="arrow-forward-circle-outline" style="opacity: 100%;"></ion-icon>
     </ion-fab-button>
-  </ion-fab> 
+  </ion-fab>
 </ion-content>

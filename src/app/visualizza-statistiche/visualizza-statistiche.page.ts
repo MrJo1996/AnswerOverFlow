@@ -40,7 +40,6 @@
       num_risposteTot: any = [];
     
       Domande = {};
-    
       cod_utente;
       domandeTOP = new Array();
       risposteTOP = new Array();
@@ -53,7 +52,6 @@
       categoriaxLtitle: any = [];
       numLIKE: any = [];
       numDISLIKE: any = [];
-    
       num_domandeTOP: any;
       num_domandeTOP2: any;
       num_domandeTOP3: any;
@@ -69,13 +67,10 @@
       categoriaxL = {};
       emailOther;
       emailProva;
-      segment;
-      refresh_index;
-      check: boolean;
-     
-    
-      
-      provaDomandeTOP = new Array();
+      domandeBtn;
+      risposteBtn;
+      likeBtn;
+  
      
     
       constructor( private menuCrtl: MenuController,
@@ -83,11 +78,8 @@
                    private storage: Storage, 
                   private dataService: DataService,
                   private navCtrl: NavController,
-                  public apiService: ApiService) {
-
-     
-                                                }
-    
+                  public apiService: ApiService) {}
+                                                
       ngOnInit() {
     
         //this.storage.get('utente').then(data => { this.cod_utente = data.email });
@@ -96,25 +88,20 @@
         setTimeout(() => {
           if(this.emailOther === "undefined"){    
               this.cod_utente=this.emailProva;
+              console.log("email prova", this.emailProva);
           }else{    
             this.cod_utente=this.emailOther;  
+            console.log("codice utente", this.cod_utente);
+            this.viewDomande();
           }   
         },800)
         
       }
 
-      ionViewWillEnter() {
-        this.check  = false;
-      
-        }
+      ionViewWillEnter() {}
 
       ionViewDidEnter() {
-    
-    
-    
-        this.visualizzaStatisticheDomanda();
-        this.visualizzaCategoria();
-        this.visualizzaTOTStatisticheDomanda();
+
         this.visualizzaStatitischeRisposta();
         this.visualizzaTOTStatitischeRisposta();
         this.generateColorArray(8);
@@ -124,45 +111,50 @@
         this.sdoughnutChartMethod();
         this.lineChartMethod();
         this.Valutazioni();
-        this.carica();
-        this.caricaR();
-        this.caricaLD();
-       
-      
-    
-      }
+        this.viewDomande();
+        this.viewRisposte();
+        this.viewLike();
+       }
 
-      doRefresh2(){
-        window.location.reload();//ricaricapage page
-      }
-    
   //_________________________________________________________________
-      carica() {
 
-        this.visualizzaStatisticheDomanda();
-        this.visualizzaTOTStatisticheDomanda();
-        this.check= true;
-      }
+  viewDomande() {
+        
+    this.visualizzaStatisticheDomanda();
+    this.visualizzaTOTStatisticheDomanda();
     
-      caricaR() {
-        this.visualizzaStatitischeRisposta();
-        this.visualizzaTOTStatitischeRisposta();
-      }
+    this.risposteBtn = false;
+    this.domandeBtn = true;
+    this.likeBtn = false;
+
+  }
+
+  viewRisposte() {
+    this.risposteBtn = true;
+    this.domandeBtn = false;
+    this.likeBtn = false;
+
+    this.visualizzaStatitischeRisposta();
+    this.visualizzaTOTStatitischeRisposta();
+  }
+
+  viewLike() {
+    this.likeBtn = true;
+    this.risposteBtn = false;
+    this.domandeBtn = false;
     
-      caricaLD() {
-         this.Valutazioni();
-      }
+
+    this.Valutazioni();
+  }
     //_____________________________________________________________________Carica al click del segmentB
     
       goBack() {
-        //Visualizza il frame di caricamento
         const loading = document.createElement('ion-loading');
         loading.cssClass = 'loading';
         loading.spinner = 'crescent';
         loading.duration = 2000;
         document.body.appendChild(loading);
         loading.present();
-
         this.navCtrl.back();
       }
 
@@ -179,9 +171,9 @@
       }
     
       //-----------------------------------------------------------------------valutaioni
-    
-    
       async Valutazioni() {
+
+         
         this.apiService.get_tot_Risposte(this.cod_utente).then(
           (risposte) => {
             for (let j = 0; j < risposte['Risposte']['data'].length; j++) {
@@ -189,25 +181,15 @@
               this.apiService.getCategoria(this.categoriaxL[j]).then(
                 (categorie) => {
                   this.categoriaxLtitle[j] = categorie['Categoria']['data']['0'].titolo;
-    
-    
                   this.apiService.ContaValutazioni(this.cod_utente, this.categoriaxL[j]).then(
                     (valutazioni) => {
-                      console.log("Valutazioni ssssssssssssssssss:", valutazioni['Numero risposte']['data']);
                       this.numLIKE[j] = valutazioni['Numero risposte']['data'].num_like;
-    
-    
-                      this.numDISLIKE[j] = valutazioni['Numero risposte']['data'].num_dislike;
-    
-                      this.lineChartMethod();
-    
-    
+                      this.numDISLIKE[j] = valutazioni['Numero risposte']['data'].num_dislike;  
+                      this.lineChartMethod();  
                     },
-                    (rej) => {
-                      
+                    (rej) => {                     
                       console.log("C'è stato un errore durante la visualizzazione");
-                    }
-    
+                    } 
                   );
                 }
               )
@@ -227,7 +209,7 @@
       //--------------------------------------------------------------------------------domande TOP 3
       async visualizzaStatisticheDomanda() {
     
-        this.apiService.get_top_Domande(this.cod_utente).then(
+        this.apiService.get_top_Domande(this.cod_utente).then( 
           (domande) => {
             console.log("CLOG domande ", domande);
     
@@ -267,11 +249,8 @@
             });
     
             this.visualizzaCategoria();
-            this.visualizzaCategoria1();
-    
-            this.visualizzaCategoria2(); //se quello a sx non è nulla fa quello a dx
-    
-    
+            this.visualizzaCategoria1();  
+            this.visualizzaCategoria2();  
           },
           (rej) => {
             console.log("C'è stato un errore durante la visualizzazione");
@@ -287,11 +266,8 @@
     
         this.apiService.getCategoria(this.categoriaTOP).then(
           (categoria) => {
-    
-            console.log("Categoria1", categoria['Categoria']['data']['0'].titolo);
             this.categoriaText1 = categoria['Categoria']['data']['0'].titolo;
             this.createBarChart();
-    
           },
           (rej) => {
             console.log("C'è stato un errore durante la visualizzazione");
@@ -302,15 +278,9 @@
     
       async visualizzaCategoria1() {
         this.apiService.getCategoria(this.categoriaTOP2).then(
-          (categoria) => {
-    
-            console.log("Categoria 2", categoria['Categoria']['data']['0'].titolo);
+          (categoria) => {  
             this.categoriaText2 = categoria['Categoria']['data']['0'].titolo;
             this.createBarChart();
-    
-    
-    
-    
           },
           (rej) => {
             console.log("C'è stato un errore durante la visualizzazione");
@@ -320,12 +290,9 @@
     
       async visualizzaCategoria2() {
         this.apiService.getCategoria(this.categoriaTOP3 /* || 3 */).then(
-          (categoria) => {
-    
-            console.log("Categoria 3", categoria['Categoria']['data']['0'].titolo);
+          (categoria) => { 
             this.categoriaText3 = categoria['Categoria']['data']['0'].titolo;
-            this.createBarChart();
-    
+            this.createBarChart();    
           },
           (rej) => {
             console.log("C'è stato un errore durante la visualizzazione");
@@ -365,10 +332,8 @@
       async visualizzaCategoriaR2() {
         this.apiService.getCategoria(this.categoriaTOP3).then(
           (categoria) => {
-    
             this.categoriaText3 = categoria['Categoria']['data']['0'].titolo;
             this.secondbars();
-    
           },
           (rej) => {
             console.log("C'è stato un errore durante la visualizzazione");
@@ -377,39 +342,29 @@
         );
       }
     
+
     
     
     
       //------------------------------------------------------------------Fine domande top
       async visualizzaTOTStatisticheDomanda() {
     
-        this.apiService.get_tot_Domande(this.cod_utente).then(
-          (domande) => {
-    
-            for (let j = 0; j < domande['Domande']['data'].length; j++) {
-    
-              this.Dlabels[j] = domande['Domande']['data'][j].cod_categoria;
-              this.num_domandeTot[j] = domande['Domande']['data'][j].num_domande;
-              // console.log('Il codice è', this.Dlabels[j]);
-    
-    
+        this.apiService.getDomande(this.cod_utente).then(
+          (domandeT) => {
+            for (let j = 0; j < domandeT['Domande']['data'].length; j++) {
+              this.Dlabels[j] = domandeT['Domande']['data'][j].cod_categoria;
+              this.num_domandeTot[j] = domandeT['Domande']['data'][j].num_domande;
               this.apiService.getCategoria(this.Dlabels[j]).then(
                 (categoria) => {
-    
-                  //console.log("ciaoOoooOOooO", categoria['Categoria']['data']['0'].titolo) ;
                   this.DlabelsTitle[j] = categoria['Categoria']['data']['0'].titolo;
-                  //console.log('Il titolo è',this.DlabelsTitle[j]);
                   this.doughnutChartMethod();
                 },
                 (rej) => {
                   console.log("C'è stato un errore durante la visualizzazione");
                 }
               );
-    
-    
             }
-    
-          },
+           },
           (rej) => {
             console.log("C'è stato un errore durante la visualizzazione");
           }
@@ -422,14 +377,7 @@
         this.apiService.get_top_Risposte(this.cod_utente).then(
           (risposte) => {
     
-            console.log("Clog RIsposte top", risposte['Risposte']);
             this.risposteTOP = risposte['Risposte']['data'];
-    
-    
-    
-            //  this.num_risposteTOP=this.risposteTOP['data']['0'].num_risposte;
-            //  this.num_risposteTOP1=this.risposteTOP['data']['1'].num_risposte;
-            //  this.num_risposteTOP2=this.risposteTOP['data']['2'].num_risposte;
             let i = 0;
             this.risposteTOP.forEach(element => {
               if (i === 0) {
@@ -461,17 +409,9 @@
               }
               k++;
             });
-    
-    
             this.visualizzaCategoriaR();
             this.visualizzaCategoriaR1();
             this.visualizzaCategoriaR2();
-    
-    
-    
-    
-    
-    
     
           },
           (rej) => {
@@ -484,31 +424,19 @@
       async visualizzaTOTStatitischeRisposta() {
         this.apiService.get_tot_Risposte(this.cod_utente).then(
           (risposte) => {
-            //console.log(risposte['Risposte']['Data']);
+           
             for (let j = 0; j < risposte['Risposte']['data'].length; j++) {
-    
               this.LabelRisposte[j] = risposte['Risposte']['data'][j].cod_categoria;
               this.num_risposteTot[j] = risposte['Risposte']['data'][j].num_risposte;
-              // console.log('Il codice è', this.LabelRisposte[j]);
-    
-    
               this.apiService.getCategoria(this.LabelRisposte[j]).then(
                 (categoria) => {
-    
-                  //console.log("ciaoOoooOOooO", categoria['Categoria']['data']['0'].titolo) ;
                   this.RisposteDlabelsTitle[j] = categoria['Categoria']['data']['0'].titolo;
-                  //console.log('Il titolo è',this.RisposteDlabelsTitle[j]);
-    
-    
                   this.sdoughnutChartMethod()
-    
                 },
                 (rej) => {
                   console.log("C'è stato un errore durante la visualizzazione");
                 }
               );
-    
-    
             }
     
           },
@@ -622,7 +550,6 @@
         });
       }
     
-    
       sdoughnutChartMethod() {
     
         this.sdoughnutChart = new Chart(this.doughnutCanvas2.nativeElement, {
@@ -639,10 +566,7 @@
           });
         
       }
-    
-    
-    
-    
+
       lineChartMethod() {
             this.lineChart = new Chart(this.lineCanvas.nativeElement, {
             type: 'horizontalBar',
@@ -651,15 +575,15 @@
               datasets: [{
                 label: 'LIKE ▲',
                 data: this.numLIKE,
-                backgroundColor: '#008000', // array should have same number of elements as number of dataset
-                borderColor: '#008000',// array should have same number of elements as number of dataset
+                backgroundColor: '#008000',
+                borderColor: '#008000',
                 borderWidth: 1
               },
                 {
                 label: 'DISLIKE ▼',
                 data: this.numDISLIKE,
-                backgroundColor: '#dd1144', // array should have same number of elements as number of dataset
-                borderColor: '#dd1144',// array should have same number of elements as number of dataset
+                backgroundColor: '#dd1144', 
+                borderColor: '#dd1144',
                 borderWidth: 1
               }]
             },
