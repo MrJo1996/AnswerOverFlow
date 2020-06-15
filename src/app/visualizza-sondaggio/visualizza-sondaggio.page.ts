@@ -322,8 +322,9 @@ export class VisualizzaSondaggioPage implements OnInit {
     //this.ngOnInit();
     this.visualizzaScelte();
 
-    //this.giaVotato();
+    this.giaVotato();
     this.sceltaFatta = false;
+    this.mappingIncrement(this.viewTimer);
     setTimeout(() => {
 
       event.target.complete();
