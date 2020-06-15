@@ -55,7 +55,7 @@ export class VisualizzaDomandaPage implements OnInit {
 
   timerView2;
 
-
+  ospite;
   giorni;
   ore;
   minuti;
