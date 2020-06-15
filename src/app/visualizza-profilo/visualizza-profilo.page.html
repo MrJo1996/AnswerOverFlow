@@ -6,15 +6,15 @@
     <ion-button slot="start" expand="block" fill="clear" (click)="goBack()" class="msg-btn">
       <ion-icon color="primary" slot="start" slot="icon-only" name="arrow-back-outline"></ion-icon>
     </ion-button>
-    <ion-title  *ngIf="userProfileId === 'undefined'" style="font-size: 1.5rem; text-align: center;"><b>Account</b></ion-title>
-    <ion-title  *ngIf="userProfileId !== 'undefined'" style="font-size: 1.5rem; text-align: center;"><b>Profilo utente</b></ion-title>
+    <ion-title  *ngIf="pagePath === '/visualizza-profiloutente'" style="font-size: 1.5rem; text-align: center;"><b>Account</b></ion-title>
+    <ion-title  *ngIf="pagePath !== '/visualizza-profiloutente'" style="font-size: 1.5rem; text-align: center;"><b>Profilo utente</b></ion-title>
 
     
-    <ion-button *ngIf="userProfileId === 'undefined'" slot="end"  expand="block" fill="clear" (click)="goToSettingProfile()">
+    <ion-button *ngIf="pagePath === '/visualizza-profiloutente'" slot="end"  expand="block" fill="clear" (click)="goToSettingProfile()">
       <ion-icon name="hammer" slot="icon-only"></ion-icon>
     </ion-button>
    
-    <ion-button *ngIf="userProfileId !== 'undefined'" slot="end" expand="block" fill="clear" (click)="goToHome()" class="msg-btn" >  
+    <ion-button *ngIf="pagePath !== '/visualizza-profiloutente'" slot="end" expand="block" fill="clear" (click)="goToHome()" class="msg-btn" >  
     <ion-img  slot="end" class = "logo-btn" src = "/assets/img/logo AnswerOverFlow.png"></ion-img>    
     </ion-button>
   </ion-toolbar>
@@ -31,7 +31,7 @@
         <ion-icon name="happy-outline" slot="start"></ion-icon>
         <ion-label position="stacked">Username</ion-label>
         <ion-text>{{profilo?.username}}</ion-text>
-        <ion-button *ngIf="userProfileId !== 'undefined'" fill="clear" slot="end" (click)="showAlertView()"><ion-icon style="width: 25px; height: 25px;" name="alert-circle-outline" color="danger"></ion-icon> </ion-button>
+        <ion-button *ngIf="pagePath !== '/visualizza-profiloutente'" fill="clear" slot="end" (click)="showAlertView()"><ion-icon style="width: 25px; height: 25px;" name="alert-circle-outline" color="danger"></ion-icon> </ion-button>
       </ion-item>
 
      <!--  <ion-item color="light">
@@ -61,7 +61,7 @@
     </ion-card>
 
 
-    <ion-grid style="margin-top: 20px;" *ngIf="userProfileId !== 'undefined'">
+    <ion-grid style="margin-top: 20px;" *ngIf="pagePath !== '/visualizza-profiloutente'">
       <ion-row>
         <ion-col style="align-items: center !important;">
     <ion-button expand = "block" color="light"  (click)="goToChat()">
@@ -80,7 +80,7 @@
       </ion-row> -->
     </ion-grid>
 
-    <ion-button  *ngIf="userProfileId === 'undefined'"  expand = "block" color="primary"  fill ="outline" (click)="stats()" style="margin-top: 20px;">
+    <ion-button  *ngIf="pagePath === '/visualizza-profiloutente'"  expand = "block" color="primary"  fill ="outline" (click)="stats()" style="margin-top: 20px;">
       <ion-icon  slot="start" name="analytics"></ion-icon><b>
       Statistiche</b></ion-button>
 

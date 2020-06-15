@@ -61,19 +61,15 @@ export class ChatPage implements OnInit {
   messages = new Array();
   oggi:any;
   ieri:any;
+  flag: boolean = true;
   
 
   ngOnInit() {
     //this.cod_chat = this.dataService.codice_chat;
-    
-    this.selectChatFriend();
 
     this.oggi = this.setDate(this.getToday());
     this.ieri = this.setDate(this.getYesterday());
-   
-    if(this.cod_chat === null ){
-    this.findChat(); 
-    }
+ 
       this.showMessages();
      
       setTimeout(() => {
@@ -81,6 +77,27 @@ export class ChatPage implements OnInit {
       }, 1200);
       this.refreshMessages(); 
   }
+
+
+
+  ionViewWillEnter(){
+    this.messages = [];
+    this.msg_utente_id = this.dataService.getEmail_Utente()
+    this.chatFriend_id = this.dataService.getEmailOthers();     
+    this.cod_chat = this.dataService.getCodice_chat();
+
+    this.flag = true;
+    
+    this.selectChatFriend();
+    
+    this.findChat(); 
+    this.refreshMessages(); 
+  }
+
+  ionViewWillLeave(){
+    this.flag = false;
+  }
+
 
  
   /////////////////////////////////////////
@@ -250,10 +267,15 @@ export class ChatPage implements OnInit {
   }
 
   refreshMessages() {
+    
+    if(this.flag)
+    { 
       setTimeout(() => {
-        this.showMessages();
-        this.refreshMessages();
-      }, 6000);
+       this.showMessages();
+       this.refreshMessages();
+     }, 6000);
+   }
+    
   }
 
   getToday() {

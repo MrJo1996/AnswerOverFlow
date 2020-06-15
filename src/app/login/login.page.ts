@@ -147,7 +147,6 @@ export class LoginPage implements OnInit {
 
       this.storage.set("utente", data.data[0]);
       this.storage.set("session", true);
-      console.log("false", data);
       this.click = true;
 
       this.storage.set("session", true);
@@ -203,36 +202,14 @@ export class LoginPage implements OnInit {
     this.oneSignal.sendTag('logState','logged');
     this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.None);
 
-
-    this.oneSignal.handleNotificationReceived().subscribe(data => {
-      
-    
+    this.oneSignal.handleNotificationReceived().subscribe(data => {       
       this.dataService.setNotificationsState(true);
-    
-            
-     const toast = document.createElement("ion-toast");
-    
-    toast.message = 'Hai ricevuto un messaggio';
-      toast.duration = 2000;
-      toast.position = "top";
-     // toast.style.fontSize = "20px";
-      toast.color = "danger";
-      toast.style.textAlign = "center";
-      document.body.appendChild(toast);
-     
-      return toast.present(); 
-
     });
-
 
     this.oneSignal.handleNotificationOpened().subscribe(data => {
-
       this.router.navigate(['visualizza-chat']);
-    
-
 
     });
-
     this.oneSignal.endInit();
     
   }
