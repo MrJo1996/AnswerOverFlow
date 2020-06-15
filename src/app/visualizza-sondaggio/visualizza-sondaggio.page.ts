@@ -477,9 +477,14 @@ export class VisualizzaSondaggioPage implements OnInit {
   }
 
   goChat() {
-    this.dataService.loadingView(3000);//visualizza il frame di caricamento
-    this.dataService.setEmailOthers(this.sondaggioUser);
-    this.navCtrl.navigateForward(['/chat'])
+    if(this.ospite === true){
+      this.toast('Effettua il login per chattare con gli altri utenti!', 'danger');
+    }else{
+      this.dataService.loadingView(3000);//visualizza il frame di caricamento
+      this.dataService.setEmailOthers(this.sondaggioUser);
+      this.navCtrl.navigateForward(['/chat'])
+    }
+   
 
   }
 
