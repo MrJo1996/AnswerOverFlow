@@ -118,7 +118,6 @@ export class AppComponent implements OnInit {
 
     //Check connessione (provider in app.module)
     this.network.onDisconnect().subscribe(() => {
-      console.log("Ombo");
       this.toast("Nessuna connessione ad Internet.", "danger");
     });
   }
@@ -327,7 +326,7 @@ export class AppComponent implements OnInit {
           this.router.navigate(['home']);
           this.toast("Bentornato " + utente.username + "!", "success");
         }
-        console.log("STORAGE JO user: ", utente.username);
+      
       });
     });
 
@@ -380,32 +379,11 @@ export class AppComponent implements OnInit {
 
 
     this.oneSignal.handleNotificationReceived().subscribe(data => {
-
-
       this.dataService.setNotificationsState(true);
-
-
-      const toast = document.createElement("ion-toast");
-
-      toast.message = 'Hai ricevuto un messaggio';
-      toast.duration = 2000;
-      toast.position = "top";
-      // toast.style.fontSize = "20px";
-      toast.color = "danger";
-      toast.style.textAlign = "center";
-      document.body.appendChild(toast);
-
-      return toast.present();
-
     });
 
-
     this.oneSignal.handleNotificationOpened().subscribe(data => {
-
       this.router.navigate(['visualizza-chat']);
-
-
-
     });
 
     this.oneSignal.endInit();

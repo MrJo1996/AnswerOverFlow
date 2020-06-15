@@ -22,11 +22,12 @@ export class VisualizzaProfiloPage implements OnInit {
     this.dataService.loadingView(5000);//visualizza il frame di caricamento
     this.userProfileId = this.dataService.getEmailOthers();
     this.userId = this.dataService.getEmail_Utente();
-    console.log("JOOOOOOO", this.userId);
+   
     
     //console.log(this.userProfileId);
     setTimeout(() => {
-      if (window.location.pathname === '/visualizza-profiloutente') {
+      this.pagePath = window.location.pathname;
+      if (this.pagePath === '/visualizza-profiloutente') {
         this.selectProfile(this.userId);
       } else {
         this.selectProfile(this.userProfileId);
@@ -82,19 +83,18 @@ export class VisualizzaProfiloPage implements OnInit {
   segnalazione: string;
   selectedProfile: string;
   selectId
+  pagePath
 
 
   async selectProfile(id) {
 
-    console.log(this.userProfileId + " userIDProfilo");
-    console.log(this.userId + " userID");
-    console.log(id + " fiofifoifo");
+   
 
     this.apiService.getProfilo(id).then(
       (data) => {
         console.log('Visualizzato con successo');
         this.profilo = data['data'][0];
-        console.log(this.profilo)
+       // console.log(this.profilo)
         this.selectId = this.profilo.email
         //console.log(this.profilo.bio);
 
@@ -110,10 +110,8 @@ export class VisualizzaProfiloPage implements OnInit {
 
     this.apiService.segnala_utente(this.segnalazione, this.profilo.username, this.profilo.email).then(
       (result) => {
-        console.log("Segnalazione inviata con successo")
         this.toast("Segnalazione inviata.", "success");
       }, (rej) => {
-        console.log("Invio segnalazione non riuscito")
         this.toast("Segnalazione non riuscita, riprovare.", "danger");
 
       }
@@ -220,7 +218,6 @@ export class VisualizzaProfiloPage implements OnInit {
 
   openMenu() {
     this.menuCrtl.open()
-    console.log(this.menuCrtl.swipeGesture.length)
   }
 
 
