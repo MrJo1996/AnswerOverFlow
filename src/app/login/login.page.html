@@ -1,24 +1,20 @@
 <ion-content padding fixed class="bg-class" id="fixed">
-    <div id='stars'></div>
-    <div id='stars2'></div>
-    <div id='stars3'></div>
+  <div id='stars'></div>
+  <div id='stars2'></div>
+  <div id='stars3'></div>
 
- 
-        
-         
-            <div class="logo"></div>
-            <div style="text-align: center;">
-              <p>
-                <ion-text class="textTitleBIG">Answer</ion-text>
-                <ion-text class="textTitleBIG">OverFlow</ion-text>
+  <div class="logo"></div>
+  <div style="text-align: center;">
+    <p>
+      <ion-text class="textTitleBIG">Answer</ion-text>
+      <ion-text class="textTitleBIG">OverFlow</ion-text>
+    </p>
+  </div>
 
-              </p>
-            </div>
-          
-          <ion-grid fixed class="grid">
-            <ion-row>
-              <ion-col>
-          <div>
+  <ion-grid fixed class="grid">
+    <ion-row>
+      <ion-col>
+        <div>
           <ion-item color="light" lines="none" class="email">
             <ion-input [(ngModel)]="username" placeholder="Username"></ion-input>
           </ion-item>
@@ -37,7 +33,7 @@
         <p></p>
         <ion-button color="light" (click)="postLogin()">Accedi</ion-button>
         <ion-button color="primary" (click)="reg()">Registrati</ion-button>
-        <ion-button color="secondary" (click)="clickOspite()" fill ="outline">Accedi come ospite</ion-button>
+        <ion-button color="secondary" (click)="clickOspite()" fill="outline">Accedi come ospite</ion-button>
 
         <p>
           <ion-col><a button=true (click)="recupero()">Password dimenticata?</a></ion-col>

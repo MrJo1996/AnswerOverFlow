@@ -1,222 +1,220 @@
 <ion-header>
   <ion-toolbar>
-    <ion-button slot="start" expand="block" fill="clear" color="light"  (click)="goback()" class="backBtn">
+    <ion-button slot="start" expand="block" fill="clear" color="light" (click)="goback()" class="backBtn">
       <ion-icon color="primary" slot="start" slot="icon-only" name="arrow-back-outline"></ion-icon>
     </ion-button>
-    <ion-title  style="font-size: 1.5rem; text-align: center;"><b>Informazioni</b></ion-title>
-    <ion-button  slot="end" expand="block" fill="clear" class="msg-btn" ><ion-img></ion-img></ion-button>
-   </ion-toolbar>
+    <ion-title style="font-size: 1.5rem; text-align: center;"><b>Informazioni</b></ion-title>
+    <ion-button slot="end" expand="block" fill="clear" class="msg-btn">
+      <ion-img></ion-img>
+    </ion-button>
+  </ion-toolbar>
 </ion-header>
 
-  <ion-content  style="--background: url('/assets/img/provaBack.png') no-repeat center center / cover;" >
+<ion-content style="--background: url('/assets/img/provaBack.png') no-repeat center center / cover;">
 
-    
-    <ion-slides pager="true">
-       <ion-slide>
-     <h1>
-        <img src="assets/icon/logo.png"  class="centro">
-       
-           <pre></pre>
 
-      <ion-card-content class="Infotext"  style="--background: url('/assets/img/provaBack.png') no-repeat center center / cover;" >
-  
-        AnswerOverflow è un'applicazione che semplifica lo scambio di informazioni 
-         tra gli utenti, permettendo  di pubblicare domande o sondaggi di qualsiasi genere.
-        L'app è stata implementata in modo che un timer garantisca una risposta immediata da parte della community.<br>
-        All'utente sarà data la possibilità di scegliere la miglior risposta e di inviare un feedback
-        per ogni risposta che risulti utile.<br>
-        Inoltre sarà anche possibile instaurare un canale di comunicazione privato tra utenti.<br>
-        Per ulteriori informazioni vi invitiamo a vedere il video prosentazione a cui si può accedere cliccando sul 
-        link in basso e a visitare i profili instagram dei realizzatori dell'app.<br><br>
-      </ion-card-content>
-       
-      
+  <ion-slides pager="true">
+    <ion-slide>
+      <h1>
+        <img src="assets/icon/logo.png" class="centro">
+        <ion-card class="card">
+          <ion-card-content class="Infotext"
+            style="--background: url('/assets/img/provaBack.png') no-repeat center center / cover;" align="justify">
+
+            AnswerOverflow è un'applicazione che semplifica lo scambio di informazioni
+            tra gli utenti, permettendo di pubblicare domande o sondaggi di qualsiasi genere.
+            L'app è stata implementata in modo che un timer garantisca una risposta immediata da parte della
+            community.<br>
+            All'utente sarà data la possibilità di scegliere la miglior risposta e di inviare un feedback
+            per ogni risposta che risulti utile.<br>
+            Inoltre sarà anche possibile instaurare un canale di comunicazione privato tra utenti.<br>
+            Per ulteriori informazioni vi invitiamo a vedere il video prosentazione a cui si può accedere cliccando sul
+            link in basso e a visitare i profili instagram dei realizzatori dell'app.
+          </ion-card-content>
+        </ion-card>
 
         <ion-col>
-          <a href="https://biteable.com/watch/answeroverflow-2470585">Video presentazione</a>
+          <h1><a href="https://biteable.com/watch/answeroverflow-2470585" style="font-size: medium;">Video
+              presentazione</a></h1>
+          <h1><a href="https://github.com/MrJo1996/AnswerOverFlow.git" style="font-size: medium;">Repository</a></h1>
         </ion-col>
-      
-    
-       </h1>
-      </ion-slide>
+      </h1>
+    </ion-slide>
 
     <ion-slide>
       <h1>
 
-        <ion-card class= "teamTitle" >TEAM DI SVILUPPO
-        <h1>
-        <a href="https://github.com/MrJo1996/AnswerOverFlow.git" style="font-size: medium;">Repository progetto</a>.</h1>
-        
+        <ion-card class="teamTitle">TEAM DI SVILUPPO
         </ion-card>
-         
-        
-        <ion-card >MANAGER </ion-card>
-        
+
+
+        <ion-card>MANAGERS</ion-card>
+
         <ion-grid>
-          
-            <ion-row>
-              <ion-col >
-                <div>
-        
-                  <ion-text class="centerText">Danilo Sprovieri</ion-text><br>
-                  <a href="https://www.instagram.com/danilosprovieri/">
+
+          <ion-row>
+            <ion-col>
+              <div>
+
+                <ion-text class="centerText">Danilo Sprovieri</ion-text><br>
+                <a href="https://www.instagram.com/danilosprovieri/">
                   <img src="assets/icon/profilo.jpg" class="immagine"></a>
-                
-                </div>
-              </ion-col>
-              <ion-col >
-                <div>
-        
-                  <ion-text class="centerText">Jonathan Drini</ion-text><br>
-                  <a href="https://www.instagram.com/jona96it/">
+
+              </div>
+            </ion-col>
+            <ion-col>
+              <div>
+
+                <ion-text class="centerText">Jonathan Drini</ion-text><br>
+                <a href="https://www.instagram.com/jona96it/">
                   <img src="assets/icon/jonathan.jpg" class="immagine"> </a>
-                
-                </div>
-        
-              </ion-col>
-              <ion-col >
-                <div>
-                  <ion-text class="centerText"> Michela Patullo</ion-text><br>
-                  <a href="https://www.instagram.com/mikela_patullo/">
-                    <img src="assets/icon/michela.jpg" class="immagine"> </a>
-                </div>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-        
-          <ion-card >PROGRAMMATORI  </ion-card>
-        
-        
-          <ion-grid>
-            <ion-row>
-              <ion-col>
-                
-                <div>
-                  <ion-text class="centerText"> Andrea Tosto</ion-text><br>
-                  <a href="https://www.instagram.com/andreatosto__/">
-                    <img src="assets/icon/profilo.jpg" class="immagine"> </a>
-          
-                    
-                </div>
-                
-              </ion-col>
-              <ion-col >
-                
-                <div>
-                  <ion-text class="centerText"> Christian Peluso</ion-text><br>
-                  <a href="https://www.instagram.com/cristian_conlah/">
-                    <img src="assets/icon/christian.jpg" class="immagine"> </a>
-                </div>
-        
-              </ion-col>
-              <ion-col>
-                
-                <div>
-                  <ion-text class="centerText">Davide Russo</ion-text><br>
-                  <a href="https://www.instagram.com/daviderussooo/">
-                    <img src="assets/icon/davide.jpg"class="immagine"> </a>
-                 </div>
-        
-              </ion-col>
-            </ion-row>
-          
-            <ion-row>
-        
-              <ion-col>
-                
-                <div>
-                  <ion-text class="centerText"> Francesco Iafigliola</ion-text><br>
-                  <a href="https://www.instagram.com/frankiafi/">
-                    <img src="assets/icon/francesco.jpg"class="immagine" > </a>
-                </div>
-        
-              </ion-col>
-              <ion-col>
-                
-                <div>
-                  <ion-text class="centerText">Mariano Buttino</ion-text><br>
-                  <a href="https://www.instagram.com/mariano_buttino/">
-                    <img src="assets/icon/mariano.jpg"class="immagine" > </a>
-                </div>
-        
-              </ion-col>
-              <ion-col >
-                
-                <div>
-                  <ion-text class="centerText">Mattia Iannone</ion-text><br>
-                  <a href="https://www.instagram.com/iannonss98/">
-                    <img src="assets/icon/mattia.jpg" class="immagine"> </a>
-                </div>
-        
-              </ion-col>
-             
-            </ion-row>
-        
-            <ion-row>
-              
-              <ion-col>
-                
-                <div>
-                  <ion-text class="centerText">Luca Codipietro</ion-text><br>
-                  <a href="https://www.instagram.com/cod_j_/">
-                    <img src="assets/icon/profilo.jpg" class="immagine"> </a>
-                </div>
-        
-              </ion-col>
-              <ion-col>
-                
-                <div>
-        
-                  <ion-text class="centerText">Saverio Di Carlo</ion-text><br>
-                  <a href="https://www.instagram.com/saverio_dicarlo/">
-                    <img src="assets/icon/saverio.jpg" class="immagine"> </a>
-                </div>
-        
-              </ion-col>
-              <ion-col >
-                
-                <div>
-                  <ion-text class="centerText">Simone Cassetta</ion-text><br>
-                  <a href="https://www.instagram.com/sim_tape/">
-                    <img src="assets/icon/profilo.jpg" class="immagine"> </a>
-                </div>
-        
-              </ion-col>
-        
-            </ion-row>
-        
-            
-            <ion-row>
-              
-              <ion-col>
-                
-                <div>
-                  <ion-text class="centerText">Simone Mucci</ion-text><br>
-                  <a href="https://www.instagram.com/mucci_s/">
-                    <img src="assets/icon/simoneM.jpg" class="immagine" > </a>
-                </div>
-        
-              </ion-col>
-              <ion-col>
-                
-                <div>
-                  
-                </div>
-        
-              </ion-col>
-              <ion-col >
-                
-                <div>
-                   
-                </div>
-        
-              </ion-col>
-        
-            </ion-row>
-        
-        
-          </ion-grid>
-        
+
+              </div>
+
+            </ion-col>
+            <ion-col>
+              <div>
+                <ion-text class="centerText"> Michela Patullo</ion-text><br>
+                <a href="https://www.instagram.com/mikela_patullo/">
+                  <img src="assets/icon/michela.jpg" class="immagine"> </a>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <ion-card>INGEGNERI</ion-card>
+
+
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+
+              <div>
+                <ion-text class="centerText"> Andrea Tosto</ion-text><br>
+                <a href="https://www.instagram.com/andreatosto__/">
+                  <img src="assets/icon/profilo.jpg" class="immagine"> </a>
+
+
+              </div>
+
+            </ion-col>
+            <ion-col>
+
+              <div>
+                <ion-text class="centerText"> Christian Peluso</ion-text><br>
+                <a href="https://www.instagram.com/cristian_conlah/">
+                  <img src="assets/icon/christian.jpg" class="immagine"> </a>
+              </div>
+
+            </ion-col>
+            <ion-col>
+
+              <div>
+                <ion-text class="centerText">Davide Russo</ion-text><br>
+                <a href="https://www.instagram.com/daviderussooo/">
+                  <img src="assets/icon/davide.jpg" class="immagine"> </a>
+              </div>
+
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+
+            <ion-col>
+
+              <div>
+                <ion-text class="centerText"> Francesco Iafigliola</ion-text><br>
+                <a href="https://www.instagram.com/frankiafi/">
+                  <img src="assets/icon/francesco.jpg" class="immagine"> </a>
+              </div>
+
+            </ion-col>
+            <ion-col>
+
+              <div>
+                <ion-text class="centerText">Mariano Buttino</ion-text><br>
+                <a href="https://www.instagram.com/mariano_buttino/">
+                  <img src="assets/icon/mariano.jpg" class="immagine"> </a>
+              </div>
+
+            </ion-col>
+            <ion-col>
+
+              <div>
+                <ion-text class="centerText">Mattia Iannone</ion-text><br>
+                <a href="https://www.instagram.com/iannonss98/">
+                  <img src="assets/icon/mattia.jpg" class="immagine"> </a>
+              </div>
+
+            </ion-col>
+
+          </ion-row>
+
+          <ion-row>
+
+            <ion-col>
+
+              <div>
+                <ion-text class="centerText">Luca Codipietro</ion-text><br>
+                <a href="https://www.instagram.com/cod_j_/">
+                  <img src="assets/icon/profilo.jpg" class="immagine"> </a>
+              </div>
+
+            </ion-col>
+            <ion-col>
+
+              <div>
+
+                <ion-text class="centerText">Saverio Di Carlo</ion-text><br>
+                <a href="https://www.instagram.com/saverio_dicarlo/">
+                  <img src="assets/icon/saverio.jpg" class="immagine"> </a>
+              </div>
+
+            </ion-col>
+            <ion-col>
+
+              <div>
+                <ion-text class="centerText">Simone Cassetta</ion-text><br>
+                <a href="https://www.instagram.com/sim_tape/">
+                  <img src="assets/icon/profilo.jpg" class="immagine"> </a>
+              </div>
+
+            </ion-col>
+
+          </ion-row>
+
+
+          <ion-row>
+
+            <ion-col>
+
+              <div>
+                <ion-text class="centerText">Simone Mucci</ion-text><br>
+                <a href="https://www.instagram.com/mucci_s/">
+                  <img src="assets/icon/simoneM.jpg" class="immagine"> </a>
+              </div>
+
+            </ion-col>
+            <ion-col>
+
+              <div>
+
+              </div>
+
+            </ion-col>
+            <ion-col>
+
+              <div>
+
+              </div>
+
+            </ion-col>
+
+          </ion-row>
+
+
+        </ion-grid>
+
       </h1>
 
     </ion-slide>
