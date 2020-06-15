@@ -14,11 +14,12 @@ export class InfoPage implements OnInit {
   constructor(private router: Router, private menuCtrl: MenuController, private dataService: DataService) { }
 
   ngOnInit() {
+  
   }
 
 
   goback(){
-    this.dataService.loadingView(5000);//visualizza il frame di caricamento
+    this.dataService.loadingView(5000);
     this.router.navigate(['home']);
   }
 

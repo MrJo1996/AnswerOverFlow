@@ -1,14 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController, MenuController} from '@ionic/angular';
 import {NavController} from "@ionic/angular";
-import { Router } from "@angular/router";
 
 
 import { ApiService } from 'src/app/providers/api.service';
 import { DataService } from "../services/data.service";
 
-//Picker - import e poi definire nel constructor
-import { PickerController } from "@ionic/angular";
+
 
 @Component({
   selector: 'app-modifica-password',
@@ -22,9 +20,7 @@ export class ModificaPasswordPage implements OnInit {
   constructor(
     public alertController: AlertController,
     public apiService: ApiService, 
-    private pickerController: PickerController, 
     private navCtrl: NavController,
-    private router: Router,
     private menuCtrl: MenuController,
     private dataService: DataService
     ) { 
