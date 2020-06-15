@@ -85,13 +85,6 @@ export class ScegliAvatarPage implements OnInit {
   }
 
   routeToBio() {
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 3500;
-    document.body.appendChild(loading);
-    loading.present();
-
     this.alertSalta();
   }
 

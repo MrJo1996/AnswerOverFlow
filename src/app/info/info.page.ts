@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from "@angular/router";
 import { MenuController } from '@ionic/angular';
+import { DataService } from '../services/data.service';
 
 @Component({
   selector: 'app-info',
@@ -10,21 +11,14 @@ import { MenuController } from '@ionic/angular';
 export class InfoPage implements OnInit {
 
 
-  constructor(private router: Router, private menuCtrl: MenuController) { }
+  constructor(private router: Router, private menuCtrl: MenuController, private dataService: DataService) { }
 
   ngOnInit() {
   }
 
 
   goback(){
-    //Visualizza il frame di caricamento
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 3500;
-    document.body.appendChild(loading);
-    loading.present();
-
+    this.dataService.loadingView(5000);//visualizza il frame di caricamento
     this.router.navigate(['home']);
   }
 

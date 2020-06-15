@@ -77,7 +77,9 @@ export class ModificaSondaggioPage implements OnInit {
   
         }
       );
+      this.dataService.loadingView(3000);//visualizza il frame di caricamento
       this.toastModificheEffettuate();
+      this.navCtrl.back();
     }
 
   }
@@ -477,20 +479,13 @@ export class ModificaSondaggioPage implements OnInit {
 
 
     goBack(){
-      //Visualizza il frame di caricamento
-      const loading = document.createElement('ion-loading');
-      loading.cssClass = 'loading';
-      loading.spinner = 'crescent';
-      loading.duration = 2000;
-      document.body.appendChild(loading);
-      loading.present();
-
+      this.dataService.loadingView(3000);//visualizza il frame di caricamento
       this.navCtrl.back();
     }
 
     async toastSondaggioScaduto() {
       const toast = await this.toastController.create({
-        message: 'Sondaggio scaduto!! !mpossibile effettuare le modifiche!!!',
+        message: 'Sondaggio scaduto! Impossibile effettuare le modifiche!',
         duration: 2000
       });
       toast.color = 'danger';
@@ -544,7 +539,7 @@ export class ModificaSondaggioPage implements OnInit {
 
   async toastModificheEffettuate() {
     const toast = await this.toastController.create({
-      message: 'Moifiche effettuate con successo!',
+      message: 'Modifiche effettuate con successo!',
       duration: 2000
     });
     toast.color = 'success';

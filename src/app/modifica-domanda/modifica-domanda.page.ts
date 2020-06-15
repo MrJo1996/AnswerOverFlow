@@ -578,13 +578,7 @@ async popupInvalidTitle(){
           text: 'Ok',
           handler: (value: any) => {
             
-            const loading = document.createElement('ion-loading');
-            loading.cssClass = 'loading';
-            loading.spinner = 'crescent';
-            loading.duration = 2000;
-            document.body.appendChild(loading);
-            loading.present();
-            
+            this.dataService.loadingView(3000);//visualizza il frame di caricamento
             this.navCtrl.navigateRoot('/visualizza-domanda');
 
           }
@@ -596,14 +590,7 @@ async popupInvalidTitle(){
   }
 
   goBack() {
-    
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 2000;
-    document.body.appendChild(loading);
-    loading.present();
-
+    this.dataService.loadingView(3000);//visualizza il frame di caricamento
     this.navCtrl.pop();
   }
 

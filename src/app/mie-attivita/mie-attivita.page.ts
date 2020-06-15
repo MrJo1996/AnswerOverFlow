@@ -35,13 +35,7 @@ export class MieAttivitaPage implements OnInit {
 
   ngOnInit() {
     //Visualizza il frame di caricamento
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 3500;
-    document.body.appendChild(loading);
-    loading.present();
-
+    this.dataService.loadingView(3000);//visualizza il frame di caricamento
     this.storage.get('utente').then( 
       data => { 
         this.currentUser = data.email
@@ -76,13 +70,7 @@ export class MieAttivitaPage implements OnInit {
 
   goBack(){
     //Visualizza il frame di caricamento
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 3500;
-    document.body.appendChild(loading);
-    loading.present();
-
+    this.dataService.loadingView(5000);//visualizza il frame di caricamento
     this.navCtrl.pop();
   }
 
@@ -245,28 +233,14 @@ export class MieAttivitaPage implements OnInit {
   }
 
   clickDomanda(codice_domanda){
-    //Visualizza il frame di caricamento
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 2500;
-    document.body.appendChild(loading);
-    loading.present();
-
+    this.dataService.loadingView(5000);//visualizza il frame di caricamento
     this.dataService.codice_domanda = codice_domanda;
     console.log(this.dataService.codice_domanda);
     this.router.navigate(['/visualizza-domanda']);
   }
 
   clickSondaggio(codice_sondaggio){
-    //Visualizza il frame di caricamento
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 2500;
-    document.body.appendChild(loading);
-    loading.present();
-
+    this.dataService.loadingView(5000);//visualizza il frame di caricamento
     this.dataService.codice_sondaggio = codice_sondaggio;
     console.log(this.dataService.codice_domanda);
     this.router.navigate(['/visualizza-sondaggio']);

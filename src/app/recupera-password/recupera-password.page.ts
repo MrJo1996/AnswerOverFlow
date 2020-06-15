@@ -72,25 +72,10 @@ export class RecuperaPasswordPage implements OnInit {
   }
 
   goback() {
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 1500;
-    document.body.appendChild(loading);
-    loading.present();
-
     this.router.navigate(['login']);
   }
 
-  goToConfirm() {
-    //Visualizza il frame di caricamento
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 2000;
-    document.body.appendChild(loading);
-    loading.present();
-    
+  goToConfirm() {    
     this.router.navigate(['conferma-recupero']);
   }
 }

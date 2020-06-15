@@ -92,14 +92,7 @@ export class ModificaAvatarPage implements OnInit {
     }
   
     annulla() {
-      //visualizza frame caricamento
-      const loading = document.createElement('ion-loading');
-      loading.cssClass = 'loading';
-      loading.spinner = 'crescent';
-      loading.duration = 3500;
-      document.body.appendChild(loading);
-      loading.present();
-
+      this.dataService.loadingView(3000);//visualizza il frame di caricamento
       this.toastUnsuccess("Avatar non scelto");
       this.navCtrl.back();
     }
@@ -108,14 +101,7 @@ export class ModificaAvatarPage implements OnInit {
       if (this.avatar === "" || this.avatar === undefined) {
         this.toastUnsuccess("Non hai selezionato alcun avatar!");
       } else {
-        //visualizza frame caricamento
-        const loading = document.createElement('ion-loading');
-        loading.cssClass = 'loading';
-        loading.spinner = 'crescent';
-        loading.duration = 3500;
-        document.body.appendChild(loading);
-        loading.present();
-
+        this.dataService.loadingView(3000);//visualizza il frame di caricamento
         this.dataService.settaTemporaryAvatar(this.avatar);
         this.navCtrl.back();
         this.toastSuccess();

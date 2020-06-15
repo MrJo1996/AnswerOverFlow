@@ -5,12 +5,11 @@ import { Router } from "@angular/router";
 import { Promise } from "q";
 import { Storage } from "@ionic/storage";
 import { PostServiceService } from "../services/post-service.service";
-import { NavController, LoadingController } from "@ionic/angular";
+import { NavController } from "@ionic/angular";
 import { DataService } from "../services/data.service";
 import { ToastController } from "@ionic/angular";
 import { ApiService } from "src/app/providers/api.service";
 import { MenuController } from "@ionic/angular";
-import { Observable } from "rxjs";
 import { AppComponent } from "../app.component";
 import { __await } from 'tslib';
 
@@ -169,15 +168,7 @@ export class LoginPage implements OnInit {
       //   this.storage.set('session', true);
       //   console.log('SESSION:' + data)
       // });
-      
-      //Visualizza il frame di caricamento
-      const loading = document.createElement('ion-loading');
-      loading.cssClass = 'loading';
-      loading.spinner = 'crescent';
-      loading.duration = 5000;
-      document.body.appendChild(loading);
-      loading.present();
-      
+      this.dataService.loadingView(5000);//Visualizza il frame di caricamento
       this.router.navigate(["home"]);
     } else {
       console.log("error");
@@ -189,13 +180,7 @@ export class LoginPage implements OnInit {
   }
 
   clickOspite() {
-    //Visualizza il frame di caricamento
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 5000;
-    document.body.appendChild(loading);
-    loading.present();
+    this.dataService.loadingView(5000);//Visualizza il frame di caricamento
     //TODO SETTARE NOME E COGNOME COME USERNAME
     this.dataService.setUsername("");
     this.dataService.setNome("Ospite");
