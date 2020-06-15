@@ -1,12 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonContent, AlertController, IonCheckbox, MenuController } from '@ionic/angular';
 import { PostServiceService } from "../services/post-service.service";
-import { TransitiveCompileNgModuleMetadata, ThrowStmt } from '@angular/compiler';
-
 import { ApiService } from '../providers/api.service';
 import { DataService } from '../services/data.service';
 import { NavController } from "@ionic/angular";
-import { element } from 'protractor';
 import { Storage } from "@ionic/storage";
 import { ToastController } from '@ionic/angular';
 
@@ -51,9 +48,6 @@ export class VisualizzaSondaggioPage implements OnInit {
   numeroScelta;
   formatsDate: string[] = [
     'd MMM y, H:mm'];
-
-
-
 
   private buttonColor: string = "#2a2a2a";
   private buttonColorBest: string = "#64F58D";
@@ -240,24 +234,16 @@ export class VisualizzaSondaggioPage implements OnInit {
     console.log('codice scelta ->', this.codice_scelta_selezionata);
     console.log('codice sondaggio ->', this.codice_sondaggio);
     this.apiService.votaSondaggio(this.codice_scelta_selezionata, this.codice_sondaggio).then(
-      (scelte) => {
-
-      },
-      (rej) => {
-
-      }
+      (scelte) => { },
+      (rej) => { }
     );
 
     this.apiService.inserisciVotante(this.codice_scelta_selezionata, this.currentUser, this.codice_sondaggio).then(
-      (scelte) => {
-
-      },
-      (rej) => {
-
-      }
+      (scelte) => { },
+      (rej) => { }
     );
-
   }
+
 
 
 
@@ -310,22 +296,23 @@ export class VisualizzaSondaggioPage implements OnInit {
     if (this.deadlineCheck()) {
       this.toastSondaggioScaduto();
     } else {
+      if (this.currentUser != undefined || this.currentUser != null) {
+        this.selezionaChecked(i);
 
-      this.selezionaChecked(i);
+        if (!this.hasVoted || this.sceltaSelezionata != scelta) {
+          this.hasVoted = true;
 
-      if (!this.hasVoted || this.sceltaSelezionata != scelta) {
-        this.hasVoted = true;
+        }
+        else {
+          this.hasVoted = false;
 
+        }
+
+        this.sceltaSelezionata = scelta;
+        this.index_scelta_selezionata = i;
+        console.log();
       }
-      else {
-        this.hasVoted = false;
-
-      }
-
-      this.sceltaSelezionata = scelta;
-      this.index_scelta_selezionata = i;
-      console.log();
-    }
+    } this.alertOspite();
   }
 
   async confermaVoto(scelta) {
@@ -664,5 +651,47 @@ export class VisualizzaSondaggioPage implements OnInit {
     toast.style.textAlign = 'center';
     document.body.appendChild(toast);
     return toast.present();
+  }
+
+  async alertOspite() {
+    const alert = await this.alertController.create({
+      header: "Ospite",
+      message:
+        "Per usare questo servizio devi effettuare l'accesso, vuoi farlo?",
+      buttons: [
+        {
+          text: "No",
+          role: "cancel",
+          cssClass: "secondary",
+          handler: (blah) => {
+            console.log("Confirm Cancel");
+          },
+        },
+        {
+          text: "Si",
+          handler: () => {
+            this.storage.set("session", false);
+            this.storage.set("utente", null);
+            this.dataService.setSession(false);
+            //Visualizza il frame di caricamento
+            const loading = document.createElement('ion-loading');
+            loading.cssClass = 'loading';
+            loading.spinner = 'crescent';
+            loading.duration = 2000;
+            document.body.appendChild(loading);
+            loading.present();
+
+            this.navCtrl.navigateRoot("login");
+
+            setTimeout(() => {
+              this.storage.get("session").then((data) => {
+                console.log("SESSION:" + data);
+              });
+            }, 3000);
+          },
+        },
+      ],
+    });
+    await alert.present();
   }
 }
