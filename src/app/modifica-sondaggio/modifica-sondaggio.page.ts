@@ -23,19 +23,17 @@ import { element } from 'protractor';
 })
 export class ModificaSondaggioPage implements OnInit {
 
-  codice_sondaggio: number;//assegnazione forza al momento
+  codice_sondaggio: number;
 
-  titoloToPass: string; //param per le funzioni
-  timerToPass: string; //param per le funzioni
+  titoloToPass: string;
+  timerToPass: string;
 
-  titoloView; //var per la view dei valori
-  timerView; //var per la view dei valori
+  titoloView;
+  timerView;
+  sondaggio = {};
 
-  sondaggio = {}; //conterrà tutti i dati del sondaggio da visualizzare
-
-  timerSettings: string[] = ["5 min", "15 min", "30 min", "1 ora", "3 ore", "6 ore", "12 ore", "1 giorno", "3 giorni"]; //scelte nel picker
-  SCAD;
-  ciao="ciao";
+  timerSettings: string[] = ["5 min", "15 min", "30 min", "1 ora", "3 ore", "6 ore", "12 ore", "1 giorno", "3 giorni"];
+  interval;
 
   constructor(private alertController: AlertController, public apiService: ApiService, private pickerController: PickerController,
     public navCtrl: NavController, public dataService: DataService, private toastController: ToastController, private menuCtrl: MenuController) { }
@@ -50,8 +48,6 @@ export class ModificaSondaggioPage implements OnInit {
   }
 
   async modify() {
-    //se l'utente decide di modificare solo un campo il servizio non effettuava le modifiche. 
-    //In questo modo si settano i paramentri non settati al valore che già avevano. 
    
 
     if (this.timerToPass == null) {
@@ -68,16 +64,14 @@ export class ModificaSondaggioPage implements OnInit {
     } else if (this.checkIfThereAreEnglishBadWords(this.titoloToPass) || this.checkIfThereAreItalianBadWords(this.titoloToPass)) {
       this.toastParolaScoretta();
     } else {
-      console.log(this.checkIfThereAreItalianBadWords(this.titoloToPass));
       this.apiService.modificaSondaggio(this.titoloToPass, this.timerToPass, this.codice_sondaggio).then(
-        (result) => { // nel caso in cui va a buon fine la chiamata
+        (result) => {
         },
-        (rej) => {// nel caso non vada a buon fine la chiamata
-          console.log('Modifica effetutata'); //anche se va nel rej va bene, modifiche effettive nel db
+        (rej) => {
   
         }
       );
-      this.dataService.loadingView(3000);//visualizza il frame di caricamento
+      this.dataService.loadingView(3000);
       this.toastModificheEffettuate();
       this.navCtrl.back();
     }
@@ -85,42 +79,33 @@ export class ModificaSondaggioPage implements OnInit {
   }
 
   async showSurvey() {
-    //this.codice_sondaggio= this.dataService.codice_sondaggio;
     this.apiService.getSondaggio(this.codice_sondaggio).then(
       (sondaggio) => {
-        console.log('Visualizzato con successo');
 
-        this.sondaggio = sondaggio['data']; //assegno alla variabile locale il risultato della chiamata. la variabile sarà utilizzata nella stampa in HTML
-        this.titoloView = this.sondaggio['0'].titolo;  //setto var da visualizzare a video per risolvere il problema del crop schermo durante il serve dell'app ( problema stava nell'utilizzo di: ['0'] per accedere alla var da visualizzare)
+        this.sondaggio = sondaggio['data'];
+        this.titoloView = this.sondaggio['0'].titolo;
         this.timerView = this.sondaggio['0'].timer;
 
-        console.log('Sondaggio: ', this.sondaggio['0']);
-        //il json di risposta della chiamata è così impostato-> Sondaggio: data: posizione{vari paramentri}
-        //bisogna quindi accedere alla posizione del sondaggio da visualizzare
-        //in apiservice accediamo già alla posizione 'Sondaggio'. Per sapere l'ordine di accesso ai dati ho stampato a video "data" da apiservice
-
-        //stampo tempo mancante -> passare come parametri gli incrementi che ha già settati nel campo timer
         this.mappingIncrement(this.sondaggio['0'].timer);
 
-        var auxData = []; //var ausialiaria per parsare la data di creazione
-        auxData['0'] = (this.sondaggio['0'].dataeora.substring(0, 10).split("-")[0]); //anno
-        auxData['1'] = this.sondaggio['0'].dataeora.substring(0, 10).split("-")[1]; //mese [0]=gennaio
-        auxData['2'] = this.sondaggio['0'].dataeora.substring(0, 10).split("-")[2]; //gg
-        auxData['3'] = this.sondaggio['0'].dataeora.substring(11, 18).split(":")[0]; //hh
-        auxData['4'] = this.sondaggio['0'].dataeora.substring(11, 18).split(":")[1]; //mm
-        //metto dati parsati nella var dataCreazioneToview così da creare una nuova var da poter stampare nel formato adatto
+        var auxData = [];
+        auxData['0'] = (this.sondaggio['0'].dataeora.substring(0, 10).split("-")[0]);
+        auxData['1'] = this.sondaggio['0'].dataeora.substring(0, 10).split("-")[1];
+        auxData['2'] = this.sondaggio['0'].dataeora.substring(0, 10).split("-")[2];
+        auxData['3'] = this.sondaggio['0'].dataeora.substring(11, 18).split(":")[0];
+        auxData['4'] = this.sondaggio['0'].dataeora.substring(11, 18).split(":")[1];
+
         var dataCreazioneToView = new Date(auxData['0'], parseInt(auxData['1'], 10) - 1, auxData['2'], auxData['3'], auxData['4']);
-        //stampo la var appena creata nell'elemento con id="dataOraCreazione"
+
         document.getElementById("dataOraCreazione").innerHTML = dataCreazioneToView.toLocaleString();
       },
       (rej) => {
-        console.log("C'è stato un errore durante la visualizzazione");
+        
       }
     );
 
   }
 
-  //Pop-up Titolo
   async popupModificaTitolo() {
     const alert = await this.alertController.create({
       header: 'Modifica',
@@ -128,7 +113,7 @@ export class ModificaSondaggioPage implements OnInit {
         {
           name: 'titoloPopUp',
           type: 'textarea',
-          value: this.titoloView //risposta del servizio visualizzaSondaggio
+          value: this.titoloView
         }
       ],
       buttons: [
@@ -137,17 +122,15 @@ export class ModificaSondaggioPage implements OnInit {
           role: 'cancel',
           cssClass: 'secondary',
           handler: () => {
-            this.titoloView = this.sondaggio['0'].titolo; //annullo modifiche
-            console.log('Confirm cancel');
+            this.titoloView = this.sondaggio['0'].titolo;
           }
         }, {
           text: 'Ok',
           handler: insertedData => {
-            console.log(JSON.stringify(insertedData)); //per vedere l'oggetto dell'handler
-            this.titoloView = insertedData.titoloPopUp; //setto titoloView al valore inserito nel popUp una volta premuto ok così viene visualizzato
-            this.titoloToPass = insertedData.titoloPopUp; //setto titoloToPass al valore inserito nel popUp una volta premuto ok
+            this.titoloView = insertedData.titoloPopUp;
+            this.titoloToPass = insertedData.titoloPopUp;
             
-            if (insertedData.titoloPopUp == "") { //CHECK CAMPO VUOTO
+            if (insertedData.titoloPopUp == "") {
               this.titoloView = this.sondaggio['0'].titolo;
               this.titoloToPass = this.sondaggio['0'].titolo;
             }
@@ -157,8 +140,6 @@ export class ModificaSondaggioPage implements OnInit {
     });
     await alert.present();
   }
-
-  //Pop-up Conferma Modifiche
   async popupConfermaModificheSondaggio() {
     var header = "Conferma modifiche";
     var message = "Vuoi confermare le modifiche effettuate?";
@@ -174,7 +155,7 @@ export class ModificaSondaggioPage implements OnInit {
         {
           text: 'Conferma',
           handler: (value: any) => {
-            //LANCIO SERVIZIO MODIFICA UNA VOLTA CLICCATO "CONFERMA" e se non è scaduto il countdown
+            
             this.modify();
 
           }
@@ -197,17 +178,14 @@ export class ModificaSondaggioPage implements OnInit {
         {
           text: 'Ok',
           handler: (value: any) => {
-            /*   console.log(value); */
-            this.timerView = value['ValoreTimerSettato'].value; //setto timerPopUp al valore inserito nel popUp una volta premuto ok così viene visualizzato
-            //this.timerToPass = value['ValoreTimerSettato'].value; //setto timerPopUp al valore inserito nel popUp una volta premuto ok 
-            /* this.timerToPass = this.timerToPass.split(" ")[0]; //taglio la stringa dopo lo spazio e prendo a partira da carattere zero */
+            this.timerView = value['ValoreTimerSettato'].value;
             this.mappingTimerValueToPass(value['ValoreTimerSettato'].value);
             console.log('timer to pass: ', this.timerToPass);
           }
         }
       ],
       columns: [{
-        name: 'ValoreTimerSettato', //nome intestazione json dato 
+        name: 'ValoreTimerSettato',
         options: this.getColumnOptions()
       }]
     };
@@ -219,8 +197,7 @@ export class ModificaSondaggioPage implements OnInit {
   getColumnOptions() {
     let options = [];
 
-    //Check dei valori ammissibili da mostrare nel picker in base all'orario di creazione del sondaggio
-    var auxDataPicker = []; //get dati dal sondaggio
+    var auxDataPicker = [];
     auxDataPicker['0'] = (this.sondaggio['0'].dataeora.substring(0, 10).split("-")[0]); //anno
     auxDataPicker['1'] = this.sondaggio['0'].dataeora.substring(0, 10).split("-")[1]; //mese [0]=gennaio
     auxDataPicker['2'] = this.sondaggio['0'].dataeora.substring(0, 10).split("-")[2]; //gg
@@ -228,9 +205,9 @@ export class ModificaSondaggioPage implements OnInit {
     auxDataPicker['4'] = this.sondaggio['0'].dataeora.substring(11, 18).split(":")[1]; //mm
     var dataPicker = new Date(parseInt(auxDataPicker['0'], 10), parseInt(auxDataPicker['1'], 10) - 1, parseInt(auxDataPicker['2'], 10), parseInt(auxDataPicker['3'], 10), parseInt(auxDataPicker['4'], 10));
 
-    var nowPicker = new Date(); //ora
+    var nowPicker = new Date();
 
-    var increment; //avvalorata nello switch, incremmento in millisecondi della scelta
+    var increment;
     this.timerSettings.forEach(x => {
       console.log("x ", x);
       switch (x) {
@@ -272,8 +249,6 @@ export class ModificaSondaggioPage implements OnInit {
 
       }
 
-      //se datasondaggio + incremento maggiore di ora attuale allora è possibile impostare il timer per quella scelta
-      // e quindi viene mostrata nel picker aggiungendo la scelta alla lista delle opzioni mostrate
       if ((dataPicker.getTime() + increment) > (nowPicker.getTime())) {
         options.push({ text: x, value: x });
       }
@@ -283,9 +258,7 @@ export class ModificaSondaggioPage implements OnInit {
   }
 
   mappingTimerValueToPass(valueToMapp) {
-    //converto valore timer da passare nel formato giusto per il db
-    //inoltre converto valore del timer impostato in millisecondi così da poter calcolare tempo rimanente
-    //creo nuova data di scadenza settata in base al timer impostato
+
     switch (valueToMapp) {
       case (this.timerSettings['0']):
         this.timerToPass = "00:05:00";
@@ -325,51 +298,36 @@ export class ModificaSondaggioPage implements OnInit {
         break;
     }
   }
-
-  interval
   countDown(incAnno, incMese, incGG, incHH, incMM) {
 
-    var auxData = []; //get dati dal sondaggio
-    auxData['0'] = (this.sondaggio['0'].dataeora.substring(0, 10).split("-")[0]); //anno
-    auxData['1'] = this.sondaggio['0'].dataeora.substring(0, 10).split("-")[1]; //mese [0]=gennaio
-    auxData['2'] = this.sondaggio['0'].dataeora.substring(0, 10).split("-")[2]; //gg
-    auxData['3'] = this.sondaggio['0'].dataeora.substring(11, 18).split(":")[0]; //hh
-    auxData['4'] = this.sondaggio['0'].dataeora.substring(11, 18).split(":")[1]; //mm
+    var auxData = [];
+    auxData['0'] = (this.sondaggio['0'].dataeora.substring(0, 10).split("-")[0]);
+    auxData['1'] = this.sondaggio['0'].dataeora.substring(0, 10).split("-")[1];
+    auxData['2'] = this.sondaggio['0'].dataeora.substring(0, 10).split("-")[2];
+    auxData['3'] = this.sondaggio['0'].dataeora.substring(11, 18).split(":")[0];
+    auxData['4'] = this.sondaggio['0'].dataeora.substring(11, 18).split(":")[1];
 
-    // Setto data scadenza aggiungendo l'incremento stabilito da mappingInc al momento del confermaModifiche
     var countDownDate = new Date(parseInt(auxData['0'], 10) + incAnno, parseInt(auxData['1'], 10) - 1 + incMese, parseInt(auxData['2'], 10) + incGG, parseInt(auxData['3'], 10) + incHH, parseInt(auxData['4'], 10) + incMM).getTime();
-    // var countDownDateTEST = new Date(parseInt(auxData['0'], 10) + 1, parseInt(auxData['1'], 10) - 1, parseInt(auxData['2'], 10), parseInt(auxData['3'], 10), parseInt(auxData['4'], 10))/* .getTime() */;
 
-    // Aggiorno timer ogni 1000ms (1000ms==1s)
     this.interval = setInterval(function () {
 
-      //Timestamp Attuale (data + orario)
       var now = new Date().getTime();
 
-      // Calcolo differenza, tempo mancante
       var distance = countDownDate - now;
 
-      // conversioni
       var days = Math.floor(distance / (1000 * 60 * 60 * 24));
       var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-      // Risultato delle conversioni messo nell'elemento con id="timeLeft"
-      //TODO non mostrare valori se non avvalorati o pari a zero
-      document.getElementById("timeLeft").innerHTML = days + "giorni " + hours + "ore "
+      document.getElementById("timeMissing").innerHTML = days + "giorni " + hours + "ore "
         + minutes + "min " + seconds + "s ";
       console.log(distance);
 
-      // Se finisce il countDown viene mostrato "Sondaggio scaduto."
+  
       if (distance < 0) {
-        /* this.SCAD = true;
-        console.log("SCAD in countdown() ", this.SCAD); */
         clearInterval(this.interval);
         document.getElementById("timeLeft").innerHTML = "Sondaggio scaduto.";
-
-        //TODO Provare generazione allert da qui che al conferma riporta al visualizza
-        //TODO se non va sol. di sopra METTERE ROUTE AL VISUALIZZA
       }
     }, 1000);
 
@@ -378,8 +336,6 @@ export class ModificaSondaggioPage implements OnInit {
     clearInterval(this.interval)
   }  
   mappingIncrement(valueToMapp) {
-    //creo nuova data di scadenza settata in base al timer impostato
-    //case in base a timerToPass -> hh:mm (ossia la selezione dell'utente)
 
     switch (valueToMapp) {
       case ("00:05:00"):
@@ -444,13 +400,9 @@ export class ModificaSondaggioPage implements OnInit {
 
     let array = list.array
 
-    console.log(array);
-
     let stringArray = [];
     let stringPassed = string.split(' ');
     stringArray = stringArray.concat(stringPassed);
-
-    console.log(stringArray);
 
     var check;
 
@@ -458,8 +410,6 @@ export class ModificaSondaggioPage implements OnInit {
       if (array.includes(element))
       check = true; 
     });
-
-    console.log(check);
 
     return check;
 
@@ -479,7 +429,7 @@ export class ModificaSondaggioPage implements OnInit {
 
 
     goBack(){
-      this.dataService.loadingView(3000);//visualizza il frame di caricamento
+      this.dataService.loadingView(3000);
       this.navCtrl.back();
     }
 
@@ -502,16 +452,11 @@ export class ModificaSondaggioPage implements OnInit {
       console.log(timer);
       var dateNow = new Date().getTime();
   
-  
-      // Since the getTime function of the Date object gets the milliseconds since 1970/01/01, we can do this:
+
       var time2 = date.getTime();
       var seconds = new Date('1970-01-01T' + timer + 'Z').getTime();
 
       var diff = dateNow - time2;
-  
-      console.log(seconds);
-      console.log(time2);
-      console.log(diff);
 
       return diff > seconds;
     }
