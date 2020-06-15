@@ -16,6 +16,9 @@ export class AdvancedSearchPage implements OnInit {
   categoriaSettings: any = [];
   utentiBtn;
 
+  globalSearch = false;
+  keywordSearch = true;
+
   //Filtri ricerca vars
   tipoFilter;
   codCategoriaFilter;
@@ -205,6 +208,20 @@ export class AdvancedSearchPage implements OnInit {
     toast.color = color;
     document.body.appendChild(toast);
     return toast.present();
+  }
+
+  clickGlobalSearch(){
+
+    this.globalSearch = true;
+    this.keywordSearch = false;
+
+  }
+
+  clickKeywordSearch(){
+    this.globalSearch = false;
+    this.keywordSearch = true;
+
+
   }
 
 
