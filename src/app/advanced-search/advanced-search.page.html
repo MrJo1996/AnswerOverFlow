@@ -5,10 +5,22 @@
       <ion-icon color="primary" slot="start" slot="icon-only" name="arrow-back-outline"></ion-icon>
     </ion-button>
 
-    <ion-searchbar show-cancel-button="never" placeholder="Ricerca..." [(ngModel)]="keywordToSearch"
-      (search)="ricerca($event)">
+    <ion-searchbar *ngIf= "keywordSearch" show-cancel-button="never" placeholder="Ricerca..."  [(ngModel)]="keywordToSearch"
+      (search)="ricerca($event)" > 
+    </ion-searchbar>
+
+    <ion-searchbar *ngIf= "globalSearch" show-cancel-button="never" placeholder="Ricerca..." disabled = "true"  > 
     </ion-searchbar>
   </ion-toolbar>
+
+  <ion-segment value="keyword">
+    <ion-segment-button value="keyword" (click)="clickKeywordSearch()">
+      <ion-label>Ricerca keywords</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="globale" (click)="clickGlobalSearch()">
+      <ion-label>Ricerca globale</ion-label>
+    </ion-segment-button>
+  </ion-segment>
 </ion-header>
 
 <ion-content>
@@ -31,10 +43,13 @@
             <ion-radio slot="start" (click)="clickSondaggio()"></ion-radio>
           </ion-item>
 
-          <ion-item>
-            <ion-label>Utenti</ion-label>
-            <ion-radio slot="start" (click)="clickUtente()"></ion-radio>
-          </ion-item>
+          <div *ngIf="globalSearch == false">
+
+            <ion-item>
+              <ion-label>Utenti</ion-label>
+              <ion-radio slot="start" (click)="clickUtente()"></ion-radio>
+            </ion-item>
+          </div>
         </ion-radio-group>
       </ion-list>
     </ion-card>

@@ -16,6 +16,9 @@ export class AdvancedSearchPage implements OnInit {
   categoriaSettings: any = [];
   utentiBtn;
 
+  globalSearch = false;
+  keywordSearch = true;
+
   //Filtri ricerca vars
   tipoFilter;
   codCategoriaFilter;
@@ -212,4 +215,20 @@ export class AdvancedSearchPage implements OnInit {
     console.log("DESTROY ADVANCED");
     this.initFilters();
   }
+  clickGlobalSearch(){
+
+    this.globalSearch = true;
+    this.keywordSearch = false;
+    this.utentiBtn = false;
+
+  }
+
+  clickKeywordSearch(){
+    this.globalSearch = false;
+    this.keywordSearch = true;
+
+
+  }
+
+
 }
