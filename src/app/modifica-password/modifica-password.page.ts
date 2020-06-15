@@ -34,7 +34,7 @@ export class ModificaPasswordPage implements OnInit {
     }
 
 
-  email: string; 
+
   password: string;
   confermapassword: string;
 
@@ -51,12 +51,12 @@ export class ModificaPasswordPage implements OnInit {
           role: 'cancel',
           cssClass: 'secondary',
           handler: () => {
-            console.log('Confirm cancel');
+      
           }
         }, {
           text: "Conferma",
           handler: () => {
-            console.log('Confirm Ok');
+         
             this.modify();
           }
         }
@@ -119,7 +119,7 @@ export class ModificaPasswordPage implements OnInit {
 
       },
       (rej) => {
-        console.log('Modifica effetutata', this.password, this.userId); 
+     
 
       }
     );
