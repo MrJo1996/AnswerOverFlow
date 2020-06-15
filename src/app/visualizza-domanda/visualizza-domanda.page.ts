@@ -62,9 +62,8 @@ export class VisualizzaDomandaPage implements OnInit {
   secondi;
 
   valutazioni = new Array();
-  formatsDate: string[] = [
-    'd-MM-y, H:mm'
-  ];
+
+
   risposte2
   constructor(
     private navCtrl: NavController,
@@ -387,7 +386,10 @@ export class VisualizzaDomandaPage implements OnInit {
       //////////////////////////////////////////////////////////
     } else if (this.currentMailUser != null || this.currentMailUser != undefined) {
       this.apiService.inserisciRisposta(this.descrizione_risposta, this.currentMailUser, this.codice_domanda).then(
-        (result) => { // nel caso in cui va a buon fine la chiamata
+        (result) => { 
+          this.apiService.inviaNotifica(this.domandaMailUser,this.currentMailUser);
+          
+          // nel caso in cui va a buon fine la chiamata
         },
         (rej) => {// nel caso non vada a buon fine la chiamata
           console.log('Modifica non effetutata'); //anche se va nel rej va bene, modifiche effettive nel db
