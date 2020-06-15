@@ -205,6 +205,6 @@ export class DataService {
     loading.duration = time;
 
     document.body.appendChild(loading);
-    loading.present();
+    return loading.present();
   }
 }

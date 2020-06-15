@@ -57,6 +57,7 @@ export class ProponiCategoriaPage implements OnInit {
     toast.style.fontSize = '20px';
     toast.color = 'danger';
     toast.style.textAlign = 'center';
+    
     document.body.appendChild(toast);
     return toast.present();    
   }
@@ -69,6 +70,7 @@ export class ProponiCategoriaPage implements OnInit {
     toast.style.fontSize = '20px';
     toast.color = 'danger';
     toast.style.textAlign = 'center';
+    
     document.body.appendChild(toast);
     return toast.present();
   }
@@ -78,13 +80,7 @@ export class ProponiCategoriaPage implements OnInit {
       this.max_lenght_exceeded_toast();
     } else{
       if((!this.english_bad_words_check(this.proposta)) && (!this.italian_bad_words_check(this.proposta))){
-        this.apiService.proponi_categoria(this.proposta).then(
-          (result)=>{
-            console.log("Proposta inviata con successo")
-          }, (rej)=>{
-            console.log("Invio proposta non riuscito")
-          }
-        );
+        this.apiService.proponi_categoria(this.proposta);
         this.goToConfirm();
       } else{
         this.bad_words_toast();
