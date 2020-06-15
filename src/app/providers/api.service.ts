@@ -64,7 +64,6 @@ export class ApiService {
           let domanda = data['Domande'];
 
           resolve(domanda);
-          console.log(domanda);
 
         },
         (err) => {
