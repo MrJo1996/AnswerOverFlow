@@ -668,7 +668,7 @@ export class ApiService {
   }
 
 
-  get_tot_Domande(cod_utente: string) {
+  getDomande(cod_utente: string) {
     const body = {
       cod_utente: cod_utente
 
@@ -677,10 +677,11 @@ export class ApiService {
     return new Promise((resolve, reject) => {
       this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaTOTStatisticheDomanda', body).subscribe(
         data => {
-          let domande = data;
-          resolve(domande);
-          console.log(domande)
+          let domandeT = data;
+          resolve(domandeT);
+          console.log(domandeT)
 
+          
         },
         (err) => {
           reject();
