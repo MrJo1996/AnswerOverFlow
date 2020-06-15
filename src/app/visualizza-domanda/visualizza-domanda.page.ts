@@ -106,6 +106,7 @@ export class VisualizzaDomandaPage implements OnInit {
       loading.present();
       //this.router.navigate(['modifica-domanda']);
       this.navCtrl.navigateForward(['modifica-domanda']);
+      this.doRefresh(event);
     }
   }
 
