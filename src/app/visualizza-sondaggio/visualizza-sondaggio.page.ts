@@ -59,8 +59,6 @@ export class VisualizzaSondaggioPage implements OnInit {
   private buttonColorBest: string = "#64F58D";
 
 
-  arrayChecked = new Array();
-
   url = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/cancellaSondaggio/14'
   url2 = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaSondaggio'
   url3 = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaScelteSondaggio'
@@ -101,12 +99,10 @@ export class VisualizzaSondaggioPage implements OnInit {
       this.toastModificaSondaggioScaduto();
     }
     else if (this.voti_totali > 0) {
-      //this.router.navigate(['modifica-sondaggio']);
+
       this.toastModificaSondaggioCiSonoVoti();
     }
     else {
-      //this.router.navigate(['modifica-domanda']);
-      //Visualizza il frame di caricamento
       const loading = document.createElement('ion-loading');
       loading.cssClass = 'loading';
       loading.spinner = 'crescent';
@@ -127,7 +123,7 @@ export class VisualizzaSondaggioPage implements OnInit {
         {
           text: 'Si',
           handler: () => {
-  
+
             this.showDeleteToast();
             this.cancellaSondaggio();
             this.goBack();
@@ -138,7 +134,7 @@ export class VisualizzaSondaggioPage implements OnInit {
           role: 'cancel',
           //cssClass: 'secondary',
           handler: () => {
-      
+
           }
         }
       ]
@@ -175,19 +171,13 @@ export class VisualizzaSondaggioPage implements OnInit {
 
     this.apiService.getScelteSondaggio(this.codice_sondaggio).then(
       (scelte) => {
-
-
         this.scelte = scelte['Scelte']['data'];
-
-
         let i = 0;
         this.voti_totali = 0;
-        this.arrayChecked = new Array();
-
         this.scelte.forEach(element => {
           var x = +element.num_favorevoli;
           this.voti_totali = this.voti_totali + x;
-          this.arrayChecked.push(0);
+
         });
         this.calcolaPercentualiScelte();
       },
@@ -200,7 +190,7 @@ export class VisualizzaSondaggioPage implements OnInit {
 
   calcolaPercentualiScelte() {
 
-    this.percentualiScelte = new Array();
+    this.percentualiScelte = [];
     this.scelte.forEach(element => {
       var x = +element.num_favorevoli;
       var nuovaPercentuale: number = (x) / this.voti_totali;
@@ -209,7 +199,7 @@ export class VisualizzaSondaggioPage implements OnInit {
       this.percentualiScelte.push(nuovaPercentualeNum);
 
     });
-;
+    ;
 
   }
 
@@ -217,26 +207,19 @@ export class VisualizzaSondaggioPage implements OnInit {
 
     this.apiService.rimuoviSondaggio(this.codice_sondaggio).then(
       (scelte) => {
-
-
-
         this.scelte = scelte['Scelte']['data'];
-
 
       },
       (rej) => {
-     
+
       }
     );
 
   }
 
   async giaVotato() {
-
     this.currentUser = this.dataService.emailUtente;
     this.codice_sondaggio = this.dataService.codice_sondaggio;
-
-
 
     this.apiService.controllaGiaVotato(this.currentUser, this.codice_sondaggio).then(
       (risultato) => {
@@ -245,7 +228,7 @@ export class VisualizzaSondaggioPage implements OnInit {
         this.votato = risultato["0"]["data"];
       },
       (rej) => {
- 
+
       }
     );
 
@@ -261,17 +244,16 @@ export class VisualizzaSondaggioPage implements OnInit {
 
       },
       (rej) => {
-    
+
       }
     );
-
 
     this.apiService.inserisciVotante(this.codice_scelta_selezionata, this.currentUser, this.codice_sondaggio).then(
       (scelte) => {
 
       },
       (rej) => {
- 
+
       }
     );
 
@@ -289,14 +271,12 @@ export class VisualizzaSondaggioPage implements OnInit {
             role: 'cancel',
             cssClass: 'secondary',
             handler: (blah) => {
-       
+
             }
           }, {
             text: 'Si',
             handler: () => {
-          
 
-              //Visualizza il frame di caricamento
               const loading = document.createElement('ion-loading');
               loading.cssClass = 'loading';
               loading.spinner = 'crescent';
@@ -313,7 +293,6 @@ export class VisualizzaSondaggioPage implements OnInit {
       await alert.present();
     }
     else {
-      //Visualizza il frame di caricamento
       const loading = document.createElement('ion-loading');
       loading.cssClass = 'loading';
       loading.spinner = 'crescent';
@@ -357,9 +336,9 @@ export class VisualizzaSondaggioPage implements OnInit {
           text: 'Si',
           handler: () => {
             console.log('scelta confermata');
-            this.inviaVoto().then(()=>{
-              this.doRefresh(event);
-            });
+            this.inviaVoto();
+            this.doRefresh(event);
+
             //this.router.navigate(['home']);
           }
         },
@@ -381,8 +360,8 @@ export class VisualizzaSondaggioPage implements OnInit {
     this.votato = true;
     //this.visualizzaSondaggioSelezionato();
 
-    this.ngOnInit();
-    //this.visualizzaScelte();
+    //this.ngOnInit();
+    this.visualizzaScelte();
 
     //this.giaVotato();
     this.hasVoted = false;
@@ -403,7 +382,7 @@ export class VisualizzaSondaggioPage implements OnInit {
     //this.visualizzaScelte();
 
     //this.giaVotato();
-   
+
     setTimeout(() => {
 
       event.target.complete();
@@ -417,10 +396,10 @@ export class VisualizzaSondaggioPage implements OnInit {
     this.apiService.getCategoria(this.codice_categoria).then(
       (categoria) => {
         this.categoria = categoria['Categoria']['data']['0'].titolo;
-      
+
       },
       (rej) => {
-       
+
       }
     );
   }
@@ -434,11 +413,9 @@ export class VisualizzaSondaggioPage implements OnInit {
 
       },
       (rej) => {
-        
+
       }
     );
-
-
   }
 
   mappingIncrement(valueToMapp) {
@@ -509,6 +486,7 @@ export class VisualizzaSondaggioPage implements OnInit {
         this.countDown(0, 0, 3, 0, 0);
 
         break;
+
 
     }
 
@@ -582,7 +560,7 @@ export class VisualizzaSondaggioPage implements OnInit {
 
   clickProfilo(cod_utente) {
     this.dataService.setEmailOthers(cod_utente);
- 
+
     this.navCtrl.navigateForward(['/visualizza-profilo']);
   }
 
@@ -590,7 +568,7 @@ export class VisualizzaSondaggioPage implements OnInit {
     var date = new Date(this.dataeoraView.toLocaleString());
 
     var timer = this.timerView2;
-  
+
     var dateNow = new Date().getTime();
 
     var time2 = date.getTime();
