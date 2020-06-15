@@ -45,6 +45,8 @@ export class VisualizzaSondaggioPage implements OnInit {
 
   ospite;
 
+  votoUtente;
+
   numeroScelta;
   formatsDate: string[] = [
     'd-MM-y, H:mm'
@@ -200,8 +202,16 @@ export class VisualizzaSondaggioPage implements OnInit {
 
     this.apiService.controllaGiaVotato(this.currentUser, this.codice_sondaggio).then(
       (risultato) => {
-        this.votato = risultato["0"]["data"];
-        console.log("votato: ", this.votato, this.currentUser, this.codice_sondaggio);
+       
+        if (risultato !== null) {
+          this.votoUtente = risultato[0];
+          this.votato = true;
+
+          console.log("votato: ", this.votoUtente, this);
+        } else {
+          this.votato = false;
+          this.votoUtente = null;
+        }
       },
       (rej) => {
 
