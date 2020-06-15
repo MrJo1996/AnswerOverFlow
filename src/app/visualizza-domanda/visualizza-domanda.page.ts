@@ -219,7 +219,6 @@ export class VisualizzaDomandaPage implements OnInit {
 
           this.apiService.controllaGiaValutatoRisposta(this.currentMailUser, element.codice_risposta).then((data) => {
             this.votoType.push(data[0]['data'][0].tipo_like)
-            console.log(data)
           })
         });
 
@@ -514,7 +513,7 @@ export class VisualizzaDomandaPage implements OnInit {
 
   }
 
- 
+
   doRefresh(event) {
     clearInterval(this.interval)
     this.visualizzaDomanda();
@@ -870,4 +869,19 @@ export class VisualizzaDomandaPage implements OnInit {
     });
   }
 
+  setRispostaVisible() {
+  
+    if (!this.deadlineCheck()) {
+      if (this.rispostaVisible === false)
+        this.rispostaVisible = true;
+
+      else
+        this.rispostaVisible = false;
+
+    }
+    else {
+      this.toast('Non puoi più rispondere alla domanda, è scaduta!', 'danger');
+    }
+
+  }
 }
