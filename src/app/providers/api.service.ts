@@ -229,8 +229,8 @@ export class ApiService {
       this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaSondaggio', body).subscribe(
         data => {
           let sondaggio = data['Sondaggio'];
-          resolve(sondaggio); //restituirò al ts un oggetto di nome "sondaggio" con accesso già alla posizione "Sondaggio" avendo visto il json di data
-          console.log('ciao', sondaggio);
+          resolve(sondaggio); 
+         
 
         },
         (err) => {
@@ -249,8 +249,8 @@ export class ApiService {
       this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaScelteSondaggio', body).subscribe(
         data => {
           let scelte = data;
-          resolve(scelte); //restituirò al ts un oggetto di nome "sondaggio" con accesso già alla posizione "Sondaggio" avendo visto il json di data
-          console.log(scelte);
+          resolve(scelte); 
+        
 
         },
         (err) => {
@@ -866,7 +866,6 @@ export class ApiService {
         (data) => {
           let risultato = data;
           
-          console.log("API SERVICE GIA VOTATO: ", body, data)
           resolve(risultato); 
 
 
