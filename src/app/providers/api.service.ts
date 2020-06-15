@@ -1046,20 +1046,23 @@ getSondaggioRicerca() {
     });
   }
 
-
-  rimuoviValutazione(codice_valutazione: Number) {
+rimuoviValutazione(cod_risposta: Number,cod_utente:String) {
+    const body = {
+      cod_utente: cod_utente,
+      cod_risposta: cod_risposta
+    };
     return new Promise((resolve, reject) => {
-      var url = "http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/eliminaVal/";
-      var urlAndCode = url.concat(codice_valutazione.toString());
-      this.http.delete(urlAndCode).subscribe(
+      var url = "http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/cancellaVal";
+    
+      this.http.post(url,body).subscribe(
         data => {
           let esito = data['message'];
-          console.log('esito cancella valutazione: ', esito, urlAndCode);
+          console.log('esito cancella valutazione: ', esito, url);
           resolve(esito);
         },
         (err) => {
           reject();
-          console.log('esito andato a : ', urlAndCode, err);
+          console.log('esito andato a : ', url, err);
         }
       );
     });
