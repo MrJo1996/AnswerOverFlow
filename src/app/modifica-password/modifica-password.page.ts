@@ -2,14 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { AlertController, MenuController} from '@ionic/angular';
 import {NavController} from "@ionic/angular";
 import { Router } from "@angular/router";
-import {Storage} from '@ionic/storage';
+
 
 import { ApiService } from 'src/app/providers/api.service';
 import { DataService } from "../services/data.service";
 
 //Picker - import e poi definire nel constructor
 import { PickerController } from "@ionic/angular";
-import { PickerOptions } from "@ionic/core";
 
 @Component({
   selector: 'app-modifica-password',
@@ -34,7 +33,7 @@ export class ModificaPasswordPage implements OnInit {
     }
 
 
-  email: string; 
+
   password: string;
   confermapassword: string;
 
@@ -51,12 +50,12 @@ export class ModificaPasswordPage implements OnInit {
           role: 'cancel',
           cssClass: 'secondary',
           handler: () => {
-            console.log('Confirm cancel');
+      
           }
         }, {
           text: "Conferma",
           handler: () => {
-            console.log('Confirm Ok');
+         
             this.modify();
           }
         }
@@ -119,7 +118,7 @@ export class ModificaPasswordPage implements OnInit {
 
       },
       (rej) => {
-        console.log('Modifica effetutata', this.password, this.userId); 
+     
 
       }
     );
