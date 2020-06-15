@@ -84,10 +84,6 @@ const routes: Routes = [
     loadChildren: () => import('./inserimento-sondaggio/inserimento-sondaggio.module').then(m => m.InserimentoSondaggioPageModule)
   },
   {
-    path: 'termini',
-    loadChildren: () => import('./termini/termini.module').then(m => m.TerminiPageModule)
-  },
-  {
     path: 'benvenuto',
     loadChildren: () => import('./benvenuto/benvenuto.module').then(m => m.BenvenutoPageModule)
   },
@@ -126,7 +122,12 @@ const routes: Routes = [
   {
     path: 'advanced-search',
     loadChildren: () => import('./advanced-search/advanced-search.module').then(m => m.AdvancedSearchPageModule)
+  },
+  {
+    path: 'slides',
+    loadChildren: () => import('./slides/slides.module').then( m => m.SlidesPageModule)
   }
+
 
 
 

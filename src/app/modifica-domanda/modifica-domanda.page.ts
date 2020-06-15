@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController, ToastController, MenuController} from '@ionic/angular';
-import { Router } from "@angular/router";
 import { ApiService } from 'src/app/providers/api.service';
 import { DataService } from "../services/data.service";
 
@@ -63,9 +62,6 @@ export class ModificaDomandaPage implements OnInit {
       (categories) => {
         this.categoriaSettings = categories;
       },
-      (rej) => {
-    
-      }
     );
 
     this.showSurvey();
@@ -99,14 +95,8 @@ export class ModificaDomandaPage implements OnInit {
       this.toastParolaScoretta();
     }
     else {
-    this.apiService.modificaDomanda(this.codice_domanda, this.dataeoraToPass, this.timerToPass, this.titoloToPass, this.descrizioneToPass, this.categoriaToPass||this.categoriaView, this.cod_preferita).then(
-      (result) => {  
-        
-      },
-      (rej) => {
-      
-      }
-    );
+    this.apiService.modificaDomanda(this.codice_domanda, this.dataeoraToPass, this.timerToPass, this.titoloToPass, this.descrizioneToPass, this.categoriaToPass||this.categoriaView, this.cod_preferita);
+    this.toastSuccess();
     }
   }
 
@@ -334,7 +324,9 @@ async popupInvalidTitle(){
 
             
             this.modify();
-            this.presentAlert();
+
+            this.dataService.loadingView(3000);//visualizza il frame di caricamento
+            this.navCtrl.navigateRoot('/visualizza-domanda');
 
           }
         }
@@ -498,16 +490,16 @@ async popupInvalidTitle(){
       var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
 
-      document.getElementById("timeLeft").innerHTML = days + "d " + hours + "h "
+      document.getElementById("timeMissingDomanda").innerHTML = days + "d " + hours + "h "
         + minutes + "m " + seconds + "s ";
 
       this.timerView = days + "d " + hours + "h "
         + minutes + "m " + seconds + "s ";
-
+    
 
       if (distance < 0) {
         clearInterval(this.interval);
-        document.getElementById("timeLeft").innerHTML = "Domanda scaduta.";
+        document.getElementById("timeMissingDomanda").innerHTML = "Domanda scaduta.";
         this.timerView = "OMBO TIMER,SCADUTA";
       }
     }, 1000);
@@ -568,26 +560,18 @@ async popupInvalidTitle(){
     }
   }
 
-  async presentAlert() { 
-    const alert = await this.alertController.create({
-      header: 'Domanda modificata',
-      message: 'La tua domanda scadrà tra:' + this.timerView ,
-      buttons: [
-
-        {
-          text: 'Ok',
-          handler: (value: any) => {
-            
-            this.dataService.loadingView(3000);//visualizza il frame di caricamento
-            this.navCtrl.navigateRoot('/visualizza-domanda');
-
-          }
-        }
-      ],
-    });
-
-    await alert.present();
+  toastSuccess() {
+    const toast = document.createElement("ion-toast");
+    toast.message = "Modifiche effettuate!";
+    toast.duration = 2000;
+    toast.position = "top";
+    toast.style.fontSize = "20px";
+    toast.color = "success";
+    toast.style.textAlign = "center";
+    document.body.appendChild(toast);
+    return toast.present();
   }
+
 
   goBack() {
     this.dataService.loadingView(3000);//visualizza il frame di caricamento
@@ -626,16 +610,15 @@ async popupInvalidTitle(){
     return check;
 
   }
-
-    async toastParolaScoretta() {
-      const toast = await this.toastController.create({
-        message: 'Hai inserito una parola scorretta!',
-        duration: 2000
-      });
+      toastParolaScoretta() {
+      const toast = document.createElement("ion-toast");
+      toast.message = 'Hai inserito una parola scorretta!',
+      toast.duration = 2000;
       toast.color = 'danger';
       toast.position = "top";
       toast.style.fontSize = '20px';
       toast.style.textAlign = 'center';
-      toast.present();
+      document.body.appendChild(toast);
+    return toast.present();
     }
 }

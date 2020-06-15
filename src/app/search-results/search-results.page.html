@@ -1,6 +1,8 @@
 <ion-header>
 
-  <ion-searchbar placeholder={{keyRicerca}} [(ngModel)]="keywordToSearch" (search)="ricerca($event)"></ion-searchbar>
+  <ion-searchbar *ngIf= "keyRicerca != null; else globalSearch" placeholder={{keyRicerca}} [(ngModel)]="keywordToSearch" (search)="ricerca($event)"></ion-searchbar>
+
+  <ng-template #globalSearch><ion-searchbar placeholder="Ricerca..." [(ngModel)]="keywordToSearch" (search)="ricerca($event)"></ion-searchbar></ng-template>
 
   <ion-chip (click)="clickFilter()" color="primary">
     <ion-icon name="filter"></ion-icon>

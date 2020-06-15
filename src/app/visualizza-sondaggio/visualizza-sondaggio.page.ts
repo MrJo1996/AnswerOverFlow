@@ -21,43 +21,39 @@ export class VisualizzaSondaggioPage implements OnInit {
   sondaggio = {};
   sondaggioUser: string;
 
-  thrashActive;
-
   codice_categoria;
   categoria;
 
   votato;
   voti_totali: number = 0;
-  hasVoted: boolean;
+  sceltaFatta: boolean;
 
   scelte = new Array();
   codici_scelte = new Array();
   sceltaSelezionata = " ";
-  index_scelta_selezionata: number;
-  codice_scelta_selezionata;
+  indexSceltaSelezionata: number;
+  codiceSceltaSelezionata;
   percentualiScelte = new Array();
 
   profiloUserSondaggio = {};
   distanceTimer;
 
-  isSondaggioActive;
+  sondaggioAperto: boolean;
   interval;
-  timerView2;
+  viewTimer;
   dataeoraView
 
   ospite;
 
+  votoUtente;
+
   numeroScelta;
   formatsDate: string[] = [
-    'd MMM y, H:mm'];
+    'd-MM-y, H:mm'
+  ];
 
-  private buttonColor: string = "#2a2a2a";
-  private buttonColorBest: string = "#64F58D";
-
-
-  url = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/cancellaSondaggio/14'
-  url2 = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaSondaggio'
-  url3 = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaScelteSondaggio'
+  private coloreNonAttivo: string = "#2a2a2a";
+  private coloreAttivo: string = "#64F58D";
 
   constructor(private navCtrl: NavController,
     private service: PostServiceService,
@@ -70,18 +66,24 @@ export class VisualizzaSondaggioPage implements OnInit {
     public toastController: ToastController) { }
 
   ngOnInit() {
-    //this.storage.get('utente').then(data => { this.currentUser = data.email });
+    this.storage.get('utente').then(data => { this.currentUser = data.email });
+
+    if (this.currentUser.length === 0)
+      this.currentUser = this.dataService.emailUtente;
+    this.controllaOspite();
+    if (this.ospite === false)
+      this.currentUser = null;
 
     this.visualizzaSondaggioSelezionato();
     this.visualizzaScelte();
     this.giaVotato();
-    this.controllaOspite();
+
 
     if (this.distanceTimer < 0)
-      this.isSondaggioActive = false;
+      this.sondaggioAperto = false;
 
     else
-      this.isSondaggioActive = true;
+      this.sondaggioAperto = true;
 
   }
 
@@ -90,19 +92,15 @@ export class VisualizzaSondaggioPage implements OnInit {
   goModificaSondaggio() {
 
     if (this.deadlineCheck()) {
-      this.toastModificaSondaggioScaduto();
+      this.toast('Il tuo sondaggio è scaduto, non puoi più modificarlo!', 'danger');
     }
     else if (this.voti_totali > 0) {
-
-      this.toastModificaSondaggioCiSonoVoti();
-    }
-    else {
-      this.dataService.loadingView(3000);//visualizza il frame di caricamento
+      this.toast('Ci sono dei voti al tuo sondaggio, non è più possibile modificarlo!', 'danger');
+    } else {
+      this.dataService.loadingView(3000);
       this.navCtrl.navigateForward(['/modifica-sondaggio']);
     }
   }
-
-
 
   async popUpEliminaSondaggio() {
     const alert = await this.alertController.create({
@@ -111,8 +109,7 @@ export class VisualizzaSondaggioPage implements OnInit {
         {
           text: 'Si',
           handler: () => {
-
-            this.showDeleteToast();
+            this.toast('Sondaggio eliminato con successo!', 'success');
             this.cancellaSondaggio();
             this.goBack();
           }
@@ -120,9 +117,7 @@ export class VisualizzaSondaggioPage implements OnInit {
         {
           text: 'No',
           role: 'cancel',
-          //cssClass: 'secondary',
           handler: () => {
-
           }
         }
       ]
@@ -135,11 +130,10 @@ export class VisualizzaSondaggioPage implements OnInit {
     this.apiService.getSondaggio(this.codice_sondaggio).then(
       (sondaggio) => {
 
-
         this.sondaggio = sondaggio['data']['0'];
         this.sondaggioUser = sondaggio['data']['0'].cod_utente;
         this.codice_categoria = sondaggio['data']['0'].cod_categoria;
-        this.timerView2 = sondaggio['data']['0'].timer;
+        this.viewTimer = sondaggio['data']['0'].timer;
         this.dataeoraView = sondaggio['data']['0'].dataeora;
         this.mappingIncrement(sondaggio['data']['0'].timer);
 
@@ -173,7 +167,6 @@ export class VisualizzaSondaggioPage implements OnInit {
 
       }
     );
-
   }
 
   calcolaPercentualiScelte() {
@@ -188,7 +181,6 @@ export class VisualizzaSondaggioPage implements OnInit {
 
     });
     ;
-
   }
 
   async cancellaSondaggio() {
@@ -202,7 +194,6 @@ export class VisualizzaSondaggioPage implements OnInit {
 
       }
     );
-
   }
 
   async giaVotato() {
@@ -211,9 +202,16 @@ export class VisualizzaSondaggioPage implements OnInit {
 
     this.apiService.controllaGiaVotato(this.currentUser, this.codice_sondaggio).then(
       (risultato) => {
+       
+        if (risultato !== null) {
+          this.votoUtente = risultato[0];
+          this.votato = true;
 
-
-        this.votato = risultato["0"]["data"];
+          console.log("votato: ", this.votoUtente, this);
+        } else {
+          this.votato = false;
+          this.votoUtente = null;
+        }
       },
       (rej) => {
 
@@ -222,27 +220,23 @@ export class VisualizzaSondaggioPage implements OnInit {
 
   }
 
-
   async inviaVoto() {
-    this.codice_scelta_selezionata = this.scelte[this.index_scelta_selezionata]['codice_scelta'];
-    console.log('codice scelta ->', this.codice_scelta_selezionata);
+    this.codiceSceltaSelezionata = this.scelte[this.indexSceltaSelezionata]['codice_scelta'];
+    console.log('codice scelta ->', this.codiceSceltaSelezionata);
     console.log('codice sondaggio ->', this.codice_sondaggio);
-    this.apiService.votaSondaggio(this.codice_scelta_selezionata, this.codice_sondaggio).then(
+    this.apiService.votaSondaggio(this.codiceSceltaSelezionata, this.codice_sondaggio).then(
       (scelte) => { },
       (rej) => { }
     );
 
-    this.apiService.inserisciVotante(this.codice_scelta_selezionata, this.currentUser, this.codice_sondaggio).then(
+    this.apiService.inserisciVotante(this.codiceSceltaSelezionata, this.currentUser, this.codice_sondaggio).then(
       (scelte) => { },
       (rej) => { }
     );
   }
 
-
-
-
   async goBack() {
-    if (this.hasVoted === true) {
+    if (this.sceltaFatta === true) {
       const alert = await this.alertController.create({
         header: 'Sei sicuro di voler uscire senza confermare il voto?',
         buttons: [
@@ -262,7 +256,6 @@ export class VisualizzaSondaggioPage implements OnInit {
           }
         ]
       });
-
       await alert.present();
     }
     else {
@@ -280,40 +273,38 @@ export class VisualizzaSondaggioPage implements OnInit {
       if (this.currentUser != undefined || this.currentUser != null) {
         this.selezionaChecked(i);
 
-        if (!this.hasVoted || this.sceltaSelezionata != scelta) {
-          this.hasVoted = true;
+        if (!this.sceltaFatta || this.sceltaSelezionata != scelta) {
+          this.sceltaFatta = true;
 
         }
         else {
-          this.hasVoted = false;
+          this.sceltaFatta = false;
 
         }
-
         this.sceltaSelezionata = scelta;
-        this.index_scelta_selezionata = i;
+        this.indexSceltaSelezionata = i;
         console.log();
       }
-    } if(this.ospite === true) this.alertOspite();
+    } if (this.ospite === true) this.alertOspite();
   }
 
   async confermaVoto(scelta) {
     const alert = await this.alertController.create({
-      header: 'Sei sicuro della tua scelta',
+      header: 'Sei sicuro della tua scelta?Ti ricordiamo che non sarà più possibile cambiarla in futuro.',
       buttons: [
         {
           text: 'Si',
           handler: () => {
             console.log('scelta confermata');
-            this.inviaVoto();
-            this.doRefresh(event);
-
-            //this.router.navigate(['home']);
+            this.dataService.loadingView(2000).then(() => {
+              this.inviaVoto();
+              this.refreshDopoVoto(event);
+            });
           }
         },
         {
           text: 'No',
           role: 'cancel',
-          //cssClass: 'secondary',
           handler: () => {
             console.log('eliminazione annullata');
           }
@@ -323,7 +314,7 @@ export class VisualizzaSondaggioPage implements OnInit {
     await alert.present();
   }
 
-  async doRefresh(event) {
+  async refreshDopoVoto(event) {
     clearInterval(this.interval);
     this.votato = true;
     //this.visualizzaSondaggioSelezionato();
@@ -332,32 +323,24 @@ export class VisualizzaSondaggioPage implements OnInit {
     this.visualizzaScelte();
 
     //this.giaVotato();
-    this.hasVoted = false;
+    this.sceltaFatta = false;
     setTimeout(() => {
 
       event.target.complete();
     }, 1000);
   }
 
-
-  async doNormalRefresh(event) {
+  async refresh(event) {
     clearInterval(this.interval);
     this.votato = false;
-    this.hasVoted = false;
-    //this.visualizzaSondaggioSelezionato();
+    this.sceltaFatta = false;
 
     this.ngOnInit();
-    //this.visualizzaScelte();
-
-    //this.giaVotato();
-
     setTimeout(() => {
 
       event.target.complete();
     }, 1000);
   }
-
-
 
   async visualizzaCategoria() {
 
@@ -377,8 +360,6 @@ export class VisualizzaSondaggioPage implements OnInit {
       (profilo) => {
 
         this.profiloUserSondaggio = profilo['data']['0'];;
-
-
       },
       (rej) => {
 
@@ -390,7 +371,6 @@ export class VisualizzaSondaggioPage implements OnInit {
     this.mapValuesTillHalfHour(valueToMapp);
     this.mapValuesTillSixHours(valueToMapp);
     this.mapValuesTill3Days(valueToMapp);
-
   }
 
   mapValuesTillHalfHour(valueToMapp) {
@@ -409,9 +389,7 @@ export class VisualizzaSondaggioPage implements OnInit {
         this.countDown(0, 0, 0, 0, 30);
 
         break;
-
     }
-
   }
 
   mapValuesTillSixHours(valueToMapp) {
@@ -431,10 +409,7 @@ export class VisualizzaSondaggioPage implements OnInit {
         this.countDown(0, 0, 0, 6, 0);
 
         break;
-
     }
-
-
   }
 
   mapValuesTill3Days(valueToMapp) {
@@ -454,11 +429,7 @@ export class VisualizzaSondaggioPage implements OnInit {
         this.countDown(0, 0, 3, 0, 0);
 
         break;
-
-
     }
-
-
   }
 
   countDown(incAnno, incMese, incGG, incHH, incMM) {
@@ -469,27 +440,21 @@ export class VisualizzaSondaggioPage implements OnInit {
     auxData['2'] = this.sondaggio['dataeora'].substring(0, 10).split("-")[2];
     auxData['3'] = this.sondaggio['dataeora'].substring(11, 18).split(":")[0];
     auxData['4'] = this.sondaggio['dataeora'].substring(11, 18).split(":")[1];
-
     var countDownDate = new Date(parseInt(auxData['0'], 10) + incAnno, parseInt(auxData['1'], 10) - 1 + incMese, parseInt(auxData['2'], 10) + incGG, parseInt(auxData['3'], 10) + incHH, parseInt(auxData['4'], 10) + incMM).getTime();
 
     this.interval = setInterval(function () {
-
-
       var now = new Date().getTime();
-
       this.distanceTimer = countDownDate - now;
-
       var days = Math.floor(this.distanceTimer / (1000 * 60 * 60 * 24));
       var hours = Math.floor((this.distanceTimer % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       var minutes = Math.floor((this.distanceTimer % (1000 * 60 * 60)) / (1000 * 60));
       var seconds = Math.floor((this.distanceTimer % (1000 * 60)) / 1000);
-
       document.getElementById("timeLeft").innerHTML = days + "giorni " + hours + "ore "
         + minutes + "min " + seconds + "s ";
+
       if (this.distanceTimer < 0) {
         clearInterval(this.interval);
         this.isSondaggioActive = false;
-
         document.getElementById("timeLeft").innerHTML = "Sondaggio scaduto.";
 
       }
@@ -508,16 +473,20 @@ export class VisualizzaSondaggioPage implements OnInit {
 
   ionViewDidEnter() {
     clearInterval(this.interval);
-    this.mappingIncrement(this.timerView2);
+    this.mappingIncrement(this.viewTimer);
   }
 
   goChat() {
-    this.dataService.loadingView(3000);//visualizza il frame di caricamento
-    this.dataService.setEmailOthers(this.sondaggioUser);
-    this.navCtrl.navigateForward(['/chat'])
+    if(this.ospite === true){
+      this.toast('Effettua il login per chattare con gli altri utenti!', 'danger');
+    }else{
+      this.dataService.loadingView(3000);//visualizza il frame di caricamento
+      this.dataService.setEmailOthers(this.sondaggioUser);
+      this.navCtrl.navigateForward(['/chat'])
+    }
+   
 
   }
-
 
   clickProfilo(cod_utente) {
     this.dataService.loadingView(5000);//visualizza il frame di caricamento
@@ -527,14 +496,10 @@ export class VisualizzaSondaggioPage implements OnInit {
 
   deadlineCheck(): boolean {
     var date = new Date(this.dataeoraView.toLocaleString());
-
-    var timer = this.timerView2;
-
+    var timer = this.viewTimer;
     var dateNow = new Date().getTime();
-
     var time2 = date.getTime();
     var seconds = new Date('1970-01-01T' + timer + 'Z').getTime();
-
     var diff = dateNow - time2;
 
     return diff > seconds;
@@ -543,18 +508,6 @@ export class VisualizzaSondaggioPage implements OnInit {
   async toastSondaggioScaduto() {
     const toast = await this.toastController.create({
       message: 'Sondaggio scaduto! Impossibile votare!',
-      duration: 2000
-    });
-    toast.color = 'danger';
-    toast.position = "top";
-    toast.style.fontSize = '20px';
-    toast.style.textAlign = 'center';
-    toast.present();
-  }
-
-  async toastModificaSondaggioScaduto() {
-    const toast = await this.toastController.create({
-      message: 'Il tuo sondaggio è scaduto, non puoi più modificarlo!',
       duration: 2000
     });
     toast.color = 'danger';
@@ -577,8 +530,6 @@ export class VisualizzaSondaggioPage implements OnInit {
     toast.present();
   }
 
-
-
   selezionaChecked(i) {
 
     if (i === this.numeroScelta) {
@@ -587,20 +538,6 @@ export class VisualizzaSondaggioPage implements OnInit {
     else {
       this.numeroScelta = i;
     }
-  }
-
-
-
-  async showDeleteToast() {
-    const toast = document.createElement('ion-toast');
-    toast.message = 'Domanda eliminata con successo!';
-    toast.duration = 2000;
-    toast.position = "top";
-    toast.style.fontSize = '20px';
-    toast.color = 'success';
-    toast.style.textAlign = 'center';
-    document.body.appendChild(toast);
-    return toast.present();
   }
 
   async showErrorToast() {
@@ -622,6 +559,18 @@ export class VisualizzaSondaggioPage implements OnInit {
     toast.position = "top";
     toast.style.fontSize = '20px';
     toast.color = 'success';
+    toast.style.textAlign = 'center';
+    document.body.appendChild(toast);
+    return toast.present();
+  }
+
+  async toast(message: string, color: string) {
+    const toast = document.createElement('ion-toast');
+    toast.message = message;
+    toast.duration = 2000;
+    toast.position = "top";
+    toast.style.fontSize = '20px';
+    toast.color = color;
     toast.style.textAlign = 'center';
     document.body.appendChild(toast);
     return toast.present();
@@ -661,12 +610,12 @@ export class VisualizzaSondaggioPage implements OnInit {
     await alert.present();
   }
 
-  controllaOspite(){
+  controllaOspite() {
     this.storage.get("session").then((data) => {
-     if(data === false)
-     this.ospite = true;
-     else
-     this.ospite = false;
+      if (data === false)
+        this.ospite = true;
+      else
+        this.ospite = false;
     });
   }
 }

@@ -34,7 +34,6 @@ export class VisualizzaDomandaPage implements OnInit {
   cod_preferita: any;
 
   risposte = new Array();
-  //profiliUtentiRisposte = new Array();
   descrizioneRispostaView;
   descrizioneRispostaToPass;
   risposta = {};
@@ -45,7 +44,6 @@ export class VisualizzaDomandaPage implements OnInit {
   private buttonColorBest: string = "gold";
   descrizione_risposta = "";
 
-  //likes = new Array();
   coloriLikeDislike = new Array();
 
   categoria = {};
@@ -69,7 +67,6 @@ export class VisualizzaDomandaPage implements OnInit {
     private navCtrl: NavController,
     private dataService: DataService,
     public apiService: ApiService,
-    //private router: Router,
     public alertController:
       AlertController,
     private storage: Storage,
@@ -79,8 +76,16 @@ export class VisualizzaDomandaPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.storage.get('utente').then(data => { this.currentMailUser = data.email });
 
-    //this.storage.get('utente').then(data => { this.currentMailUser = data.email });
+    if (this.currentMailUser.length === 0)
+      this.currentMailUser = this.dataService.emailUtente;
+
+    this.currentMailUser = this.dataService.emailUtente;
+    this.controllaOspite();
+    if (this.ospite === false)
+      this.currentMailUser = null;
+
     this.visualizzaDomanda();
     this.showRisposte();
     this.controllaOspite();
@@ -88,13 +93,12 @@ export class VisualizzaDomandaPage implements OnInit {
 
   }
 
-  //TOASTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 
   goModificaDomanda() {
     if (this.risposte.length > 0)
-      this.showErrorToast();
-    if (this.deadlineCheck()) {
-      this.toastModificaDomandaScaduta();
+      this.toast('Non puoi più modificare la tua domanda, gli utenti hanno già cominciato a rispondere!', 'danger');
+    else if (this.deadlineCheck()) {
+      this.toast('Non puoi più modificare la tua domanda, è scaduta!', 'danger');
     }
     else {
       this.dataService.loadingView(3000);//visualizza il frame di caricamento
@@ -107,11 +111,9 @@ export class VisualizzaDomandaPage implements OnInit {
   async visualizzaDomanda() {
 
     this.codice_domanda = this.dataService.codice_domanda;
-    this.currentMailUser = this.dataService.getEmail_Utente();
     console.log(this.currentMailUser)
     this.apiService.getDomanda(this.codice_domanda).then(
       (domanda) => {
-
 
         this.domanda = domanda['data'];
         this.dataeoraView = this.domanda['0'].dataeora;
@@ -142,8 +144,7 @@ export class VisualizzaDomandaPage implements OnInit {
         {
           text: 'Si',
           handler: () => {
-            console.log('domanda eliminata');
-            this.showDeleteToast();
+            this.toast('Domanda eliminata con successo!', 'success');
             this.cancellaDomanda();
             this.dataService.loadingView(5000);//visualizza il frame di caricamento        
             this.navCtrl.navigateBack(['home']);
@@ -171,7 +172,7 @@ export class VisualizzaDomandaPage implements OnInit {
           text: 'Si',
           handler: () => {
             console.log('risposta eliminata');
-            this.showDeleteRispostaToast();
+            this.toast('Risposta eliminata con successo!', 'success');
             this.cancellaRisposta(codice_risposta);
             //Visualizza il frame di caricamento
             const loading = document.createElement('ion-loading');
@@ -213,6 +214,7 @@ export class VisualizzaDomandaPage implements OnInit {
         this.risposte = risposte['Risposte']['data'];
         this.risposte2 = risposte['Risposte']['data']
         let temp: Array<Number> = []
+
         for (let index = 0; index < this.risposte2.length; index++) {
           this.numLike2[this.risposte2[index].codice_risposta]=(this.risposte2[index].num_like)
           this.numDislike2[this.risposte2[index].codice_risposta]=(this.risposte2[index].num_dislike)
@@ -227,6 +229,7 @@ export class VisualizzaDomandaPage implements OnInit {
             console.log(this.votoType)
             console.log(data[0]['data'][0])
             console.log(data[0]['data'][0].tipo_like,this.risposte2[index].codice_risposta)
+
           })
           
         }
@@ -333,34 +336,37 @@ export class VisualizzaDomandaPage implements OnInit {
 
       },
       (rej) => {
-        //console.log("C'è stato un errore durante la visualizzazione del profilo");
+
       }
     );
 
   }
 
   goback() {
-    this.dataService.loadingView(5000);//visualizza il frame di caricamento
+    this.dataService.loadingView(5000);
     this.navCtrl.pop();
   }
 
   async modify() {
 
     if (this.checkIfThereAreEnglishBadWords(this.descrizioneRispostaToPass) || this.checkIfThereAreItalianBadWords(this.descrizioneRispostaToPass)) {
-      this.toastParolaScoretta();
+      this.toast('Hai inserito una o più parole scorrette!', 'danger');
+
     } else if (this.stringLengthChecker(this.descrizioneRispostaToPass)) {
-      this.toastInvalidString();
+      this.toast('ATTENZIONE! Hai lasciato un campo vuoto oppure hai superato la lunghezza massima!', 'danger');
+
     } else if (this.deadlineCheck()) {
-      this.toastModificaDomandaScaduta();
+      this.toast('Non puoi più modificare la tua risposta, la domanda è scaduta!', 'danger');
+
     } else {
       this.apiService.modificaRisposta(this.dataService.codice_risposta, this.descrizioneRispostaToPass).then(
-        (result) => { // nel caso in cui va a buon fine la chiamata
+        (result) => {
         },
-        (rej) => {// nel caso non vada a buon fine la chiamata
-          console.log('Modifica non effetutata'); //anche se va nel rej va bene, modifiche effettive nel db
+        (rej) => {
+          console.log('Modifica non effetutata');
         }
       );
-      this.showModifyToast();
+
     }
 
   }
@@ -377,33 +383,45 @@ export class VisualizzaDomandaPage implements OnInit {
 
 
   clickInviaRisposta() {
+    if (this.deadlineCheck()) {
+      this.toast('Non puoi più modificare la tua risposta, la domanda è scaduta!', 'danger');
 
-    this.inserisciRisposta();
-    this.rispostaVisible = false;
 
-    this.doRefresh(event);
+    } else {
+      this.inserisciRisposta();
+      this.rispostaVisible = false;
+
+      this.doRefresh(event);
+    }
+
   }
-
-
 
   async inserisciRisposta() {
     if (this.ospite === true) this.alertOspite();
     else {
+
+
       if (this.checkIfThereAreItalianBadWords(this.descrizione_risposta) || this.checkIfThereAreEnglishBadWords(this.descrizione_risposta)) {
-        this.toastParolaScoretta();
+        this.toast('Hai inserito una o più parole scorrette!', 'danger');
+
       } else if (this.stringLengthChecker(this.descrizione_risposta)) {
-        this.toastInvalidString();
-        //////////////////////////////////////////////////////////
+
+
+        this.toast('ATTENZIONE! Hai lasciato un campo vuoto oppure hai superato la lunghezza massima!', 'danger');
+
       } else if (this.currentMailUser != null || this.currentMailUser != undefined) {
         this.apiService.inserisciRisposta(this.descrizione_risposta, this.currentMailUser, this.codice_domanda).then(
-          (result) => { // nel caso in cui va a buon fine la chiamata
+          (result) => {
+
+            this.apiService.inviaNotifica(this.domandaMailUser, this.currentMailUser, "Ha risposto alla tua domanda");
+
+
           },
-          (rej) => {// nel caso non vada a buon fine la chiamata
-            console.log('Modifica non effetutata'); //anche se va nel rej va bene, modifiche effettive nel db
+          (rej) => {
+
           }
         );
 
-        this.showModifyToast();
       }
     }
   }
@@ -432,21 +450,18 @@ export class VisualizzaDomandaPage implements OnInit {
         }, {
           text: 'Ok',
           handler: insertedData => {
-            console.log(JSON.stringify(insertedData)); //per vedere l'oggetto dell'handler
-            this.descrizioneRispostaView = insertedData.descrizionePopUp; //setto descrizioneView al valore inserito nel popUp una volta premuto ok così viene visualizzato
-            this.descrizioneRispostaToPass = insertedData.descrizionePopUp; //setto descrizioneToPass al valore inserito nel popUp una volta premuto ok
+            console.log(JSON.stringify(insertedData));
+            this.descrizioneRispostaView = insertedData.descrizionePopUp;
+            this.descrizioneRispostaToPass = insertedData.descrizionePopUp;
 
             this.modify();
-
-            //TOASTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
           }
         }
       ]
     });
 
     await alert.present();
-    //View Dati inseriti dopo click sul popup di modifica descrizione. Dal console log ho visto come accedere ai dati ricevuti.
-    //this.descrizioneView = await (await alert.onDidDismiss()).data.values.descrizione;
+
   }
 
   clickRisposta(risposta, i) {
@@ -514,22 +529,6 @@ export class VisualizzaDomandaPage implements OnInit {
 
   }
 
-  setRispostaVisible() {
-    if (!this.deadlineCheck()) {
-      if (this.rispostaVisible === false)
-        this.rispostaVisible = true;
-
-      else
-        this.rispostaVisible = false;
-
-    }
-    else {
-
-      this.toastDomandaScaduta();
-    }
-
-
-  }
 
   doRefresh(event) {
     clearInterval(this.interval)
@@ -560,56 +559,17 @@ export class VisualizzaDomandaPage implements OnInit {
   }
 
 
-  //TOAST----------------------------------------
-
-  async showDeleteToast() {
+  async toast(message: string, color: string) {
     const toast = document.createElement('ion-toast');
-    toast.message = 'Domanda eliminata con successo!';
+    toast.message = message;
     toast.duration = 2000;
     toast.position = "top";
     toast.style.fontSize = '20px';
-    toast.color = 'success';
+    toast.color = color;
     toast.style.textAlign = 'center';
     document.body.appendChild(toast);
     return toast.present();
   }
-
-  async showDeleteRispostaToast() {
-    const toast = document.createElement('ion-toast');
-    toast.message = 'Risposta eliminata con successo!';
-    toast.duration = 2000;
-    toast.position = "top";
-    toast.style.fontSize = '20px';
-    toast.color = 'success';
-    toast.style.textAlign = 'center';
-    document.body.appendChild(toast);
-    return toast.present();
-  }
-
-  async showErrorToast() {
-    const toast = document.createElement('ion-toast');
-    toast.message = 'Operazione non consentita!';
-    toast.duration = 2000;
-    toast.position = "top";
-    toast.style.fontSize = '20px';
-    toast.color = 'danger';
-    toast.style.textAlign = 'center';
-    document.body.appendChild(toast);
-    return toast.present();
-  }
-
-  async showModifyToast() {
-    const toast = document.createElement('ion-toast');
-    toast.message = 'Modifica avvenuta con successo!';
-    toast.duration = 2000;
-    toast.position = "top";
-    toast.style.fontSize = '20px';
-    toast.color = 'success';
-    toast.style.textAlign = 'center';
-    document.body.appendChild(toast);
-    return toast.present();
-  }
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   timeoutHandleLike
   votoType: Array<number> = []
@@ -636,6 +596,7 @@ export class VisualizzaDomandaPage implements OnInit {
       }
       //aggiungo dislike
     }
+
     if (value == -1) {this.votoType[i] = null
     this.apiService.rimuoviValutazione(this.risposte2[risposta].codice_risposta, this.currentMailUser).then((data)=>{
       this.apiService.togliLike(this.risposte[risposta].codice_risposta)
@@ -651,13 +612,9 @@ export class VisualizzaDomandaPage implements OnInit {
       console.log('sparoiserviziiiiiiiiiiiiiiiiiiiiiiiiii' + vototype)
     }
       , 700, this.votoType[i]);
+
   }
-  //aggiungi
-  //nuova valutazione
-  //cancellavalutazione
-  //toglilike
-  //toglidislike
-  //inserisciValutazione cod risp cod valutazione 1 like 2 dislike
+ 
   timeoutHandleDislike
   modificaDislike(i, value,risposta) {
     var temp = true
@@ -694,7 +651,6 @@ export class VisualizzaDomandaPage implements OnInit {
       console.log('sparoiserviziiiiiiiiiiiiiiiiiiiiiiiiii' + vototype)
     }
       , 700, this.votoType[i]);
-
 
   }
   cercaValutazione(cod_utente, risposte, i) {
@@ -773,42 +729,26 @@ export class VisualizzaDomandaPage implements OnInit {
   interval
   async countDown(incAnno, incMese, incGG, incHH, incMM) {
 
-    var auxData = new Array(); //get dati dal sondaggio
-    auxData['0'] = (this.domanda['0'].dataeora.substring(0, 10).split("-")[0]); //anno
-    auxData['1'] = this.domanda['0'].dataeora.substring(0, 10).split("-")[1]; //mese [0]=gennaio
-    auxData['2'] = this.domanda['0'].dataeora.substring(0, 10).split("-")[2]; //gg
-    auxData['3'] = this.domanda['0'].dataeora.substring(11, 18).split(":")[0]; //hh
-    auxData['4'] = this.domanda['0'].dataeora.substring(11, 18).split(":")[1]; //mm
-
-    // Setto data scadenza aggiungendo l'incremento stabilito da mappingInc al momento del confermaModifiche
+    var auxData = new Array();
+    auxData['0'] = (this.domanda['0'].dataeora.substring(0, 10).split("-")[0]);
+    auxData['1'] = this.domanda['0'].dataeora.substring(0, 10).split("-")[1];
+    auxData['2'] = this.domanda['0'].dataeora.substring(0, 10).split("-")[2];
+    auxData['3'] = this.domanda['0'].dataeora.substring(11, 18).split(":")[0];
+    auxData['4'] = this.domanda['0'].dataeora.substring(11, 18).split(":")[1];
     var countDownDate = new Date(parseInt(auxData['0'], 10) + incAnno, parseInt(auxData['1'], 10) - 1 + incMese, parseInt(auxData['2'], 10) + incGG, parseInt(auxData['3'], 10) + incHH, parseInt(auxData['4'], 10) + incMM).getTime();
 
-
-
-    // Aggiorno timer ogni 1000ms (1000ms==1s)
     this.interval = setInterval(function () {
 
-      //Timestamp Attuale (data + orario)
+
       var now = new Date().getTime();
 
-      // Calcolo differenza, tempo mancante
       var distance = countDownDate - now;
-
-      // conversioni
-      /*   var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-   */
 
       var days = Math.floor(distance / (1000 * 60 * 60 * 24));
       var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-      //console.log("GIORNI ORE MINUTI SECONDI: ", days, hours, minutes, seconds);
-      // Risultato delle conversioni messo nell'elemento con id="timeLeft"
-      //TODO non mostrare valori se non avvalorati o pari a zero
       document.getElementById("timeLeft").innerHTML = days + "d " + hours + "h "
         + minutes + "m " + seconds + "s ";
 
@@ -934,32 +874,6 @@ export class VisualizzaDomandaPage implements OnInit {
     return diff > seconds;
   }
 
-  async toastDomandaScaduta() {
-    const toast = await this.toastController.create({
-      message: 'Domanda scaduta! Impossibile rispondere!',
-      duration: 2000
-    });
-    toast.color = 'danger';
-    toast.position = "top";
-    toast.style.fontSize = '20px';
-    toast.style.textAlign = 'center';
-    toast.present();
-  }
-
-  async toastModificaDomandaScaduta() {
-    const toast = await this.toastController.create({
-      message: 'Domanda scaduta! Non puoi più modificarla!',
-      duration: 2000
-    });
-    toast.color = 'danger';
-    toast.position = "top";
-    toast.style.fontSize = '20px';
-    toast.style.textAlign = 'center';
-    toast.present();
-  }
-
-
-
 
   stringLengthChecker(string: String): boolean {
 
@@ -968,30 +882,6 @@ export class VisualizzaDomandaPage implements OnInit {
     } else {
       return false;
     }
-  }
-
-  async toastInvalidString() {
-    const toast = await this.toastController.create({
-      message: 'ATTENZIONE! Hai lasciato un campo vuoto oppure hai superato la lunghezza massima!',
-      duration: 2000
-    });
-    toast.color = 'danger';
-    toast.position = "top";
-    toast.style.fontSize = '20px';
-    toast.style.textAlign = 'center';
-    toast.present();
-  }
-
-  async toastParolaScoretta() {
-    const toast = await this.toastController.create({
-      message: 'Hai inserito una parola scorretta!',
-      duration: 2000
-    });
-    toast.color = 'danger';
-    toast.position = "top";
-    toast.style.fontSize = '20px';
-    toast.style.textAlign = 'center';
-    toast.present();
   }
 
   async alertOspite() {
@@ -1036,5 +926,19 @@ export class VisualizzaDomandaPage implements OnInit {
     });
   }
 
-}
+  setRispostaVisible() {
+  
+    if (!this.deadlineCheck()) {
+      if (this.rispostaVisible === false)
+        this.rispostaVisible = true;
 
+      else
+        this.rispostaVisible = false;
+
+    }
+    else {
+      this.toast('Non puoi più rispondere alla domanda, è scaduta!', 'danger');
+    }
+
+  }
+}
