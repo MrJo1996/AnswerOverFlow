@@ -2,14 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { AlertController, MenuController} from '@ionic/angular';
 import {NavController} from "@ionic/angular";
 import { Router } from "@angular/router";
-import {Storage} from '@ionic/storage';
+
 
 import { ApiService } from 'src/app/providers/api.service';
 import { DataService } from "../services/data.service";
 
 //Picker - import e poi definire nel constructor
 import { PickerController } from "@ionic/angular";
-import { PickerOptions } from "@ionic/core";
 
 @Component({
   selector: 'app-modifica-password',
