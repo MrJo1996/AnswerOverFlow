@@ -370,7 +370,7 @@ export class VisualizzaDomandaPage implements OnInit {
 
     this.inserisciRisposta();
     this.rispostaVisible = false;
-    
+   
     this.doRefresh(event);
   }
 
@@ -387,8 +387,9 @@ export class VisualizzaDomandaPage implements OnInit {
     } else if (this.currentMailUser != null || this.currentMailUser != undefined) {
       this.apiService.inserisciRisposta(this.descrizione_risposta, this.currentMailUser, this.codice_domanda).then(
         (result) => { 
-          this.apiService.inviaNotifica(this.domandaMailUser,this.currentMailUser);
-          
+   
+          this.apiService.inviaNotifica(this.domandaMailUser,this.currentMailUser,"Ha risposto alla tua domanda");
+
           // nel caso in cui va a buon fine la chiamata
         },
         (rej) => {// nel caso non vada a buon fine la chiamata

@@ -12,13 +12,13 @@ export class ApiService {
   constructor(public http: HttpClient) { }
 
 
-  async inviaNotifica(emailTag: string, username: string) {
+  async inviaNotifica(emailTag: string, username: string, text:string) {
 
  
      const post_data = {
          'app_id': '8efdc866-9bea-4b12-a371-aa01f421c4f7',
          'contents': {
-             'en': 'Ti ha inviato un messaggio'
+             'en': text
          },
          'headings': {
              'en': username
