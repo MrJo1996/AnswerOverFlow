@@ -19,10 +19,10 @@
   <div *ngIf="switch === true">
     <ion-row>
       <ion-col>
-        <ion-button fill="outline" expand="block" color="black" (click)="switch1_(switch)">DOMANDE</ion-button>
+        <ion-button fill="outline" expand="block" color="black" (click)="switchDomSon(switch)">DOMANDE</ion-button>
       </ion-col>
       <ion-col>
-        <ion-button fill="outline" expand="block" color="light" (click)="switch2_(switch)">SONDAGGI</ion-button>
+        <ion-button fill="outline" expand="block" color="light" (click)="switchSonDom(switch)">SONDAGGI</ion-button>
       </ion-col>
     </ion-row>
   </div>
@@ -30,15 +30,15 @@
   <div *ngIf="switch !== true">
     <ion-row>
       <ion-col>
-        <ion-button fill="outline" expand="block" color="light" (click)="switch1_(switch)">DOMANDE</ion-button>
+        <ion-button fill="outline" expand="block" color="light" (click)="switchDomSon(switch)">DOMANDE</ion-button>
       </ion-col>
       <ion-col>
-        <ion-button fill="outline" expand="block" color="black" (click)="switch2_(switch)">SONDAGGI</ion-button>
+        <ion-button fill="outline" expand="block" color="black" (click)="switchSonDom(switch)">SONDAGGI</ion-button>
       </ion-col>
     </ion-row>
   </div>
 
-  <!------------------------------------------------------------DOMANDA------------------------------------------------------------------->
+  <!--DOMANDA-->
 
   <div *ngIf="switch === true">
 
@@ -87,7 +87,7 @@
     </ion-card>
   </div>
 
-  <!----------------------------------------------------SONDAGGIO --------------------------------------------------------------------->
+  <!--SONDAGGIO-->
 
   <div *ngIf="switch !== true">
 
@@ -137,7 +137,7 @@
     </ion-card>
   </div>
 
-  <ion-infinite-scroll threshold="5%" (ionInfinite)="loadMore($event)">
+  <ion-infinite-scroll threshold="5%" (ionInfinite)="infScroll($event)">
     <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Caricamento...">
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>

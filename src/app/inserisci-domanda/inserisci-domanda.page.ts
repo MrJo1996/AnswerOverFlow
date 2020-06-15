@@ -249,7 +249,6 @@ export class InserisciDomandaPage implements OnInit {
           handler: () => {
             this.showMessage("Inserimento avvenuto con successo!", "success");
             this.sendData();
-            this.dataService.setRefreshIndex(true);
             this.goHome();
           }
         }

@@ -17,7 +17,6 @@ export class DataService {
   codice_risposta;
   selezione_cat;
   nuova_proposta;
-  refresh_index;
   nome;
   cognome;
   username;
@@ -51,10 +50,6 @@ export class DataService {
     this.filters['status'] = status;
     this.filters['isFiltered'] = filtered; //bool
 
-  }
-
-  setRefreshIndex(refresh_index: boolean) {
-    this.refresh_index = refresh_index;
   }
 
   setAvatar(avatar: string) {
@@ -121,9 +116,6 @@ export class DataService {
 
   getSession() {
     return this.session;
-  }
-  getRefreshIndex() {
-    return this.refresh_index;
   }
   getCod_domanda() {
     return this.codice_domanda;

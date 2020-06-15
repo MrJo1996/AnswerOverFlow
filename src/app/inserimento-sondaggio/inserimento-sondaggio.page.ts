@@ -98,7 +98,6 @@ export class InserimentoSondaggioPage implements OnInit {
   goHome() {
     this.loadingView();
     this.router.navigate(["home"]);
-    this.dataService.setRefreshIndex(true);
   }
   backButton() {
     this.loadingView();

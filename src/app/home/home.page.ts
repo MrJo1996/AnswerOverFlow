@@ -1,14 +1,11 @@
-import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
-import { PostServiceService } from "../services/post-service.service";
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { DataService } from "../services/data.service";
 import { ApiService } from '../providers/api.service';
 import { Router } from '@angular/router';
 import { Storage } from "@ionic/storage";
-import { PopoverController, iosTransitionAnimation, MenuController } from '@ionic/angular';
+import { PopoverController, MenuController } from '@ionic/angular';
 import { PopoverComponent } from '../popover/popover.component';
 import { AppComponent } from "../app.component";
-import { NgZone } from '@angular/core';
-import { element } from 'protractor';
 
 @Component({
   selector: 'app-home',
@@ -16,98 +13,61 @@ import { element } from 'protractor';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
-  i_domande = 0;
-  y_domande = 0;
-  i_sondaggi = 0;
-  y_sondaggi = 0;
+  domande;
+  sondaggi;
+  domande_regolate = new Array();
+  sondaggi_regolati = new Array();
+  categorie_domande = new Array();
+  categoria_sondaggi = new Array();
+  indice_regola_domande = 0;
+  indice_regola_sondaggi = 0;
   index1 = 1;
   index2 = 2;
-  session;
-  refresh_index;
   switch = true;
-  indice_domande;
-  codice_domanda;
-  codice_sondaggio;
-  codice_categoria;
-  categoria;
-  currentMailUser;//mail dell'utente corrente
-  domande;
-  domande_regolate = Array();
-  sondaggi_regolati = Array();
-  profili_user_domande = new Array();
-  profili_user_sondaggi = new Array();
-  profilo1;
-  profilo2;
-  categorie_domande = Array();
-  categoria_sondaggi = Array();
-  voti_sondaggi = Array();
-  titolo = Array();
-  sondaggi;
-  domandaMailUser;//mail dell'utente che ha fatto la domanda
-  domandaNomeUser = " ";//nome e cognome dell'utente che ha fatto la domanda
+  currentMailUser;
   keywordToSearch;
-  searchingResults;
-  request: Promise<any>;
   timer;
 
-  sondaggioChecker;
-  domandaChecker
-  interval;
-
-  constructor(public popoverController: PopoverController,
+  constructor(
+    public popoverController: PopoverController,
     private menuSet: AppComponent,
     private menuCtrl: MenuController,
     private storage: Storage,
     private apiService: ApiService,
-    private service: PostServiceService,
     private dataService: DataService,
     private router: Router,
-    private update: ChangeDetectorRef,
-    private zone: NgZone) { }
+    private update: ChangeDetectorRef) { }
 
   ionViewWillEnter() {
     this.menuCtrl.enable(true);
     this.menuSet.checkUserLogged();
-    this.refresh_index = this.dataService.getRefreshIndex();
     this.visualizzaDomandaHome();
     this.visualizzaSondaggiHome();
-    if (this.refresh_index == true) {
-    }
   }
 
-
   ngOnInit() {
-    // window.home = this;
     this.timer = setInterval(() => {
       this.update.detectChanges();
 
     }, 500)
-
     this.storage.get('utente').then(data => { this.currentMailUser = data.email });
-    this.visualizzaDomandaHome();
-    this.visualizzaSondaggiHome();
   }
-  switch1_(switch_) {
-    if (switch_ == true)
-      this.switch = this.switch;
-    else
-      this.switch = !(this.switch);
-  }
-  switch2_(switch_) {
-    if (switch_ == false)
-      this.switch = this.switch;
-    else
-      this.switch = !(this.switch);
-  }
-  //POPOVER
-  async presentPopover(ev, index, user, codice) {
 
-    if (user == this.currentMailUser) {
-      this.setPopoverMod(true, index);
-    }
-    else {
-      this.setPopoverMod(false, index);
-    }
+  switchDomSon(switchDomSon) {
+    if (switchDomSon == true)
+      this.switch = this.switch;
+    else
+      this.switch = !(this.switch);
+  }
+  switchSonDom(switchDomSon) {
+    if (switchDomSon == false)
+      this.switch = this.switch;
+    else
+      this.switch = !(this.switch);
+  }
+
+  async presentPopover(ev, index, username, codice) {
+    this.tuaDomandaSondaggio(index,username);
     const popover = await this.popoverController.create({
       component: PopoverComponent,
       event: ev,
@@ -119,10 +79,20 @@ export class HomePage implements OnInit {
     await popover.present();
     const { data } = await popover.onDidDismiss();
     if (data != undefined) {
-      this.checkClick1(data, index, codice);
+      this.visualizzaElemento(data, index, codice);
     }
   }
-  checkClick1(data, index, codice) {
+
+  tuaDomandaSondaggio(indice,username) {
+    if (username == this.currentMailUser) {
+      this.dataService.setPopoverModifica(true, indice);
+    }
+    else {
+      this.dataService.setPopoverModifica(false, indice);
+    }
+  }
+
+  visualizzaElemento(data, index, codice) {
     if (data.item == 1) {
       this.clickSondaggio(codice);
     } else
@@ -130,39 +100,12 @@ export class HomePage implements OnInit {
         this.clickDomanda(codice);
       }
   }
-  setPopoverMod(bool, indice) {
-    this.dataService.setPopoverModifica(bool, indice);
 
-  }
-  //INFINITE SCROLL
-  loadMore(event) {
-    setTimeout(() => {
-      if (this.switch == true) {
-        this.regola_domande();
-      } else {
-        this.regola_sondaggi();
-      }
-      console.log('Done');
-      event.target.complete();
-    }, 500);
-
-  }
-  ionViewDidLeave() {
-    clearInterval(this.timer)
-    //Resetto l'indice dell'infinity scroll
-    this.y_sondaggi = 0;;
-    this.y_domande = 0;
-    //Svuoto l'array che viene visualizzato
-    this.sondaggi_regolati = []
-    this.domande_regolate = [];
-  }
-  //VISUALIZZA LE ULTIME DOMANDE APERTE
   async visualizzaDomandaHome() {
-
     this.apiService.getDomandaHome().then(
       (domande) => {
         this.domande = domande;
-        this.getUserDomanda(this.domande); //assegno alla variabile locale il risultato della chiamata. la variabile sarà utilizzata nella stampa in HTML
+        this.getUserCategoriaDomanda(this.domande);
         this.regola_domande();
       },
       (rej) => {
@@ -171,17 +114,7 @@ export class HomePage implements OnInit {
     );
   }
 
-  async getUserDomanda(domande) {
-    this.getUser1(domande);
-    this.getUser2(domande);
-    this.titoloo(domande);
-  }
-  titoloo(domande) {
-    for (let i = 0; i < domande.length; i++) {
-      this.titolo[i] = domande[i].titolo;
-    }
-  }
-  getUser1(domande) {
+  getUserCategoriaDomanda(domande) {
     for (let i = 0; i < domande.length; i++) {
       this.apiService.getProfilo(domande[i].cod_utente).then(
         (profilo1) => {
@@ -192,10 +125,7 @@ export class HomePage implements OnInit {
           console.log("C'è stato un errore durante la visualizzazione del profilo");
         }
       );
-    }
-  }
-  getUser2(domande) {
-    for (let i = 0; i < domande.length; i++) {
+
       this.apiService.getCategoria(domande[i].cod_categoria).then(
         (categoria1) => {
           domande[i]['categoria'] = categoria1['Categoria']['data']['0'].titolo;
@@ -204,85 +134,34 @@ export class HomePage implements OnInit {
           console.log("C'è stato un errore durante la visualizzazione");
         }
       );
-    }
-  }
-
-  async getCategoriaDomande(id_categoria) {
-    this.apiService.getCategoria(id_categoria).then(
-      (categoria) => {
-        this.categorie_domande.push(categoria['Categoria']['data']['0'].titolo);
-      },
-      (rej) => {
-        console.log("C'è stato un errore durante la visualizzazione");
-      }
-    );
-  }
-
-
-  regolatore_infinite_scroll() {
-    for (this.i_domande = 0; this.i_domande < 2; this.i_domande++) {
-      if (this.domande[this.y_domande]) {
-
-        this.domande_regolate[this.y_domande] = this.domande[this.y_domande];
-        this.y_domande++;
-        this.update.detectChanges();
-      }
-      this.update.detectChanges();
-
-    }
-    for (this.i_sondaggi = 0; this.i_sondaggi < 2; this.i_sondaggi++) {
-
-      this.sondaggi_regolati[this.y_sondaggi] = this.sondaggi[this.y_sondaggi];
-
-
-
-      this.y_sondaggi++;
-
-
+    
     }
   }
 
   regola_domande() {
-    for (this.i_domande = 0; this.i_domande < 4; this.i_domande++) {
-      if (this.domande[this.y_domande]) {
-        this.domande_regolate[this.y_domande] = this.domande[this.y_domande];
+    for (let i = 0; i < 4; i++) {
+      if (this.domande[this.indice_regola_domande]) {
+        this.domande_regolate[this.indice_regola_domande] = this.domande[this.indice_regola_domande];
         this.domandaDeadlineCheck();
-        this.y_domande++;
+        this.indice_regola_domande++;
       }
     }
   }
 
-  regola_sondaggi() {
-    for (this.i_sondaggi = 0; this.i_sondaggi < 4; this.i_sondaggi++) {
-      if (this.sondaggi[this.y_sondaggi]) {
-        this.sondaggi_regolati[this.y_sondaggi] = this.sondaggi[this.y_sondaggi];
-        this.sondaggioDeadlineCheck();
-        this.y_sondaggi++;
-      }
-    }
-  }
-
-  //VISUALIZZA GLI ULTIMI SONDAGGI APERTI
   async visualizzaSondaggiHome() {
     this.apiService.getSondaggioHome().then(
       (sondaggi) => {
-        console.log('Sondaggi caricati');
         this.sondaggi = sondaggi; //assegno alla variabile locale il risultato della chiamata. la variabile sarà utilizzata nella stampa in HTML
-        this.getUserSondaggio(this.sondaggi);
+        this.getUserCategoriaSondaggio(this.sondaggi);
         this.regola_sondaggi();
-
       },
       (rej) => {
         console.log("C'è stato un errore durante la visualizzazione");
       }
     );
   }
-  async getUserSondaggio(sondaggi) {
-    this.getUser3(sondaggi);
-    this.getUser4(sondaggi)
-  }
 
-  getUser3(sondaggi) {
+  getUserCategoriaSondaggio(sondaggi) {
     for (let i = 0; i < sondaggi.length; i++) {
       this.apiService.getProfilo(sondaggi[i].cod_utente).then(
         (profilo1) => {
@@ -293,10 +172,6 @@ export class HomePage implements OnInit {
           console.log("C'è stato un errore durante la visualizzazione del profilo");
         }
       );
-    }
-  }
-  getUser4(sondaggi) {
-    for (let i = 0; i < sondaggi.length; i++) {
       this.apiService.getCategoria(sondaggi[i].cod_categoria).then(
         (categoria2) => {
           sondaggi[i]['categoria'] = categoria2['Categoria']['data']['0'].titolo;
@@ -308,20 +183,25 @@ export class HomePage implements OnInit {
     }
   }
 
-
-  async getCategoriaSondaggio(id_categoria) {
-    this.apiService.getCategoria(id_categoria).then(
-      (categoria) => {
-        this.categoria_sondaggi.push(categoria['Categoria']['data']['0'].titolo);
-      },
-      (rej) => {
-        console.log("C'è stato un errore durante la visualizzazione");
+  regola_sondaggi() {
+    for (let i = 0; i < 4; i++) {
+      if (this.sondaggi[this.indice_regola_sondaggi]) {
+        this.sondaggi_regolati[this.indice_regola_sondaggi] = this.sondaggi[this.indice_regola_sondaggi];
+        this.sondaggioDeadlineCheck();
+        this.indice_regola_sondaggi++;
       }
-    );
+    }
   }
 
-  //LINK ALLE PAGINE
-  //link a visualizza domanda
+  ionViewDidLeave() {
+    clearInterval(this.timer)
+    this.indice_regola_sondaggi = 0;;
+    this.indice_regola_domande = 0;
+    this.sondaggi_regolati = []
+    this.domande_regolate = [];
+  }
+
+  
   clickDomanda(domanda_codice) {
     const loading = document.createElement('ion-loading');
     loading.cssClass = 'loading';
@@ -329,11 +209,10 @@ export class HomePage implements OnInit {
     loading.duration = 3500;
     document.body.appendChild(loading);
     loading.present();
-
     this.dataService.setCod_domanda(domanda_codice);
     this.router.navigate(['/visualizza-domanda']);
   }
-  //link a viualizza sondaggio
+
   clickSondaggio(codice_sondaggio) {
     const loading = document.createElement('ion-loading');
     loading.cssClass = 'loading';
@@ -345,7 +224,7 @@ export class HomePage implements OnInit {
     this.dataService.codice_sondaggio = codice_sondaggio;
     this.router.navigate(['/visualizza-sondaggio']);
   }
-  //link a visualizza profilo
+
   clickProfilo(cod_utente) {
     const loading = document.createElement('ion-loading');
     loading.cssClass = 'loading';
@@ -362,42 +241,17 @@ export class HomePage implements OnInit {
   clickProfiloUtente() {
     this.router.navigate(['/visualizza-profiloutente']);
   }
-  //link a modifica domanda
+
   clickModificaDomanda(domanda_codice) {
     this.dataService.setCod_domanda(domanda_codice);
     this.router.navigate(['/modifica-domanda']);
   }
-  //link a modifica sondaggio
+
   clickModificaSondaggio(sondaggio_codice) {
     this.dataService.setCod_sondaggio(sondaggio_codice);
     this.router.navigate(['/modifica-sondaggio']);
   }
 
-  //REFRESH
-  doRefresh(event) {
-    //Resetto l'indice dell'infinity scroll
-    this.y_sondaggi = 0;;
-    this.y_domande = 0;
-    //Svuoto l'array che viene visualizzato
-    this.sondaggi_regolati = []
-    this.domande_regolate = [];
-    //Richiamo le funzioni che riempiono lo stack di dati da visualizzare
-    this.visualizzaSondaggiHome()
-    this.visualizzaDomandaHome();
-
-    setTimeout(() => {
-      event.target.complete();
-    }, 1000);
-  }
-
-  doRefresh2() {
-    window.location.reload();
-  }
-  refresh() {
-    this.zone.run(() => {
-    });
-  }
-  //RICERCA - Azioni SearchBar
   ricerca() {
     console.log("Input: ", this.keywordToSearch);
 
@@ -408,10 +262,6 @@ export class HomePage implements OnInit {
   openMenu() {
     this.menuCtrl.open();
   }
-
-  formatsDate: string[] = [
-    'd MMM y, H:mm'];
-
 
   sondaggioDeadlineCheck() {
 
@@ -451,6 +301,20 @@ export class HomePage implements OnInit {
     }
   }
 
+  infScroll(event) {
+    setTimeout(() => {
+      if (this.switch == true) {
+        this.regola_domande();
+      } else {
+        this.regola_sondaggi();
+      }
+      event.target.complete();
+    }, 500);
 
+  }
+
+  formatsDate: string[] = [
+    'd-MM-y, H:mm'
+  ];
 }
 
