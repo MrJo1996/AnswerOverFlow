@@ -34,7 +34,7 @@ export class ModificaPasswordPage implements OnInit {
     }
 
 
-  email: string; //param per le funzioni
+  email: string; 
   password: string;
   confermapassword: string;
 
@@ -114,12 +114,12 @@ export class ModificaPasswordPage implements OnInit {
     }else{
       
       this.apiService.modificaPassword(this.password, this.userId).then(
-      (result) => { // nel caso in cui va a buon fine la chiama
+      (result) => { 
       
 
       },
-      (rej) => {// nel caso non vada a buon fine la chiamata
-        console.log('Modifica effetutata', this.password, this.userId); //anche se va nel rej va bene, modifiche effettive nel db
+      (rej) => {
+        console.log('Modifica effetutata', this.password, this.userId); 
 
       }
     );
@@ -135,7 +135,7 @@ async salvaPassword() {
       {
         text: 'Ok',
         handler: () => {
-          this.dataService.loadingView(5000);//visualizza il frame di caricamento
+          this.dataService.loadingView(5000);
         this.navCtrl.back();
         }
       }

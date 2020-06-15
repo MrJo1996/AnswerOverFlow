@@ -183,7 +183,6 @@
                       this.lineChartMethod();  
                     },
                     (rej) => {                     
-                      console.log("C'è stato un errore durante la visualizzazione");
                     } 
                   );
                 }
@@ -193,7 +192,6 @@
     
           },
           (rej) => {
-            console.log("C'è stato un errore durante la visualizzazione");
           }
         )
       }
@@ -206,7 +204,6 @@
     
         this.apiService.get_top_Domande(this.cod_utente).then( 
           (domande) => {
-            console.log("CLOG domande ", domande);
     
             this.domandeTOP = domande['Domande']['data'];
     
@@ -248,7 +245,6 @@
             this.visualizzaCategoria2();  
           },
           (rej) => {
-            console.log("C'è stato un errore durante la visualizzazione");
           }
         )
       }
@@ -284,13 +280,12 @@
       }
     
       async visualizzaCategoria2() {
-        this.apiService.getCategoria(this.categoriaTOP3 /* || 3 */).then(
+        this.apiService.getCategoria(this.categoriaTOP3).then(
           (categoria) => { 
             this.categoriaText3 = categoria['Categoria']['data']['0'].titolo;
             this.createBarChart();    
           },
           (rej) => {
-            console.log("C'è stato un errore durante la visualizzazione");
           }
     
         );
@@ -305,7 +300,6 @@
     
           },
           (rej) => {
-            console.log("C'è stato un errore durante la visualizzazione");
           }
     
         );
@@ -319,7 +313,6 @@
     
           },
           (rej) => {
-            console.log("C'è stato un errore durante la visualizzazione");
           }
     
         );
@@ -331,7 +324,6 @@
             this.secondbars();
           },
           (rej) => {
-            console.log("C'è stato un errore durante la visualizzazione");
           }
     
         );
@@ -355,13 +347,11 @@
                   this.doughnutChartMethod();
                 },
                 (rej) => {
-                  console.log("C'è stato un errore durante la visualizzazione");
                 }
               );
             }
            },
           (rej) => {
-            console.log("C'è stato un errore durante la visualizzazione");
           }
         )
       }
@@ -410,7 +400,6 @@
     
           },
           (rej) => {
-            console.log("C'è stato un errore durante la visualizzazione");
           }
         )
       }
@@ -429,14 +418,12 @@
                   this.sdoughnutChartMethod()
                 },
                 (rej) => {
-                  console.log("C'è stato un errore durante la visualizzazione");
                 }
               );
             }
     
           },
           (rej) => {
-            console.log("C'è stato un errore durante la visualizzazione");
           }
         )
       }

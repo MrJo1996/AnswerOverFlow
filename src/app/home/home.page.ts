@@ -38,22 +38,30 @@ export class HomePage implements OnInit {
     private router: Router,
     private update: ChangeDetectorRef) { }
 
+//IONVIEW
   ionViewWillEnter() {
-    this.dataService.loadingView(5000);//visualizza il frame di caricamento
+    this.dataService.loadingView(5000);
     this.menuCtrl.enable(true);
     this.menuSet.checkUserLogged();
     this.visualizzaDomandaHome();
     this.visualizzaSondaggiHome();
   }
 
+  ionViewDidLeave() {
+    clearInterval(this.timer)
+    this.indice_regola_sondaggi = 0;;
+    this.indice_regola_domande = 0;
+    this.sondaggi_regolati = []
+    this.domande_regolate = [];
+  }
+
   ngOnInit() {
     this.timer = setInterval(() => {
       this.update.detectChanges();
-
     }, 500)
     this.storage.get('utente').then(data => { this.currentMailUser = data.email });
   }
-
+//SWITCH VIEW DOMANDE/SONDAGGI
   switchDomSon(switchDomSon) {
     if (switchDomSon == true)
       this.switch = this.switch;
@@ -66,7 +74,7 @@ export class HomePage implements OnInit {
     else
       this.switch = !(this.switch);
   }
-
+//POPOVER
   async presentPopover(ev, index, username, codice) {
     this.tuaDomandaSondaggio(index,username);
     const popover = await this.popoverController.create({
@@ -101,7 +109,7 @@ export class HomePage implements OnInit {
         this.clickDomanda(codice);
       }
   }
-
+//CARICAMENTO DOMANDE
   async visualizzaDomandaHome() {
     this.apiService.getDomandaHome().then(
       (domande) => {
@@ -110,7 +118,6 @@ export class HomePage implements OnInit {
         this.regola_domande();
       },
       (rej) => {
-        console.log("C'è stato un errore durante la visualizzazione");
       }
     );
   }
@@ -123,7 +130,6 @@ export class HomePage implements OnInit {
           domande[i]['username'] = profilo1['data']['0'].username;
         },
         (rej) => {
-          console.log("C'è stato un errore durante la visualizzazione del profilo");
         }
       );
 
@@ -132,7 +138,6 @@ export class HomePage implements OnInit {
           domande[i]['categoria'] = categoria1['Categoria']['data']['0'].titolo;
         },
         (rej) => {
-          console.log("C'è stato un errore durante la visualizzazione");
         }
       );
     
@@ -148,16 +153,15 @@ export class HomePage implements OnInit {
       }
     }
   }
-
+//CARICAMENTO SONDAGGI
   async visualizzaSondaggiHome() {
     this.apiService.getSondaggioHome().then(
       (sondaggi) => {
-        this.sondaggi = sondaggi; //assegno alla variabile locale il risultato della chiamata. la variabile sarà utilizzata nella stampa in HTML
+        this.sondaggi = sondaggi;
         this.getUserCategoriaSondaggio(this.sondaggi);
         this.regola_sondaggi();
       },
       (rej) => {
-        console.log("C'è stato un errore durante la visualizzazione");
       }
     );
   }
@@ -170,7 +174,6 @@ export class HomePage implements OnInit {
           sondaggi[i]['avatar'] = profilo1['data']['0'].avatar;
         },
         (rej) => {
-          console.log("C'è stato un errore durante la visualizzazione del profilo");
         }
       );
       this.apiService.getCategoria(sondaggi[i].cod_categoria).then(
@@ -178,7 +181,6 @@ export class HomePage implements OnInit {
           sondaggi[i]['categoria'] = categoria2['Categoria']['data']['0'].titolo;
         },
         (rej) => {
-          console.log("C'è stato un errore durante la visualizzazione");
         }
       );
     }
@@ -193,16 +195,7 @@ export class HomePage implements OnInit {
       }
     }
   }
-
-  ionViewDidLeave() {
-    clearInterval(this.timer)
-    this.indice_regola_sondaggi = 0;;
-    this.indice_regola_domande = 0;
-    this.sondaggi_regolati = []
-    this.domande_regolate = [];
-  }
-
-  
+//LINK
   clickDomanda(domanda_codice) {
     const loading = document.createElement('ion-loading');
     loading.cssClass = 'loading';
@@ -210,26 +203,25 @@ export class HomePage implements OnInit {
     loading.duration = 3500;
     document.body.appendChild(loading);
     loading.present();
-    this.dataService.loadingView(5000);//visualizza il frame di caricamento
+    this.dataService.loadingView(5000);
     this.dataService.setCod_domanda(domanda_codice);
     this.router.navigate(['/visualizza-domanda']);
   }
 
   clickSondaggio(codice_sondaggio) {
-    this.dataService.loadingView(5000);//visualizza il frame di caricamento
+    this.dataService.loadingView(5000);
     this.dataService.codice_sondaggio = codice_sondaggio;
     this.router.navigate(['/visualizza-sondaggio']);
   }
 
   clickProfilo(cod_utente) {
-    this.dataService.loadingView(5000);//visualizza il frame di caricamento
+    this.dataService.loadingView(5000);
     this.dataService.setEmailOthers(cod_utente);
-    console.log(this.dataService.setEmailOthers);
     this.router.navigate(['/visualizza-profilo']);
   }
 
   clickProfiloUtente() {
-    this.dataService.loadingView(5000);//visualizza il frame di caricamento
+    this.dataService.loadingView(5000);
     this.router.navigate(['/visualizza-profiloutente']);
   }
 
@@ -244,14 +236,8 @@ export class HomePage implements OnInit {
   }
 
   ricerca() {
-    console.log("Input: ", this.keywordToSearch);
-
     this.dataService.setKeywordToSearch(this.keywordToSearch);
     this.router.navigate(['/search-results']);
-  }
-
-  openMenu() {
-    this.menuCtrl.open();
   }
 
   sondaggioDeadlineCheck() {
@@ -260,16 +246,13 @@ export class HomePage implements OnInit {
     appoggio1 = this.sondaggi_regolati;
 
     for (var i = 0; i < appoggio1.length; i++) {
-
       var date = new Date(appoggio1[i].dataeora.toLocaleString());
       var timer = appoggio1[i].timer;
       var dateNow = new Date().getTime();
       var time2 = date.getTime();
       var seconds = new Date('1970-01-01T' + timer + 'Z').getTime();
       var diff = dateNow - time2;
-
       this.sondaggi_regolati[i].sondaggioChecker = diff > seconds;
-
     }
   }
 
@@ -277,18 +260,14 @@ export class HomePage implements OnInit {
 
     var appoggio2 = [];
     appoggio2 = this.domande_regolate;
-
     for (var i = 0; i < appoggio2.length; i++) {
-
       var date = new Date(appoggio2[i].dataeora.toLocaleString());
       var timer = appoggio2[i].timer;
       var dateNow = new Date().getTime();
       var time2 = date.getTime();
       var seconds = new Date('1970-01-01T' + timer + 'Z').getTime();
       var diff = dateNow - time2;
-
       this.domande_regolate[i].domandaChecker = diff > seconds;
-
     }
   }
 
@@ -302,6 +281,20 @@ export class HomePage implements OnInit {
       event.target.complete();
     }, 500);
 
+  }
+  doRefresh(event) {
+    this.indice_regola_sondaggi = 0;;
+    this.indice_regola_domande = 0;
+    this.sondaggi_regolati = []
+    this.domande_regolate = [];
+    this.visualizzaSondaggiHome();
+    this.visualizzaDomandaHome();
+    setTimeout(() => {
+      event.target.complete();
+    }, 1000);
+  }
+  openMenu() {
+    this.menuCtrl.open();
   }
 
   formatsDate: string[] = [
