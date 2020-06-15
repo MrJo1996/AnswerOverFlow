@@ -77,7 +77,8 @@
             *ngIf="i===numeroScelta && sceltaFatta == true && currentUser!==sondaggio.cod_utente && votato === false"
             class="chosen" value="100">
           </ion-progress-bar>
-          <ion-text class="textSimple" slot="start">{{scelta.descrizione}}</ion-text>
+          <ion-text class="textSimple"  *ngIf="votato === false || (votato === true && scelta.codice_scelta !== votoUtente.cod_scelta)" slot="start">{{scelta.descrizione}}</ion-text>
+          <ion-text color = "primary" class="textSceltaFatta" *ngIf="votato === true && scelta.codice_scelta === votoUtente.cod_scelta" slot="start">{{scelta.descrizione}}</ion-text>
           <ion-label class="num-voti-style"
             *ngIf="(currentUser===sondaggio.cod_utente  || votato === true) && scelta.num_favorevoli >1" slot="start">
             {{scelta.num_favorevoli}} voti</ion-label>
@@ -92,7 +93,7 @@
         <!--Divisore per la visualizzazione delle percentuali dei voti-->
         <div
           *ngIf="(currentUser===sondaggio.cod_utente && voti_totali !=0) || votato === true || sondaggioAperto  === false">
-          <ion-progress-bar class="progress-bar-style" *ngIf="percentualiScelte[i]!==0" [value]="percentualiScelte[i]">
+          <ion-progress-bar color="primary" class="progress-bar-style" *ngIf="percentualiScelte[i]!==0" [value]="percentualiScelte[i]">
           </ion-progress-bar>
         </div>
       </div>
@@ -116,7 +117,7 @@
 
 
         <!--Tasto chat con l'user che ha posto il sondaggio-->
-        <ion-icon *ngIf="currentUser!==sondaggioUser" name="chatbubble-ellipses-outline" class="icons_generic_style"
+        <ion-icon *ngIf="currentUser!==sondaggioUser " name="chatbubble-ellipses-outline" class="icons_generic_style"
           (click)=" goChat()" slot="end">
         </ion-icon>
 
