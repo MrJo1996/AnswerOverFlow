@@ -101,7 +101,7 @@
      </ion-item-divider>
         
      
-        <ion-card *ngFor="let risposta of risposte; let i = index" class = "backgrounds">    
+        <ion-card *ngFor="let risposta of risposte2; let i = index" class = "backgrounds">    
           <ion-card-header>
             <ion-toolbar class="backgrounds"> 
               <ion-avatar (click)="clickProfilo(risposta.cod_utente)" slot="start" class="icon-avatar" >
@@ -112,29 +112,29 @@
              
              
                <!--pulsante del like disattivato -->
-              <ion-button *ngIf=" votoType[i] !=1 " class= "buttonLikes" (click)="modificaLike(i,1)"  slot="end" expand="block" fill = "clear">
-                <ion-label slot = "end" class = "textTitleSMALL">{{numLike2[i]}}</ion-label>
+              <ion-button *ngIf=" votoType[risposta.codice_risposta] !=1 " class= "buttonLikes" (click)="modificaLike(risposta.codice_risposta,1,i)"  slot="end" expand="block" fill = "clear">
+                <ion-label slot = "end" class = "textTitleSMALL">{{numLike2[risposta.codice_risposta]}}</ion-label>
                 <ion-icon name="chevron-up-circle-outline" class="thumb_up_style" slot= "end" ></ion-icon>
               </ion-button>
 
 
               <!--pulsante del like attivato -->
-              <ion-button *ngIf="votoType[i] === 1"  class= "buttonLikes" (click)="modificaLike(i,-1)"  slot="end" expand="block" fill = "outline">
-                <ion-label slot = "end" class = "textTitleSMALL" >{{numLike2[i]}}</ion-label>
+              <ion-button *ngIf="votoType[risposta.codice_risposta] === 1"  class= "buttonLikes" (click)="modificaLike(risposta.codice_risposta,-1,i)"  slot="end" expand="block" fill = "outline">
+                <ion-label slot = "end" class = "textTitleSMALL" >{{numLike2[risposta.codice_risposta]}}</ion-label>
                 <ion-icon name="chevron-up-circle-outline" class="thumb_up_style" slot= "end" ></ion-icon>
               </ion-button>
 
              
               <!--pulsante del dislike disattivato -->
-              <ion-button *ngIf="votoType[i] != 2 " class= "buttonLikes" (click)="modificaDislike(i,1)"  slot="end" expand="block" fill = "clear">
-                <ion-label slot = "end" class = "textTitleSMALL">{{numDislike2[i]}}</ion-label>
+              <ion-button *ngIf="votoType[risposta.codice_risposta] != 2 " class= "buttonLikes" (click)="modificaDislike(risposta.codice_risposta,1,i)"  slot="end" expand="block" fill = "clear">
+                <ion-label slot = "end" class = "textTitleSMALL">{{numDislike2[risposta.codice_risposta]}}</ion-label>
                 <ion-icon name="chevron-down-circle-outline" class="thumb_down_style" slot= "end" ></ion-icon>
               </ion-button>
 
 
               <!--pulsante del dislike attivato -->
-              <ion-button *ngIf="votoType[i] ===  2" class= "buttonLikes" (click)="modificaDislike(i,-1)"  slot="end" expand="block" fill = "outline">
-                <ion-label slot = "end" class = "textTitleSMALL">{{numDislike2[i]}}</ion-label>
+              <ion-button *ngIf="votoType[risposta.codice_risposta] ===  2" class= "buttonLikes" (click)="modificaDislike(risposta.codice_risposta,-1,i)"  slot="end" expand="block" fill = "outline">
+                <ion-label slot = "end" class = "textTitleSMALL">{{numDislike2[risposta.codice_risposta]}}</ion-label>
                 <ion-icon name="chevron-down-circle-outline" class="thumb_down_style" slot= "end" ></ion-icon>
               </ion-button>
 

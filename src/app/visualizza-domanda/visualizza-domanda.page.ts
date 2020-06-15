@@ -19,7 +19,7 @@ export class VisualizzaDomandaPage implements OnInit {
   numDislike2: Array<number> = []
   votoAttuale
   allVisible: boolean = false;
-
+  cod_valutazione :Array<number>=[]
   codice_domanda;
 
   currentMailUser = "";//mail dell'utente corrente
@@ -179,14 +179,14 @@ export class VisualizzaDomandaPage implements OnInit {
             loading.spinner = 'crescent';
             loading.duration = 3500;
             document.body.appendChild(loading);
-            
+
             //this.router.navigate(['home']);        
-              for(let j = 0; j<this.risposte.length; j++){
-                  if(this.risposte[j].codice_risposta == codice_risposta){
-                    this.risposte.splice(j, 1);
-              
-                  }
+            for (let j = 0; j < this.risposte.length; j++) {
+              if (this.risposte[j].codice_risposta == codice_risposta) {
+                this.risposte.splice(j, 1);
+
               }
+            }
           }
         },
         {
@@ -204,23 +204,33 @@ export class VisualizzaDomandaPage implements OnInit {
 
 
   async showRisposte() {
+    this.votoType=[]
     this.codice_domanda = this.dataService.codice_domanda;
     this.apiService.getRispostePerDomanda(this.codice_domanda).then(
       (risposte) => {
         //Prendo le risposte dal db
+        console.log(risposte)
         this.risposte = risposte['Risposte']['data'];
         this.risposte2 = risposte['Risposte']['data']
         let temp: Array<Number> = []
-        this.risposte2.forEach(element => {
-          this.numLike2.push(element.num_like)
-          this.numDislike2.push(element.num_dislike)
+        for (let index = 0; index < this.risposte2.length; index++) {
+          this.numLike2[this.risposte2[index].codice_risposta]=(this.risposte2[index].num_like)
+          this.numDislike2[this.risposte2[index].codice_risposta]=(this.risposte2[index].num_dislike)
 
+          this.apiService.controllaGiaValutatoRisposta(this.currentMailUser, this.risposte2[index].codice_risposta).then((data) => {
+            if(data[0]['data']==null)this.votoType.push(0)
+            else
+            this.votoType[data[0]['data'][0]['cod_risposta']]=(data[0]['data'][0].tipo_like)
+          this.cod_valutazione[data[0]['data'][0]['cod_risposta']]=data[0]['data'][0]['codice_valutazione']
+          console.log(this.cod_valutazione)
 
-          this.apiService.controllaGiaValutatoRisposta(this.currentMailUser, element.codice_risposta).then((data) => {
-            this.votoType.push(data[0]['data'][0].tipo_like)
-            console.log(data)
+            console.log(this.votoType)
+            console.log(data[0]['data'][0])
+            console.log(data[0]['data'][0].tipo_like,this.risposte2[index].codice_risposta)
           })
-        });
+          
+        }
+     
 
         for (let i = 0; i < this.risposte.length; i++) {
 
@@ -299,15 +309,15 @@ export class VisualizzaDomandaPage implements OnInit {
       (risultato) => {
       },
       (rej) => {
-  
+
       }
     );
   }
 
 
-  
+
   async cancellaRisposta(codice_risposta) {
-    this.apiService.rimuoviRisposta( codice_risposta).then(
+    this.apiService.rimuoviRisposta(codice_risposta).then(
       (risultato) => {
       },
       (rej) => {
@@ -370,32 +380,32 @@ export class VisualizzaDomandaPage implements OnInit {
 
     this.inserisciRisposta();
     this.rispostaVisible = false;
-    
+
     this.doRefresh(event);
   }
 
 
 
   async inserisciRisposta() {
-    if(this.ospite === true) this.alertOspite();
-    else{
-    if (this.checkIfThereAreItalianBadWords(this.descrizione_risposta) || this.checkIfThereAreEnglishBadWords(this.descrizione_risposta)) {
-      this.toastParolaScoretta();
-    } else if (this.stringLengthChecker(this.descrizione_risposta)) {
-      this.toastInvalidString();
-      //////////////////////////////////////////////////////////
-    } else if (this.currentMailUser != null || this.currentMailUser != undefined) {
-      this.apiService.inserisciRisposta(this.descrizione_risposta, this.currentMailUser, this.codice_domanda).then(
-        (result) => { // nel caso in cui va a buon fine la chiamata
-        },
-        (rej) => {// nel caso non vada a buon fine la chiamata
-          console.log('Modifica non effetutata'); //anche se va nel rej va bene, modifiche effettive nel db
-        }
-      );
+    if (this.ospite === true) this.alertOspite();
+    else {
+      if (this.checkIfThereAreItalianBadWords(this.descrizione_risposta) || this.checkIfThereAreEnglishBadWords(this.descrizione_risposta)) {
+        this.toastParolaScoretta();
+      } else if (this.stringLengthChecker(this.descrizione_risposta)) {
+        this.toastInvalidString();
+        //////////////////////////////////////////////////////////
+      } else if (this.currentMailUser != null || this.currentMailUser != undefined) {
+        this.apiService.inserisciRisposta(this.descrizione_risposta, this.currentMailUser, this.codice_domanda).then(
+          (result) => { // nel caso in cui va a buon fine la chiamata
+          },
+          (rej) => {// nel caso non vada a buon fine la chiamata
+            console.log('Modifica non effetutata'); //anche se va nel rej va bene, modifiche effettive nel db
+          }
+        );
 
-      this.showModifyToast();
-    } 
-  }
+        this.showModifyToast();
+      }
+    }
   }
 
 
@@ -450,8 +460,8 @@ export class VisualizzaDomandaPage implements OnInit {
     }
   }
 
-  eliminaRisposta(risposta){
-      this.popUpEliminaRisposta(risposta.codice_risposta);
+  eliminaRisposta(risposta) {
+    this.popUpEliminaRisposta(risposta.codice_risposta);
 
   }
 
@@ -601,59 +611,90 @@ export class VisualizzaDomandaPage implements OnInit {
   }
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
+  timeoutHandleLike
   votoType: Array<number> = []
-  modificaLike(i, value) {
+  modificaLike(i, value,risposta) {
     console.log('value' + value)
 
     if (value == 1) {
-      if (this.votoType[i] == 2)
+      if (this.votoType[i] == 2) {//tolgo dislike aggiungo like
         this.numDislike2[i] -= 1
-      this.votoType[i] = 1
-    }
-    if (value == -1) this.votoType[i] = null
-    //  console.log(this.risposte2)
-    this.numLike2[i] = this.numLike2[i] + value || 0
-    clearTimeout(this.timeoutHandle);
-    // console.log(this.numLike2)
-    //  console.log(this.numDislike2[i] + '       ', this.numLike2[i] + '' + this.votoType[i])
-    this.timeoutHandle = setTimeout(function (vototype) {
+        this.votoType[i] = 1
+        this.apiService.togliDislike(this.risposte2[risposta].codice_risposta)
+        .then(() =>this.apiService.rimuoviValutazione(this.risposte2[risposta].codice_risposta, this.currentMailUser)
+      .then((data)=>this.apiService.modificaNumLike(this.risposte2[risposta].codice_risposta))
+          .then((res)=>this.apiService.inserisciValutazione(this.risposte2[risposta].codice_risposta, this.currentMailUser, this.votoType[i]))
+          .then(()=>  this.cod_valutazione[i]=  this.cod_valutazione[this.cod_valutazione.length ])
 
+          )
+      }
+      else {
+        this.votoType[i] = 1
+        this.apiService.modificaNumLike(this.risposte[risposta].codice_risposta).then((data) => {
+          this.apiService.inserisciValutazione(this.risposte2[risposta].codice_risposta, this.currentMailUser, this.votoType[i])
+        }).catch((err) => { })
+      }
+      //aggiungo dislike
+    }
+    if (value == -1) {this.votoType[i] = null
+    this.apiService.rimuoviValutazione(this.risposte2[risposta].codice_risposta, this.currentMailUser).then((data)=>{
+      this.apiService.togliLike(this.risposte[risposta].codice_risposta)
+    })
+    }
+    //levo il like
+    console.log(this.risposte2)
+    this.numLike2[i] = this.numLike2[i] + value || 0
+    clearTimeout(this.timeoutHandleLike);
+    console.log(this.numLike2)
+    console.log(this.numDislike2[i] + '       ', this.numLike2[i] + '' + this.votoType[i])
+    this.timeoutHandleLike = setTimeout(function (vototype) {
       console.log('sparoiserviziiiiiiiiiiiiiiiiiiiiiiiiii' + vototype)
     }
       , 700, this.votoType[i]);
-    //    clearTimeout(timeoutHandle);
-
-    // in your click function, call clearTimeout
-
-
-    // then call setTimeout again to reset the timer
-
   }
-
-  timeoutHandle
-  modificaDislike(i, value) {
+  //aggiungi
+  //nuova valutazione
+  //cancellavalutazione
+  //toglilike
+  //toglidislike
+  //inserisciValutazione cod risp cod valutazione 1 like 2 dislike
+  timeoutHandleDislike
+  modificaDislike(i, value,risposta) {
     var temp = true
     console.log('value' + value)
     if (value == 1) {
-      if (this.votoType[i] == 1) this.numLike2[i] -= 1
-      this.votoType[i] = 2
+      if (this.votoType[i] == 1) {
+        this.numLike2[i] -= 1
+        this.votoType[i] = 2
+        this.apiService.togliLike(this.risposte2[risposta].codice_risposta)
+        .then(() =>this.apiService.rimuoviValutazione(this.risposte2[risposta].codice_risposta, this.currentMailUser)
+        .then(()=>this.apiService.modificaNumDislike(this.risposte2[risposta].codice_risposta))
+          .then((res)=>this.apiService.inserisciValutazione(this.risposte2[risposta].codice_risposta, this.currentMailUser, this.votoType[i]))
+          .then(()=>  {}
+          )
+            )
 
+      } else {
+        this.votoType[i] = 2
+        this.apiService.modificaNumDislike(this.risposte[risposta].codice_risposta).then((data) => {
+          this.apiService.inserisciValutazione(this.risposte2[risposta].codice_risposta, this.currentMailUser, this.votoType[i])
+        }).catch((err) => { })
+      }
     }
-    if (value == -1) this.votoType[i] = null
+    if (value == -1) {
+      this.votoType[i] = null
+      this.apiService.rimuoviValutazione(this.risposte2[risposta].codice_risposta, this.currentMailUser).then((data)=>{
+        this.apiService.togliDislike(this.risposte[risposta].codice_risposta)})
+    }
     this.numDislike2[i] += value
-    // console.log(this.numDislike2[i] + '       ', this.numLike2[i] + '' + this.votoType[i])
-    // console.log(this.numDislike2)
-    // console.log(this.risposte2)
 
-    clearTimeout(this.timeoutHandle);
-    this.timeoutHandle = setTimeout(function (vototype) {
+
+    clearTimeout(this.timeoutHandleDislike);
+    this.timeoutHandleDislike = setTimeout(function (vototype) {
       console.log('sparoiserviziiiiiiiiiiiiiiiiiiiiiiiiii' + vototype)
     }
       , 700, this.votoType[i]);
-    //clearTimeout(timeoutHandle);
 
-    // in your click function, call clearTimeout
 
   }
   cercaValutazione(cod_utente, risposte, i) {
@@ -986,12 +1027,12 @@ export class VisualizzaDomandaPage implements OnInit {
     });
     await alert.present();
   }
-  controllaOspite(){
+  controllaOspite() {
     this.storage.get("session").then((data) => {
-     if(data === false)
-     this.ospite = true;
-     else
-     this.ospite = false;
+      if (data === false)
+        this.ospite = true;
+      else
+        this.ospite = false;
     });
   }
 
