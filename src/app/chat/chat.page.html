@@ -18,6 +18,8 @@
     <ion-row  *ngFor="let message of messages; let indexElement=index;" >
 
 
+      
+
       <div class="datarow" *ngIf=" indexElement === 0 ">
         <ion-label *ngIf="messages[indexElement]?.data !== oggi && messages[indexElement].data !== ieri ">
           <b>{{message.data}}</b></ion-label>

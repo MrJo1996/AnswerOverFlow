@@ -59,9 +59,8 @@ export class ModificaProfiloPage implements OnInit {
   ngOnInit() {
   }
 
-  //Controlla se l'username inserito è disponibile, illumina l'icon in base alla risposta del server
   checkForUser(usernameInserted) {
-    console.log(this.usernameToPass);
+  
     let postData = {
       username: usernameInserted,
     };
@@ -71,7 +70,7 @@ export class ModificaProfiloPage implements OnInit {
     } else {
       this.servicePost.postService(postData, this.urlControlloUsername).then(
         (data) => {
-          console.log(data);
+          
           if (data["error"] == true) {
             document.getElementById("usernameIcon").style.color = "#4ED552";
             this.usernameAvailable = true;
@@ -81,14 +80,14 @@ export class ModificaProfiloPage implements OnInit {
           }
         },
         (err) => {
-          console.log(err.message);
+          
         }
       );
     }
   }
 
   ionViewWillEnter() {
-    console.log(this.dataService.avatarTemporary);
+    
     switch (this.dataService.avatarTemporary) {
       case undefined:
         this.showSurvey();
@@ -108,41 +107,33 @@ export class ModificaProfiloPage implements OnInit {
       this.email = data.email;
       this.apiService.getProfilo(this.email).then(
         (profilo) => {
-          console.log("Visualizzato con successo");
+          
 
-          this.profilo = profilo["data"]; //assegno alla variabile locale il risultato della chiamata. la variabile sarà utilizzata nella stampa in HTML
-          console.log("Profilo: ", this.profilo["0"]);
+          this.profilo = profilo["data"]; 
 
           this.usernameView = this.profilo["0"].username;
           this.nomeView = this.profilo["0"].nome;
           this.cognomeView = this.profilo["0"].cognome;
           this.bioView = this.profilo["0"].bio;
           this.avatar = this.profilo["0"].avatar;
-          console.log(this.avatar);
+        
         },
         (rej) => {
-          console.log("C'è stato un errore durante la visualizzazione");
+          
         }
       );
     });
   }
 
   selectAvatar() {
-    //visualizza frame caricamento
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 3000;
-    document.body.appendChild(loading);
-    loading.present();
-
+    this.dataService.loadingView(5000);//visualizza il frame di caricamento
     this.dataService.settaTemporaryAvatar("clicked");
     this.router.navigate(["/modifica-avatar"]);
   }
 
   goBack() {
     this.dataService.settaTemporaryAvatar(undefined);
-    // this.router.navigate(['/visualizza-profilo'])
+    
     this.navCtrl.back();
   }
 
@@ -158,17 +149,14 @@ export class ModificaProfiloPage implements OnInit {
         {
           text: "Conferma",
           handler: (value: any) => {
-            //LANCIO SERVIZIO MODIFICA UNA VOLTA CLICCATO "CONFERMA"
             this.modify();
-
-            //TODO mostrare messaggio di avvenuta modifica e riportare alla home
           },
         },
       ],
     });
 
     await alert.present();
-    let result = await alert.onDidDismiss();
+    
   }
 
   async modify() {
@@ -211,15 +199,15 @@ export class ModificaProfiloPage implements OnInit {
       this.dataService.setCognome(this.cognomeToPass);
       this.dataService.setAvatarUtente(this.avatar);
       this.dataService.setEmail_Utente(this.email);
-      console.log(this.usernameToPass);
+      
       this.objUtente["username"] = this.usernameToPass;
       this.objUtente["nome"] = this.nomeToPass;
       this.objUtente["cognome"] = this.cognomeToPass;
       this.objUtente["avatar"] = this.avatar;
       this.objUtente["email"] = this.email;
       this.storage.set("utente", this.objUtente);
-      this.storage.get("utente").then ((data) => {console.log("STORAGE ATTUALE", data)})
-      console.log("Email attuale nel data service",this.dataService.getEmail_Utente())
+      //this.storage.get("utente").then ((data) => {})
+      
 
       if (this.password) {
         this.apiService
@@ -231,14 +219,6 @@ export class ModificaProfiloPage implements OnInit {
             this.bioToPass,
             this.email,
             this.avatar
-          )
-          .then(
-            (result) => {
-              console.log("Modifica avvenuta con successo");
-            },
-            (rej) => {
-              console.log("Modifica non effetutata");
-            }
           );
       } else {
         this.apiService
@@ -249,14 +229,6 @@ export class ModificaProfiloPage implements OnInit {
             this.bioToPass,
             this.email,
             this.avatar
-          )
-          .then(
-            (result) => {
-              console.log("Modifica avvenuta con successo");
-            },
-            (rej) => {
-              console.log("Modifica non effetutata");
-            }
           );
       }
       this.dataService.settaTemporaryAvatar(undefined);
@@ -276,6 +248,7 @@ export class ModificaProfiloPage implements OnInit {
       return false;
     }
   }
+
   stringNameLengthChecker(): boolean {
     if (
       this.nomeToPass.length > 20 ||
@@ -286,6 +259,7 @@ export class ModificaProfiloPage implements OnInit {
       return false;
     }
   }
+
   stringCognomeLengthChecker(): boolean {
     if (
       this.cognomeToPass.length > 20 ||
@@ -296,6 +270,7 @@ export class ModificaProfiloPage implements OnInit {
       return false;
     }
   }
+
   stringBioLengthChecker(): boolean {
     if (this.bioToPass.length > 200 || !this.bioToPass.match(/[a-zA-Z0-9_]+/)) {
       return true;
@@ -303,6 +278,7 @@ export class ModificaProfiloPage implements OnInit {
       return false;
     }
   }
+
   async popupInvalidUsername() {
     const toast = document.createElement("ion-toast");
     toast.message =
@@ -377,21 +353,19 @@ export class ModificaProfiloPage implements OnInit {
 
     let array = list.array;
 
-    console.log(array);
+    
 
     let stringArray = [];
     let stringPassed = string.split(" ");
     stringArray = stringArray.concat(stringPassed);
 
-    console.log(stringArray);
+ 
 
     var check;
 
     stringArray.forEach((element) => {
       if (array.includes(element)) check = true;
     });
-
-    console.log(check);
 
     return check;
   }
@@ -415,7 +389,7 @@ export class ModificaProfiloPage implements OnInit {
         {
           name: "usernamePopUp",
           type: "text",
-          value: this.usernameView, //risposta del servizio visualizzaProfilo
+          value: this.usernameView, 
         },
       ],
       buttons: [
@@ -424,19 +398,19 @@ export class ModificaProfiloPage implements OnInit {
           role: "cancel",
           cssClass: "secondary",
           handler: () => {
-            this.usernameView = this.profilo["0"].username; //annullo modifiche
-            console.log("Confirm cancel");
+            this.usernameView = this.profilo["0"].username;
+            
           },
         },
         {
           text: "Ok",
           handler: (insertedData) => {
-            console.log(JSON.stringify(insertedData)); //per vedere l'oggetto dell'handler
+            
             this.usernameView = insertedData.usernamePopUp;
             this.usernameToPass = insertedData.usernamePopUp;
 
             if (insertedData.usernamePopUp == "") {
-              //CHECK CAMPO VUOTO
+             
               this.usernameView = this.profilo["0"].username;
               this.usernameToPass = this.profilo["0"].username;
             }
@@ -446,8 +420,6 @@ export class ModificaProfiloPage implements OnInit {
     });
 
     await alert.present();
-    //View Dati inseriti dopo click sul popup di modifica username. Dal console log ho visto come accedere ai dati ricevuti.
-    //this.titoloView = await (await alert.onDidDismiss()).data.values.titolo;
   }
 
   async popupModificaNome() {
@@ -457,7 +429,7 @@ export class ModificaProfiloPage implements OnInit {
         {
           name: "nomePopUp",
           type: "text",
-          value: this.nomeView, //risposta del servizio visualizzaProfilo
+          value: this.nomeView, 
         },
       ],
       buttons: [
@@ -466,19 +438,18 @@ export class ModificaProfiloPage implements OnInit {
           role: "cancel",
           cssClass: "secondary",
           handler: () => {
-            this.nomeView = this.profilo["0"].nome; //annullo modifiche
-            console.log("Confirm cancel");
+            this.nomeView = this.profilo["0"].nome;
           },
         },
         {
           text: "Ok",
           handler: (insertedData) => {
-            console.log(JSON.stringify(insertedData)); //per vedere l'oggetto dell'handler
+            
             this.nomeView = insertedData.nomePopUp;
             this.nomeToPass = insertedData.nomePopUp;
 
             if (insertedData.nomePopUp == "") {
-              //CHECK CAMPO VUOTO
+             
               this.nomeView = this.profilo["0"].nome;
               this.nomeToPass = this.profilo["0"].nome;
             }
@@ -488,8 +459,7 @@ export class ModificaProfiloPage implements OnInit {
     });
 
     await alert.present();
-    //View Dati inseriti dopo click sul popup di modifica username. Dal console log ho visto come accedere ai dati ricevuti.
-    //this.titoloView = await (await alert.onDidDismiss()).data.values.titolo;
+    
   }
 
   async popupModificaCognome() {
@@ -499,7 +469,7 @@ export class ModificaProfiloPage implements OnInit {
         {
           name: "cognomePopUp",
           type: "text",
-          value: this.cognomeView, //risposta del servizio visualizzaProfilo
+          value: this.cognomeView,
         },
       ],
       buttons: [
@@ -508,19 +478,18 @@ export class ModificaProfiloPage implements OnInit {
           role: "cancel",
           cssClass: "secondary",
           handler: () => {
-            this.cognomeView = this.profilo["0"].cognome; //annullo modifiche
-            console.log("Confirm cancel");
+            this.cognomeView = this.profilo["0"].cognome; 
           },
         },
         {
           text: "Ok",
           handler: (insertedData) => {
-            console.log(JSON.stringify(insertedData)); //per vedere l'oggetto dell'handler
+            
             this.cognomeView = insertedData.cognomePopUp;
             this.cognomeToPass = insertedData.cognomePopUp;
 
             if (insertedData.cognomePopUp == "") {
-              //CHECK CAMPO VUOTO
+              
               this.cognomeView = this.profilo["0"].cognome;
               this.cognomeToPass = this.profilo["0"].cognome;
             }
@@ -530,8 +499,6 @@ export class ModificaProfiloPage implements OnInit {
     });
 
     await alert.present();
-    //View Dati inseriti dopo click sul popup di modifica username. Dal console log ho visto come accedere ai dati ricevuti.
-    //this.titoloView = await (await alert.onDidDismiss()).data.values.titolo;
   }
 
   async popupModificaBio() {
@@ -541,7 +508,7 @@ export class ModificaProfiloPage implements OnInit {
         {
           name: "bioPopUp",
           type: "text",
-          value: this.bioView, //risposta del servizio visualizzaProfilo
+          value: this.bioView, 
         },
       ],
       buttons: [
@@ -550,19 +517,18 @@ export class ModificaProfiloPage implements OnInit {
           role: "cancel",
           cssClass: "secondary",
           handler: () => {
-            this.bioView = this.profilo["0"].bio; //annullo modifiche
-            console.log("Confirm cancel");
+            this.bioView = this.profilo["0"].bio;
           },
         },
         {
           text: "Ok",
           handler: (insertedData) => {
-            console.log(JSON.stringify(insertedData)); //per vedere l'oggetto dell'handler
+            
             this.bioView = insertedData.bioPopUp;
             this.bioToPass = insertedData.bioPopUp;
 
             if (insertedData.bioPopUp == "") {
-              //CHECK CAMPO VUOTO
+              
               this.bioView = this.profilo["0"].bio;
               this.bioToPass = this.profilo["0"].bio;
             }
@@ -572,8 +538,6 @@ export class ModificaProfiloPage implements OnInit {
     });
 
     await alert.present();
-    //View Dati inseriti dopo click sul popup di modifica username. Dal console log ho visto come accedere ai dati ricevuti.
-    //this.titoloView = await (await alert.onDidDismiss()).data.values.titolo;
   }
 
   toastSuccess() {

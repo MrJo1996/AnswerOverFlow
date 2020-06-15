@@ -24,33 +24,33 @@
                 placeholder=" Inserisci qui un titolo.." rows="3" class="backgroundsSecondaryItem textSimple">
             </ion-textarea>
 
-            <br>
+            
 
-            <ion-card-title class="textTitleBIG">Descrizione:</ion-card-title>
+            <ion-card-title class="textTitleBIG" style="padding-top: 10px;">Descrizione:</ion-card-title>
             <ion-textarea [(ngModel)]="descrizione" style="border-radius: 7px; padding-left: 5px;"
                 placeholder=" Inserisci qui una descrizione.." rows="9" class="backgroundsSecondaryItem textSimple">
             </ion-textarea>
 
-            <br>
+            
 
-            <ion-grid>
+            <ion-grid style="padding-top: 15px;"> 
 
-                <ion-item lines="none" (click)="showCategoriaPicker()" class="itemClass">
-                    <ion-label >
+                <ion-item  lines="none" (click)="showCategoriaPicker()" class="itemClass">
+                    <ion-label>
                         <ion-icon name="file-tray-full-outline" slot="start" style="width: 25px; height: 25px;"></ion-icon>
                     </ion-label>
-                    <ion-text *ngIf="[categoriaView]==''" class="placeholder">Categoria</ion-text>
+                    <ion-text *ngIf="[categoriaView]==''" class="placeholderClass">Categoria</ion-text>
                     <ion-text *ngIf="[categoriaView]!=''" class="text">{{categoriaView}}</ion-text>
-                    <ion-icon class="inner" name="chevron-down-outline" ></ion-icon>
+                    <ion-icon class="inner" name="chevron-down-outline"></ion-icon>
                 </ion-item>
 
                 <div>
 
                     <ion-item style="margin-top: 10px;" lines="none" (click)="showTimerPicker()" class="itemClass">
-                        <ion-label >
+                        <ion-label>
                             <ion-icon name="alarm-outline" slot="start" style="width: 25px; height: 25px;"></ion-icon>
                         </ion-label>
-                        <ion-text *ngIf="[timerView]==''" class="placeholder">Timer</ion-text>
+                        <ion-text *ngIf="[timerView]==''" class="placeholderClass">Timer</ion-text>
                         {{timerView}}
                         <ion-icon class="inner" name="chevron-down-outline"></ion-icon>
 
@@ -59,8 +59,7 @@
 
                 <ion-row style="justify-content: center; padding-top: 15px;">
                     <ion-label>
-                        <ion-text (click)="goToCategoria()" color="primary">Non hai trovato la categoria che cercavi?
-                        </ion-text>
+                        <ion-text (click)="goProponiCategoria()" color="primary">Non hai trovato la categoria che cercavi?</ion-text>
                     </ion-label>
                 </ion-row>
 
@@ -71,8 +70,8 @@
 
     <ion-fab vertical="bottom" horizontal="start" slot="fixed" style="opacity: 70%;">
         <ion-fab-button size="small" (click)="openMenu()" color="light">
-          <ion-icon name="arrow-forward-circle-outline" style="opacity: 100%;"></ion-icon>
+            <ion-icon name="arrow-forward-circle-outline" style="opacity: 100%;"></ion-icon>
         </ion-fab-button>
-      </ion-fab>  
+    </ion-fab>
 
 </ion-content>

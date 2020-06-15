@@ -72,14 +72,6 @@ export class ModificaPasswordPage implements OnInit {
 
 
   ngOnInit() {
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 1500;
-    document.body.appendChild(loading);
-    loading.present();
-
-   // this.email = ''
     this.password = ''
     this.confermapassword = ''
   }
@@ -143,13 +135,7 @@ async salvaPassword() {
       {
         text: 'Ok',
         handler: () => {
-        //visualizza frame caricamento
-        const loading = document.createElement('ion-loading');
-        loading.cssClass = 'loading';
-        loading.spinner = 'crescent';
-        loading.duration = 2500;
-        document.body.appendChild(loading);
-        loading.present();
+          this.dataService.loadingView(5000);//visualizza il frame di caricamento
         this.navCtrl.back();
         }
       }

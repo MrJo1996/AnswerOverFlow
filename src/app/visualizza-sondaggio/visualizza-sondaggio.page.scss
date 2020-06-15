@@ -41,11 +41,12 @@
 }
 
 .icon-avatar{
-    max-width: 50px; 
-    max-height: 50px;
+    max-width: 40px; 
+    max-height: 40px;
     margin-right: 7px;
     padding: 3px;
-
+    border: 1px solid !important;
+    border-radius: 50% !important;
 
 }
 
@@ -76,3 +77,51 @@
     color: #2a2a2a;
 }
 
+.progress-bar-style{
+        --background:#e0dede;
+        --progress-background:#DA70D6;
+        --border: #343434;
+        height: 0.7rem;
+        border-radius: 25px;
+    
+}
+
+.progress-bar-style-noperc{
+
+    --background:none;
+    --progress-background:none;
+  
+
+}
+
+.chosen{
+
+    --background:none;
+    --progress-background:#64F58D;
+  
+
+}
+
+.not-chosen{
+    --background:none;
+    --progress-background:#2a2a2a;
+  
+}
+
+.usernameClass{
+    font-size: 1rem;
+    color: DodgerBlue;
+}
+
+.titleStyle {
+    margin-top: 0.5rem;
+    font-size: 1.5rem;
+    color: #97a9c5
+  }
+
+  .num-voti-style {
+    margin-left: 0.5rem;
+        font-size: 0.8rem;
+  }
+  
+  

@@ -19,24 +19,15 @@ export class VisualizzaProfiloPage implements OnInit {
 
   ngOnInit() { }
   ionViewWillEnter() {
-    //visualizza frame caricamento
-
+    this.dataService.loadingView(5000);//visualizza il frame di caricamento
     this.userProfileId = this.dataService.getEmailOthers();
     this.userId = this.dataService.getEmail_Utente();
-    console.log("JOOOOOOO", this.userId);
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 800;
-    document.body.appendChild(loading);
-    loading.present();
-
-
-
-
+   
+    
     //console.log(this.userProfileId);
     setTimeout(() => {
-      if (window.location.pathname === '/visualizza-profiloutente') {
+      this.pagePath = window.location.pathname;
+      if (this.pagePath === '/visualizza-profiloutente') {
         this.selectProfile(this.userId);
       } else {
         this.selectProfile(this.userProfileId);
@@ -69,38 +60,18 @@ export class VisualizzaProfiloPage implements OnInit {
 
 
   goBack() {
-    //visualizza frame caricamento
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 3500;
-    document.body.appendChild(loading);
-    loading.present();
-
+    this.dataService.loadingView(5000);//visualizza il frame di caricamento
     this.navCtrl.back();
   }
 
   goToChat() {
-    //visualizza frame caricamento
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 1500;
-    document.body.appendChild(loading);
-    loading.present();
-
+    this.dataService.loadingView(3000);//visualizza il frame di caricamento
     this.dataService.emailOthers = this.profilo.email;
     this.router.navigateByUrl("/chat");
   }
 
   stats() {
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 2500;
-    document.body.appendChild(loading);
-    loading.present();
-
+    this.dataService.loadingView(3000);//visualizza il frame di caricamento
     this.dataService.emailOthers = this.profilo.email;
     this.router.navigate(['visualizza-statistiche']);
   }
@@ -112,19 +83,18 @@ export class VisualizzaProfiloPage implements OnInit {
   segnalazione: string;
   selectedProfile: string;
   selectId
+  pagePath
 
 
   async selectProfile(id) {
 
-    console.log(this.userProfileId + " userIDProfilo");
-    console.log(this.userId + " userID");
-    console.log(id + " fiofifoifo");
+   
 
     this.apiService.getProfilo(id).then(
       (data) => {
         console.log('Visualizzato con successo');
         this.profilo = data['data'][0];
-        console.log(this.profilo)
+       // console.log(this.profilo)
         this.selectId = this.profilo.email
         //console.log(this.profilo.bio);
 
@@ -140,10 +110,8 @@ export class VisualizzaProfiloPage implements OnInit {
 
     this.apiService.segnala_utente(this.segnalazione, this.profilo.username, this.profilo.email).then(
       (result) => {
-        console.log("Segnalazione inviata con successo")
         this.toast("Segnalazione inviata.", "success");
       }, (rej) => {
-        console.log("Invio segnalazione non riuscito")
         this.toast("Segnalazione non riuscita, riprovare.", "danger");
 
       }
@@ -237,34 +205,19 @@ export class VisualizzaProfiloPage implements OnInit {
 
 
   goToHome() {
-    //visualizza frame caricamento
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 3500;
-    document.body.appendChild(loading);
-    loading.present();
-
+    this.dataService.loadingView(5000);//visualizza il frame di caricamento
     this.router.navigate(['/home'])
   }
 
 
   goToSettingProfile() {
-    //visualizza frame caricamento
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 1000;
-    document.body.appendChild(loading);
-    loading.present();
-
+    this.dataService.loadingView(3000);//visualizza il frame di caricamento
     this.router.navigate(['/modifica-profilo'])
   }
 
 
   openMenu() {
     this.menuCrtl.open()
-    console.log(this.menuCrtl.swipeGesture.length)
   }
 
 

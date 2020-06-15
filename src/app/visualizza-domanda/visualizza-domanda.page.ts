@@ -33,7 +33,6 @@ export class VisualizzaDomandaPage implements OnInit {
   descrizioneView: any;
   cod_preferita: any;
 
-
   risposte = new Array();
   //profiliUtentiRisposte = new Array();
   descrizioneRispostaView;
@@ -56,13 +55,14 @@ export class VisualizzaDomandaPage implements OnInit {
 
   timerView2;
 
-
+  ospite;
   giorni;
   ore;
   minuti;
   secondi;
 
   valutazioni = new Array();
+
 
   risposte2
   constructor(
@@ -83,7 +83,7 @@ export class VisualizzaDomandaPage implements OnInit {
     //this.storage.get('utente').then(data => { this.currentMailUser = data.email });
     this.visualizzaDomanda();
     this.showRisposte();
-
+    this.controllaOspite();
     this.allVisible = true;
 
   }
@@ -97,15 +97,9 @@ export class VisualizzaDomandaPage implements OnInit {
       this.toastModificaDomandaScaduta();
     }
     else {
-      //Visualizza il frame di caricamento
-      const loading = document.createElement('ion-loading');
-      loading.cssClass = 'loading';
-      loading.spinner = 'crescent';
-      loading.duration = 5000;
-      document.body.appendChild(loading);
-      loading.present();
-      //this.router.navigate(['modifica-domanda']);
+      this.dataService.loadingView(3000);//visualizza il frame di caricamento
       this.navCtrl.navigateForward(['modifica-domanda']);
+      this.doRefresh(event);
     }
   }
 
@@ -151,14 +145,7 @@ export class VisualizzaDomandaPage implements OnInit {
             console.log('domanda eliminata');
             this.showDeleteToast();
             this.cancellaDomanda();
-            //Visualizza il frame di caricamento
-            const loading = document.createElement('ion-loading');
-            loading.cssClass = 'loading';
-            loading.spinner = 'crescent';
-            loading.duration = 3500;
-            document.body.appendChild(loading);
-            loading.present();
-            //this.router.navigate(['home']);        
+            this.dataService.loadingView(5000);//visualizza il frame di caricamento        
             this.navCtrl.navigateBack(['home']);
           }
         },
@@ -174,6 +161,48 @@ export class VisualizzaDomandaPage implements OnInit {
     });
     await alert.present();
   }
+
+
+  async popUpEliminaRisposta(codice_risposta) {
+    const alert = await this.alertController.create({
+      header: 'Sei sicuro di voler eliminare questa risposta?',
+      buttons: [
+        {
+          text: 'Si',
+          handler: () => {
+            console.log('risposta eliminata');
+            this.showDeleteRispostaToast();
+            this.cancellaRisposta(codice_risposta);
+            //Visualizza il frame di caricamento
+            const loading = document.createElement('ion-loading');
+            loading.cssClass = 'loading';
+            loading.spinner = 'crescent';
+            loading.duration = 3500;
+            document.body.appendChild(loading);
+            
+            //this.router.navigate(['home']);        
+              for(let j = 0; j<this.risposte.length; j++){
+                  if(this.risposte[j].codice_risposta == codice_risposta){
+                    this.risposte.splice(j, 1);
+              
+                  }
+              }
+          }
+        },
+        {
+          text: 'No',
+          role: 'cancel',
+          //cssClass: 'secondary',
+          handler: () => {
+            console.log('eliminazione annullata');
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+
   async showRisposte() {
     this.codice_domanda = this.dataService.codice_domanda;
     this.apiService.getRispostePerDomanda(this.codice_domanda).then(
@@ -191,9 +220,6 @@ export class VisualizzaDomandaPage implements OnInit {
             this.votoType.push(data[0]['data'][0].tipo_like)
             console.log(data)
           })
-
-
-
         });
 
         for (let i = 0; i < this.risposte.length; i++) {
@@ -271,14 +297,23 @@ export class VisualizzaDomandaPage implements OnInit {
   async cancellaDomanda() {
     this.apiService.rimuoviDomanda(this.codice_domanda).then(
       (risultato) => {
-        //console.log('eliminata');
       },
       (rej) => {
-        //console.log("C'è stato un errore durante l'eliminazione");
+  
       }
     );
   }
 
+
+  
+  async cancellaRisposta(codice_risposta) {
+    this.apiService.rimuoviRisposta( codice_risposta).then(
+      (risultato) => {
+      },
+      (rej) => {
+      }
+    );
+  }
 
 
   async getUserDomanda() {
@@ -295,14 +330,7 @@ export class VisualizzaDomandaPage implements OnInit {
   }
 
   goback() {
-    //Visualizza il frame di caricamento
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 3500;
-    document.body.appendChild(loading);
-    loading.present();
-
+    this.dataService.loadingView(5000);//visualizza il frame di caricamento
     this.navCtrl.pop();
   }
 
@@ -312,9 +340,9 @@ export class VisualizzaDomandaPage implements OnInit {
       this.toastParolaScoretta();
     } else if (this.stringLengthChecker(this.descrizioneRispostaToPass)) {
       this.toastInvalidString();
-    } else if (this.deadlineCheck()){
+    } else if (this.deadlineCheck()) {
       this.toastModificaDomandaScaduta();
-     } else {
+    } else {
       this.apiService.modificaRisposta(this.dataService.codice_risposta, this.descrizioneRispostaToPass).then(
         (result) => { // nel caso in cui va a buon fine la chiamata
         },
@@ -342,18 +370,21 @@ export class VisualizzaDomandaPage implements OnInit {
 
     this.inserisciRisposta();
     this.rispostaVisible = false;
-
+    
     this.doRefresh(event);
   }
 
 
 
   async inserisciRisposta() {
+    if(this.ospite === true) this.alertOspite();
+    else{
     if (this.checkIfThereAreItalianBadWords(this.descrizione_risposta) || this.checkIfThereAreEnglishBadWords(this.descrizione_risposta)) {
       this.toastParolaScoretta();
     } else if (this.stringLengthChecker(this.descrizione_risposta)) {
       this.toastInvalidString();
-    } else {
+      //////////////////////////////////////////////////////////
+    } else if (this.currentMailUser != null || this.currentMailUser != undefined) {
       this.apiService.inserisciRisposta(this.descrizione_risposta, this.currentMailUser, this.codice_domanda).then(
         (result) => { // nel caso in cui va a buon fine la chiamata
         },
@@ -363,8 +394,8 @@ export class VisualizzaDomandaPage implements OnInit {
       );
 
       this.showModifyToast();
-    }
-
+    } 
+  }
   }
 
 
@@ -417,6 +448,11 @@ export class VisualizzaDomandaPage implements OnInit {
       this.rispostaCliccata = risposta;
 
     }
+  }
+
+  eliminaRisposta(risposta){
+      this.popUpEliminaRisposta(risposta.codice_risposta);
+
   }
 
   checkIfThereAreEnglishBadWords(string: string): boolean {
@@ -513,25 +549,24 @@ export class VisualizzaDomandaPage implements OnInit {
 
   }
 
-  /*   async showDescrizioneRisposta() {
-      this.apiService.getRisposta(this.dataService.getCodiceRisposta()).then(
-        resolve => {
-          this.descrizioneRispostaView = resolve['data']['0'].descrizione;
-          console.log(this.descrizioneRispostaView);
-        },
-        (rej) => {
-          console.log("C'è stato un errore durante il recupero dei dati");
-        }
-      )
-    } */
-
-
 
   //TOAST----------------------------------------
 
   async showDeleteToast() {
     const toast = document.createElement('ion-toast');
     toast.message = 'Domanda eliminata con successo!';
+    toast.duration = 2000;
+    toast.position = "top";
+    toast.style.fontSize = '20px';
+    toast.color = 'success';
+    toast.style.textAlign = 'center';
+    document.body.appendChild(toast);
+    return toast.present();
+  }
+
+  async showDeleteRispostaToast() {
+    const toast = document.createElement('ion-toast');
+    toast.message = 'Risposta eliminata con successo!';
     toast.duration = 2000;
     toast.position = "top";
     toast.style.fontSize = '20px';
@@ -564,7 +599,7 @@ export class VisualizzaDomandaPage implements OnInit {
     document.body.appendChild(toast);
     return toast.present();
   }
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
   votoType: Array<number> = []
@@ -577,28 +612,28 @@ export class VisualizzaDomandaPage implements OnInit {
       this.votoType[i] = 1
     }
     if (value == -1) this.votoType[i] = null
-  //  console.log(this.risposte2)
+    //  console.log(this.risposte2)
     this.numLike2[i] = this.numLike2[i] + value || 0
     clearTimeout(this.timeoutHandle);
-   // console.log(this.numLike2)
-  //  console.log(this.numDislike2[i] + '       ', this.numLike2[i] + '' + this.votoType[i])
-    this.timeoutHandle = setTimeout(function(vototype){
+    // console.log(this.numLike2)
+    //  console.log(this.numDislike2[i] + '       ', this.numLike2[i] + '' + this.votoType[i])
+    this.timeoutHandle = setTimeout(function (vototype) {
 
-      console.log('sparoiserviziiiiiiiiiiiiiiiiiiiiiiiiii'+vototype)
+      console.log('sparoiserviziiiiiiiiiiiiiiiiiiiiiiiiii' + vototype)
     }
-    ,700,this.votoType[i]);
-//    clearTimeout(timeoutHandle);
+      , 700, this.votoType[i]);
+    //    clearTimeout(timeoutHandle);
 
     // in your click function, call clearTimeout
- 
-    
+
+
     // then call setTimeout again to reset the timer
-    
+
   }
-  
+
   timeoutHandle
   modificaDislike(i, value) {
-    var temp=true
+    var temp = true
     console.log('value' + value)
     if (value == 1) {
       if (this.votoType[i] == 1) this.numLike2[i] -= 1
@@ -607,19 +642,19 @@ export class VisualizzaDomandaPage implements OnInit {
     }
     if (value == -1) this.votoType[i] = null
     this.numDislike2[i] += value
-   // console.log(this.numDislike2[i] + '       ', this.numLike2[i] + '' + this.votoType[i])
-   // console.log(this.numDislike2)
-   // console.log(this.risposte2)
-   
+    // console.log(this.numDislike2[i] + '       ', this.numLike2[i] + '' + this.votoType[i])
+    // console.log(this.numDislike2)
+    // console.log(this.risposte2)
+
     clearTimeout(this.timeoutHandle);
-    this.timeoutHandle = setTimeout(function(vototype){
-      console.log('sparoiserviziiiiiiiiiiiiiiiiiiiiiiiiii'+vototype)
+    this.timeoutHandle = setTimeout(function (vototype) {
+      console.log('sparoiserviziiiiiiiiiiiiiiiiiiiiiiiiii' + vototype)
     }
-    ,700,this.votoType[i]);
+      , 700, this.votoType[i]);
     //clearTimeout(timeoutHandle);
 
     // in your click function, call clearTimeout
-    
+
   }
   cercaValutazione(cod_utente, risposte, i) {
     this.apiService.controllaGiaValutatoRisposta(cod_utente, risposte[i].codice_risposta).then(
@@ -803,14 +838,7 @@ export class VisualizzaDomandaPage implements OnInit {
   }
 
   clickProfilo(cod_utente) {
-    //Visualizza il frame di caricamento
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 3000;
-    document.body.appendChild(loading);
-    loading.present();
-
+    this.dataService.loadingView(5000);//visualizza il frame di caricamento
     this.dataService.setEmailOthers(cod_utente);
     console.log(this.dataService.setEmailOthers);
     // this.router.navigate(['/visualizza-profilo']);
@@ -838,14 +866,7 @@ export class VisualizzaDomandaPage implements OnInit {
 
 
   goChat() {
-    //Visualizza il frame di caricamento
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 2000;
-    document.body.appendChild(loading);
-    loading.present();
-
+    this.dataService.loadingView(5000);//visualizza il frame di caricamento
     this.dataService.setEmailOthers(this.domandaMailUser);
     this.navCtrl.navigateForward(['/chat'])
 
@@ -930,6 +951,48 @@ export class VisualizzaDomandaPage implements OnInit {
     toast.style.fontSize = '20px';
     toast.style.textAlign = 'center';
     toast.present();
+  }
+
+  async alertOspite() {
+    const alert = await this.alertController.create({
+      header: "Ospite",
+      message:
+        "Per usare questo servizio devi effettuare l'accesso, vuoi farlo?",
+      buttons: [
+        {
+          text: "No",
+          role: "cancel",
+          cssClass: "secondary",
+          handler: (blah) => {
+            console.log("Confirm Cancel");
+          },
+        },
+        {
+          text: "Si",
+          handler: () => {
+            this.storage.set("session", false);
+            this.storage.set("utente", null);
+            this.dataService.setSession(false);
+            this.navCtrl.navigateRoot("login");
+
+            setTimeout(() => {
+              this.storage.get("session").then((data) => {
+                console.log("SESSION:" + data);
+              });
+            }, 3000);
+          },
+        },
+      ],
+    });
+    await alert.present();
+  }
+  controllaOspite(){
+    this.storage.get("session").then((data) => {
+     if(data === false)
+     this.ospite = true;
+     else
+     this.ospite = false;
+    });
   }
 
 }

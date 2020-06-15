@@ -64,7 +64,6 @@ export class ApiService {
           let domanda = data['Domande'];
 
           resolve(domanda);
-          console.log(domanda);
 
         },
         (err) => {
@@ -229,8 +228,8 @@ export class ApiService {
       this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaSondaggio', body).subscribe(
         data => {
           let sondaggio = data['Sondaggio'];
-          resolve(sondaggio); //restituirò al ts un oggetto di nome "sondaggio" con accesso già alla posizione "Sondaggio" avendo visto il json di data
-          console.log('ciao', sondaggio);
+          resolve(sondaggio); 
+         
 
         },
         (err) => {
@@ -249,8 +248,8 @@ export class ApiService {
       this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaScelteSondaggio', body).subscribe(
         data => {
           let scelte = data;
-          resolve(scelte); //restituirò al ts un oggetto di nome "sondaggio" con accesso già alla posizione "Sondaggio" avendo visto il json di data
-          console.log(scelte);
+          resolve(scelte); 
+        
 
         },
         (err) => {
@@ -348,7 +347,26 @@ export class ApiService {
       this.http.delete(urlAndCode).subscribe(
         data => {
           let esito = data['message'];
-          console.log('esito: ', esito);
+          resolve(esito);
+        },
+        (err) => {
+          reject();
+        }
+      );
+    });
+
+
+  }
+
+
+  rimuoviRisposta(cod_risposta: number) {
+
+    return new Promise((resolve, reject) => {
+      var url = "http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/rimuoviRisposta/";
+      var urlAndCode = url.concat(cod_risposta.toString());
+      this.http.delete(urlAndCode).subscribe(
+        data => {
+          let esito = data['message'];
           resolve(esito);
         },
         (err) => {
@@ -867,7 +885,6 @@ export class ApiService {
         (data) => {
           let risultato = data;
           
-          console.log("API SERVICE GIA VOTATO: ", body, data)
           resolve(risultato); 
 
 

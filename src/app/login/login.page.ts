@@ -5,12 +5,11 @@ import { Router } from "@angular/router";
 import { Promise } from "q";
 import { Storage } from "@ionic/storage";
 import { PostServiceService } from "../services/post-service.service";
-import { NavController, LoadingController } from "@ionic/angular";
+import { NavController } from "@ionic/angular";
 import { DataService } from "../services/data.service";
 import { ToastController } from "@ionic/angular";
 import { ApiService } from "src/app/providers/api.service";
 import { MenuController } from "@ionic/angular";
-import { Observable } from "rxjs";
 import { AppComponent } from "../app.component";
 import { __await } from 'tslib';
 
@@ -148,7 +147,6 @@ export class LoginPage implements OnInit {
 
       this.storage.set("utente", data.data[0]);
       this.storage.set("session", true);
-      console.log("false", data);
       this.click = true;
 
       this.storage.set("session", true);
@@ -169,15 +167,7 @@ export class LoginPage implements OnInit {
       //   this.storage.set('session', true);
       //   console.log('SESSION:' + data)
       // });
-      
-      //Visualizza il frame di caricamento
-      const loading = document.createElement('ion-loading');
-      loading.cssClass = 'loading';
-      loading.spinner = 'crescent';
-      loading.duration = 5000;
-      document.body.appendChild(loading);
-      loading.present();
-      
+      this.dataService.loadingView(5000);//Visualizza il frame di caricamento
       this.router.navigate(["home"]);
     } else {
       console.log("error");
@@ -189,13 +179,7 @@ export class LoginPage implements OnInit {
   }
 
   clickOspite() {
-    //Visualizza il frame di caricamento
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 5000;
-    document.body.appendChild(loading);
-    loading.present();
+    this.dataService.loadingView(5000);//Visualizza il frame di caricamento
     //TODO SETTARE NOME E COGNOME COME USERNAME
     this.dataService.setUsername("");
     this.dataService.setNome("Ospite");
@@ -218,36 +202,14 @@ export class LoginPage implements OnInit {
     this.oneSignal.sendTag('logState','logged');
     this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.None);
 
-
-    this.oneSignal.handleNotificationReceived().subscribe(data => {
-      
-    
+    this.oneSignal.handleNotificationReceived().subscribe(data => {       
       this.dataService.setNotificationsState(true);
-    
-            
-     const toast = document.createElement("ion-toast");
-    
-    toast.message = 'Hai ricevuto un messaggio';
-      toast.duration = 2000;
-      toast.position = "top";
-     // toast.style.fontSize = "20px";
-      toast.color = "danger";
-      toast.style.textAlign = "center";
-      document.body.appendChild(toast);
-     
-      return toast.present(); 
-
     });
-
 
     this.oneSignal.handleNotificationOpened().subscribe(data => {
-
       this.router.navigate(['visualizza-chat']);
-    
-
 
     });
-
     this.oneSignal.endInit();
     
   }

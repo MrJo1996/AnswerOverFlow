@@ -118,7 +118,6 @@ export class AppComponent implements OnInit {
 
     //Check connessione (provider in app.module)
     this.network.onDisconnect().subscribe(() => {
-      console.log("Ombo");
       this.toast("Nessuna connessione ad Internet.", "danger");
     });
   }
@@ -149,14 +148,6 @@ export class AppComponent implements OnInit {
             this.storage.clear(); //pulisce tutto storage
 
             this.dataService.setSession(false);
-            //Visualizza il frame di caricamento
-            const loading = document.createElement('ion-loading');
-            loading.cssClass = 'loading';
-            loading.spinner = 'crescent';
-            loading.duration = 2000;
-            document.body.appendChild(loading);
-            loading.present();
-
             this.router.navigate(["login"]);
             this.setupPush()
 
@@ -192,14 +183,6 @@ export class AppComponent implements OnInit {
             this.storage.set("session", false);
             this.storage.set("utente", null);
             this.dataService.setSession(false);
-            //Visualizza il frame di caricamento
-            const loading = document.createElement('ion-loading');
-            loading.cssClass = 'loading';
-            loading.spinner = 'crescent';
-            loading.duration = 2000;
-            document.body.appendChild(loading);
-            loading.present();
-
             this.router.navigate(["login"]);
 
             setTimeout(() => {
@@ -296,14 +279,7 @@ export class AppComponent implements OnInit {
         case "app":
           this.selectedIndex = index;
           if (this.appPages[index].title === "Home" || this.appPages[index].title === "Ricerca") {
-            //Visualizza il frame di caricamento
-            const loading = document.createElement('ion-loading');
-            loading.cssClass = 'loading';
-            loading.spinner = 'crescent';
-            loading.duration = 3500;
-            document.body.appendChild(loading);
-            loading.present();
-
+            this.dataService.loadingView(5000);//visualizza il frame di caricamento
             this.router.navigateByUrl(this.appPages[index].url);
           } else {
             this.alertOspite();
@@ -315,14 +291,6 @@ export class AppComponent implements OnInit {
           this.selectedIndexAccount = index;
 
           if (this.accountPages[index].title === "Login") {
-            //Visualizza il frame di caricamento
-            const loading = document.createElement('ion-loading');
-            loading.cssClass = 'loading';
-            loading.spinner = 'crescent';
-            loading.duration = 1500;
-            document.body.appendChild(loading);
-            loading.present();
-
             this.router.navigateByUrl(this.accountPages[index].url);
           } else {
             this.alertOspite();
@@ -338,34 +306,28 @@ export class AppComponent implements OnInit {
 
   initializeApp() {
     this.platform.ready().then(() => {
-      //this.statusBar.styleDefault();
       this.statusBar.overlaysWebView(false);
-      this.statusBar.backgroundColorByHexString('#2a2a2a'); //stesso colore toolbar
+      this.statusBar.backgroundColorByHexString('#2a2a2a');
+      this.splashScreen.hide();
 
-      this.splashScreen.hide(); //////////////////////////
-      timer(2000).subscribe(() => (this.showSplash = false)); //durata animazione definita in app.component.html -> 2s (era 3.5s)
-
+      timer(2000).subscribe(() => (this.showSplash = false)); //durata animazione definita in app.component.html -> 2s 
       if (this.platform.is('cordova')) {
         this.setupPush();
       }
-
       this.storage.get("utente").then((utente) => {
         //Check utente logged
-        if (utente.username === null) { // LOGIN
-          console.log("utente non loggato", utente.username);
+        if (utente.username === null || utente.username == undefined) { // LOGIN
           this.router.navigate(['login']);
-
         } else { //  HOME
           //SET VAR AL SERVICE 
           this.dataService.setEmail_Utente(utente.email);
-
+          
+          this.dataService.loadingView(5000);//visualizza il frame di caricamento
           this.router.navigate(['home']);
           this.toast("Bentornato " + utente.username + "!", "success");
-
         }
-        console.log("STORAGE JO user: ", utente.username);
+      
       });
-
     });
 
     this.storage.get("session").then((data) => {
@@ -394,8 +356,8 @@ export class AppComponent implements OnInit {
   goToProfile() {
     if (this.utenteLogged) {
       this.dataService.emailOthers = "undefined";
-      this.router.navigate(["visualizza-profiloutente"]);
       this.menuCtrl.close();
+      this.router.navigate(["visualizza-profiloutente"]);
     } else {
       this.alertOspite();
     }
@@ -403,14 +365,6 @@ export class AppComponent implements OnInit {
 
   goToInfo() {
     this.menuCtrl.close();
-    //Visualizza il frame di caricamento
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 1500;
-    document.body.appendChild(loading);
-    loading.present();
-
     this.router.navigate(["info"]);
   }
 
@@ -425,32 +379,11 @@ export class AppComponent implements OnInit {
 
 
     this.oneSignal.handleNotificationReceived().subscribe(data => {
-
-
       this.dataService.setNotificationsState(true);
-
-
-      const toast = document.createElement("ion-toast");
-
-      toast.message = 'Hai ricevuto un messaggio';
-      toast.duration = 2000;
-      toast.position = "top";
-      // toast.style.fontSize = "20px";
-      toast.color = "danger";
-      toast.style.textAlign = "center";
-      document.body.appendChild(toast);
-
-      return toast.present();
-
     });
 
-
     this.oneSignal.handleNotificationOpened().subscribe(data => {
-
       this.router.navigate(['visualizza-chat']);
-
-
-
     });
 
     this.oneSignal.endInit();

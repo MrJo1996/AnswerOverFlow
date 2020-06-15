@@ -31,6 +31,7 @@ export class BioPage implements OnInit {
 
 
   ngOnInit() {
+    this.dataService.loadingView(2000);//visualizza il frame di caricamento
     this.menuCtrl.enable(false);
     this.utente = this.dataService.utente;
   }
@@ -103,12 +104,7 @@ export class BioPage implements OnInit {
     } 
 
   async postRegistrazione() {
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 2000;
-    document.body.appendChild(loading);
-    loading.present();
+    this.dataService.loadingView(3000);//visualizza il frame di caricamento
 
     this.utente = this.dataService.utente;
     console.log(this.utente)
@@ -135,12 +131,7 @@ export class BioPage implements OnInit {
         console.log(this.utente)
 
 
-        
-          
-        
-
-
-
+     
 
         //Inserisco i valori che servono
         this.storage.set("utente", this.utente);
@@ -167,39 +158,18 @@ export class BioPage implements OnInit {
     this.router.navigate(['/registrazione']);
   }
 
-
   
   setupPush(idUtente:string) {
 
-    console.log(idUtente)
 
     this.oneSignal.startInit('8efdc866-9bea-4b12-a371-aa01f421c4f7', '424760060101');
     this.oneSignal.sendTag('email', idUtente)
     this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.None);
 
 
-
-    this.oneSignal.handleNotificationReceived().subscribe(data => {
-      
-     /*  let msg = data.payload.body;
-      let title = data.payload.title;  */
-      
+    this.oneSignal.handleNotificationReceived().subscribe(data => {     
       this.dataService.setNotificationsState(true);
-
-
-      const toast = document.createElement("ion-toast");
-      toast.message = 'Hai ricevuto un messaggio';
-      toast.duration = 2000;
-      toast.position = "top";
-     // toast.style.fontSize = "20px";
-      toast.color = "danger";
-      toast.style.textAlign = "center";
-      document.body.appendChild(toast);
-     
-      return toast.present();
-
     });
-
 
     this.oneSignal.handleNotificationOpened().subscribe(data => {     
     this.router.navigate(['visualizza-chat']);
