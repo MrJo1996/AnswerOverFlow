@@ -66,6 +66,7 @@ export class HomePage implements OnInit {
     private zone: NgZone) { }
 
   ionViewWillEnter() {
+    this.dataService.loadingView(5000);//visualizza il frame di caricamento
     this.menuCtrl.enable(true);
     this.menuSet.checkUserLogged();
     this.refresh_index = this.dataService.getRefreshIndex();
@@ -323,43 +324,26 @@ export class HomePage implements OnInit {
   //LINK ALLE PAGINE
   //link a visualizza domanda
   clickDomanda(domanda_codice) {
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 3500;
-    document.body.appendChild(loading);
-    loading.present();
-
+    this.dataService.loadingView(5000);//visualizza il frame di caricamento
     this.dataService.setCod_domanda(domanda_codice);
     this.router.navigate(['/visualizza-domanda']);
   }
   //link a viualizza sondaggio
   clickSondaggio(codice_sondaggio) {
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 3000;
-    document.body.appendChild(loading);
-    loading.present();
-
+    this.dataService.loadingView(5000);//visualizza il frame di caricamento
     this.dataService.codice_sondaggio = codice_sondaggio;
     this.router.navigate(['/visualizza-sondaggio']);
   }
   //link a visualizza profilo
   clickProfilo(cod_utente) {
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 3500;
-    document.body.appendChild(loading);
-    loading.present();
-
+    this.dataService.loadingView(5000);//visualizza il frame di caricamento
     this.dataService.setEmailOthers(cod_utente);
     console.log(this.dataService.setEmailOthers);
     this.router.navigate(['/visualizza-profilo']);
   }
 
   clickProfiloUtente() {
+    this.dataService.loadingView(5000);//visualizza il frame di caricamento
     this.router.navigate(['/visualizza-profiloutente']);
   }
   //link a modifica domanda

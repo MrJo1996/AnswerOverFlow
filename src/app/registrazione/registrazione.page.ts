@@ -199,12 +199,7 @@ export class RegistrazionePage implements OnInit {
   }
 
   clickRegistrazione() {
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 3500;
-    document.body.appendChild(loading);
-    loading.present();
+    this.dataService.loadingView(5000);//visualizza il frame di caricamento
 
     this.dataService.setUtente(
       this.email,
@@ -219,14 +214,6 @@ export class RegistrazionePage implements OnInit {
   }
   
   login() {
-    //Visualizza il frame di caricamento
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 1500;
-    document.body.appendChild(loading);
-    loading.present();
-
     this.router.navigate(["login"]);
   }
 

@@ -97,14 +97,7 @@ export class VisualizzaDomandaPage implements OnInit {
       this.toastModificaDomandaScaduta();
     }
     else {
-      //Visualizza il frame di caricamento
-      const loading = document.createElement('ion-loading');
-      loading.cssClass = 'loading';
-      loading.spinner = 'crescent';
-      loading.duration = 5000;
-      document.body.appendChild(loading);
-      loading.present();
-      //this.router.navigate(['modifica-domanda']);
+      this.dataService.loadingView(3000);//visualizza il frame di caricamento
       this.navCtrl.navigateForward(['modifica-domanda']);
       this.doRefresh(event);
     }
@@ -152,14 +145,7 @@ export class VisualizzaDomandaPage implements OnInit {
             console.log('domanda eliminata');
             this.showDeleteToast();
             this.cancellaDomanda();
-            //Visualizza il frame di caricamento
-            const loading = document.createElement('ion-loading');
-            loading.cssClass = 'loading';
-            loading.spinner = 'crescent';
-            loading.duration = 3500;
-            document.body.appendChild(loading);
-            loading.present();
-            //this.router.navigate(['home']);        
+            this.dataService.loadingView(5000);//visualizza il frame di caricamento        
             this.navCtrl.navigateBack(['home']);
           }
         },
@@ -296,14 +282,7 @@ export class VisualizzaDomandaPage implements OnInit {
   }
 
   goback() {
-    //Visualizza il frame di caricamento
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 3500;
-    document.body.appendChild(loading);
-    loading.present();
-
+    this.dataService.loadingView(5000);//visualizza il frame di caricamento
     this.navCtrl.pop();
   }
 
@@ -794,14 +773,7 @@ export class VisualizzaDomandaPage implements OnInit {
   }
 
   clickProfilo(cod_utente) {
-    //Visualizza il frame di caricamento
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 3000;
-    document.body.appendChild(loading);
-    loading.present();
-
+    this.dataService.loadingView(5000);//visualizza il frame di caricamento
     this.dataService.setEmailOthers(cod_utente);
     console.log(this.dataService.setEmailOthers);
     // this.router.navigate(['/visualizza-profilo']);
@@ -829,14 +801,7 @@ export class VisualizzaDomandaPage implements OnInit {
 
 
   goChat() {
-    //Visualizza il frame di caricamento
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 2000;
-    document.body.appendChild(loading);
-    loading.present();
-
+    this.dataService.loadingView(5000);//visualizza il frame di caricamento
     this.dataService.setEmailOthers(this.domandaMailUser);
     this.navCtrl.navigateForward(['/chat'])
 
@@ -943,14 +908,6 @@ export class VisualizzaDomandaPage implements OnInit {
             this.storage.set("session", false);
             this.storage.set("utente", null);
             this.dataService.setSession(false);
-            //Visualizza il frame di caricamento
-            const loading = document.createElement('ion-loading');
-            loading.cssClass = 'loading';
-            loading.spinner = 'crescent';
-            loading.duration = 2000;
-            document.body.appendChild(loading);
-            loading.present();
-
             this.navCtrl.navigateRoot("login");
 
             setTimeout(() => {
