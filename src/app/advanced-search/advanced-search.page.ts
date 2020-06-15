@@ -38,6 +38,7 @@ export class AdvancedSearchPage implements OnInit {
   ngOnInit() { this.initFilters(); }
 
   ionViewWillEnter() {
+    (console.log("ion will enter"));
     //visualizza frame caricamento
     const loading = document.createElement('ion-loading');
     loading.cssClass = 'loading';
@@ -210,10 +211,15 @@ export class AdvancedSearchPage implements OnInit {
     return toast.present();
   }
 
+  ngOnDestroy() {
+    console.log("DESTROY ADVANCED");
+    this.initFilters();
+  }
   clickGlobalSearch(){
 
     this.globalSearch = true;
     this.keywordSearch = false;
+    this.utentiBtn = false;
 
   }
 
@@ -223,6 +229,5 @@ export class AdvancedSearchPage implements OnInit {
 
 
   }
-
 
 }

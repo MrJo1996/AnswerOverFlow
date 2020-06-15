@@ -313,9 +313,9 @@ export class VisualizzaDomandaPage implements OnInit {
       this.toastParolaScoretta();
     } else if (this.stringLengthChecker(this.descrizioneRispostaToPass)) {
       this.toastInvalidString();
-    } else if (this.deadlineCheck()){
+    } else if (this.deadlineCheck()) {
       this.toastModificaDomandaScaduta();
-     } else {
+    } else {
       this.apiService.modificaRisposta(this.dataService.codice_risposta, this.descrizioneRispostaToPass).then(
         (result) => { // nel caso in cui va a buon fine la chiamata
         },
@@ -354,7 +354,8 @@ export class VisualizzaDomandaPage implements OnInit {
       this.toastParolaScoretta();
     } else if (this.stringLengthChecker(this.descrizione_risposta)) {
       this.toastInvalidString();
-    } else {
+      //////////////////////////////////////////////////////////
+    } else if (this.currentMailUser != null || this.currentMailUser != undefined) {
       this.apiService.inserisciRisposta(this.descrizione_risposta, this.currentMailUser, this.codice_domanda).then(
         (result) => { // nel caso in cui va a buon fine la chiamata
         },
@@ -364,6 +365,8 @@ export class VisualizzaDomandaPage implements OnInit {
       );
 
       this.showModifyToast();
+    } else {
+      this.alertOspite(); 
     }
 
   }
@@ -514,19 +517,6 @@ export class VisualizzaDomandaPage implements OnInit {
 
   }
 
-  /*   async showDescrizioneRisposta() {
-      this.apiService.getRisposta(this.dataService.getCodiceRisposta()).then(
-        resolve => {
-          this.descrizioneRispostaView = resolve['data']['0'].descrizione;
-          console.log(this.descrizioneRispostaView);
-        },
-        (rej) => {
-          console.log("C'è stato un errore durante il recupero dei dati");
-        }
-      )
-    } */
-
-
 
   //TOAST----------------------------------------
 
@@ -565,7 +555,7 @@ export class VisualizzaDomandaPage implements OnInit {
     document.body.appendChild(toast);
     return toast.present();
   }
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
   votoType: Array<number> = []
@@ -578,28 +568,28 @@ export class VisualizzaDomandaPage implements OnInit {
       this.votoType[i] = 1
     }
     if (value == -1) this.votoType[i] = null
-  //  console.log(this.risposte2)
+    //  console.log(this.risposte2)
     this.numLike2[i] = this.numLike2[i] + value || 0
     clearTimeout(this.timeoutHandle);
-   // console.log(this.numLike2)
-  //  console.log(this.numDislike2[i] + '       ', this.numLike2[i] + '' + this.votoType[i])
-    this.timeoutHandle = setTimeout(function(vototype){
+    // console.log(this.numLike2)
+    //  console.log(this.numDislike2[i] + '       ', this.numLike2[i] + '' + this.votoType[i])
+    this.timeoutHandle = setTimeout(function (vototype) {
 
-      console.log('sparoiserviziiiiiiiiiiiiiiiiiiiiiiiiii'+vototype)
+      console.log('sparoiserviziiiiiiiiiiiiiiiiiiiiiiiiii' + vototype)
     }
-    ,700,this.votoType[i]);
-//    clearTimeout(timeoutHandle);
+      , 700, this.votoType[i]);
+    //    clearTimeout(timeoutHandle);
 
     // in your click function, call clearTimeout
- 
-    
+
+
     // then call setTimeout again to reset the timer
-    
+
   }
-  
+
   timeoutHandle
   modificaDislike(i, value) {
-    var temp=true
+    var temp = true
     console.log('value' + value)
     if (value == 1) {
       if (this.votoType[i] == 1) this.numLike2[i] -= 1
@@ -608,19 +598,19 @@ export class VisualizzaDomandaPage implements OnInit {
     }
     if (value == -1) this.votoType[i] = null
     this.numDislike2[i] += value
-   // console.log(this.numDislike2[i] + '       ', this.numLike2[i] + '' + this.votoType[i])
-   // console.log(this.numDislike2)
-   // console.log(this.risposte2)
-   
+    // console.log(this.numDislike2[i] + '       ', this.numLike2[i] + '' + this.votoType[i])
+    // console.log(this.numDislike2)
+    // console.log(this.risposte2)
+
     clearTimeout(this.timeoutHandle);
-    this.timeoutHandle = setTimeout(function(vototype){
-      console.log('sparoiserviziiiiiiiiiiiiiiiiiiiiiiiiii'+vototype)
+    this.timeoutHandle = setTimeout(function (vototype) {
+      console.log('sparoiserviziiiiiiiiiiiiiiiiiiiiiiiiii' + vototype)
     }
-    ,700,this.votoType[i]);
+      , 700, this.votoType[i]);
     //clearTimeout(timeoutHandle);
 
     // in your click function, call clearTimeout
-    
+
   }
   cercaValutazione(cod_utente, risposte, i) {
     this.apiService.controllaGiaValutatoRisposta(cod_utente, risposte[i].codice_risposta).then(
@@ -931,6 +921,48 @@ export class VisualizzaDomandaPage implements OnInit {
     toast.style.fontSize = '20px';
     toast.style.textAlign = 'center';
     toast.present();
+  }
+
+  async alertOspite() {
+    const alert = await this.alertController.create({
+      header: "Ospite",
+      message:
+        "Per usare questo servizio devi effettuare l'accesso, vuoi farlo?",
+      buttons: [
+        {
+          text: "No",
+          role: "cancel",
+          cssClass: "secondary",
+          handler: (blah) => {
+            console.log("Confirm Cancel");
+          },
+        },
+        {
+          text: "Si",
+          handler: () => {
+            this.storage.set("session", false);
+            this.storage.set("utente", null);
+            this.dataService.setSession(false);
+            //Visualizza il frame di caricamento
+            const loading = document.createElement('ion-loading');
+            loading.cssClass = 'loading';
+            loading.spinner = 'crescent';
+            loading.duration = 2000;
+            document.body.appendChild(loading);
+            loading.present();
+
+            this.navCtrl.navigateRoot("login");
+
+            setTimeout(() => {
+              this.storage.get("session").then((data) => {
+                console.log("SESSION:" + data);
+              });
+            }, 3000);
+          },
+        },
+      ],
+    });
+    await alert.present();
   }
 
 }
