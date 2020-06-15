@@ -43,8 +43,41 @@ export class ApiService {
          console.log(error);
      });
  
-   
  }
+
+ getDomandaRicerca() {
+  const body = {
+  };
+
+  return new Promise((resolve, reject) => {
+    this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzadomandehome', body).subscribe(
+      data => {
+        let domande = data['Domande'];
+        resolve(domande);
+      },
+      (err) => {
+        reject();
+      }
+    );
+  });
+}
+
+
+getSondaggioRicerca() {
+  const body = {
+  };
+  return new Promise((resolve, reject) => {
+    this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzasondaggihome', body).subscribe(
+      data => {
+        let sondaggi = data['Sondaggi'];
+        resolve(sondaggi);
+      },
+      (err) => {
+        reject();
+      }
+    );
+  });
+}
 
 
 
