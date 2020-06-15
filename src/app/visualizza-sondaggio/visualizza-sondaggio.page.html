@@ -136,6 +136,7 @@
             <ion-label class="num-voti-style" *ngIf="(currentUser===sondaggio.cod_utente  || votato === true) && scelta.num_favorevoli ===1" slot="start"> {{scelta.num_favorevoli}} voto</ion-label>
             <ion-label class="num-voti-style" *ngIf="(currentUser===sondaggio.cod_utente  || votato === true) && scelta.num_favorevoli ===0" slot="start"> Nessun voto</ion-label>
           </div>
+          
         <div *ngIf="(currentUser===sondaggio.cod_utente && voti_totali !=0) || votato === true || isSondaggioActive  === false">
           <ion-progress-bar class="progress-bar-style"
             *ngIf="percentualiScelte[i]!==0"
