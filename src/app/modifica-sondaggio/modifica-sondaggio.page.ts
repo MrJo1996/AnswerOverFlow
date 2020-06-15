@@ -4,7 +4,6 @@ import { ToastController } from '@ionic/angular';
 
 import { ApiService } from 'src/app/providers/api.service';
 
-//Picker - import e poi definire nel constructor
 import { PickerController } from "@ionic/angular";
 import { PickerOptions } from "@ionic/core";
 
@@ -12,9 +11,6 @@ import { NavController } from '@ionic/angular';
 import { __await } from 'tslib';
 
 import { DataService } from "../services/data.service";
-import { Time } from '@angular/common';
-import { timer } from 'rxjs';
-import { element } from 'protractor';
 
 @Component({
   selector: 'app-modifica-sondaggio',
@@ -167,7 +163,6 @@ export class ModificaSondaggioPage implements OnInit {
     let result = await alert.onDidDismiss();
   }
 
-  //PICKER Timer
   async showTimerPicker() {
     let options: PickerOptions = {
       buttons: [
@@ -327,7 +322,7 @@ export class ModificaSondaggioPage implements OnInit {
   
       if (distance < 0) {
         clearInterval(this.interval);
-        document.getElementById("timeLeft").innerHTML = "Sondaggio scaduto.";
+        document.getElementById("timeMissing").innerHTML = "Sondaggio scaduto.";
       }
     }, 1000);
 

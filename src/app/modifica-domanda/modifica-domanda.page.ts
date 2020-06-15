@@ -498,7 +498,7 @@ async popupInvalidTitle(){
       var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
 
-      document.getElementById("timeLeft").innerHTML = days + "d " + hours + "h "
+      document.getElementById("timeMissingDomanda").innerHTML = days + "d " + hours + "h "
         + minutes + "m " + seconds + "s ";
 
       this.timerView = days + "d " + hours + "h "
@@ -507,7 +507,7 @@ async popupInvalidTitle(){
 
       if (distance < 0) {
         clearInterval(this.interval);
-        document.getElementById("timeLeft").innerHTML = "Domanda scaduta.";
+        document.getElementById("timeMissingDomanda").innerHTML = "Domanda scaduta.";
         this.timerView = "OMBO TIMER,SCADUTA";
       }
     }, 1000);
