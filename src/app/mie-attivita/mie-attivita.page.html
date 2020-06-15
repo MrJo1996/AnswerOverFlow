@@ -123,6 +123,12 @@
   <ion-textarea readonly *ngIf="range.value===500 && (sondaggi1m===undefined || sondaggi1m.length===0)" class="ion-text-center">
     Non hai postato nessun sondaggio nell'ultimo mese</ion-textarea>
 
+    <ion-fab vertical="bottom" horizontal="start" slot="fixed" style="opacity: 70%;">
+      <ion-fab-button  size="small" (click)="openMenu()" color="light">
+        <ion-icon name="arrow-forward-circle-outline" style="opacity: 100%;"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+
 </ion-content>
 
 <ion-content *ngIf="check2" style="--background: url('/assets/img/provaBack.png') no-repeat center center / cover;">

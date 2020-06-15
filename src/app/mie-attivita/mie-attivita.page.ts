@@ -34,8 +34,7 @@ export class MieAttivitaPage implements OnInit {
   constructor(private navCtrl: NavController, private menuCtrl: MenuController, private apiService: ApiService, private alertController: AlertController, private dataService: DataService, private router: Router, private storage: Storage) { }
 
   ngOnInit() {
-    //Visualizza il frame di caricamento
-    this.dataService.loadingView(3000);//visualizza il frame di caricamento
+    this.dataService.loadingView(3000);
     this.storage.get('utente').then( 
       data => { 
         this.currentUser = data.email
@@ -69,24 +68,20 @@ export class MieAttivitaPage implements OnInit {
   }
 
   goBack(){
-    //Visualizza il frame di caricamento
-    this.dataService.loadingView(5000);//visualizza il frame di caricamento
+    this.dataService.loadingView(5000);
     this.navCtrl.pop();
   }
 
   async visualizzaMieDomande() {
     this.apiService.getMieDomande(this.currentUser).then(
       (domanda) => {
-        console.log('Visualizzato con successo');
 
-        this.domande = domanda['Domande']['data']; //assegno alla variabile locale il risultato della chiamata. la variabile sarà utilizzata nella stampa in HTML
-        console.log('Domanda: ', this.domande);
+        this.domande = domanda['Domande']['data'];
 
         this.inizializeArrayDomande1g();
       
       },
       (rej) => {
-        console.log("C'è stato un errore durante la visualizzazione");
       }
     );
   
@@ -95,16 +90,13 @@ export class MieAttivitaPage implements OnInit {
   async visualizzaMieiSondaggi() {
     this.apiService.getMieiSondaggi(this.currentUser).then(
       (sondaggio) => {
-        console.log('Visualizzato con successo');
 
-        this.sondaggi = sondaggio; //assegno alla variabile locale il risultato della chiamata. la variabile sarà utilizzata nella stampa in HTML
-        console.log('Sondaggi: ', this.sondaggi);
+        this.sondaggi = sondaggio;
 
         this.inizializeArraySondaggi1g();
       
       },
       (rej) => {
-        console.log("C'è stato un errore durante la visualizzazione");
       }
     );
   
@@ -118,14 +110,12 @@ export class MieAttivitaPage implements OnInit {
     this.domande1m = [];
 
     if (this.domande===undefined) {
-      console.log('Non ci sono domande per questo utente');
     } else {
 
     for (var i = 0; i < this.domande.length; i++) {
       var data = new Date(this.domande[i].dataeora.toLocaleString());
       var data2 = new Date();
       var diff = (data2.getTime() - data.getTime()) /1000;
-      console.log(diff);
       if (diff <= 86400) {
         this.domande1g.push(this.domande[i]);
       }
@@ -148,12 +138,7 @@ export class MieAttivitaPage implements OnInit {
     }
 
   }
-   
-    console.log(this.domande1g.length);
-    console.log(this.domande1s.length);
-    console.log(this.domande2s.length);
-    console.log(this.domande3s.length);
-    console.log(this.domande1m.length);
+
   }
 
   inizializeArrayDomande1g() {
@@ -162,13 +147,10 @@ export class MieAttivitaPage implements OnInit {
       var data = new Date(this.domande[i].dataeora.toLocaleString());
       var data2 = new Date();
       var diff = (data2.getTime() - data.getTime()) /1000;
-      console.log(diff);
         if (diff <= 86400) {
         this.domande1g.push(this.domande[i]);
       }
     }
-
-    console.log(this.domande1g);
   }
 
   inizializeArraySondaggi1g() {
@@ -177,13 +159,10 @@ export class MieAttivitaPage implements OnInit {
       var data = new Date(this.sondaggi[i].dataeora.toLocaleString());
       var data2 = new Date();
       var diff = (data2.getTime() - data.getTime()) /1000;
-      console.log(diff);
         if (diff <= 86400) {
         this.sondaggi1g.push(this.sondaggi[i]);
       }
     }
-
-    console.log(this.sondaggi1g);
   }
 
   checkDataeoraSondaggi() {
@@ -201,7 +180,6 @@ export class MieAttivitaPage implements OnInit {
       var data = new Date(this.sondaggi[i].dataeora.toLocaleString());
       var data2 = new Date();
       var diff = (data2.getTime() - data.getTime()) /1000;
-      console.log(diff);
       if (diff <= 86400) {
         this.sondaggi1g.push(this.sondaggi[i]);
       }
@@ -224,25 +202,18 @@ export class MieAttivitaPage implements OnInit {
     }
 
   }
-   
-    console.log(this.sondaggi1g.length);
-    console.log(this.sondaggi1s.length);
-    console.log(this.sondaggi2s.length);
-    console.log(this.sondaggi3s.length);
-    console.log(this.sondaggi1m.length);
+
   }
 
   clickDomanda(codice_domanda){
-    this.dataService.loadingView(5000);//visualizza il frame di caricamento
+    this.dataService.loadingView(5000);
     this.dataService.codice_domanda = codice_domanda;
-    console.log(this.dataService.codice_domanda);
     this.router.navigate(['/visualizza-domanda']);
   }
 
   clickSondaggio(codice_sondaggio){
-    this.dataService.loadingView(5000);//visualizza il frame di caricamento
+    this.dataService.loadingView(5000);
     this.dataService.codice_sondaggio = codice_sondaggio;
-    console.log(this.dataService.codice_domanda);
     this.router.navigate(['/visualizza-sondaggio']);
   }
 
