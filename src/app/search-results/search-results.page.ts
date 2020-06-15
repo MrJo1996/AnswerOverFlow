@@ -283,7 +283,10 @@ export class SearchResultsPage implements OnInit {
     loading.present();
 
     this.resetVars();
-    this.router.navigate(['/advanced-search']);
+/*     this.router.navigate(['/advanced-search']);
+ */
+    this.router.navigateByUrl("/advanced-search");
+
   }
 
   clickUtente(cod_utente) {
@@ -314,6 +317,7 @@ export class SearchResultsPage implements OnInit {
 /*     this.dataService.setFilters(this.filters['tipo'], this.filters['codCategoria'], this.filters['status'], this.filters['isFiltered']);
  */
     this.router.navigate(['/visualizza-domanda']);
+    
 
   }
 
