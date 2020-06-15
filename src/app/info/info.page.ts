@@ -9,14 +9,10 @@ import { DataService } from '../services/data.service';
   styleUrls: ['./info.page.scss'],
 })
 export class InfoPage implements OnInit {
-
-
+  
   constructor(private router: Router, private menuCtrl: MenuController, private dataService: DataService) { }
 
-  ngOnInit() {
-  
-  }
-
+  ngOnInit() { }
 
   goback(){
     this.dataService.loadingView(5000);
