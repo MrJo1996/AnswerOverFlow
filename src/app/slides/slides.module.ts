@@ -4,17 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { TerminiPageRoutingModule } from './termini-routing.module';
+import { SlidesPageRoutingModule } from './slides-routing.module';
 
-import { TerminiPage } from './termini.page';
+import { SlidesPage } from './slides.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    TerminiPageRoutingModule
+    SlidesPageRoutingModule
   ],
-  declarations: [TerminiPage]
+  declarations: [SlidesPage]
 })
-export class TerminiPageModule {}
+export class SlidesPageModule {}
