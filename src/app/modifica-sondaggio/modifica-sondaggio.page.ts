@@ -11,9 +11,6 @@ import { NavController } from '@ionic/angular';
 import { __await } from 'tslib';
 
 import { DataService } from "../services/data.service";
-import { Time } from '@angular/common';
-import { timer } from 'rxjs';
-import { element } from 'protractor';
 
 @Component({
   selector: 'app-modifica-sondaggio',
