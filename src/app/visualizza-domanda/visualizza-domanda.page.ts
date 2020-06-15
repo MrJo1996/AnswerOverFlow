@@ -79,8 +79,16 @@ export class VisualizzaDomandaPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.storage.get('utente').then(data => { this.currentMailUser = data.email });
 
-    //this.storage.get('utente').then(data => { this.currentMailUser = data.email });
+    if (this.currentMailUser.length === 0)
+      this.currentMailUser = this.dataService.emailUtente;
+
+    this.currentMailUser = this.dataService.emailUtente;
+    this.controllaOspite();
+    if (this.ospite === false)
+      this.currentMailUser = null;
+
     this.visualizzaDomanda();
     this.showRisposte();
     this.controllaOspite();
@@ -107,7 +115,6 @@ export class VisualizzaDomandaPage implements OnInit {
   async visualizzaDomanda() {
 
     this.codice_domanda = this.dataService.codice_domanda;
-    this.currentMailUser = this.dataService.getEmail_Utente();
     console.log(this.currentMailUser)
     this.apiService.getDomanda(this.codice_domanda).then(
       (domanda) => {
@@ -179,14 +186,14 @@ export class VisualizzaDomandaPage implements OnInit {
             loading.spinner = 'crescent';
             loading.duration = 3500;
             document.body.appendChild(loading);
-            
+
             //this.router.navigate(['home']);        
-              for(let j = 0; j<this.risposte.length; j++){
-                  if(this.risposte[j].codice_risposta == codice_risposta){
-                    this.risposte.splice(j, 1);
-              
-                  }
+            for (let j = 0; j < this.risposte.length; j++) {
+              if (this.risposte[j].codice_risposta == codice_risposta) {
+                this.risposte.splice(j, 1);
+
               }
+            }
           }
         },
         {
@@ -299,15 +306,15 @@ export class VisualizzaDomandaPage implements OnInit {
       (risultato) => {
       },
       (rej) => {
-  
+
       }
     );
   }
 
 
-  
+
   async cancellaRisposta(codice_risposta) {
-    this.apiService.rimuoviRisposta( codice_risposta).then(
+    this.apiService.rimuoviRisposta(codice_risposta).then(
       (risultato) => {
       },
       (rej) => {
@@ -397,9 +404,9 @@ export class VisualizzaDomandaPage implements OnInit {
         }
       );
 
-      this.showModifyToast();
-    } 
-  }
+        this.showModifyToast();
+      }
+    }
   }
 
 
@@ -454,8 +461,8 @@ export class VisualizzaDomandaPage implements OnInit {
     }
   }
 
-  eliminaRisposta(risposta){
-      this.popUpEliminaRisposta(risposta.codice_risposta);
+  eliminaRisposta(risposta) {
+    this.popUpEliminaRisposta(risposta.codice_risposta);
 
   }
 
@@ -990,14 +997,13 @@ export class VisualizzaDomandaPage implements OnInit {
     });
     await alert.present();
   }
-  controllaOspite(){
+  controllaOspite() {
     this.storage.get("session").then((data) => {
-     if(data === false)
-     this.ospite = true;
-     else
-     this.ospite = false;
+      if (data === false)
+        this.ospite = true;
+      else
+        this.ospite = false;
     });
   }
 
 }
-
