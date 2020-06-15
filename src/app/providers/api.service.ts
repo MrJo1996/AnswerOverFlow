@@ -347,7 +347,26 @@ export class ApiService {
       this.http.delete(urlAndCode).subscribe(
         data => {
           let esito = data['message'];
-          console.log('esito: ', esito);
+          resolve(esito);
+        },
+        (err) => {
+          reject();
+        }
+      );
+    });
+
+
+  }
+
+
+  rimuoviRisposta(cod_risposta: number) {
+
+    return new Promise((resolve, reject) => {
+      var url = "http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/rimuoviRisposta/";
+      var urlAndCode = url.concat(cod_risposta.toString());
+      this.http.delete(urlAndCode).subscribe(
+        data => {
+          let esito = data['message'];
           resolve(esito);
         },
         (err) => {

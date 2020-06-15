@@ -100,7 +100,7 @@
       <ion-label  class = "textTitle"><b>Risposte ({{risposte.length}})</b></ion-label>
      </ion-item-divider>
         
-         
+     
         <ion-card *ngFor="let risposta of risposte; let i = index" class = "backgrounds">    
           <ion-card-header>
             <ion-toolbar class="backgrounds"> 
@@ -146,7 +146,7 @@
               <ion-toolbar class="backgrounds">
     
                 <ion-icon *ngIf="currentMailUser === risposta.cod_utente" name="settings-outline" slot="start" class = "calendar_icon_style" (click)="clickRisposta(risposta, i)" (click)="popupModificaDescrizioneRisposta()"></ion-icon>
-                <ion-label class= "description_text"  slot="start" ></ion-label>
+                <ion-icon *ngIf="currentMailUser === risposta.cod_utente" name="trash-outline" slot="start" class = "calendar_icon_style"  (click)="eliminaRisposta(risposta)" class = "calendar_icon_style" ></ion-icon>
             
               
              <ion-button  *ngIf="currentMailUser === domandaMailUser" (click)="changeColor(risposta.codice_risposta)" slot="end" expand="block" fill = "clear">

@@ -33,7 +33,6 @@ export class VisualizzaDomandaPage implements OnInit {
   descrizioneView: any;
   cod_preferita: any;
 
-
   risposte = new Array();
   //profiliUtentiRisposte = new Array();
   descrizioneRispostaView;
@@ -56,13 +55,14 @@ export class VisualizzaDomandaPage implements OnInit {
 
   timerView2;
 
-
+  ospite;
   giorni;
   ore;
   minuti;
   secondi;
 
   valutazioni = new Array();
+
 
   risposte2
   constructor(
@@ -161,6 +161,48 @@ export class VisualizzaDomandaPage implements OnInit {
     });
     await alert.present();
   }
+
+
+  async popUpEliminaRisposta(codice_risposta) {
+    const alert = await this.alertController.create({
+      header: 'Sei sicuro di voler eliminare questa risposta?',
+      buttons: [
+        {
+          text: 'Si',
+          handler: () => {
+            console.log('risposta eliminata');
+            this.showDeleteRispostaToast();
+            this.cancellaRisposta(codice_risposta);
+            //Visualizza il frame di caricamento
+            const loading = document.createElement('ion-loading');
+            loading.cssClass = 'loading';
+            loading.spinner = 'crescent';
+            loading.duration = 3500;
+            document.body.appendChild(loading);
+            
+            //this.router.navigate(['home']);        
+              for(let j = 0; j<this.risposte.length; j++){
+                  if(this.risposte[j].codice_risposta == codice_risposta){
+                    this.risposte.splice(j, 1);
+              
+                  }
+              }
+          }
+        },
+        {
+          text: 'No',
+          role: 'cancel',
+          //cssClass: 'secondary',
+          handler: () => {
+            console.log('eliminazione annullata');
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+
   async showRisposte() {
     this.codice_domanda = this.dataService.codice_domanda;
     this.apiService.getRispostePerDomanda(this.codice_domanda).then(
@@ -178,9 +220,6 @@ export class VisualizzaDomandaPage implements OnInit {
             this.votoType.push(data[0]['data'][0].tipo_like)
             console.log(data)
           })
-
-
-
         });
 
         for (let i = 0; i < this.risposte.length; i++) {
@@ -258,14 +297,23 @@ export class VisualizzaDomandaPage implements OnInit {
   async cancellaDomanda() {
     this.apiService.rimuoviDomanda(this.codice_domanda).then(
       (risultato) => {
-        //console.log('eliminata');
       },
       (rej) => {
-        //console.log("C'è stato un errore durante l'eliminazione");
+  
       }
     );
   }
 
+
+  
+  async cancellaRisposta(codice_risposta) {
+    this.apiService.rimuoviRisposta( codice_risposta).then(
+      (risultato) => {
+      },
+      (rej) => {
+      }
+    );
+  }
 
 
   async getUserDomanda() {
@@ -322,7 +370,7 @@ export class VisualizzaDomandaPage implements OnInit {
 
     this.inserisciRisposta();
     this.rispostaVisible = false;
-
+    
     this.doRefresh(event);
   }
 
@@ -400,6 +448,11 @@ export class VisualizzaDomandaPage implements OnInit {
       this.rispostaCliccata = risposta;
 
     }
+  }
+
+  eliminaRisposta(risposta){
+      this.popUpEliminaRisposta(risposta.codice_risposta);
+
   }
 
   checkIfThereAreEnglishBadWords(string: string): boolean {
@@ -502,6 +555,18 @@ export class VisualizzaDomandaPage implements OnInit {
   async showDeleteToast() {
     const toast = document.createElement('ion-toast');
     toast.message = 'Domanda eliminata con successo!';
+    toast.duration = 2000;
+    toast.position = "top";
+    toast.style.fontSize = '20px';
+    toast.color = 'success';
+    toast.style.textAlign = 'center';
+    document.body.appendChild(toast);
+    return toast.present();
+  }
+
+  async showDeleteRispostaToast() {
+    const toast = document.createElement('ion-toast');
+    toast.message = 'Risposta eliminata con successo!';
     toast.duration = 2000;
     toast.position = "top";
     toast.style.fontSize = '20px';

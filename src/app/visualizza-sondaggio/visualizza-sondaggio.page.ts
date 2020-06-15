@@ -45,6 +45,8 @@ export class VisualizzaSondaggioPage implements OnInit {
   timerView2;
   dataeoraView
 
+  ospite;
+
   numeroScelta;
   formatsDate: string[] = [
     'd MMM y, H:mm'];
@@ -73,6 +75,8 @@ export class VisualizzaSondaggioPage implements OnInit {
     this.visualizzaSondaggioSelezionato();
     this.visualizzaScelte();
     this.giaVotato();
+    this.controllaOspite();
+    console.log("OSPITE: ", this.ospite);
 
 
 
@@ -293,7 +297,7 @@ export class VisualizzaSondaggioPage implements OnInit {
         this.index_scelta_selezionata = i;
         console.log();
       }
-    } this.alertOspite();
+    } if(this.ospite === true) this.alertOspite();
   }
 
   async confermaVoto(scelta) {
@@ -659,5 +663,14 @@ export class VisualizzaSondaggioPage implements OnInit {
       ],
     });
     await alert.present();
+  }
+
+  controllaOspite(){
+    this.storage.get("session").then((data) => {
+     if(data === false)
+     this.ospite = true;
+     else
+     this.ospite = false;
+    });
   }
 }
