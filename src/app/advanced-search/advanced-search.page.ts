@@ -230,5 +230,4 @@ export class AdvancedSearchPage implements OnInit {
 
   }
 
-
 }
