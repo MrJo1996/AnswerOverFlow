@@ -79,9 +79,7 @@ export class ModificaProfiloPage implements OnInit {
             this.usernameAvailable = false;
           }
         },
-        (err) => {
-          
-        }
+        
       );
     }
   }
@@ -118,9 +116,6 @@ export class ModificaProfiloPage implements OnInit {
           this.avatar = this.profilo["0"].avatar;
         
         },
-        (rej) => {
-          
-        }
       );
     });
   }

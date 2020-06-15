@@ -32,22 +32,21 @@
           <ion-list-header>
             <ion-label><u><strong>Tipo</strong></u></ion-label>
           </ion-list-header>
-
           <ion-item>
             <ion-label>Domande</ion-label>
-            <ion-radio slot="start" (click)="clickDomanda()"></ion-radio>
+            <ion-radio slot="start" (click)="clickDomanda()" ></ion-radio>
           </ion-item>
 
           <ion-item>
             <ion-label>Sondaggi</ion-label>
-            <ion-radio slot="start" (click)="clickSondaggio()"></ion-radio>
+            <ion-radio slot="start" (click)="clickSondaggio()" ></ion-radio>
           </ion-item>
 
           <div *ngIf="globalSearch == false">
 
             <ion-item>
               <ion-label>Utenti</ion-label>
-              <ion-radio slot="start" (click)="clickUtente()"></ion-radio>
+              <ion-radio slot="start" (click)="clickUtente()" ></ion-radio>
             </ion-item>
           </div>
         </ion-radio-group>
@@ -92,6 +91,13 @@
       </ion-card>
 
     </div>
+
+    <ion-item (click)="ricerca()" style="margin-top: 10px;" lines="none" class="itemClass">
+      <ion-label class = "centerText" >Avvia ricerca
+      </ion-label>
+      
+    
+  </ion-item>
 
   </ion-grid>
 

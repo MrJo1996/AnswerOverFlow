@@ -2,28 +2,15 @@
     color:black;
 }
 
-.itemClass{
-    border-radius: 10px;
-    --background: #3171e0;
-    height: 35px;
-    width: 90px;
-    }
-
     .placeholder {
         opacity: 2;
         font-size: 0.88rem;
         padding-right: 8px;
-        
     }
 
     .chip{
-        
         right: 10px;
          position: absolute;
-    }
-
-    .segment{
-        top:50px;
     }
 
     .icon-avatar{
@@ -31,7 +18,6 @@
         max-height: 50px;
         margin-right: 7px;
         padding: 3px;
-    
     }
 
     .username_text_style{
@@ -54,3 +40,4 @@
         font-size: 25px;
         color: red
       }
+
