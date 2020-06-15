@@ -195,12 +195,13 @@ export class VisualizzaSondaggioPage implements OnInit {
   }
 
   async giaVotato() {
-    //this.currentUser = this.dataService.emailUtente;
+    this.currentUser = this.dataService.emailUtente;
     this.codice_sondaggio = this.dataService.codice_sondaggio;
 
     this.apiService.controllaGiaVotato(this.currentUser, this.codice_sondaggio).then(
       (risultato) => {
         this.votato = risultato["0"]["data"];
+        console.log("votato: ", this.votato, this.currentUser, this.codice_sondaggio);
       },
       (rej) => {
 

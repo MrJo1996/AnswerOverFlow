@@ -883,11 +883,9 @@ export class ApiService {
     return new Promise((resolve, reject) => {
       this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/controllogiavotato', body).subscribe(
         (data) => {
-          let risultato = data;
-          
+          let risultato = data; 
           resolve(risultato); 
-
-
+    
         },
         (err) => {
           reject();
