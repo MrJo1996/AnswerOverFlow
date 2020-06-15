@@ -214,6 +214,7 @@ export class AdvancedSearchPage implements OnInit {
 
     this.globalSearch = true;
     this.keywordSearch = false;
+    this.utentiBtn = false;
 
   }
 
