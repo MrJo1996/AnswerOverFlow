@@ -62,8 +62,9 @@ export class VisualizzaDomandaPage implements OnInit {
   secondi;
 
   valutazioni = new Array();
-
-
+  formatsDate: string[] = [
+    'd-MM-y, H:mm'
+  ];
   risposte2
   constructor(
     private navCtrl: NavController,

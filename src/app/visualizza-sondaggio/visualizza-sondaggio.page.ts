@@ -49,7 +49,8 @@ export class VisualizzaSondaggioPage implements OnInit {
 
   numeroScelta;
   formatsDate: string[] = [
-    'd MMM y, H:mm'];
+    'd-MM-y, H:mm'
+  ];
 
   private buttonColor: string = "#2a2a2a";
   private buttonColorBest: string = "#64F58D";
