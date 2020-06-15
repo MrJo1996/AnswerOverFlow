@@ -83,7 +83,7 @@ export class VisualizzaDomandaPage implements OnInit {
     //this.storage.get('utente').then(data => { this.currentMailUser = data.email });
     this.visualizzaDomanda();
     this.showRisposte();
-
+    this.controllaOspite();
     this.allVisible = true;
 
   }
@@ -398,6 +398,8 @@ export class VisualizzaDomandaPage implements OnInit {
 
 
   async inserisciRisposta() {
+    if(this.ospite === true) this.alertOspite();
+    else{
     if (this.checkIfThereAreItalianBadWords(this.descrizione_risposta) || this.checkIfThereAreEnglishBadWords(this.descrizione_risposta)) {
       this.toastParolaScoretta();
     } else if (this.stringLengthChecker(this.descrizione_risposta)) {
@@ -413,10 +415,8 @@ export class VisualizzaDomandaPage implements OnInit {
       );
 
       this.showModifyToast();
-    } else {
-      this.alertOspite(); 
-    }
-
+    } 
+  }
   }
 
 
@@ -1028,6 +1028,14 @@ export class VisualizzaDomandaPage implements OnInit {
       ],
     });
     await alert.present();
+  }
+  controllaOspite(){
+    this.storage.get("session").then((data) => {
+     if(data === false)
+     this.ospite = true;
+     else
+     this.ospite = false;
+    });
   }
 
 }

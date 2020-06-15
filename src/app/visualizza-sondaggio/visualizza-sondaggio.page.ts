@@ -76,10 +76,6 @@ export class VisualizzaSondaggioPage implements OnInit {
     this.visualizzaScelte();
     this.giaVotato();
     this.controllaOspite();
-    console.log("OSPITE: ", this.ospite);
-
-
-
 
     if (this.distanceTimer < 0)
       this.isSondaggioActive = false;
