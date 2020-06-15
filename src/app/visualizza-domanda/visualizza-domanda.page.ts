@@ -19,7 +19,7 @@ export class VisualizzaDomandaPage implements OnInit {
   numDislike2: Array<number> = []
   votoAttuale
   allVisible: boolean = false;
-
+  cod_valutazione :Array<number>=[]
   codice_domanda;
 
   currentMailUser = "";//mail dell'utente corrente
@@ -205,22 +205,35 @@ export class VisualizzaDomandaPage implements OnInit {
 
 
   async showRisposte() {
+    this.votoType=[]
     this.codice_domanda = this.dataService.codice_domanda;
     this.apiService.getRispostePerDomanda(this.codice_domanda).then(
       (risposte) => {
         //Prendo le risposte dal db
+        console.log(risposte)
         this.risposte = risposte['Risposte']['data'];
         this.risposte2 = risposte['Risposte']['data']
         let temp: Array<Number> = []
-        this.risposte2.forEach(element => {
-          this.numLike2.push(element.num_like)
-          this.numDislike2.push(element.num_dislike)
 
+        for (let index = 0; index < this.risposte2.length; index++) {
+          this.numLike2[this.risposte2[index].codice_risposta]=(this.risposte2[index].num_like)
+          this.numDislike2[this.risposte2[index].codice_risposta]=(this.risposte2[index].num_dislike)
 
-          this.apiService.controllaGiaValutatoRisposta(this.currentMailUser, element.codice_risposta).then((data) => {
-            this.votoType.push(data[0]['data'][0].tipo_like)
+          this.apiService.controllaGiaValutatoRisposta(this.currentMailUser, this.risposte2[index].codice_risposta).then((data) => {
+            if(data[0]['data']==null)this.votoType.push(0)
+            else
+            this.votoType[data[0]['data'][0]['cod_risposta']]=(data[0]['data'][0].tipo_like)
+          this.cod_valutazione[data[0]['data'][0]['cod_risposta']]=data[0]['data'][0]['codice_valutazione']
+          console.log(this.cod_valutazione)
+
+            console.log(this.votoType)
+            console.log(data[0]['data'][0])
+            console.log(data[0]['data'][0].tipo_like,this.risposte2[index].codice_risposta)
+
           })
-        });
+          
+        }
+     
 
         for (let i = 0; i < this.risposte.length; i++) {
 
@@ -373,6 +386,7 @@ export class VisualizzaDomandaPage implements OnInit {
     if (this.deadlineCheck()) {
       this.toast('Non puoi più modificare la tua risposta, la domanda è scaduta!', 'danger');
 
+
     } else {
       this.inserisciRisposta();
       this.rispostaVisible = false;
@@ -385,6 +399,7 @@ export class VisualizzaDomandaPage implements OnInit {
   async inserisciRisposta() {
     if (this.ospite === true) this.alertOspite();
     else {
+
 
       if (this.checkIfThereAreItalianBadWords(this.descrizione_risposta) || this.checkIfThereAreEnglishBadWords(this.descrizione_risposta)) {
         this.toast('Hai inserito una o più parole scorrette!', 'danger');
@@ -406,6 +421,7 @@ export class VisualizzaDomandaPage implements OnInit {
 
           }
         );
+
       }
     }
   }
@@ -555,42 +571,83 @@ export class VisualizzaDomandaPage implements OnInit {
     return toast.present();
   }
 
-
+  timeoutHandleLike
   votoType: Array<number> = []
-  modificaLike(i, value) {
+  modificaLike(i, value,risposta) {
     console.log('value' + value)
 
     if (value == 1) {
-      if (this.votoType[i] == 2)
+      if (this.votoType[i] == 2) {//tolgo dislike aggiungo like
         this.numDislike2[i] -= 1
-      this.votoType[i] = 1
+        this.votoType[i] = 1
+        this.apiService.togliDislike(this.risposte2[risposta].codice_risposta)
+        .then(() =>this.apiService.rimuoviValutazione(this.risposte2[risposta].codice_risposta, this.currentMailUser)
+      .then((data)=>this.apiService.modificaNumLike(this.risposte2[risposta].codice_risposta))
+          .then((res)=>this.apiService.inserisciValutazione(this.risposte2[risposta].codice_risposta, this.currentMailUser, this.votoType[i]))
+          .then(()=>  this.cod_valutazione[i]=  this.cod_valutazione[this.cod_valutazione.length ])
+
+          )
+      }
+      else {
+        this.votoType[i] = 1
+        this.apiService.modificaNumLike(this.risposte[risposta].codice_risposta).then((data) => {
+          this.apiService.inserisciValutazione(this.risposte2[risposta].codice_risposta, this.currentMailUser, this.votoType[i])
+        }).catch((err) => { })
+      }
+      //aggiungo dislike
     }
-    if (value == -1) this.votoType[i] = null
 
+    if (value == -1) {this.votoType[i] = null
+    this.apiService.rimuoviValutazione(this.risposte2[risposta].codice_risposta, this.currentMailUser).then((data)=>{
+      this.apiService.togliLike(this.risposte[risposta].codice_risposta)
+    })
+    }
+    //levo il like
+    console.log(this.risposte2)
     this.numLike2[i] = this.numLike2[i] + value || 0
-    clearTimeout(this.timeoutHandle);
-    this.timeoutHandle = setTimeout(function (vototype) {
-
+    clearTimeout(this.timeoutHandleLike);
+    console.log(this.numLike2)
+    console.log(this.numDislike2[i] + '       ', this.numLike2[i] + '' + this.votoType[i])
+    this.timeoutHandleLike = setTimeout(function (vototype) {
       console.log('sparoiserviziiiiiiiiiiiiiiiiiiiiiiiiii' + vototype)
     }
       , 700, this.votoType[i]);
 
   }
-
-  timeoutHandle
-  modificaDislike(i, value) {
+ 
+  timeoutHandleDislike
+  modificaDislike(i, value,risposta) {
     var temp = true
     console.log('value' + value)
     if (value == 1) {
-      if (this.votoType[i] == 1) this.numLike2[i] -= 1
-      this.votoType[i] = 2
+      if (this.votoType[i] == 1) {
+        this.numLike2[i] -= 1
+        this.votoType[i] = 2
+        this.apiService.togliLike(this.risposte2[risposta].codice_risposta)
+        .then(() =>this.apiService.rimuoviValutazione(this.risposte2[risposta].codice_risposta, this.currentMailUser)
+        .then(()=>this.apiService.modificaNumDislike(this.risposte2[risposta].codice_risposta))
+          .then((res)=>this.apiService.inserisciValutazione(this.risposte2[risposta].codice_risposta, this.currentMailUser, this.votoType[i]))
+          .then(()=>  {}
+          )
+            )
 
+      } else {
+        this.votoType[i] = 2
+        this.apiService.modificaNumDislike(this.risposte[risposta].codice_risposta).then((data) => {
+          this.apiService.inserisciValutazione(this.risposte2[risposta].codice_risposta, this.currentMailUser, this.votoType[i])
+        }).catch((err) => { })
+      }
     }
-    if (value == -1) this.votoType[i] = null
+    if (value == -1) {
+      this.votoType[i] = null
+      this.apiService.rimuoviValutazione(this.risposte2[risposta].codice_risposta, this.currentMailUser).then((data)=>{
+        this.apiService.togliDislike(this.risposte[risposta].codice_risposta)})
+    }
     this.numDislike2[i] += value
 
-    clearTimeout(this.timeoutHandle);
-    this.timeoutHandle = setTimeout(function (vototype) {
+
+    clearTimeout(this.timeoutHandleDislike);
+    this.timeoutHandleDislike = setTimeout(function (vototype) {
       console.log('sparoiserviziiiiiiiiiiiiiiiiiiiiiiiiii' + vototype)
     }
       , 700, this.votoType[i]);
