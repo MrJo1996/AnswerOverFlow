@@ -13,8 +13,8 @@
 <ion-content>
 
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
-    <ion-refresher-content
-    refreshingSpinner="bubbles"></ion-refresher-content></ion-refresher>
+    <ion-refresher-content refreshingSpinner="bubbles"></ion-refresher-content>
+  </ion-refresher>
 
   <div *ngIf="switch === true">
     <ion-row>
@@ -45,44 +45,48 @@
     <ion-card *ngFor="let domanda of domande_regolate, let i = index" class="cardClass">
       <ion-card-content style="padding-top: 8px; padding-left: 10px; padding-right: 10px; padding-bottom: 8px; ">
 
-                                                    <!-- OTHER USER -->
+        <!-- OTHER USER -->
 
-          <ion-toolbar *ngIf="currentMailUser!==domanda.cod_utente" style="--background:none; padding-bottom: 5px;">                                               
+        <ion-toolbar *ngIf="currentMailUser!==domanda.cod_utente" style="--background:none; padding-bottom: 5px;">
 
-            <ion-icon *ngIf="domanda.domandaChecker" class="lockClosed" slot="start" name="lock-closed-outline"></ion-icon>
-            <ion-icon *ngIf="!domanda.domandaChecker" class="lockOpen" slot="start" name="lock-open-outline"></ion-icon>
+          <ion-icon *ngIf="domanda.domandaChecker" class="lockClosed" slot="start" name="lock-closed-outline">
+          </ion-icon>
+          <ion-icon *ngIf="!domanda.domandaChecker" class="lockOpen" slot="start" name="lock-open-outline"></ion-icon>
 
-            <img (click)="clickProfilo(domanda.cod_utente)" slot="start" class="avatarClass" src="{{domanda.avatar}}">
-            <ion-text (click)="clickProfilo(domanda.cod_utente)" class="usernameClass">{{domanda.username}}</ion-text>
+          <img (click)="clickProfilo(domanda.cod_utente)" slot="start" class="avatarClass" src="{{domanda.avatar}}">
+          <ion-text (click)="clickProfilo(domanda.cod_utente)" class="usernameClass">{{domanda.username}}</ion-text>
 
-            <ion-icon class="iconClass" slot="end" name="menu" (click)="presentPopover($event,index1,domanda.cod_utente,domanda.codice_domanda)"></ion-icon>
+          <ion-icon class="iconClass" slot="end" name="menu"
+            (click)="presentPopover($event,index1,domanda.cod_utente,domanda.codice_domanda)"></ion-icon>
 
-          </ion-toolbar>
-                                                   <!-- OTHER USER -->
+        </ion-toolbar>
+        <!-- OTHER USER -->
 
-                                                   <!-- CURRENT USER -->
+        <!-- CURRENT USER -->
 
-          <ion-toolbar *ngIf="currentMailUser===domanda.cod_utente" style="--background:none; padding-bottom: 5px;"> 
-         
-          <ion-icon *ngIf="domanda.domandaChecker" class="lockClosed" slot="start" name="lock-closed-outline"></ion-icon>
+        <ion-toolbar *ngIf="currentMailUser===domanda.cod_utente" style="--background:none; padding-bottom: 5px;">
+
+          <ion-icon *ngIf="domanda.domandaChecker" class="lockClosed" slot="start" name="lock-closed-outline">
+          </ion-icon>
           <ion-icon *ngIf="!domanda.domandaChecker" class="lockOpen" slot="start" name="lock-open-outline"></ion-icon>
 
           <img (click)="clickProfiloUtente()" slot="start" class="avatarClass" src="{{domanda.avatar}}">
           <ion-text (click)="clickProfiloUtente()" class="usernameClass"> Tu </ion-text>
-          
-          <ion-icon class="iconClass" slot="end" name="menu" (click)="presentPopover($event,index1,domanda.cod_utente,domanda.codice_domanda)"></ion-icon>
 
-         </ion-toolbar>                                
-                                                  <!-- CURRENT USER -->
+          <ion-icon class="iconClass" slot="end" name="menu"
+            (click)="presentPopover($event,index1,domanda.cod_utente,domanda.codice_domanda)"></ion-icon>
+
+        </ion-toolbar>
+        <!-- CURRENT USER -->
 
         <ion-card-title class="textTitleBIG2"> {{domanda.titolo}}</ion-card-title>
 
         <ion-toolbar style="--background:none">
 
-        <ion-label style="color: primary;" class="description_text" slot="start"> {{domanda.categoria}}</ion-label>
-        <ion-label class="description_text" slot="end">{{domanda.dataeora | date: formatsDate}}</ion-label>
+          <ion-chip color="secondary" class="description_text" slot="start"> {{domanda.categoria}}</ion-chip>
+          <ion-label class="description_text" slot="end">{{domanda.dataeora | date: formatsDate}}</ion-label>
 
-      </ion-toolbar>
+        </ion-toolbar>
       </ion-card-content>
     </ion-card>
   </div>
@@ -94,42 +98,48 @@
     <ion-card *ngFor="let sondaggio of sondaggi_regolati, let i = index" class="cardClass">
       <ion-card-content style="padding-top: 8px; padding-left: 10px; padding-right: 10px; padding-bottom: 8px; ">
 
-                                                   <!-- OTHER USER -->
+        <!-- OTHER USER -->
 
-          <ion-toolbar *ngIf="currentMailUser!==sondaggio.cod_utente" style="--background:none; padding-bottom: 5px;">    
+        <ion-toolbar *ngIf="currentMailUser!==sondaggio.cod_utente" style="--background:none; padding-bottom: 5px;">
 
-            <ion-icon *ngIf="sondaggio.sondaggioChecker" class="lockClosed" slot="start" name="lock-closed-outline"></ion-icon>
-            <ion-icon *ngIf="!sondaggio.sondaggioChecker" class="lockOpen" slot="start" name="lock-open-outline"></ion-icon>
+          <ion-icon *ngIf="sondaggio.sondaggioChecker" class="lockClosed" slot="start" name="lock-closed-outline">
+          </ion-icon>
+          <ion-icon *ngIf="!sondaggio.sondaggioChecker" class="lockOpen" slot="start" name="lock-open-outline">
+          </ion-icon>
 
-            <img (click)="clickProfilo(sondaggio.cod_utente)" slot="start" class="avatarClass" src="{{sondaggio.avatar}}">
-            <ion-text (click)="clickProfilo(sondaggio.cod_utente)" class="usernameClass">{{sondaggio.username}}</ion-text>
+          <img (click)="clickProfilo(sondaggio.cod_utente)" slot="start" class="avatarClass" src="{{sondaggio.avatar}}">
+          <ion-text (click)="clickProfilo(sondaggio.cod_utente)" class="usernameClass">{{sondaggio.username}}</ion-text>
 
-          <ion-icon class="iconClass" slot="end" name="menu" (click)="presentPopover($event,index2,sondaggio.cod_utente,sondaggio.codice_sondaggio)"></ion-icon>
+          <ion-icon class="iconClass" slot="end" name="menu"
+            (click)="presentPopover($event,index2,sondaggio.cod_utente,sondaggio.codice_sondaggio)"></ion-icon>
 
-          </ion-toolbar>
-                                                   <!-- OTHER USER -->
+        </ion-toolbar>
+        <!-- OTHER USER -->
 
-                                                   <!-- CURRENT USER -->
+        <!-- CURRENT USER -->
 
-        <ion-toolbar *ngIf="currentMailUser===sondaggio.cod_utente" style="--background:none; padding-bottom: 5px;">    
+        <ion-toolbar *ngIf="currentMailUser===sondaggio.cod_utente" style="--background:none; padding-bottom: 5px;">
 
-          <ion-icon *ngIf="sondaggio.sondaggioChecker" class="lockClosed" slot="start" name="lock-closed-outline"></ion-icon>
-          <ion-icon *ngIf="!sondaggio.sondaggioChecker" class="lockOpen" slot="start" name="lock-open-outline"></ion-icon>
+          <ion-icon *ngIf="sondaggio.sondaggioChecker" class="lockClosed" slot="start" name="lock-closed-outline">
+          </ion-icon>
+          <ion-icon *ngIf="!sondaggio.sondaggioChecker" class="lockOpen" slot="start" name="lock-open-outline">
+          </ion-icon>
 
           <img (click)="clickProfiloUtente()" slot="start" class="avatarClass" src="{{sondaggio.avatar}}">
           <ion-text (click)="clickProfiloUtente()" class="usernameClass"> Tu </ion-text>
-      
-          <ion-icon class="iconClass" slot="end" name="menu" (click)="presentPopover($event,index2,sondaggio.cod_utente,sondaggio.codice_sondaggio)"></ion-icon>
 
-        </ion-toolbar>                                
-                                                  <!-- CURRENT USER -->
+          <ion-icon class="iconClass" slot="end" name="menu"
+            (click)="presentPopover($event,index2,sondaggio.cod_utente,sondaggio.codice_sondaggio)"></ion-icon>
+
+        </ion-toolbar>
+        <!-- CURRENT USER -->
 
         <ion-card-title class="textTitleBIG2"> {{sondaggio.titolo}}</ion-card-title>
 
         <ion-toolbar style="--background:none">
 
-        <ion-label class="description_text" slot="start"> {{sondaggio.categoria}}</ion-label>
-        <ion-label class="description_text" slot="end">{{sondaggio.dataeora | date: formatsDate}}</ion-label>
+          <ion-chip color="secondary" class="description_text" slot="start"> {{sondaggio.categoria}}</ion-chip>
+          <ion-label class="description_text" slot="end">{{sondaggio.dataeora | date: formatsDate}}</ion-label>
 
         </ion-toolbar>
 

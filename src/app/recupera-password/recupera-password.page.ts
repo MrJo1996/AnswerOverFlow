@@ -21,7 +21,8 @@ export class RecuperaPasswordPage implements OnInit {
 
   ngOnInit() {
     this.menuCtrl.enable(false);
-    //disable scroll (anche su ios)
+    
+    //disabilita scroll (anche su ios)
     var fixed = document.getElementById('fixed');
 
     fixed.addEventListener('touchmove', function (e) {
@@ -49,6 +50,7 @@ export class RecuperaPasswordPage implements OnInit {
     toast.style.fontSize = '20px';
     toast.color = 'danger';
     toast.style.textAlign = 'center';
+    
     document.body.appendChild(toast);
     return toast.present();
   }
@@ -63,9 +65,6 @@ export class RecuperaPasswordPage implements OnInit {
       this.result = this.service.postService(postData, this.url).then(
         (data) => {
           this.request = data;
-          console.log(data);
-        }, (err) => {
-          console.log(err.message);
         });
       this.goToConfirm();
     }
