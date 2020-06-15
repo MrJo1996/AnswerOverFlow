@@ -33,7 +33,6 @@ export class VisualizzaDomandaPage implements OnInit {
   descrizioneView: any;
   cod_preferita: any;
 
-
   risposte = new Array();
   //profiliUtentiRisposte = new Array();
   descrizioneRispostaView;
@@ -56,13 +55,14 @@ export class VisualizzaDomandaPage implements OnInit {
 
   timerView2;
 
-
+  ospite;
   giorni;
   ore;
   minuti;
   secondi;
 
   valutazioni = new Array();
+
 
   risposte2
   constructor(
@@ -83,7 +83,7 @@ export class VisualizzaDomandaPage implements OnInit {
     //this.storage.get('utente').then(data => { this.currentMailUser = data.email });
     this.visualizzaDomanda();
     this.showRisposte();
-
+    this.controllaOspite();
     this.allVisible = true;
 
   }
@@ -97,14 +97,7 @@ export class VisualizzaDomandaPage implements OnInit {
       this.toastModificaDomandaScaduta();
     }
     else {
-      //Visualizza il frame di caricamento
-      const loading = document.createElement('ion-loading');
-      loading.cssClass = 'loading';
-      loading.spinner = 'crescent';
-      loading.duration = 5000;
-      document.body.appendChild(loading);
-      loading.present();
-      //this.router.navigate(['modifica-domanda']);
+      this.dataService.loadingView(3000);//visualizza il frame di caricamento
       this.navCtrl.navigateForward(['modifica-domanda']);
       this.doRefresh(event);
     }
@@ -152,14 +145,7 @@ export class VisualizzaDomandaPage implements OnInit {
             console.log('domanda eliminata');
             this.showDeleteToast();
             this.cancellaDomanda();
-            //Visualizza il frame di caricamento
-            const loading = document.createElement('ion-loading');
-            loading.cssClass = 'loading';
-            loading.spinner = 'crescent';
-            loading.duration = 3500;
-            document.body.appendChild(loading);
-            loading.present();
-            //this.router.navigate(['home']);        
+            this.dataService.loadingView(5000);//visualizza il frame di caricamento        
             this.navCtrl.navigateBack(['home']);
           }
         },
@@ -175,6 +161,48 @@ export class VisualizzaDomandaPage implements OnInit {
     });
     await alert.present();
   }
+
+
+  async popUpEliminaRisposta(codice_risposta) {
+    const alert = await this.alertController.create({
+      header: 'Sei sicuro di voler eliminare questa risposta?',
+      buttons: [
+        {
+          text: 'Si',
+          handler: () => {
+            console.log('risposta eliminata');
+            this.showDeleteRispostaToast();
+            this.cancellaRisposta(codice_risposta);
+            //Visualizza il frame di caricamento
+            const loading = document.createElement('ion-loading');
+            loading.cssClass = 'loading';
+            loading.spinner = 'crescent';
+            loading.duration = 3500;
+            document.body.appendChild(loading);
+            
+            //this.router.navigate(['home']);        
+              for(let j = 0; j<this.risposte.length; j++){
+                  if(this.risposte[j].codice_risposta == codice_risposta){
+                    this.risposte.splice(j, 1);
+              
+                  }
+              }
+          }
+        },
+        {
+          text: 'No',
+          role: 'cancel',
+          //cssClass: 'secondary',
+          handler: () => {
+            console.log('eliminazione annullata');
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+
   async showRisposte() {
     this.codice_domanda = this.dataService.codice_domanda;
     this.apiService.getRispostePerDomanda(this.codice_domanda).then(
@@ -192,9 +220,6 @@ export class VisualizzaDomandaPage implements OnInit {
             this.votoType.push(data[0]['data'][0].tipo_like)
             console.log(data)
           })
-
-
-
         });
 
         for (let i = 0; i < this.risposte.length; i++) {
@@ -272,14 +297,23 @@ export class VisualizzaDomandaPage implements OnInit {
   async cancellaDomanda() {
     this.apiService.rimuoviDomanda(this.codice_domanda).then(
       (risultato) => {
-        //console.log('eliminata');
       },
       (rej) => {
-        //console.log("C'è stato un errore durante l'eliminazione");
+  
       }
     );
   }
 
+
+  
+  async cancellaRisposta(codice_risposta) {
+    this.apiService.rimuoviRisposta( codice_risposta).then(
+      (risultato) => {
+      },
+      (rej) => {
+      }
+    );
+  }
 
 
   async getUserDomanda() {
@@ -296,14 +330,7 @@ export class VisualizzaDomandaPage implements OnInit {
   }
 
   goback() {
-    //Visualizza il frame di caricamento
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 3500;
-    document.body.appendChild(loading);
-    loading.present();
-
+    this.dataService.loadingView(5000);//visualizza il frame di caricamento
     this.navCtrl.pop();
   }
 
@@ -343,13 +370,15 @@ export class VisualizzaDomandaPage implements OnInit {
 
     this.inserisciRisposta();
     this.rispostaVisible = false;
-
+    
     this.doRefresh(event);
   }
 
 
 
   async inserisciRisposta() {
+    if(this.ospite === true) this.alertOspite();
+    else{
     if (this.checkIfThereAreItalianBadWords(this.descrizione_risposta) || this.checkIfThereAreEnglishBadWords(this.descrizione_risposta)) {
       this.toastParolaScoretta();
     } else if (this.stringLengthChecker(this.descrizione_risposta)) {
@@ -365,10 +394,8 @@ export class VisualizzaDomandaPage implements OnInit {
       );
 
       this.showModifyToast();
-    } else {
-      this.alertOspite(); 
-    }
-
+    } 
+  }
   }
 
 
@@ -421,6 +448,11 @@ export class VisualizzaDomandaPage implements OnInit {
       this.rispostaCliccata = risposta;
 
     }
+  }
+
+  eliminaRisposta(risposta){
+      this.popUpEliminaRisposta(risposta.codice_risposta);
+
   }
 
   checkIfThereAreEnglishBadWords(string: string): boolean {
@@ -523,6 +555,18 @@ export class VisualizzaDomandaPage implements OnInit {
   async showDeleteToast() {
     const toast = document.createElement('ion-toast');
     toast.message = 'Domanda eliminata con successo!';
+    toast.duration = 2000;
+    toast.position = "top";
+    toast.style.fontSize = '20px';
+    toast.color = 'success';
+    toast.style.textAlign = 'center';
+    document.body.appendChild(toast);
+    return toast.present();
+  }
+
+  async showDeleteRispostaToast() {
+    const toast = document.createElement('ion-toast');
+    toast.message = 'Risposta eliminata con successo!';
     toast.duration = 2000;
     toast.position = "top";
     toast.style.fontSize = '20px';
@@ -794,14 +838,7 @@ export class VisualizzaDomandaPage implements OnInit {
   }
 
   clickProfilo(cod_utente) {
-    //Visualizza il frame di caricamento
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 3000;
-    document.body.appendChild(loading);
-    loading.present();
-
+    this.dataService.loadingView(5000);//visualizza il frame di caricamento
     this.dataService.setEmailOthers(cod_utente);
     console.log(this.dataService.setEmailOthers);
     // this.router.navigate(['/visualizza-profilo']);
@@ -829,14 +866,7 @@ export class VisualizzaDomandaPage implements OnInit {
 
 
   goChat() {
-    //Visualizza il frame di caricamento
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 2000;
-    document.body.appendChild(loading);
-    loading.present();
-
+    this.dataService.loadingView(5000);//visualizza il frame di caricamento
     this.dataService.setEmailOthers(this.domandaMailUser);
     this.navCtrl.navigateForward(['/chat'])
 
@@ -943,14 +973,6 @@ export class VisualizzaDomandaPage implements OnInit {
             this.storage.set("session", false);
             this.storage.set("utente", null);
             this.dataService.setSession(false);
-            //Visualizza il frame di caricamento
-            const loading = document.createElement('ion-loading');
-            loading.cssClass = 'loading';
-            loading.spinner = 'crescent';
-            loading.duration = 2000;
-            document.body.appendChild(loading);
-            loading.present();
-
             this.navCtrl.navigateRoot("login");
 
             setTimeout(() => {
@@ -963,6 +985,14 @@ export class VisualizzaDomandaPage implements OnInit {
       ],
     });
     await alert.present();
+  }
+  controllaOspite(){
+    this.storage.get("session").then((data) => {
+     if(data === false)
+     this.ospite = true;
+     else
+     this.ospite = false;
+    });
   }
 
 }

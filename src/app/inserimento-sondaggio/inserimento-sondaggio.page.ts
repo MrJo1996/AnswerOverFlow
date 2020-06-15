@@ -96,12 +96,11 @@ export class InserimentoSondaggioPage implements OnInit {
     this.router.navigate(["proponi-categoria"]);
   }
   goHome() {
-    this.loadingView();
+    this.dataService.loadingView(5000);//visualizza il frame di caricamento
     this.router.navigate(["home"]);
   }
   backButton() {
-    this.loadingView();
-
+    this.dataService.loadingView(5000);//visualizza il frame di caricamento
     this.navCtrl.back();
   }
 
@@ -410,15 +409,5 @@ export class InserimentoSondaggioPage implements OnInit {
 
   openMenu() {
     this.menuCtrl.open();
-  }
-
-  loadingView() {
-    //visualizza frame caricamento
-    const loading = document.createElement("ion-loading");
-    loading.cssClass = "loading";
-    loading.spinner = "crescent";
-    loading.duration = 3500;
-    document.body.appendChild(loading);
-    loading.present();
   }
 }

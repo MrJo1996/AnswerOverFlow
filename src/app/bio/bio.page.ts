@@ -31,6 +31,7 @@ export class BioPage implements OnInit {
 
 
   ngOnInit() {
+    this.dataService.loadingView(2000);//visualizza il frame di caricamento
     this.menuCtrl.enable(false);
     this.utente = this.dataService.utente;
   }
@@ -103,12 +104,7 @@ export class BioPage implements OnInit {
     } 
 
   async postRegistrazione() {
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 2000;
-    document.body.appendChild(loading);
-    loading.present();
+    this.dataService.loadingView(3000);//visualizza il frame di caricamento
 
     this.utente = this.dataService.utente;
     console.log(this.utente)

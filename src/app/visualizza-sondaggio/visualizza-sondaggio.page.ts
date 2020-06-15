@@ -45,6 +45,8 @@ export class VisualizzaSondaggioPage implements OnInit {
   timerView2;
   dataeoraView
 
+  ospite;
+
   numeroScelta;
   formatsDate: string[] = [
     'd MMM y, H:mm'];
@@ -73,9 +75,7 @@ export class VisualizzaSondaggioPage implements OnInit {
     this.visualizzaSondaggioSelezionato();
     this.visualizzaScelte();
     this.giaVotato();
-
-
-
+    this.controllaOspite();
 
     if (this.distanceTimer < 0)
       this.isSondaggioActive = false;
@@ -97,13 +97,7 @@ export class VisualizzaSondaggioPage implements OnInit {
       this.toastModificaSondaggioCiSonoVoti();
     }
     else {
-      const loading = document.createElement('ion-loading');
-      loading.cssClass = 'loading';
-      loading.spinner = 'crescent';
-      loading.duration = 1500;
-      document.body.appendChild(loading);
-      loading.present();
-
+      this.dataService.loadingView(3000);//visualizza il frame di caricamento
       this.navCtrl.navigateForward(['/modifica-sondaggio']);
     }
   }
@@ -262,14 +256,7 @@ export class VisualizzaSondaggioPage implements OnInit {
           }, {
             text: 'Si',
             handler: () => {
-
-              const loading = document.createElement('ion-loading');
-              loading.cssClass = 'loading';
-              loading.spinner = 'crescent';
-              loading.duration = 3000;
-              document.body.appendChild(loading);
-              loading.present();
-
+              this.dataService.loadingView(5000);//visualizza il frame di caricamento
               this.navCtrl.pop();
             }
           }
@@ -279,13 +266,7 @@ export class VisualizzaSondaggioPage implements OnInit {
       await alert.present();
     }
     else {
-      const loading = document.createElement('ion-loading');
-      loading.cssClass = 'loading';
-      loading.spinner = 'crescent';
-      loading.duration = 3000;
-      document.body.appendChild(loading);
-      loading.present();
-
+      this.dataService.loadingView(5000);//visualizza il frame di caricamento
       this.navCtrl.back();
     }
   }
@@ -312,7 +293,7 @@ export class VisualizzaSondaggioPage implements OnInit {
         this.index_scelta_selezionata = i;
         console.log();
       }
-    } this.alertOspite();
+    } if(this.ospite === true) this.alertOspite();
   }
 
   async confermaVoto(scelta) {
@@ -531,23 +512,16 @@ export class VisualizzaSondaggioPage implements OnInit {
   }
 
   goChat() {
+    this.dataService.loadingView(3000);//visualizza il frame di caricamento
     this.dataService.setEmailOthers(this.sondaggioUser);
-    //Visualizza il frame di caricamento
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 1500;
-    document.body.appendChild(loading);
-    loading.present();
-
     this.navCtrl.navigateForward(['/chat'])
 
   }
 
 
   clickProfilo(cod_utente) {
+    this.dataService.loadingView(5000);//visualizza il frame di caricamento
     this.dataService.setEmailOthers(cod_utente);
-
     this.navCtrl.navigateForward(['/visualizza-profilo']);
   }
 
@@ -673,14 +647,6 @@ export class VisualizzaSondaggioPage implements OnInit {
             this.storage.set("session", false);
             this.storage.set("utente", null);
             this.dataService.setSession(false);
-            //Visualizza il frame di caricamento
-            const loading = document.createElement('ion-loading');
-            loading.cssClass = 'loading';
-            loading.spinner = 'crescent';
-            loading.duration = 2000;
-            document.body.appendChild(loading);
-            loading.present();
-
             this.navCtrl.navigateRoot("login");
 
             setTimeout(() => {
@@ -693,5 +659,14 @@ export class VisualizzaSondaggioPage implements OnInit {
       ],
     });
     await alert.present();
+  }
+
+  controllaOspite(){
+    this.storage.get("session").then((data) => {
+     if(data === false)
+     this.ospite = true;
+     else
+     this.ospite = false;
+    });
   }
 }

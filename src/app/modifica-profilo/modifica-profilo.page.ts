@@ -126,14 +126,7 @@ export class ModificaProfiloPage implements OnInit {
   }
 
   selectAvatar() {
-    
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 3000;
-    document.body.appendChild(loading);
-    loading.present();
-
+    this.dataService.loadingView(5000);//visualizza il frame di caricamento
     this.dataService.settaTemporaryAvatar("clicked");
     this.router.navigate(["/modifica-avatar"]);
   }

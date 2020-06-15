@@ -149,14 +149,6 @@ export class AppComponent implements OnInit {
             this.storage.clear(); //pulisce tutto storage
 
             this.dataService.setSession(false);
-            //Visualizza il frame di caricamento
-            const loading = document.createElement('ion-loading');
-            loading.cssClass = 'loading';
-            loading.spinner = 'crescent';
-            loading.duration = 2000;
-            document.body.appendChild(loading);
-            loading.present();
-
             this.router.navigate(["login"]);
             this.setupPush()
 
@@ -192,14 +184,6 @@ export class AppComponent implements OnInit {
             this.storage.set("session", false);
             this.storage.set("utente", null);
             this.dataService.setSession(false);
-            //Visualizza il frame di caricamento
-            const loading = document.createElement('ion-loading');
-            loading.cssClass = 'loading';
-            loading.spinner = 'crescent';
-            loading.duration = 2000;
-            document.body.appendChild(loading);
-            loading.present();
-
             this.router.navigate(["login"]);
 
             setTimeout(() => {
@@ -296,14 +280,7 @@ export class AppComponent implements OnInit {
         case "app":
           this.selectedIndex = index;
           if (this.appPages[index].title === "Home" || this.appPages[index].title === "Ricerca") {
-            //Visualizza il frame di caricamento
-            const loading = document.createElement('ion-loading');
-            loading.cssClass = 'loading';
-            loading.spinner = 'crescent';
-            loading.duration = 3500;
-            document.body.appendChild(loading);
-            loading.present();
-
+            this.dataService.loadingView(5000);//visualizza il frame di caricamento
             this.router.navigateByUrl(this.appPages[index].url);
           } else {
             this.alertOspite();
@@ -315,14 +292,6 @@ export class AppComponent implements OnInit {
           this.selectedIndexAccount = index;
 
           if (this.accountPages[index].title === "Login") {
-            //Visualizza il frame di caricamento
-            const loading = document.createElement('ion-loading');
-            loading.cssClass = 'loading';
-            loading.spinner = 'crescent';
-            loading.duration = 1500;
-            document.body.appendChild(loading);
-            loading.present();
-
             this.router.navigateByUrl(this.accountPages[index].url);
           } else {
             this.alertOspite();
@@ -353,7 +322,8 @@ export class AppComponent implements OnInit {
         } else { //  HOME
           //SET VAR AL SERVICE 
           this.dataService.setEmail_Utente(utente.email);
-
+          
+          this.dataService.loadingView(5000);//visualizza il frame di caricamento
           this.router.navigate(['home']);
           this.toast("Bentornato " + utente.username + "!", "success");
         }
@@ -387,8 +357,8 @@ export class AppComponent implements OnInit {
   goToProfile() {
     if (this.utenteLogged) {
       this.dataService.emailOthers = "undefined";
-      this.router.navigate(["visualizza-profiloutente"]);
       this.menuCtrl.close();
+      this.router.navigate(["visualizza-profiloutente"]);
     } else {
       this.alertOspite();
     }
@@ -396,14 +366,6 @@ export class AppComponent implements OnInit {
 
   goToInfo() {
     this.menuCtrl.close();
-    //Visualizza il frame di caricamento
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 1500;
-    document.body.appendChild(loading);
-    loading.present();
-
     this.router.navigate(["info"]);
   }
 

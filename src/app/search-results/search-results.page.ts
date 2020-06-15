@@ -40,13 +40,7 @@ export class SearchResultsPage implements OnInit {
   constructor(private dataService: DataService, private menuCtrl: MenuController, private router: Router, private apiService: ApiService, private storage: Storage) { }
 
   ngOnInit() {
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 3500;
-    document.body.appendChild(loading);
-    loading.present();
-
+    this.dataService.loadingView(5000);//visualizza il frame di caricamento
     this.storage.get('utente').then(data => { this.currentMailUser = data.email });
   }
 
@@ -246,12 +240,7 @@ export class SearchResultsPage implements OnInit {
   ricerca() {
     console.log("Input: ", this.keywordToSearch);
 
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 3000;
-    document.body.appendChild(loading);
-    loading.present();
+    this.dataService.loadingView(5000);//visualizza il frame di caricamento
 
     this.dataService.setKeywordToSearch(this.keywordToSearch);
     this.isFiltered = false;
@@ -275,13 +264,6 @@ export class SearchResultsPage implements OnInit {
   }
 
   clickFilter() {
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 2000;
-    document.body.appendChild(loading);
-    loading.present();
-
     this.resetVars();
 /*     this.router.navigate(['/advanced-search']);
  */
@@ -290,13 +272,7 @@ export class SearchResultsPage implements OnInit {
   }
 
   clickUtente(cod_utente) {
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 3500;
-    document.body.appendChild(loading);
-    loading.present();
-
+    this.dataService.loadingView(5000);//visualizza il frame di caricamento
     this.dataService.setEmailOthers(cod_utente);
     console.log(this.dataService.setEmailOthers);
 
@@ -306,13 +282,7 @@ export class SearchResultsPage implements OnInit {
   }
 
   clickDomanda(domanda_codice) {
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 3500;
-    document.body.appendChild(loading);
-    loading.present();
-
+    this.dataService.loadingView(5000);//visualizza il frame di caricamento
     this.dataService.setCod_domanda(domanda_codice);
 /*     this.dataService.setFilters(this.filters['tipo'], this.filters['codCategoria'], this.filters['status'], this.filters['isFiltered']);
  */
@@ -322,13 +292,7 @@ export class SearchResultsPage implements OnInit {
   }
 
   clickSondaggio(codice_sondaggio) {
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 3500;
-    document.body.appendChild(loading);
-    loading.present();
-
+    this.dataService.loadingView(5000);//visualizza il frame di caricamento
     this.dataService.codice_sondaggio = codice_sondaggio;
 /*     this.dataService.setFilters(this.filters['tipo'], this.filters['codCategoria'], this.filters['status'], this.filters['isFiltered']);
  */

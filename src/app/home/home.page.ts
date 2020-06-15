@@ -39,6 +39,7 @@ export class HomePage implements OnInit {
     private update: ChangeDetectorRef) { }
 
   ionViewWillEnter() {
+    this.dataService.loadingView(5000);//visualizza il frame di caricamento
     this.menuCtrl.enable(true);
     this.menuSet.checkUserLogged();
     this.visualizzaDomandaHome();
@@ -209,36 +210,26 @@ export class HomePage implements OnInit {
     loading.duration = 3500;
     document.body.appendChild(loading);
     loading.present();
+    this.dataService.loadingView(5000);//visualizza il frame di caricamento
     this.dataService.setCod_domanda(domanda_codice);
     this.router.navigate(['/visualizza-domanda']);
   }
 
   clickSondaggio(codice_sondaggio) {
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 3000;
-    document.body.appendChild(loading);
-    loading.present();
-
+    this.dataService.loadingView(5000);//visualizza il frame di caricamento
     this.dataService.codice_sondaggio = codice_sondaggio;
     this.router.navigate(['/visualizza-sondaggio']);
   }
 
   clickProfilo(cod_utente) {
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 3500;
-    document.body.appendChild(loading);
-    loading.present();
-
+    this.dataService.loadingView(5000);//visualizza il frame di caricamento
     this.dataService.setEmailOthers(cod_utente);
     console.log(this.dataService.setEmailOthers);
     this.router.navigate(['/visualizza-profilo']);
   }
 
   clickProfiloUtente() {
+    this.dataService.loadingView(5000);//visualizza il frame di caricamento
     this.router.navigate(['/visualizza-profiloutente']);
   }
 

@@ -15,7 +15,6 @@ export class DataService {
   emailOthers: string;
   codice_chat = null;
   codice_risposta;
-  selezione_cat;
   nuova_proposta;
   nome;
   cognome;
@@ -195,5 +194,17 @@ export class DataService {
   }
   getIndex2(){
     return this.index2;
+  }
+
+  //Funzione per il caricamento delle pagine e dei relativi dati
+  loadingView(time: number){
+    const loading = document.createElement('ion-loading');
+    
+    loading.cssClass = 'loading';
+    loading.spinner = 'crescent';
+    loading.duration = time;
+
+    document.body.appendChild(loading);
+    loading.present();
   }
 }

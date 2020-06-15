@@ -263,24 +263,12 @@ export class InserisciDomandaPage implements OnInit {
     this.router.navigate(['proponi-categoria']);
   }
   goHome() {
-
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 3500;
-    document.body.appendChild(loading);
-    loading.present();
+    this.dataService.loadingView(5000);//visualizza il frame di caricamento
     this.router.navigate(['home']);
 
   }
   goBack() {
-
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 3500;
-    document.body.appendChild(loading);
-    loading.present();
+    this.dataService.loadingView(5000);//visualizza il frame di caricamento
     this.navCtrl.back();
 
   }
