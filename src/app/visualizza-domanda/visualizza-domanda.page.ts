@@ -56,7 +56,10 @@ export class VisualizzaDomandaPage implements OnInit {
   secondi;
 
   valutazioni = new Array();
-
+  
+  formatsDate: string[] = [
+    'd-MM-y, H:mm'
+  ];
 
   risposte2
   constructor(
@@ -524,7 +527,7 @@ export class VisualizzaDomandaPage implements OnInit {
     return toast.present();
   }
 
-  timeoutHandleLike
+
   votoType: Array<number> = []
   modificaLike(i, value,risposta) {
   
@@ -557,15 +560,11 @@ export class VisualizzaDomandaPage implements OnInit {
 
 
     this.numLike2[i] = this.numLike2[i] + value || 0
-    clearTimeout(this.timeoutHandleLike);
-    this.timeoutHandleLike = setTimeout(function (vototype) {
- 
-    }
-      , 700, this.votoType[i]);
+  
 
   }
  
-  timeoutHandleDislike
+
   modificaDislike(i, value,risposta) {
     var temp = true
     if (value == 1) {
@@ -594,12 +593,6 @@ export class VisualizzaDomandaPage implements OnInit {
     }
     this.numDislike2[i] += value
 
-
-    clearTimeout(this.timeoutHandleDislike);
-    this.timeoutHandleDislike = setTimeout(function (vototype) {
-  
-    }
-      , 700, this.votoType[i]);
 
   }
   cercaValutazione(cod_utente, risposte, i) {
@@ -725,8 +718,7 @@ export class VisualizzaDomandaPage implements OnInit {
 
   ionViewDidLeave() {
     clearInterval(this.interval);
-    clearInterval(this.timeoutHandleLike);
-    clearInterval(this.timeoutHandleDislike);
+
   }
 
 
@@ -735,8 +727,7 @@ export class VisualizzaDomandaPage implements OnInit {
   }
   ionViewDidEnter() {
     clearInterval(this.interval);
-    clearInterval(this.timeoutHandleLike);
-    clearInterval(this.timeoutHandleDislike);
+
     this.ngOnInit();
 
   }

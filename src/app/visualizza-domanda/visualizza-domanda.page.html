@@ -3,17 +3,21 @@
     <ion-button (click)="goback()" slot="start" expand="block" fill="clear" class="msg-btn">
       <ion-icon color="primary" slot="start" slot="icon-only" name="arrow-back-outline"></ion-icon>
     </ion-button>
-    <ion-title *ngIf="currentMailUser===domandaMailUser">La tua domanda</ion-title>
-    <ion-title *ngIf="currentMailUser!==domandaMailUser">Dettagli della domanda</ion-title>
+    <ion-title style="text-align: center;" class = "textTitle" *ngIf="currentMailUser===domandaMailUser">La tua domanda</ion-title>
+    <ion-title style="text-align: center;" class = "textTitle" *ngIf="currentMailUser!==domandaMailUser">Dettagli della domanda</ion-title>
   </ion-toolbar>
 </ion-header>
 
 
 
-<ion-content  style="--background: url('/assets/img/provaBack.png') no-repeat center center / cover;">
+<ion-content style="--background: url('/assets/img/provaBack.png') no-repeat center center / cover;">
+
+  <!---------Refresher--------->
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
+
+  <!----------Pulsante fab per l'inserimento della risposta--------->
   <ion-fab *ngIf="currentMailUser !== domandaMailUser" vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button (click)="setRispostaVisible()">
       <ion-icon *ngIf="rispostaVisible === false" name="add"></ion-icon>
@@ -21,6 +25,7 @@
     </ion-fab-button>
   </ion-fab>
 
+  <!----------Fab per eliminare o modificare una domanda---------->
   <ion-fab *ngIf="currentMailUser === domandaMailUser" horizontal="end" vertical="top" slot="fixed" edge>
     <ion-fab-button>
       <ion-icon name="settings"></ion-icon>
@@ -36,6 +41,8 @@
     </ion-fab-list>
   </ion-fab>
 
+
+  <!------------Domanda--------->
   <ion-card class="backgrounds">
 
 
@@ -72,10 +79,6 @@
       <p class="textSimple">{{descrizioneView}}</p>
 
       <ion-toolbar>
-        <!-- <ion-icon name="calendar-outline" slot = start class = "calendar_icon_style"></ion-icon>
-              <ion-label class= "description_text" slot = "start" >{{dataeoraView}}</ion-label>
-              <ion-icon name="list" slot = "start"  class = "icon_list_style"></ion-icon>
-              <ion-label class= "description_text" slot = "start" >{{categoria}}</ion-label> -->
         <div>
           <ion-chip color="secondary">
             <ion-icon name="calendar-outline"></ion-icon>
@@ -90,13 +93,14 @@
           </ion-chip>
         </div>
 
-        <ion-icon *ngIf="currentMailUser!==domandaMailUser"  name="chatbubble-ellipses-outline" class="icons_generic_style" (click)=" goChat()" slot="end">
+        <ion-icon *ngIf="currentMailUser!==domandaMailUser" name="chatbubble-ellipses-outline"
+          class="icons_generic_style" (click)=" goChat()" slot="end">
         </ion-icon>
 
       </ion-toolbar>
     </ion-card-content>
   </ion-card>
-  
+
 
   <ion-card *ngIf="risposte.length === 0" class="backgrounds">
     <ion-card-header>
@@ -111,98 +115,114 @@
 
   </ion-card>
 
-     <ion-item-divider color = "none" *ngIf="risposte.length !== 0" class = "textTitle">
-      <ion-label  class = "textTitle"><b>Risposte ({{risposte.length}})</b></ion-label>
-     </ion-item-divider>
-        
-     
-        <ion-card *ngFor="let risposta of risposte2; let i = index" class = "backgrounds">    
-
-          <ion-card-header>
-            <ion-toolbar class="backgrounds">
-              <ion-avatar slot="start" class="icon-avatar" >
-                <img src= {{risposta.avatar}}>
-              </ion-avatar>
-              <ion-label *ngIf="currentMailUser!==risposta.cod_utente" class = "username_text_style">{{risposta.username}}</ion-label>
-              <ion-label *ngIf="currentMailUser===risposta.cod_utente " class = "username_text_style">Tu</ion-label>
-             
-             
-               <!--pulsante del like disattivato -->
-              <ion-button *ngIf=" votoType[risposta.codice_risposta] !=1 " class= "buttonLikes" (click)="modificaLike(risposta.codice_risposta,1,i)"  slot="end" expand="block" fill = "clear">
-                <ion-label slot = "end" class = "textTitleSMALL">{{numLike2[risposta.codice_risposta]}}</ion-label>
-                <ion-icon name="chevron-up-circle-outline" class="thumb_up_style" slot= "end" ></ion-icon>
-              </ion-button>
+  <ion-item-divider color="none" *ngIf="risposte.length !== 0" class="textTitle">
+    <ion-label class="textTitle"><b>Risposte ({{risposte.length}})</b></ion-label>
+  </ion-item-divider>
 
 
-              <!--pulsante del like attivato -->
-              <ion-button *ngIf="votoType[risposta.codice_risposta] === 1"  class= "buttonLikes" (click)="modificaLike(risposta.codice_risposta,-1,i)"  slot="end" expand="block" fill = "outline">
-                <ion-label slot = "end" class = "textTitleSMALL" >{{numLike2[risposta.codice_risposta]}}</ion-label>
-                <ion-icon name="chevron-up-circle-outline" class="thumb_up_style" slot= "end" ></ion-icon>
-              </ion-button>
+  <!----------Risposte---------->
 
-             
-              <!--pulsante del dislike disattivato -->
-              <ion-button *ngIf="votoType[risposta.codice_risposta] != 2 " class= "buttonLikes" (click)="modificaDislike(risposta.codice_risposta,1,i)"  slot="end" expand="block" fill = "clear">
-                <ion-label slot = "end" class = "textTitleSMALL">{{numDislike2[risposta.codice_risposta]}}</ion-label>
-                <ion-icon name="chevron-down-circle-outline" class="thumb_down_style" slot= "end" ></ion-icon>
-              </ion-button>
+  <ion-card *ngFor="let risposta of risposte2; let i = index" class="backgrounds">
 
-
-              <!--pulsante del dislike attivato -->
-              <ion-button *ngIf="votoType[risposta.codice_risposta] ===  2" class= "buttonLikes" (click)="modificaDislike(risposta.codice_risposta,-1,i)"  slot="end" expand="block" fill = "outline">
-                <ion-label slot = "end" class = "textTitleSMALL">{{numDislike2[risposta.codice_risposta]}}</ion-label>
-                <ion-icon name="chevron-down-circle-outline" class="thumb_down_style" slot= "end" ></ion-icon>
-              </ion-button>
-
-            </ion-toolbar>
-          </ion-card-header>
-          <ion-card-content >
-              <!-- <p class= "textSimple">{{risposta.descrizione}}</p> -->
-              <p readonly class= "textSimple" >{{risposta.descrizione}}</p>
-              <ion-toolbar class="backgrounds">
-    
-                <ion-icon *ngIf="currentMailUser === risposta.cod_utente" name="settings-outline" slot="start" class = "calendar_icon_style" (click)="clickRisposta(risposta, i)" (click)="popupModificaDescrizioneRisposta()"></ion-icon>
-                <ion-icon *ngIf="currentMailUser === risposta.cod_utente" name="trash-outline" slot="start"
-                class="calendar_icon_style" (click)="eliminaRisposta(risposta)" class="calendar_icon_style"></ion-icon>
-                <ion-label class= "description_text"  slot="start" ></ion-label>
-            
-              
-             <ion-button  *ngIf="currentMailUser === domandaMailUser" (click)="changeColor(risposta.codice_risposta)" slot="end" expand="block" fill = "clear">
-            <!--     <ion-icon  class="ribbon_style" *ngIf="risposta.codice_risposta!==cod_preferita" slot="start" slot="icon-only"  name="ribbon" ></ion-icon> -->
-                <ion-icon [style.color]="buttonColor" class="ribbon_style_not_pushed" *ngIf="risposta.codice_risposta!==cod_preferita" slot="end" name="ribbon" ></ion-icon>
-                <ion-icon [style.color]="buttonColorBest" class="ribbon_style" *ngIf="risposta.codice_risposta===cod_preferita"  slot="end"   name="ribbon"></ion-icon>
-              </ion-button>
-              <ion-icon [style.color]="buttonColorBest" class="ribbon_style" *ngIf="risposta.codice_risposta===cod_preferita && currentMailUser !== domandaMailUser"  slot="end"   name="ribbon"></ion-icon>
-            </ion-toolbar>
-              
-          </ion-card-content>
-
-          
-        </ion-card>
-        
-        <ion-fab vertical="bottom" horizontal="start" slot="fixed" style="opacity: 70%;">
-          <ion-fab-button size="small" (click)="openMenu()" color="light">
-            <ion-icon name="arrow-forward-circle-outline" style="opacity: 100%;"></ion-icon>
-          </ion-fab-button>
-        </ion-fab>  
-      
-
-</ion-content>    
+    <ion-card-header>
+      <ion-toolbar class="backgrounds">
+        <ion-avatar slot="start" class="icon-avatar">
+          <img src={{risposta.avatar}}>
+        </ion-avatar>
+        <ion-label *ngIf="currentMailUser!==risposta.cod_utente" class="username_text_style">{{risposta.username}}
+        </ion-label>
+        <ion-label *ngIf="currentMailUser===risposta.cod_utente " class="username_text_style">Tu</ion-label>
 
 
-<ion-footer *ngIf="rispostaVisible ">  
+        <!--pulsante del like disattivato -->
+        <ion-button *ngIf=" votoType[risposta.codice_risposta] !=1 " class="buttonLikes"
+          (click)="modificaLike(risposta.codice_risposta,1,i)" slot="end" expand="block" fill="clear">
+          <ion-label slot="end" class="textTitleSMALL">{{numLike2[risposta.codice_risposta]}}</ion-label>
+          <ion-icon name="chevron-up-circle-outline" class="thumb_up_style" slot="end"></ion-icon>
+        </ion-button>
+
+
+        <!--pulsante del like attivato -->
+        <ion-button *ngIf="votoType[risposta.codice_risposta] === 1" class="buttonLikes"
+          (click)="modificaLike(risposta.codice_risposta,-1,i)" slot="end" expand="block" fill="outline">
+          <ion-label slot="end" class="textTitleSMALL">{{numLike2[risposta.codice_risposta]}}</ion-label>
+          <ion-icon name="chevron-up-circle-outline" class="thumb_up_style" slot="end"></ion-icon>
+        </ion-button>
+
+
+        <!--pulsante del dislike disattivato -->
+        <ion-button *ngIf="votoType[risposta.codice_risposta] != 2 " class="buttonLikes"
+          (click)="modificaDislike(risposta.codice_risposta,1,i)" slot="end" expand="block" fill="clear">
+          <ion-label slot="end" class="textTitleSMALL">{{numDislike2[risposta.codice_risposta]}}</ion-label>
+          <ion-icon name="chevron-down-circle-outline" class="thumb_down_style" slot="end"></ion-icon>
+        </ion-button>
+
+
+        <!--pulsante del dislike attivato -->
+        <ion-button *ngIf="votoType[risposta.codice_risposta] ===  2" class="buttonLikes"
+          (click)="modificaDislike(risposta.codice_risposta,-1,i)" slot="end" expand="block" fill="outline">
+          <ion-label slot="end" class="textTitleSMALL">{{numDislike2[risposta.codice_risposta]}}</ion-label>
+          <ion-icon name="chevron-down-circle-outline" class="thumb_down_style" slot="end"></ion-icon>
+        </ion-button>
+
+      </ion-toolbar>
+    </ion-card-header>
+    <ion-card-content>
+      <p readonly class="textSimple">{{risposta.descrizione}}</p>
+      <ion-toolbar class="backgrounds">
+
+        <ion-icon *ngIf="currentMailUser === risposta.cod_utente" name="settings-outline" slot="start"
+          class="calendar_icon_style" (click)="clickRisposta(risposta, i)" (click)="popupModificaDescrizioneRisposta()">
+        </ion-icon>
+        <ion-icon *ngIf="currentMailUser === risposta.cod_utente" name="trash-outline" slot="start"
+          class="calendar_icon_style" (click)="eliminaRisposta(risposta)" class="calendar_icon_style"></ion-icon>
+        <ion-label class="description_text" slot="start"></ion-label>
+
+
+        <!--Bottone per selezionare la risposta migliore-->
+        <ion-button *ngIf="currentMailUser === domandaMailUser" (click)="changeColor(risposta.codice_risposta)"
+          slot="end" expand="block" fill="clear">
+          <ion-icon [style.color]="buttonColor" class="ribbon_style_not_pushed"
+            *ngIf="risposta.codice_risposta!==cod_preferita" slot="end" name="ribbon"></ion-icon>
+          <ion-icon [style.color]="buttonColorBest" class="ribbon_style"
+            *ngIf="risposta.codice_risposta===cod_preferita" slot="end" name="ribbon"></ion-icon>
+        </ion-button>
+
+        <!--Icona per la domanda migliore-->
+        <ion-icon [style.color]="buttonColorBest" class="ribbon_style"
+          *ngIf="risposta.codice_risposta===cod_preferita && currentMailUser !== domandaMailUser" slot="end"
+          name="ribbon"></ion-icon>
+      </ion-toolbar>
+
+    </ion-card-content>
+
+
+  </ion-card>
+
+  <ion-fab vertical="bottom" horizontal="start" slot="fixed" style="opacity: 70%;">
+    <ion-fab-button size="small" (click)="openMenu()" color="light">
+      <ion-icon name="arrow-forward-circle-outline" style="opacity: 100%;"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+
+</ion-content>
+
+
+<ion-footer *ngIf="rispostaVisible ">
   <ion-toolbar class="backgroundsSecondaryItem">
     <ion-row style="align-items: center;">
       <ion-col style="padding-inline-start: 10px;" size="10">
-        <ion-textarea class="message-input" [(ngModel)]="descrizione_risposta" rows="1" placeholder="Inserisci una risposta">
+        <ion-textarea class="message-input" [(ngModel)]="descrizione_risposta" rows="1"
+          placeholder="Inserisci una risposta">
         </ion-textarea>
       </ion-col>
       <ion-col size="2">
-        <ion-button (click)="clickInviaRisposta()" expand="block" fill="clear" [disabled]="testo === ''" class="msg-btn">
+        <ion-button (click)="clickInviaRisposta()" expand="block" fill="clear" [disabled]="testo === ''"
+          class="msg-btn">
           <ion-icon color="primary" name="send-outline" slot="icon-only"></ion-icon>
         </ion-button>
       </ion-col>
     </ion-row>
   </ion-toolbar>
 </ion-footer>
-
