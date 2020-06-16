@@ -17,7 +17,7 @@ import { element } from 'protractor';
 export class VisualizzaDomandaPage implements OnInit {
   numLike2: Array<number> = []
   numDislike2: Array<number> = []
-  cod_valutazione :Array<number>=[]
+  cod_valutazione: Array<number> = []
   codice_domanda;
 
   currentMailUser = "";//mail dell'utente corrente
@@ -56,7 +56,7 @@ export class VisualizzaDomandaPage implements OnInit {
   secondi;
 
   valutazioni = new Array();
-  
+
   formatsDate: string[] = [
     'd-MM-y, H:mm'
   ];
@@ -89,7 +89,7 @@ export class VisualizzaDomandaPage implements OnInit {
     this.showRisposte();
     this.controllaOspite();
 
-    this.usernameUtente =  this.dataService.getUsername();
+    this.usernameUtente = this.dataService.getUsername();
 
   }
 
@@ -145,14 +145,14 @@ export class VisualizzaDomandaPage implements OnInit {
           handler: () => {
             this.toast('Domanda eliminata con successo!', 'success');
             this.cancellaDomanda();
-            this.dataService.loadingView(5000);  
+            this.dataService.loadingView(5000);
             this.navCtrl.navigateBack(['home']);
           }
         },
         {
           text: 'No',
           role: 'cancel',
- 
+
           handler: () => {
 
           }
@@ -174,13 +174,13 @@ export class VisualizzaDomandaPage implements OnInit {
             this.cancellaRisposta(codice_risposta);
             this.dataService.loadingView(5000);
             this.ngOnInit();
-                  
+
           }
         },
         {
           text: 'No',
           role: 'cancel',
-    
+
           handler: () => {
 
           }
@@ -192,7 +192,7 @@ export class VisualizzaDomandaPage implements OnInit {
 
 
   async showRisposte() {
-    this.votoType=[]
+    this.votoType = []
     this.codice_domanda = this.dataService.codice_domanda;
     this.apiService.getRispostePerDomanda(this.codice_domanda).then(
       (risposte) => {
@@ -208,19 +208,19 @@ export class VisualizzaDomandaPage implements OnInit {
         this.numDislike2 = [];
         this.votoType = [];
         for (let index = 0; index < this.risposte2.length; index++) {
-          this.numLike2[this.risposte2[index].codice_risposta]=(this.risposte2[index].num_like)
-          this.numDislike2[this.risposte2[index].codice_risposta]=(this.risposte2[index].num_dislike)
+          this.numLike2[this.risposte2[index].codice_risposta] = (this.risposte2[index].num_like)
+          this.numDislike2[this.risposte2[index].codice_risposta] = (this.risposte2[index].num_dislike)
 
           this.apiService.controllaGiaValutatoRisposta(this.currentMailUser, this.risposte2[index].codice_risposta).then((data) => {
-            if(data[0]['data']==null)this.votoType.push(0)
+            if (data[0]['data'] == null) this.votoType.push(0)
             else
-            this.votoType[data[0]['data'][0]['cod_risposta']]=(data[0]['data'][0].tipo_like)
-          this.cod_valutazione[data[0]['data'][0]['cod_risposta']]=data[0]['data'][0]['codice_valutazione']
-        
+              this.votoType[data[0]['data'][0]['cod_risposta']] = (data[0]['data'][0].tipo_like)
+            this.cod_valutazione[data[0]['data'][0]['cod_risposta']] = data[0]['data'][0]['codice_valutazione']
+
           })
-          
+
         }
-     
+
         for (let i = 0; i < this.risposte.length; i++) {
 
           if (this.risposte[i].codice_risposta === this.cod_preferita) {
@@ -249,7 +249,7 @@ export class VisualizzaDomandaPage implements OnInit {
 
       },
       (rej) => {
-   
+
       }
     );
   }
@@ -257,7 +257,7 @@ export class VisualizzaDomandaPage implements OnInit {
   async trovaProfiliUtentiRisposte(mailUtenteRisposta, i) {
     this.apiService.getProfilo(mailUtenteRisposta).then(
       (profilo) => {
- 
+
         this.risposte[i]['avatar'] = profilo['data']['0']['avatar'];
         this.risposte[i]['username'] = profilo['data']['0']['username'];
 
@@ -347,10 +347,10 @@ export class VisualizzaDomandaPage implements OnInit {
 
   async scegliPreferita() {
     this.apiService.scegliRispostaPreferita(this.codice_domanda, this.cod_preferita).then(
-      (result) => { 
+      (result) => {
       },
       (rej) => {
-    
+
       }
     );
   }
@@ -529,17 +529,17 @@ export class VisualizzaDomandaPage implements OnInit {
 
 
   votoType: Array<number> = []
-  modificaLike(i, value,risposta) {
-  
+  modificaLike(i, value, risposta) {
+
     if (value == 1) {
       if (this.votoType[i] == 2) {
         this.numDislike2[i] -= 1
         this.votoType[i] = 1
         this.apiService.togliDislike(this.risposte2[risposta].codice_risposta)
-        .then(() =>this.apiService.rimuoviValutazione(this.risposte2[risposta].codice_risposta, this.currentMailUser)
-      .then((data)=>this.apiService.modificaNumLike(this.risposte2[risposta].codice_risposta))
-          .then((res)=>this.apiService.inserisciValutazione(this.risposte2[risposta].codice_risposta, this.currentMailUser, this.votoType[i]))
-          .then(()=>  this.cod_valutazione[i]=  this.cod_valutazione[this.cod_valutazione.length ])
+          .then(() => this.apiService.rimuoviValutazione(this.risposte2[risposta].codice_risposta, this.currentMailUser)
+            .then((data) => this.apiService.modificaNumLike(this.risposte2[risposta].codice_risposta))
+            .then((res) => this.apiService.inserisciValutazione(this.risposte2[risposta].codice_risposta, this.currentMailUser, this.votoType[i]))
+            .then(() => this.cod_valutazione[i] = this.cod_valutazione[this.cod_valutazione.length])
 
           )
       }
@@ -552,32 +552,33 @@ export class VisualizzaDomandaPage implements OnInit {
 
     }
 
-    if (value == -1) {this.votoType[i] = null
-    this.apiService.rimuoviValutazione(this.risposte2[risposta].codice_risposta, this.currentMailUser).then((data)=>{
-      this.apiService.togliLike(this.risposte[risposta].codice_risposta)
-    })
+    if (value == -1) {
+      this.votoType[i] = null
+      this.apiService.rimuoviValutazione(this.risposte2[risposta].codice_risposta, this.currentMailUser).then((data) => {
+        this.apiService.togliLike(this.risposte[risposta].codice_risposta)
+      })
     }
 
 
     this.numLike2[i] = this.numLike2[i] + value || 0
-  
+
 
   }
- 
 
-  modificaDislike(i, value,risposta) {
+
+  modificaDislike(i, value, risposta) {
     var temp = true
     if (value == 1) {
       if (this.votoType[i] == 1) {
         this.numLike2[i] -= 1
         this.votoType[i] = 2
         this.apiService.togliLike(this.risposte2[risposta].codice_risposta)
-        .then(() =>this.apiService.rimuoviValutazione(this.risposte2[risposta].codice_risposta, this.currentMailUser)
-        .then(()=>this.apiService.modificaNumDislike(this.risposte2[risposta].codice_risposta))
-          .then((res)=>this.apiService.inserisciValutazione(this.risposte2[risposta].codice_risposta, this.currentMailUser, this.votoType[i]))
-          .then(()=>  {}
-          )
+          .then(() => this.apiService.rimuoviValutazione(this.risposte2[risposta].codice_risposta, this.currentMailUser)
+            .then(() => this.apiService.modificaNumDislike(this.risposte2[risposta].codice_risposta))
+            .then((res) => this.apiService.inserisciValutazione(this.risposte2[risposta].codice_risposta, this.currentMailUser, this.votoType[i]))
+            .then(() => { }
             )
+          )
 
       } else {
         this.votoType[i] = 2
@@ -588,8 +589,9 @@ export class VisualizzaDomandaPage implements OnInit {
     }
     if (value == -1) {
       this.votoType[i] = null
-      this.apiService.rimuoviValutazione(this.risposte2[risposta].codice_risposta, this.currentMailUser).then((data)=>{
-        this.apiService.togliDislike(this.risposte[risposta].codice_risposta)})
+      this.apiService.rimuoviValutazione(this.risposte2[risposta].codice_risposta, this.currentMailUser).then((data) => {
+        this.apiService.togliDislike(this.risposte[risposta].codice_risposta)
+      })
     }
     this.numDislike2[i] += value
 
@@ -653,7 +655,7 @@ export class VisualizzaDomandaPage implements OnInit {
       if (distance < 0) {
         clearInterval(this.interval);
         document.getElementById("timeLeft").innerHTML = "Domanda scaduta.";
-        this.timerView = "OMBO TIMER,SCADUTA";
+        this.timerView = "scaduto";
       }
     }, 1000);
 
@@ -727,16 +729,15 @@ export class VisualizzaDomandaPage implements OnInit {
   }
   ionViewDidEnter() {
     clearInterval(this.interval);
-
     this.ngOnInit();
 
   }
 
 
   goChat() {
-    if(this.ospite === true){
+    if (this.ospite === true) {
       this.toast('Effettua il login per chattare con gli altri utenti!', 'danger');
-    }else{
+    } else {
       this.dataService.loadingView(5000);//visualizza il frame di caricamento
       this.dataService.setEmailOthers(this.domandaMailUser);
       this.navCtrl.navigateForward(['/chat'])
@@ -790,7 +791,7 @@ export class VisualizzaDomandaPage implements OnInit {
 
             setTimeout(() => {
               this.storage.get("session").then((data) => {
-    
+
               });
             }, 3000);
           },
@@ -809,7 +810,7 @@ export class VisualizzaDomandaPage implements OnInit {
   }
 
   setRispostaVisible() {
-  
+
     if (!this.deadlineCheck()) {
       if (this.rispostaVisible === false)
         this.rispostaVisible = true;
