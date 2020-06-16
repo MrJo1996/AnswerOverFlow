@@ -3,14 +3,17 @@
     <ion-button (click)="goback()" slot="start" expand="block" fill="clear" class="msg-btn">
       <ion-icon color="primary" slot="start" slot="icon-only" name="arrow-back-outline"></ion-icon>
     </ion-button>
-    <ion-title style="text-align: center; margin-right: 15%;" class = "textTitle" *ngIf="currentMailUser===domandaMailUser">La tua domanda</ion-title>
-    <ion-title style="text-align: center; margin-right: 15%;" class = "textTitle" *ngIf="currentMailUser!==domandaMailUser">Dettagli della domanda</ion-title>
+    <ion-title style="text-align: center; margin-right: 15%;" class="textTitle"
+      *ngIf="currentMailUser===domandaMailUser">La tua domanda</ion-title>
+    <ion-title style="text-align: center; margin-right: 15%;" class="textTitle"
+      *ngIf="currentMailUser!==domandaMailUser">Dettagli della domanda</ion-title>
   </ion-toolbar>
 </ion-header>
 
 
 
-<ion-content style="--background: url('/assets/img/provaBack.png') no-repeat center center / cover; --padding-bottom: 40px;">
+<ion-content
+  style="--background: url('/assets/img/provaBack.png') no-repeat center center / cover; --padding-bottom: 40px;">
 
   <!---------Refresher--------->
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
@@ -55,7 +58,7 @@
         </ion-button>
         <ion-button disabled=true expand="block" fill="clear">
           <!-- <ion-label id="timeLeft" color="medium"></ion-label> -->
-          <ion-label  color="medium">{{timerView}}</ion-label>
+          <ion-label color="medium">{{timerView}}</ion-label>
         </ion-button>
 
 
@@ -127,12 +130,20 @@
 
     <ion-card-header>
       <ion-toolbar class="backgrounds">
-        <ion-avatar slot="start" class="icon-avatar">
-          <img src={{risposta.avatar}}>
+        <ion-avatar *ngIf="risposta.cod_utente !== currentMailUser" (click)="clickProfilo(risposta.cod_utente)"
+          slot="start" class="icon-avatar">
+          <img *ngIf="risposta.cod_utente !== currentMailUser" src={{risposta.avatar}}>
         </ion-avatar>
-        <ion-label *ngIf="currentMailUser!==risposta.cod_utente" class="username_text_style">{{risposta.username}}
+
+        <ion-avatar *ngIf="risposta.cod_utente === currentMailUser" (click)="clickProprioProfilo(currentMailUser)"
+          slot="start" class="icon-avatar">
+          <img *ngIf="risposta.cod_utente === currentMailUser"  src={{risposta.avatar}}>
+        </ion-avatar>
+        <ion-label (click)="clickProfilo(risposta.cod_utente)" *ngIf="currentMailUser!==risposta.cod_utente"
+          class="usernameClass">{{risposta.username}}
         </ion-label>
-        <ion-label *ngIf="currentMailUser===risposta.cod_utente " class="username_text_style">Tu</ion-label>
+        <ion-label (click)="clickProprioProfilo(risposta.cod_utente)" *ngIf="currentMailUser===risposta.cod_utente "
+          class="usernameClass">Tu</ion-label>
 
 
         <!--pulsante del like disattivato -->
@@ -171,13 +182,13 @@
     <ion-card-content>
       <p readonly class="textSimple">{{risposta.descrizione}}</p>
       <ion-toolbar class="backgrounds">
-     
-          <ion-icon *ngIf="currentMailUser === risposta.cod_utente" name="settings-outline"  slot="start"
-            class="calendar_icon_style" (click)="clickRisposta(risposta, i)" (click)="popupModificaDescrizioneRisposta()">
-          </ion-icon>
-          <ion-icon *ngIf="currentMailUser === risposta.cod_utente" name="trash-outline" slot="start"
-            class="calendar_icon_style" (click)="eliminaRisposta(risposta)" class="calendar_icon_style"></ion-icon>
-      
+
+        <ion-icon *ngIf="currentMailUser === risposta.cod_utente" name="settings-outline" slot="start"
+          class="calendar_icon_style" (click)="clickRisposta(risposta, i)" (click)="popupModificaDescrizioneRisposta()">
+        </ion-icon>
+        <ion-icon *ngIf="currentMailUser === risposta.cod_utente" name="trash-outline" slot="start"
+          class="calendar_icon_style" (click)="eliminaRisposta(risposta)" class="calendar_icon_style"></ion-icon>
+
         <ion-label class="description_text" slot="start"></ion-label>
 
 

@@ -426,7 +426,7 @@ export class VisualizzaDomandaPage implements OnInit {
             this.descrizioneRispostaView = insertedData.descrizionePopUp;
             this.descrizioneRispostaToPass = insertedData.descrizionePopUp;
 
-            this.modify();
+            this.modify().then(()=>{this.doRefresh(event)});
           }
         }
       ]
@@ -715,6 +715,13 @@ export class VisualizzaDomandaPage implements OnInit {
     this.dataService.setEmailOthers(cod_utente);
     this.navCtrl.navigateForward(['/visualizza-profilo']);
   }
+
+  clickProprioProfilo(cod_utente) {
+    this.dataService.loadingView(5000);
+    this.dataService.setEmailOthers(cod_utente);
+    this.navCtrl.navigateForward(['/visualizza-profiloutente']);
+  }
+
 
 
   ionViewDidLeave() {
