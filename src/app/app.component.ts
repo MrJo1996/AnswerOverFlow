@@ -374,13 +374,18 @@ export class AppComponent implements OnInit {
       
       let additionalData = data.payload.additionalData;
      
-      if(additionalData.messageType === "message"){
-              
-        this.dataService.setNotificationsState(true);
-        this.toast("Hai ricetuto un messaggio","primary");
-      }else{
-        this.dataService.setAnswerNotificationState(true)
-        this.toast("Hanno risposto alla tua domanda","primary");
+      if(additionalData.messageType === "message"){       
+        if(window.location.pathname != "/chat"){
+          
+          this.dataService.setNotificationsState(true);
+          this.dataService.setNotificationChatId(additionalData.chatId)
+          this.toast("Hai ricetuto un messaggio","primary");
+        }
+      }else{ 
+        if(window.location.pathname != "/mie-attivita"){
+          this.dataService.setAnswerNotificationState(true)
+          this.toast("Hanno risposto alla tua domanda","primary");
+        }
       } 
     });
 

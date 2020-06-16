@@ -193,12 +193,18 @@ export class LoginPage implements OnInit {
      
       let additionalData = data.payload.additionalData;
 
-      if(additionalData.messageType === "message"){
-        this.dataService.setNotificationsState(true);
-        this.dataService.setNotificationChatId(additionalData.chatId)
-        this.showToastAnswer("Hai ricetuto un messaggio");
-      }else{
-        this.showToastAnswer("Hanno risposto alla tua domanda");
+      if(additionalData.messageType === "message"){       
+        if(window.location.pathname != "/chat"){
+          
+          this.dataService.setNotificationsState(true);
+          this.dataService.setNotificationChatId(additionalData.chatId)
+          this.showToastAnswer("Hai ricetuto un messaggio");
+        }
+      }else{ 
+        if(window.location.pathname != "/mie-attivita"){
+          this.dataService.setAnswerNotificationState(true)
+          this.showToastAnswer("Hanno risposto alla tua domanda");         
+        }
       } 
     
     });
