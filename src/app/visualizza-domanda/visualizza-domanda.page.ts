@@ -758,7 +758,6 @@ export class VisualizzaDomandaPage implements OnInit {
       this.timerView = days + "d " + hours + "h "
         + minutes + "m " + seconds + "s ";
 
-      //Se finisce il countDown viene mostrato "Domanda scaduta."
       if (distance < 0) {
         clearInterval(this.interval);
         document.getElementById("timeLeft").innerHTML = "Domanda scaduta.";
@@ -769,8 +768,6 @@ export class VisualizzaDomandaPage implements OnInit {
 
   }
   mappingIncrement(valueToMapp) {
-    //creo nuova data di scadenza settata in base al timer impostato
-    //case in base a timerToPass -> hh:mm (ossia la selezione dell'utente)
 
     switch (valueToMapp) {
       case ("00:05:00"):
@@ -840,12 +837,12 @@ export class VisualizzaDomandaPage implements OnInit {
     this.menuCtrl.open();
   }
   ionViewDidEnter() {
-    this.ngOnInit();
     clearInterval(this.interval);
+    this.ngOnInit();
+   /* 
     this.mappingIncrement(this.timerView2);
-
+ */
   }
-
 
 
   goChat() {
@@ -856,8 +853,6 @@ export class VisualizzaDomandaPage implements OnInit {
       this.dataService.setEmailOthers(this.domandaMailUser);
       this.navCtrl.navigateForward(['/chat'])
     }
-  
-
   }
 
   deadlineCheck(): boolean {

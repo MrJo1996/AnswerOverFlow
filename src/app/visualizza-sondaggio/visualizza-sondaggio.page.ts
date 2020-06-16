@@ -473,9 +473,9 @@ export class VisualizzaSondaggioPage implements OnInit {
   }
 
   ionViewDidEnter() {
-    this.ngOnInit();
     clearInterval(this.interval);
-    this.mappingIncrement(this.viewTimer);
+    this.ngOnInit();
+
   }
 
   goChat() {

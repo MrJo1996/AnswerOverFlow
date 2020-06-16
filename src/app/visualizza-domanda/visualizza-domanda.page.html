@@ -90,13 +90,13 @@
           </ion-chip>
         </div>
 
-        <ion-icon name="chatbubble-ellipses-outline" class="icons_generic_style" (click)=" goChat()" slot="end">
+        <ion-icon *ngIf="currentMailUser!==domandaMailUser"  name="chatbubble-ellipses-outline" class="icons_generic_style" (click)=" goChat()" slot="end">
         </ion-icon>
 
       </ion-toolbar>
     </ion-card-content>
   </ion-card>
-  <ion-icon  *ngIf="currentMailUser!==domandaMailUser" name="chatbubble-ellipses-outline" class="icons_generic_style" (click)=" goChat()" slot="end"></ion-icon>
+  
 
   <ion-card *ngIf="risposte.length === 0" class="backgrounds">
     <ion-card-header>
