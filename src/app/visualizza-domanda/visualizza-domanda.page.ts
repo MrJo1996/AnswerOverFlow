@@ -725,6 +725,8 @@ export class VisualizzaDomandaPage implements OnInit {
 
   ionViewDidLeave() {
     clearInterval(this.interval);
+    clearInterval(this.timeoutHandleLike);
+    clearInterval(this.timeoutHandleDislike);
   }
 
 
@@ -733,6 +735,8 @@ export class VisualizzaDomandaPage implements OnInit {
   }
   ionViewDidEnter() {
     clearInterval(this.interval);
+    clearInterval(this.timeoutHandleLike);
+    clearInterval(this.timeoutHandleDislike);
     this.ngOnInit();
 
   }
