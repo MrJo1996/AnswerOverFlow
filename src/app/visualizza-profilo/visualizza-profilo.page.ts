@@ -26,7 +26,7 @@ export class VisualizzaProfiloPage implements OnInit {
     this.userId = this.dataService.getEmail_Utente();
    
     
-    //console.log(this.userProfileId);
+   
     setTimeout(() => {
       this.pagePath = window.location.pathname;
       if (this.pagePath === '/visualizza-profiloutente') {
@@ -100,15 +100,11 @@ export class VisualizzaProfiloPage implements OnInit {
 
     this.apiService.getProfilo(id).then(
       (data) => {
-        console.log('Visualizzato con successo');
         this.profilo = data['data'][0];
-       // console.log(this.profilo)
         this.selectId = this.profilo.email
-        //console.log(this.profilo.bio);
 
       },
       (rej) => {
-        console.log("C'è stato un errore durante la visualizzazione");
       }
     );
   }
@@ -138,13 +134,11 @@ export class VisualizzaProfiloPage implements OnInit {
           cssClass: 'secondary',
           handler: () => {
             this.confirmSpamAlert();
-            console.log('Conferma segnalazione: spam');
 
           }
         }, {
           text: 'Altro',
           handler: () => {
-            console.log('Carica alert "altro" ');
             this.confirmAboutAlert();
           }
         }
@@ -197,7 +191,6 @@ export class VisualizzaProfiloPage implements OnInit {
           text: 'Chiudi',
           role: 'cancel',
           handler: () => {
-            console.log('Nega segnalazione: altro');
           }
         }, {
           text: 'Conferma',

@@ -359,12 +359,20 @@ export class AppComponent implements OnInit {
 
     this.oneSignal.handleNotificationReceived().subscribe(data => {
       let additionalData = data.payload.additionalData;
+      console.log(additionalData.messageType)    
+
       if(additionalData.messageType === "message"){
         this.dataService.setNotificationsState(true);
       }
     });
 
     this.oneSignal.handleNotificationOpened().subscribe(data => {
+      let additionalData = data.notification.payload.additionalData;
+      console.log(additionalData.messageType)    
+
+      if(additionalData.messageType === "message"){
+        this.dataService.setNotificationsState(true);
+      }
       this.router.navigate(['visualizza-chat']);
     });
 

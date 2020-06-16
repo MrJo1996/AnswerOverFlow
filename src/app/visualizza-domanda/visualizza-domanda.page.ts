@@ -22,7 +22,7 @@ export class VisualizzaDomandaPage implements OnInit {
 
   currentMailUser = "";//mail dell'utente corrente
   domandaMailUser: string;//mail di chi ha fatto la domanda
-  usernameUtente = "";
+  usernameUtente: string;
 
   domanda = {};
   profiloUserDomanda = {};//profilo dell'utente che ha fatto la domanda
@@ -86,7 +86,8 @@ export class VisualizzaDomandaPage implements OnInit {
     this.showRisposte();
     this.controllaOspite();
 
-   this.usernameUtente =  this.dataService.getUsername();
+    this.usernameUtente =  this.dataService.getUsername();
+
   }
 
 

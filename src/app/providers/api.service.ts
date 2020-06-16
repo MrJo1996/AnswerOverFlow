@@ -27,7 +27,7 @@ export class ApiService {
            {"field": "tag", "key": "email", "relation": "=", "value": emailTag},
            {"operator": "AND"}, {"field": "tag", "key": "logState", "relation": "=", "value": 'logged'}
          ],
-         'data': {"messageType":type} 
+         'data': {"messageType": type} 
      }
      const httpOptions2 = {
          headers: new HttpHeaders({
@@ -39,9 +39,7 @@ export class ApiService {
  
      this.http.post('https://onesignal.com/api/v1/notifications', post_data, httpOptions2)
      .subscribe(new_data => {
-         console.log(new_data)
      }, error => {
-         console.log(error);
      });
  
  }
@@ -153,7 +151,6 @@ getSondaggioRicerca() {
       cod_categoria,
       cod_preferita
     };
-    console.log(body)
     return new Promise((resolve, reject) => {
       this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/modificaDomanda', body).subscribe(
         data => {
@@ -181,7 +178,6 @@ getSondaggioRicerca() {
       this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/modificaProfilo', body).subscribe(
         data => {
           let esito = data['message'];
-          //console.log('esito: ', esito);
           resolve(esito);
         },
         (err) => {
@@ -305,8 +301,7 @@ getSondaggioRicerca() {
         data => {
           let risposta = data['Risposte'];
           resolve(risposta);
-          console.log(risposta)//restituirò al ts un oggetto di nome "risposta" con accesso già alla posizione "Risposta" avendo visto il json di data
-          // console.log('ciao' ,);
+         
 
         },
         (err) => {
@@ -346,7 +341,6 @@ getSondaggioRicerca() {
         data => {
           let risposte = data;
           resolve(risposte);
-          console.log(risposte)
 
         },
         (err) => {
@@ -363,7 +357,6 @@ getSondaggioRicerca() {
       this.http.delete(urlAndCode).subscribe(
         data => {
           let esito = data['message'];
-          console.log('esito: ', esito);
           resolve(esito);
         },
         (err) => {
@@ -421,7 +414,6 @@ getSondaggioRicerca() {
       this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/modificaRisposta', body).subscribe(
         data => {
           let esito = data['message'];
-          console.log('esito: ', esito);
           resolve(esito);
         },
         (err) => {
@@ -441,7 +433,6 @@ getSondaggioRicerca() {
       this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/inserisci_risposta', body).subscribe(
         data => {
           let esito = data['message'];
-          console.log('esito inserisci risposta: ', esito);
           resolve(esito);
         },
         (err) => {
@@ -461,7 +452,6 @@ getSondaggioRicerca() {
     return new Promise((resolve, reject) => {
       this.http.post(URL, body).subscribe(
         data => {
-          console.log('Obj Chats', data);
           let chats = data['Chats']['data'];
           resolve(chats);
 
@@ -496,7 +486,6 @@ getSondaggioRicerca() {
     return new Promise((resolve, reject) => {
       this.http.post(URL, "").subscribe(
         data => {
-          console.log('Obj Categorie', data);
           let categorie = data['Categorie']['data'];
           resolve(categorie);
 
@@ -520,8 +509,6 @@ getSondaggioRicerca() {
         data => {
           let sondaggio = data['data']['codice_sondaggio'];
           let esito = data['message'];
-          console.log("L'esito dell'inserimento sondaggio è che ", esito);
-          console.log("il codice sondaggio è ", sondaggio);
           resolve(sondaggio);
         },
         (err) => {
@@ -542,7 +529,6 @@ getSondaggioRicerca() {
       this.http.post(URL, body).subscribe(
         data => {
           let esito = data['Scelte']['message'];
-          console.log("L'esito è che ", esito);
           resolve(esito);
         },
         (err) => {
@@ -564,7 +550,6 @@ getSondaggioRicerca() {
       this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/inserisciDomanda', body).subscribe(
         data => {
           let esito = data['message'];
-          console.log('esito: ', esito);
           resolve(esito);
         },
         (err) => {
@@ -586,7 +571,6 @@ getSondaggioRicerca() {
         data => {
           let esito = data['message'];
           resolve(esito);
-          console.log('esito: ', esito);
           resolve(esito);
         },
         (err) => {
@@ -612,7 +596,6 @@ getSondaggioRicerca() {
       this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/registrazione', body).subscribe(
         data => {
           let esito = data['message'];
-          console.log('esito: ', esito);
           resolve(esito);
         },
         (err) => {
@@ -666,7 +649,6 @@ getSondaggioRicerca() {
       this.http.post('//answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/votasondaggio', body).subscribe(
         data => {
           let esitoVoto = data
-          console.log(esitoVoto);
           resolve(esitoVoto);
         },
         (err) => {
@@ -731,7 +713,6 @@ getSondaggioRicerca() {
         data => {
           let domandeT = data;
           resolve(domandeT);
-          console.log(domandeT)
 
           
         },
@@ -753,7 +734,6 @@ getSondaggioRicerca() {
         data => {
           let risposte = data;
           resolve(risposte);
-          console.log(risposte)
 
         },
         (err) => {
@@ -774,7 +754,6 @@ getSondaggioRicerca() {
         data => {
           let risposte = data;
           resolve(risposte);
-          console.log(risposte)
 
         },
         (err) => {
@@ -812,7 +791,6 @@ getSondaggioRicerca() {
         data => {
          
           let domande = data;['Domande']['data'];
-          console.log(domande);
           resolve(domande); 
         },
         (err) => {
@@ -832,7 +810,6 @@ getSondaggioRicerca() {
         data => {
          
           let sondaggi = data['Sondaggi']['data'];
-          console.log(sondaggi);
           resolve(sondaggi); 
         },
         (err) => {
@@ -859,7 +836,6 @@ getSondaggioRicerca() {
            
           },
           (err) => {
-            console.log(err);
             reject();
           }
         );
@@ -878,7 +854,6 @@ getSondaggioRicerca() {
             resolve(esito);
           },
           (err) => {
-            console.log("Rej sond",err);
             reject();
           }
         );
@@ -901,7 +876,6 @@ getSondaggioRicerca() {
             resolve(esito);
           },
           (err) => {
-            console.log("Rej utente",err);
             reject();
           }
         );
@@ -938,7 +912,6 @@ getSondaggioRicerca() {
       this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/inserisci_valutazione', body).subscribe(
         data => {
           let esito = data['message'];
-          console.log('esito inserimento valutazione: ', esito);
           resolve(esito);
         },
         (err) => {
@@ -958,7 +931,6 @@ getSondaggioRicerca() {
       this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/modifica_num_like', body).subscribe(
         data => {
           let esito = data;
-          console.log('esito modifica num like: ', esito);
           resolve(esito);
         },
         (err) => {
@@ -972,12 +944,10 @@ getSondaggioRicerca() {
     const body = {
       codice_risposta
     };
-    console.log(codice_risposta)
     return new Promise((resolve, reject) => {
       this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/togli_like', body).subscribe(
         data => {
           let esito = data;
-          console.log('esito modifica num like: ', esito);
           resolve(esito);
         },
         (err) => {
@@ -995,7 +965,6 @@ getSondaggioRicerca() {
       this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/modifica_num_dislike', body).subscribe(
         data => {
           let esito = data;
-          console.log('esito modifica num dislike: ', esito);
           resolve(esito);
         },
         (err) => {
@@ -1013,7 +982,6 @@ getSondaggioRicerca() {
       this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/togli_dislike', body).subscribe(
         data => {
           let esito = data;
-          console.log('esito modifica num dislike: ', esito);
           resolve(esito);
         },
         (err) => {
@@ -1035,7 +1003,6 @@ getSondaggioRicerca() {
         (data) => {
           let risultato = data;
           
-          console.log("API SERVICE GIA VALUTATA RISPOSTA: ", body, data)
           resolve(risultato); 
 
 
@@ -1058,12 +1025,10 @@ rimuoviValutazione(cod_risposta: Number,cod_utente:String) {
       this.http.post(url,body).subscribe(
         data => {
           let esito = data['message'];
-          console.log('esito cancella valutazione: ', esito, url);
           resolve(esito);
         },
         (err) => {
           reject();
-          console.log('esito andato a : ', url, err);
         }
       );
     });
@@ -1079,12 +1044,10 @@ rimuoviValutazione(cod_risposta: Number,cod_utente:String) {
       this.http.delete(urlComplete).subscribe(
         data => {
           let esito = data['message'];
-          console.log('esito: ', esito, url);
           resolve(esito);
         },
         (err) => {
           reject();
-          console.log('esito andato a : ', urlComplete, err);
         }
       );
     });
@@ -1104,7 +1067,6 @@ rimuoviValutazione(cod_risposta: Number,cod_utente:String) {
         data => {
           let valutazioni = (data);
           resolve(valutazioni)
-          console.log(valutazioni);
   
   
         },

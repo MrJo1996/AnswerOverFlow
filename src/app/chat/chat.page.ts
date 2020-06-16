@@ -42,7 +42,6 @@ export class ChatPage implements OnInit {
   ) {
       this.storage.get('utente').then(data => {
         this.msg_utente_id = data.email;
-        //console.log(this.msg_utente_id)
       })
 
       this.chatFriend_id = this.dataService.getEmailOthers();     
@@ -65,7 +64,6 @@ export class ChatPage implements OnInit {
   
 
   ngOnInit() {
-    //this.cod_chat = this.dataService.codice_chat;
 
     this.oggi = this.setDate(this.getToday());
     this.ieri = this.setDate(this.getYesterday());
@@ -99,9 +97,7 @@ export class ChatPage implements OnInit {
   }
 
 
- 
   /////////////////////////////////////////
-
 
   selectChatFriend() {
     let postData = {
@@ -111,12 +107,10 @@ export class ChatPage implements OnInit {
     this.result = this.service.postService(postData, this.viewUserUrl).then(
       (data) => {
         this.request = data;
-        //console.log(data.Profilo);
         this.chatFriend = data.Profilo.data[0].username;
         this.avatarFriend = data.Profilo.data[0].avatar;
       },
       (err) => {
-        console.log(err.message);
       }
     );
   }
@@ -131,20 +125,17 @@ export class ChatPage implements OnInit {
     this.result = this.service.postService(postData, this.showMessagesUrl).then(
       (data) => {
         this.request = data;
-        //console.log(data);
         this.messages = data.Messaggi.data;
 
         for (let i = 0; i < this.messages.length; i++) {
           let data = this.messages[i].dataeora;
           let dataMessaggio = data.substring(0, 10);
-          // console.log(this.getYesterday(), this.getToday());
           dataMessaggio = this.setDate(dataMessaggio);
           this.messages[i]["data"] = dataMessaggio;
          
         }
       },
       (err) => {
-        console.log(err.message);
       }
     );
   }
@@ -158,14 +149,10 @@ export class ChatPage implements OnInit {
     this.result = this.service.postService(postData, this.createChatUrl).then(
       (data) => {
         this.request = data;
-        console.log(data);
-        console.log("Chat creata");
         this.cod_chat = data.Chat.cod_chat;
-       // console.log(this.cod_chat);
         this.sendMessage();
       },
       (err) => {
-        console.log(err.message);
       }
     );
   }
@@ -180,15 +167,12 @@ export class ChatPage implements OnInit {
     this.result = this.service.postService(postData, this.findChatUrl).then(
       (data) => {
         this.request = data;
-        console.log(data);
 
-       // console.log(data.Chat.data);
         this.cod_chat = data.Chat.data;
         this.showMessages();
         this.scrollToBottoms(0);
       },
       (err) => {
-        console.log(err.message);
       }
     );
   }
@@ -200,7 +184,6 @@ export class ChatPage implements OnInit {
 
     if (this.cod_chat === null) {
       this.createChat();
-      console.log(this.cod_chat);
     } else {
       let postData = {
         testo: this.textMessage,
@@ -213,7 +196,6 @@ export class ChatPage implements OnInit {
       messageData["data"] = this.oggi;
       messageData["dataeora"] = new Date();
 
-      console.log(messageData);
 
       this.messages.push(messageData);
       this.scrollToBottoms(300);
@@ -223,14 +205,12 @@ export class ChatPage implements OnInit {
         .then(
           (data) => {
             this.request = data;
-            console.log(data);
-
+           
             this.showMessages();
             this.scrollToBottoms(300);
             this.apiservice.inviaNotifica(this.chatFriend_id,this.dataService.getUsername(),"Ti ha inviato un messaggio","message")
           },
           (err) => {
-            console.log(err.message);
           }
         );
 
@@ -327,26 +307,4 @@ export class ChatPage implements OnInit {
 
 }
 
-/* 
 
-findLastMsgChat() {
-  let postData = {
-    cod_chat: this.cod_chat,
-    msg_utente_id: this.msg_utente_id,
-  };
-
-  this.result = this.service
-    .postService(postData, this.findLastMsgChatUrl)
-    .then(
-      (data) => {
-        this.request = data;
-        console.log(data);
-        this.lastMessage = data.Messaggio.data;
-
-        //console.log(this.messages);
-      },
-      (err) => {
-        console.log(err.message);
-      }
-    );
-} */

@@ -98,13 +98,11 @@ export class LoginPage implements OnInit {
       this.result = this.service.postService(postData, this.url).then(
         (data) => {
           this.request = data;
-          console.log(data);
 
           this.checkField(data);
           this.clickLogin(!data.error, data);
         },
         (err) => {
-          console.log(err.message);
         }
       );
     }
@@ -183,7 +181,6 @@ export class LoginPage implements OnInit {
 
   setupPush(idUtente: string) {
 
-    console.log(idUtente)
 
     this.oneSignal.startInit('8efdc866-9bea-4b12-a371-aa01f421c4f7', '424760060101');
     this.oneSignal.sendTag('email', idUtente);
@@ -191,12 +188,19 @@ export class LoginPage implements OnInit {
     this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.Notification);
 
     this.oneSignal.handleNotificationReceived().subscribe(data => {  
-      let additionalData = data.payload.additionalData;     
+      let additionalData = data.payload.additionalData; 
+      console.log(additionalData.messageType)    
       if(additionalData.messageType === "message"){
         this.dataService.setNotificationsState(true);
       }    });
 
     this.oneSignal.handleNotificationOpened().subscribe(data => {
+      let additionalData = data.notification.payload.additionalData;
+      console.log(additionalData.messageType)    
+
+      if(additionalData.messageType === "message"){
+        this.dataService.setNotificationsState(true);
+      }
       this.router.navigate(['visualizza-chat']);
 
     });

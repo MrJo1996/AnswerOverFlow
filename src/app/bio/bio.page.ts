@@ -168,13 +168,16 @@ export class BioPage implements OnInit {
 
 
     this.oneSignal.handleNotificationReceived().subscribe(data => {     
-      let additionalData = data.payload.additionalData;
+      
+    });
+
+    this.oneSignal.handleNotificationOpened().subscribe(data => {
+      let additionalData = data.notification.payload.additionalData;
+      console.log(additionalData.messageType)    
+
       if(additionalData.messageType === "message"){
         this.dataService.setNotificationsState(true);
       }
-    });
-
-    this.oneSignal.handleNotificationOpened().subscribe(data => {     
     this.router.navigate(['visualizza-chat']);
     });
 

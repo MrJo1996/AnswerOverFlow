@@ -145,7 +145,7 @@ export class HomePage implements OnInit {
   }
 
   regola_domande() {
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 7; i++) {
       if (this.domande[this.indice_regola_domande]) {
         this.domande_regolate[this.indice_regola_domande] = this.domande[this.indice_regola_domande];
         this.domandaDeadlineCheck();
@@ -187,7 +187,7 @@ export class HomePage implements OnInit {
   }
 
   regola_sondaggi() {
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 7; i++) {
       if (this.sondaggi[this.indice_regola_sondaggi]) {
         this.sondaggi_regolati[this.indice_regola_sondaggi] = this.sondaggi[this.indice_regola_sondaggi];
         this.sondaggioDeadlineCheck();
