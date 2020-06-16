@@ -50,13 +50,15 @@ export class SearchResultsPage implements OnInit {
   }
 
 
-  ionViewWillEnter() { 
+  ionViewWillEnter() {
 
     this.keyRicerca = this.dataService.getKeywordToSearch();
 
     //check presenza filtri
     this.filters = this.dataService.getFilters();
-
+    if (this.filters['tipo'] == 'utente') {
+      this.domandeButton = false;
+    }
     if (this.filters['isFiltered']) {
       this.domandeButton = false;
       this.apiService.getCategoria(this.filters['codCategoria']).then(
@@ -67,168 +69,125 @@ export class SearchResultsPage implements OnInit {
         }
       );
       this.isFiltered = true;
-    } else {
+    } else if (this.filters['tipo'] != 'utente'){
       this.domandeButton = true;
     }
 
 
     //DOMANDE
 
-    if (this.keyRicerca != null){
-    this.apiService.ricercaDomanda(this.keyRicerca).then(
-      (result) => {
+    if (this.keyRicerca != null) {
+      this.apiService.ricercaDomanda(this.keyRicerca).then(
+        (result) => {
 
-        if (result != undefined) {
+          if (result != undefined) {
 
-          if (this.isFiltered) {
+            if (this.isFiltered) {
 
-            var i;
-            for (i = 0; i < result['data'].length; i++) {
-              if (this.filters['codCategoria'] != "") {
+              var i;
+              for (i = 0; i < result['data'].length; i++) {
+                if (this.filters['codCategoria'] != "") {
 
-                //Check Categoria
-                if (result['data'][i].cod_categoria == this.filters['codCategoria'] && result['data'][i] != undefined) {
+                  //Check Categoria
+                  if (result['data'][i].cod_categoria == this.filters['codCategoria'] && result['data'][i] != undefined) {
 
-                  //Chech stato (Aperto/Chiuso/Entrambi)
-                  if (this.filters['status'] != 'both') {
+                    //Chech stato (Aperto/Chiuso/Entrambi)
+                    if (this.filters['status'] != 'both') {
 
-                    //Stato aperto/chiuso che combaciano con la categoria
-                    this.checkDeadLine(result['data'][i], this.domandeSearched);
+                      //Stato aperto/chiuso che combaciano con la categoria
+                      this.checkDeadLine(result['data'][i], this.domandeSearched);
 
-                  } else { 
+                    } else {
 
-                    this.checkDeadLine(result['data'][i], this.domandeSearched);
+                      this.checkDeadLine(result['data'][i], this.domandeSearched);
+                    }
                   }
                 }
               }
+              this.numDomande = this.domandeSearched.length;
+
+            } else {
+
+              this.checkDeadLineNotFiltered(result['data'], this.domandeSearched);
+              this.numDomande = this.domandeSearched.length;
             }
-            this.numDomande = this.domandeSearched.length;
+
+            var i;
+            for (i = 0; i < this.numDomande; i++) {
+              this.parseCodCat(this.domandeSearched[i].cod_categoria, i);
+            }
 
           } else {
 
-            this.checkDeadLineNotFiltered(result['data'], this.domandeSearched);
-            this.numDomande = this.domandeSearched.length;
+            this.numDomande = 0;
           }
-
-          var i;
-          for (i = 0; i < this.numDomande; i++) {
-            this.parseCodCat(this.domandeSearched[i].cod_categoria, i);
-          }
-
-        } else {
-
-          this.numDomande = 0;
+        },
+        (rej) => {
         }
-      },
-      (rej) => {
-      }
-    );
+      );
     } else {
 
       this.apiService.getDomandaRicerca().then(
-      (result) => {
+        (result) => {
 
-        if (result != undefined) {
+          if (result != undefined) {
 
-          if (this.isFiltered) {
+            if (this.isFiltered) {
+
+              var i;
+              for (i = 0; i < result['data'].length; i++) {
+
+                if (this.filters['codCategoria'] != "") {
+
+                  //Check Categoria
+
+                  if (result['data'][i].cod_categoria == this.filters['codCategoria'] && result['data'][i] != undefined) {
+
+                    //Chech stato (Aperto/Chiuso/Entrambi)
+                    if (this.filters['status'] != 'both') {
+
+                      //Stato aperto/chiuso che combaciano con la categoria
+                      this.checkDeadLine(result['data'][i], this.domandeSearched);
+
+                    } else {
+
+                      this.checkDeadLine(result['data'][i], this.domandeSearched);
+                    }
+                  }
+                }
+              }
+
+              this.numDomande = this.domandeSearched.length;
+
+            } else {
+              this.checkDeadLineNotFiltered(result['data'], this.domandeSearched);
+              this.numDomande = this.domandeSearched.length;
+            }
 
             var i;
-            for (i = 0; i < result['data'].length; i++) {
-
-              if (this.filters['codCategoria'] != "") {
-
-                //Check Categoria
-                
-                if (result['data'][i].cod_categoria == this.filters['codCategoria'] && result['data'][i] != undefined) {
-
-                  //Chech stato (Aperto/Chiuso/Entrambi)
-                  if (this.filters['status'] != 'both') {
-
-                    //Stato aperto/chiuso che combaciano con la categoria
-                    this.checkDeadLine(result['data'][i], this.domandeSearched);
-
-                  } else { 
-
-                    this.checkDeadLine(result['data'][i], this.domandeSearched);
-                  }
-                }
-              }
+            for (i = 0; i < this.numDomande; i++) {
+              this.parseCodCat(this.domandeSearched[i].cod_categoria, i);
             }
-
-            this.numDomande = this.domandeSearched.length;
-
           } else {
-            this.checkDeadLineNotFiltered(result['data'], this.domandeSearched);
-            this.numDomande = this.domandeSearched.length;
+            this.numDomande = 0;
           }
-
-          var i;
-          for (i = 0; i < this.numDomande; i++) {
-            this.parseCodCat(this.domandeSearched[i].cod_categoria, i);
-          }
-        } else {
-          this.numDomande = 0;
+        },
+        (rej) => {
         }
-      },
-      (rej) => {
-      }
-    );
+      );
     }
-   
+
 
     //SONDAGGI
-    if (this.keyRicerca != null){
+    if (this.keyRicerca != null) {
 
-    this.apiService.ricercaSondaggio(this.keyRicerca).then(
-      (result) => { 
+      this.apiService.ricercaSondaggio(this.keyRicerca).then(
+        (result) => {
 
-        if (result != undefined) {
-
-          if (this.isFiltered) {
-
-            for (var i = 0; i < result['data'].length; i++) {
-
-              if (this.filters['codCategoria'] != "") {
-
-                if (result['data'][i].cod_categoria == this.filters['codCategoria'] && result['data'][i] != undefined) {
-
-                  //Chech stato (Aperto/Chiuso/Entrambi)
-                  if (this.filters['status'] != 'both') {
-
-                    this.checkDeadLine(result['data'][i], this.sondaggiSearched);
-
-                  } else { 
-                    this.checkDeadLine(result['data'][i], this.sondaggiSearched);
-                  }
-                }
-              }
-            }
-            this.numSondaggi = this.sondaggiSearched.length;
-          } else {
-
-            this.checkDeadLineNotFiltered(result['data'], this.sondaggiSearched);
-            this.numSondaggi = this.sondaggiSearched.length;
-          }
-
-          for (var i = 0; i < this.numSondaggi; i++) {
-            this.parseCodCatSondaggi(this.sondaggiSearched[i].cod_categoria, i);
-          }
-        } else {
-          this.numSondaggi = 0;
-        }
-      },
-      (rej) => {
-      }
-    ); 
-    } else {
-
-      this.apiService.getSondaggioRicerca().then(
-        (result) => { 
-  
           if (result != undefined) {
-  
+
             if (this.isFiltered) {
-  
+
               for (var i = 0; i < result['data'].length; i++) {
 
                 if (this.filters['codCategoria'] != "") {
@@ -240,7 +199,50 @@ export class SearchResultsPage implements OnInit {
 
                       this.checkDeadLine(result['data'][i], this.sondaggiSearched);
 
-                    } else { 
+                    } else {
+                      this.checkDeadLine(result['data'][i], this.sondaggiSearched);
+                    }
+                  }
+                }
+              }
+              this.numSondaggi = this.sondaggiSearched.length;
+            } else {
+
+              this.checkDeadLineNotFiltered(result['data'], this.sondaggiSearched);
+              this.numSondaggi = this.sondaggiSearched.length;
+            }
+
+            for (var i = 0; i < this.numSondaggi; i++) {
+              this.parseCodCatSondaggi(this.sondaggiSearched[i].cod_categoria, i);
+            }
+          } else {
+            this.numSondaggi = 0;
+          }
+        },
+        (rej) => {
+        }
+      );
+    } else {
+
+      this.apiService.getSondaggioRicerca().then(
+        (result) => {
+
+          if (result != undefined) {
+
+            if (this.isFiltered) {
+
+              for (var i = 0; i < result['data'].length; i++) {
+
+                if (this.filters['codCategoria'] != "") {
+
+                  if (result['data'][i].cod_categoria == this.filters['codCategoria'] && result['data'][i] != undefined) {
+
+                    //Chech stato (Aperto/Chiuso/Entrambi)
+                    if (this.filters['status'] != 'both') {
+
+                      this.checkDeadLine(result['data'][i], this.sondaggiSearched);
+
+                    } else {
                       this.checkDeadLine(result['data'][i], this.sondaggiSearched);
                     }
                   }
@@ -253,7 +255,7 @@ export class SearchResultsPage implements OnInit {
               this.checkDeadLineNotFiltered(result['data'], this.sondaggiSearched);
               this.numSondaggi = this.sondaggiSearched.length;
             }
-  
+
             for (var i = 0; i < this.numSondaggi; i++) {
               this.parseCodCatSondaggi(this.sondaggiSearched[i].cod_categoria, i);
             }
@@ -263,28 +265,28 @@ export class SearchResultsPage implements OnInit {
         },
         (rej) => {
         }
-      ); 
-      }
+      );
+    }
 
     //UTENTI
 
-    if (this.keyRicerca != null){
+    if (this.keyRicerca != null) {
 
-    this.apiService.ricercaUtente(this.keyRicerca).then(
-      (result) => {
+      this.apiService.ricercaUtente(this.keyRicerca).then(
+        (result) => {
 
-        if (result != undefined) {
+          if (result != undefined) {
 
-          this.utentiSearched = result['data'];
-          this.numUtenti = this.utentiSearched.length;
+            this.utentiSearched = result['data'];
+            this.numUtenti = this.utentiSearched.length;
 
-        } else {
-          this.numUtenti = 0;
+          } else {
+            this.numUtenti = 0;
+          }
+        },
+        (rej) => {
         }
-      },
-      (rej) => {
-      }
-    );
+      );
     }
   }
 
@@ -350,9 +352,9 @@ export class SearchResultsPage implements OnInit {
     this.dataService.setKeywordToSearch(this.keywordToSearch);
     this.isFiltered = false;
     this.domandeSearched = [];
-    this.sondaggiSearched=[];
-    this.utentiSearched=[];
-    
+    this.sondaggiSearched = [];
+    this.utentiSearched = [];
+
     this.ionViewWillEnter();
   }
 
@@ -362,7 +364,7 @@ export class SearchResultsPage implements OnInit {
 
   ngOnDestroy() {
     this.resetVars;
-    this.dataService.setFilters("", "", "", false); 
+    this.dataService.setFilters("", "", "", false);
   }
 
   clickFilter() {

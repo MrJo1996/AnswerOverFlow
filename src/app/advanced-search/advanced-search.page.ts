@@ -40,7 +40,7 @@ export class AdvancedSearchPage implements OnInit {
     private pickerController: PickerController,
     public apiService: ApiService,
     private menuCtrl: MenuController
-  ) { 
+  ) {
 
   }
 
@@ -153,12 +153,12 @@ export class AdvancedSearchPage implements OnInit {
         this.dataService.setFilters("utente", "", "", false);
       } else {
         this.dataService.setFilters(this.tipoFilter, this.codCategoriaFilter, this.status, this.isFiltered);
-      } 
-      if (this.keywordToSearch != null){
-      this.dataService.setKeywordToSearch(this.keywordToSearch);
-      } else{
+      }
+      if (this.keywordToSearch != null) {
+        this.dataService.setKeywordToSearch(this.keywordToSearch);
+      } else {
         this.keywordToSearch = null;
-      this.dataService.setKeywordToSearch(this.keywordToSearch);
+        this.dataService.setKeywordToSearch(this.keywordToSearch);
       }
 
       const loading = document.createElement('ion-loading');
@@ -169,6 +169,8 @@ export class AdvancedSearchPage implements OnInit {
       loading.present();
 
       this.router.navigate(['/search-results']);
+    } else if (this.tipoFilter == "utente" && this.keywordToSearch==null) {
+      this.toast("Per favore inserisci almeno un carattere nella barra di ricerca.", "danger");
     } else {
       this.toast("Per favore compila tutti i campi.", "danger");
     }
@@ -181,6 +183,7 @@ export class AdvancedSearchPage implements OnInit {
     this.statusOpen = false;
     this.statusClosed = false;
     this.isFiltered = false
+    this.keywordToSearch = null;
   }
 
   goBack() {
@@ -193,7 +196,11 @@ export class AdvancedSearchPage implements OnInit {
   }
 
   checkFilters() {
-    if (this.tipoFilter == "utente") { return true }
+    if (this.tipoFilter == "utente") {
+      if (this.keywordToSearch != null) {
+        return true;
+      }
+    }
     if (this.tipoFilter == "" || this.codCategoriaFilter == "" || (this.statusOpen == false && this.statusClosed == false)) {
       return false; //non tutti i campi compilati
     } return true;
@@ -213,13 +220,13 @@ export class AdvancedSearchPage implements OnInit {
     this.initFilters();
   }
 
-  clickGlobalSearch(){
+  clickGlobalSearch() {
     this.globalSearch = true;
     this.keywordSearch = false;
     this.utentiBtn = false;
   }
 
-  clickKeywordSearch(){
+  clickKeywordSearch() {
     this.globalSearch = false;
     this.keywordSearch = true;
   }
