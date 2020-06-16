@@ -138,6 +138,16 @@ export class ModificaDomandaPage implements OnInit {
 
   }
 
+  ionViewWillLeave() {
+    clearInterval(this.interval);
+
+  }
+
+  /*ionViewDidEnter() {
+    this.ngOnInit();
+
+  } */
+
   getCategoriaView() {
     for (let j = 0; j < this.categoriaSettings.length; j++) {
 
@@ -479,9 +489,9 @@ async popupInvalidTitle(){
 
     var countDownDate = new Date(parseInt(auxData['0'], 10) + incAnno, parseInt(auxData['1'], 10) - 1 + incMese, parseInt(auxData['2'], 10) + incGG, parseInt(auxData['3'], 10) + incHH, parseInt(auxData['4'], 10) + incMM).getTime();
 
-    this.interval = setInterval(function () {
-
+    this.interval = setInterval(() => {
       var now = new Date().getTime();
+
       var distance = countDownDate - now;
 
       var days = Math.floor(distance / (1000 * 60 * 60 * 24));
@@ -489,19 +499,19 @@ async popupInvalidTitle(){
       var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-
-      document.getElementById("timeMissingDomanda").innerHTML = days + "d " + hours + "h "
-        + minutes + "m " + seconds + "s ";
-
-      this.timerView = days + "d " + hours + "h "
-        + minutes + "m " + seconds + "s ";
-    
-
+      /* document.getElementById("timeLeft").innerHTML = days + "d " + hours + "h "
+       + minutes + "m " + seconds + "s ";  */
+      console.log("Timer view: ", this.timerView, distance);
       if (distance < 0) {
         clearInterval(this.interval);
-        document.getElementById("timeMissingDomanda").innerHTML = "Domanda scaduta.";
-        this.timerView = "OMBO TIMER,SCADUTA";
+        //document.getElementById("timeLeft").innerHTML = "Domanda scaduta.";
+        this.timerView = "scaduto";
+        
+      } else {
+        this.timerView = days + "d " + hours + "h "
+          + minutes + "m " + seconds + "s ";
       }
+
     }, 1000);
 
   }
