@@ -12,7 +12,7 @@ export class ApiService {
   constructor(public http: HttpClient) { }
 
 
-  async inviaNotifica(emailTag: string, username: string, text:string, type: string) {
+  async inviaNotifica(emailTag: string, username: string, text:string, type: string, chatId) {
 
  
      const post_data = {
@@ -27,7 +27,7 @@ export class ApiService {
            {"field": "tag", "key": "email", "relation": "=", "value": emailTag},
            {"operator": "AND"}, {"field": "tag", "key": "logState", "relation": "=", "value": 'logged'}
          ],
-         'data': {"messageType": type} 
+         'data': {"messageType": type, "chatId": chatId} 
      }
      const httpOptions2 = {
          headers: new HttpHeaders({
@@ -41,8 +41,8 @@ export class ApiService {
      .subscribe(new_data => {
      }, error => {
      });
- 
  }
+
 
  getDomandaRicerca() {
   const body = {

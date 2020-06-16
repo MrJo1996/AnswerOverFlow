@@ -42,7 +42,7 @@
               </ion-icon>
             </ion-item>
 
-            <!-- <ion-label *ngIf="p.title === 'Chat'"><br></ion-label> -->
+            
 
           </ion-menu-toggle>
 
@@ -52,6 +52,8 @@
                 detail="false" [class.selected]="selectedIndexAccount == id">
                 <ion-icon slot="start" [ios]="page.icon + '-outline'" [md]="page.icon + '-sharp'"></ion-icon>
                 <ion-label [class.blocked]="page.blocked">{{ page.title }}</ion-label>
+                <ion-icon *ngIf="page.title === 'Le mie attività' && this.dataService.getAnswerNotificationState()" color="danger" name="ellipse" style="width: 15px; height: 15px;">               
+                </ion-icon>
               </ion-item>
             </ion-menu-toggle>
           </div>

@@ -20,7 +20,10 @@ export class VisualizzaProfiloPage implements OnInit {
   ngOnInit() { }
   ionViewWillEnter() {
 
-    this.session = this.dataService.getSession()
+    this.storage.get('session').then((data) => {
+      this.session = data;
+    });
+
     this.dataService.loadingView(5000);//visualizza il frame di caricamento
     this.userProfileId = this.dataService.getEmailOthers();
     this.userId = this.dataService.getEmail_Utente();

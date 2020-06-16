@@ -17,13 +17,12 @@ import { Network } from '@ionic-native/network/ngx';
 })
 export class AppComponent implements OnInit {
   showSplash = true; //splash
-
+  session: boolean;
   utenteLogged = true;
   avatar: string;
   nome: string;
   cognome: string;
   username: string;
-
   usernameLogged;
 
   public selectedIndex = -1;
@@ -145,7 +144,7 @@ export class AppComponent implements OnInit {
 
             this.dataService.setSession(false);
             this.router.navigate(["login"]);
-            this.setupPush();
+            this.setupPushNotification();
 
             setTimeout(() => {
               this.storage.get("session").then((data) => {});
@@ -249,6 +248,9 @@ export class AppComponent implements OnInit {
             this.alert();
           } else if (this.accountPages[index].title === "Profilo") {
             this.router.navigateByUrl("/visualizza-profiloutente");
+          } else if(this.accountPages[index].title  === "Le mie attività") {
+            this.dataService.setAnswerNotificationState(false);
+            this.router.navigateByUrl(this.accountPages[index].url);
           } else {
             this.router.navigateByUrl(this.accountPages[index].url);
           }
@@ -296,9 +298,9 @@ export class AppComponent implements OnInit {
       this.splashScreen.hide();
       timer(2000).subscribe(() => (this.showSplash = false)); //durata animazione definita in app.component.html -> 2s 
 
-      if (this.platform.is('cordova')) {
-        this.setupPush();
-      }
+      
+      
+      
 
       this.storage.get("tutorialComplete").then((isComplete) => {
         if (isComplete) { //Tutorial completato
@@ -321,6 +323,10 @@ export class AppComponent implements OnInit {
 
     this.storage.get("session").then((data) => {
       this.dataService.setSession(data);
+      this.session = data;
+
+      this.setupPushNotification();
+      
     });
   }
 
@@ -351,29 +357,34 @@ export class AppComponent implements OnInit {
     this.router.navigate(["info"]);
   }
 
-  setupPush() {
+  setupPushNotification() {
     this.oneSignal.startInit('8efdc866-9bea-4b12-a371-aa01f421c4f7', '424760060101');
-    this.oneSignal.sendTag('logState', 'unlogged');
+    this.oneSignal.clearOneSignalNotifications()
 
-    this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.Notification);
+    if(this.session === true){
+      this.oneSignal.sendTag('logState', 'logged');
+    } else{
+      this.oneSignal.sendTag('logState', 'unlogged');
+    }
+
+    this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.None);
 
     this.oneSignal.handleNotificationReceived().subscribe(data => {
-      let additionalData = data.payload.additionalData;
-      console.log(additionalData.messageType)    
 
+      
+      let additionalData = data.payload.additionalData;
+     
       if(additionalData.messageType === "message"){
+              
         this.dataService.setNotificationsState(true);
-      }
+        this.toast("Hai ricetuto un messaggio","primary");
+      }else{
+        this.dataService.setAnswerNotificationState(true)
+        this.toast("Hanno risposto alla tua domanda","primary");
+      } 
     });
 
-    this.oneSignal.handleNotificationOpened().subscribe(data => {
-      let additionalData = data.notification.payload.additionalData;
-      console.log(additionalData.messageType)    
-
-      if(additionalData.messageType === "message"){
-        this.dataService.setNotificationsState(true);
-      }
-      this.router.navigate(['visualizza-chat']);
+    this.oneSignal.handleNotificationOpened().subscribe(data => {  
     });
 
     this.oneSignal.endInit();
@@ -389,4 +400,5 @@ export class AppComponent implements OnInit {
     document.body.appendChild(toast);
     return toast.present();
   }
+
 }

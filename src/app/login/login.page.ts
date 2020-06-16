@@ -5,7 +5,7 @@ import { Router } from "@angular/router";
 import { Promise } from "q";
 import { Storage } from "@ionic/storage";
 import { PostServiceService } from "../services/post-service.service";
-import { NavController } from "@ionic/angular";
+import { NavController, AlertController } from "@ionic/angular";
 import { DataService } from "../services/data.service";
 import { ToastController } from "@ionic/angular";
 import { ApiService } from "src/app/providers/api.service";
@@ -44,7 +44,8 @@ export class LoginPage implements OnInit {
     private storage: Storage,
     private menuCtrl: MenuController,
     private menuSet: AppComponent,
-    private oneSignal: OneSignal
+    private oneSignal: OneSignal,
+    private alertController: AlertController
   ) { }
 
   ngOnInit() {
@@ -185,26 +186,38 @@ export class LoginPage implements OnInit {
     this.oneSignal.startInit('8efdc866-9bea-4b12-a371-aa01f421c4f7', '424760060101');
     this.oneSignal.sendTag('email', idUtente);
     this.oneSignal.sendTag('logState','logged');
-    this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.Notification);
+    this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.None);
 
     this.oneSignal.handleNotificationReceived().subscribe(data => {  
-      let additionalData = data.payload.additionalData; 
-      console.log(additionalData.messageType)    
+
+     
+      let additionalData = data.payload.additionalData;
+
       if(additionalData.messageType === "message"){
         this.dataService.setNotificationsState(true);
-      }    });
+        this.dataService.setNotificationChatId(additionalData.chatId)
+        this.showToastAnswer("Hai ricetuto un messaggio");
+      }else{
+        this.showToastAnswer("Hanno risposto alla tua domanda");
+      } 
+    
+    });
 
     this.oneSignal.handleNotificationOpened().subscribe(data => {
-      let additionalData = data.notification.payload.additionalData;
-      console.log(additionalData.messageType)    
-
-      if(additionalData.messageType === "message"){
-        this.dataService.setNotificationsState(true);
-      }
-      this.router.navigate(['visualizza-chat']);
 
     });
     this.oneSignal.endInit();
+  }
 
+   showToastAnswer(message) {
+    const toast = document.createElement("ion-toast");
+    toast.message = message;
+    toast.duration = 2000;
+    toast.position = "top";
+    toast.style.fontSize = "20px";
+    toast.color = "primary";
+    toast.style.textAlign = "center";
+    document.body.appendChild(toast);
+    return toast.present();
   }
 }

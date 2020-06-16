@@ -32,7 +32,7 @@ export class VisualizzaChatPage implements OnInit {
     private router: Router,
     private service: ApiService,
     private servicePost: PostServiceService,
-    private data: DataService,
+    public data: DataService,
     private storage: Storage,
     private menuCtrl: MenuController
   ) {}
@@ -161,6 +161,7 @@ export class VisualizzaChatPage implements OnInit {
   //-----------------------Setta il codice chat aperto nella sessione e naviga nel visualizza messaggi
   mostraMessaggi(codiceChat: number, chatter: string) {
     // console.log(chatter)
+    this.data.setNotificationChatId("");
     this.data.setCodice_chat(codiceChat);
     this.data.setEmailOthers(chatter);
     this.data.loadingView(3000); //visualizza il frame di caricamento

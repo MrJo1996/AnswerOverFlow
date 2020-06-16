@@ -377,7 +377,6 @@ export class VisualizzaDomandaPage implements OnInit {
     if (this.ospite === true) this.alertOspite();
     else {
 
-
       if (this.checkIfThereAreItalianBadWords(this.descrizione_risposta) || this.checkIfThereAreEnglishBadWords(this.descrizione_risposta)) {
         this.toast('Hai inserito una o più parole scorrette!', 'danger');
 
@@ -390,9 +389,7 @@ export class VisualizzaDomandaPage implements OnInit {
         this.apiService.inserisciRisposta(this.descrizione_risposta, this.currentMailUser, this.codice_domanda).then(
           (result) => {
 
-            this.apiService.inviaNotifica(this.domandaMailUser, this.usernameUtente, "Ha risposto alla tua domanda", "answer");
-
-
+            this.apiService.inviaNotifica(this.domandaMailUser, this.usernameUtente, "Ha risposto alla tua domanda", "answer","null");
           },
           (rej) => {
 

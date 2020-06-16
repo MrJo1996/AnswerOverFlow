@@ -30,7 +30,10 @@ export class DataService {
   keywordToSearch;
   filters = [];
   NotificationsState: boolean = false;
+  notificationAnswer:boolean = false;
+  notificationChatId;
   
+
 
 
   constructor(private http: HttpClient) { }
@@ -107,12 +110,29 @@ export class DataService {
     this.NotificationsState = value;
   }
 
+  setNotificationChatId(value) {
+    this.notificationChatId = value;
+  }
+
+  setAnswerNotificationState(value) {
+    this.notificationAnswer = value;
+  }
+
+
+  getAnswerNotificationState(): boolean {
+    return this.notificationAnswer;
+  }
+
+
+  getNotificationChatId() {
+    return this.notificationChatId;
+  }
 
   getNotificationsState(): boolean {
     return this.NotificationsState;
   }
 
-
+  
   getSession() {
     return this.session;
   }

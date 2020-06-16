@@ -46,6 +46,8 @@
             {{singleChat?.message?.testo}}</p>
         </ion-label>
           <p class= "date">{{singleChat?.message?.dataeora | date: 'dd/MM H:mm' }}</p>
+          <ion-icon slot="end" *ngIf="singleChat.codice_chat === this.data.getNotificationChatId() " color="danger" name="ellipse" style="width: 15px; height: 15px;">               
+          </ion-icon>
       </ion-item>
     </ion-list>
   </ion-card>

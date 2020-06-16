@@ -10,7 +10,7 @@
 
 
 
-<ion-content style="--background: url('/assets/img/provaBack.png') no-repeat center center / cover;">
+<ion-content style="--background: url('/assets/img/provaBack.png') no-repeat center center / cover; --padding-bottom: 40px;">
 
   <!---------Refresher--------->
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
@@ -171,12 +171,13 @@
     <ion-card-content>
       <p readonly class="textSimple">{{risposta.descrizione}}</p>
       <ion-toolbar class="backgrounds">
-
-        <ion-icon *ngIf="currentMailUser === risposta.cod_utente" name="settings-outline" slot="start"
-          class="calendar_icon_style" (click)="clickRisposta(risposta, i)" (click)="popupModificaDescrizioneRisposta()">
-        </ion-icon>
-        <ion-icon *ngIf="currentMailUser === risposta.cod_utente" name="trash-outline" slot="start"
-          class="calendar_icon_style" (click)="eliminaRisposta(risposta)" class="calendar_icon_style"></ion-icon>
+     
+          <ion-icon *ngIf="currentMailUser === risposta.cod_utente" name="settings-outline"  slot="start"
+            class="calendar_icon_style" (click)="clickRisposta(risposta, i)" (click)="popupModificaDescrizioneRisposta()">
+          </ion-icon>
+          <ion-icon *ngIf="currentMailUser === risposta.cod_utente" name="trash-outline" slot="start"
+            class="calendar_icon_style" (click)="eliminaRisposta(risposta)" class="calendar_icon_style"></ion-icon>
+      
         <ion-label class="description_text" slot="start"></ion-label>
 
 
