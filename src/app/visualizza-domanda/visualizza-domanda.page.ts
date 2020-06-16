@@ -125,7 +125,6 @@ export class VisualizzaDomandaPage implements OnInit {
 
         this.getUserDomanda();
         this.visualizzaCategoria();
-        console.log("TIMER: " , this.timerView2);
         this.mappingIncrement(this.domanda['0'].timer);
 
       },
