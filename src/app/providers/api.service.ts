@@ -12,7 +12,7 @@ export class ApiService {
   constructor(public http: HttpClient) { }
 
 
-  async inviaNotifica(emailTag: string, username: string, text:string) {
+  async inviaNotifica(emailTag: string, username: string, text:string, type: string) {
 
  
      const post_data = {
@@ -27,6 +27,7 @@ export class ApiService {
            {"field": "tag", "key": "email", "relation": "=", "value": emailTag},
            {"operator": "AND"}, {"field": "tag", "key": "logState", "relation": "=", "value": 'logged'}
          ],
+         'data': {"messageType":type} 
      }
      const httpOptions2 = {
          headers: new HttpHeaders({
