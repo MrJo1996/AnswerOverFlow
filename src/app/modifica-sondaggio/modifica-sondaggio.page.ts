@@ -31,6 +31,8 @@ export class ModificaSondaggioPage implements OnInit {
   timerSettings: string[] = ["5 min", "15 min", "30 min", "1 ora", "3 ore", "6 ore", "12 ore", "1 giorno", "3 giorni"];
   interval;
 
+  timerView2;
+
   constructor(private alertController: AlertController, public apiService: ApiService, private pickerController: PickerController,
     public navCtrl: NavController, public dataService: DataService, private toastController: ToastController, private menuCtrl: MenuController) { }
 
@@ -304,7 +306,7 @@ export class ModificaSondaggioPage implements OnInit {
 
     var countDownDate = new Date(parseInt(auxData['0'], 10) + incAnno, parseInt(auxData['1'], 10) - 1 + incMese, parseInt(auxData['2'], 10) + incGG, parseInt(auxData['3'], 10) + incHH, parseInt(auxData['4'], 10) + incMM).getTime();
 
-    this.interval = setInterval(function () {
+    this.interval = setInterval(() => {
 
       var now = new Date().getTime();
 
@@ -315,13 +317,17 @@ export class ModificaSondaggioPage implements OnInit {
       var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-      document.getElementById("timeMissing").innerHTML = days + "giorni " + hours + "ore "
-        + minutes + "min " + seconds + "s ";
+      //document.getElementById("timeMissing").innerHTML = days + "giorni " + hours + "ore "
+        //+ minutes + "min " + seconds + "s ";
 
   
       if (distance < 0) {
         clearInterval(this.interval);
-        document.getElementById("timeMissing").innerHTML = "Sondaggio scaduto.";
+        //document.getElementById("timeMissing").innerHTML = "Sondaggio scaduto.";
+        this.timerView2 = 'sondaggio scaduto';
+      } else {
+        this.timerView2 = days + "d " + hours + "h "
+          + minutes + "m " + seconds + "s ";
       }
     }, 1000);
 
