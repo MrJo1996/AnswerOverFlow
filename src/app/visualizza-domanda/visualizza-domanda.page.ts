@@ -6,7 +6,6 @@ import { NavController } from "@ionic/angular";
 import { Storage } from "@ionic/storage";
 import { ToastController } from '@ionic/angular';
 import { LoadingController } from '@ionic/angular';
-import { element } from 'protractor';
 
 
 @Component({
@@ -101,9 +100,10 @@ export class VisualizzaDomandaPage implements OnInit {
       this.toast('Non puoi più modificare la tua domanda, è scaduta!', 'danger');
     }
     else {
-      this.dataService.loadingView(3000);
-      this.navCtrl.navigateForward(['modifica-domanda']);
-      this.doRefresh(event);
+      clearInterval(this.interval);
+      this.dataService.loadingView(5000);
+      this.navCtrl.navigateRoot(['/modifica-domanda']);
+  
     }
   }
 
@@ -319,7 +319,7 @@ export class VisualizzaDomandaPage implements OnInit {
 
   goback() {
     this.dataService.loadingView(5000);
-    this.navCtrl.pop();
+    this.navCtrl.back();
   }
 
   async modify() {
@@ -651,6 +651,7 @@ export class VisualizzaDomandaPage implements OnInit {
         clearInterval(this.interval);
         //document.getElementById("timeLeft").innerHTML = "Domanda scaduta.";
         this.timerView = "Domanda scaduta";
+      
         
       } else {
         this.timerView = days + "d " + hours + "h "
@@ -717,25 +718,14 @@ export class VisualizzaDomandaPage implements OnInit {
   }
 
 
-  ionViewDidLeave() {
+ionViewDidLeave() {
     clearInterval(this.interval);
 
   }
 
-  ionViewWillLeave() {
-    clearInterval(this.interval);
-
-  }
-
- 
   openMenu() {
     this.menuCtrl.open();
   }
-
-  ionViewDidEnter() {
-    this.ngOnInit();
-
-  } 
 
 
   goChat() {

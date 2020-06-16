@@ -454,7 +454,7 @@ export class VisualizzaSondaggioPage implements OnInit {
       if (distance < 0) {
         clearInterval(this.interval);
         //document.getElementById("timeLeft").innerHTML = "Domanda scaduta.";
-        this.timerView = "Domanda scaduta";
+        this.timerView = "Sondaggio scaduto";
         
       } else {
         this.timerView = days + "d " + hours + "h "
@@ -470,26 +470,10 @@ export class VisualizzaSondaggioPage implements OnInit {
   }
 
   ionViewDidLeave() {
-
-    clearInterval(this.interval);
-  }
-
-  ionViewWillLeave() {
     clearInterval(this.interval);
 
   }
 
-  /* 
-    ionViewWillLeave() {
-      clearInterval(this.interval);
-  
-    } */
-
-
- ionViewDidEnter() {
-    this.ngOnInit();
-
-  } 
 
   goChat() {
     if (this.ospite === true) {

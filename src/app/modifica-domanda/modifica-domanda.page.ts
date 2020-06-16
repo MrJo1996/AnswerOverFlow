@@ -37,6 +37,7 @@ export class ModificaDomandaPage implements OnInit {
   cod_categoriaView;
   categoriaView;
   dataeoraView;
+  timerView2;
   timerView;
   titoloView;
   descrizioneView;
@@ -109,7 +110,7 @@ export class ModificaDomandaPage implements OnInit {
         this.domanda = domanda['data'];
         
         this.dataeoraView = this.domanda['0'].dataeora;
-        this.timerView = this.domanda['0'].timer;
+        this.timerView2 = this.domanda['0'].timer;
         this.titoloView = this.domanda['0'].titolo;
         this.descrizioneView = this.domanda['0'].descrizione;
         this.cod_preferita = this.domanda['0'].cod_preferita;
@@ -138,15 +139,7 @@ export class ModificaDomandaPage implements OnInit {
 
   }
 
-  ionViewWillLeave() {
-    clearInterval(this.interval);
 
-  }
-
-  /*ionViewDidEnter() {
-    this.ngOnInit();
-
-  } */
 
   getCategoriaView() {
     for (let j = 0; j < this.categoriaSettings.length; j++) {
@@ -336,7 +329,7 @@ async popupInvalidTitle(){
             this.modify();
 
             this.dataService.loadingView(3000);//visualizza il frame di caricamento
-            this.navCtrl.navigateRoot('/visualizza-domanda');
+            this.navCtrl.back();
 
           }
         }
@@ -585,7 +578,8 @@ async popupInvalidTitle(){
 
   goBack() {
     this.dataService.loadingView(3000);//visualizza il frame di caricamento
-    this.navCtrl.pop();
+    //this.navCtrl.back();
+    this.navCtrl.back();
   }
 
   openMenu(){
