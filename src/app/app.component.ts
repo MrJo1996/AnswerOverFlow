@@ -143,7 +143,8 @@ export class AppComponent implements OnInit {
             this.storage.set("utente", null);
 
             //WARNING: HOT!!!
-            this.storage.clear(); //pulisce tutto storage
+            this.storage.remove("utente"); //pulisce tutto sotto key "utente"
+            this.storage.remove("session"); //pulisce tutto sotto key "session"
 
             this.dataService.setSession(false);
             this.router.navigate(["login"]);
@@ -337,12 +338,6 @@ export class AppComponent implements OnInit {
       this.dataService.setSession(data);
     });
   }
-
-
-
-
-
-
 
   ngOnInit() {
     const path = window.location.pathname.split("folder/")[1];
