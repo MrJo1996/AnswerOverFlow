@@ -24,6 +24,7 @@ export class VisualizzaDomandaPage implements OnInit {
 
   currentMailUser = "";//mail dell'utente corrente
   domandaMailUser: string;//mail di chi ha fatto la domanda
+  usernameUtente = "";
 
   domanda = {};
   profiloUserDomanda = {};//profilo dell'utente che ha fatto la domanda
@@ -91,6 +92,7 @@ export class VisualizzaDomandaPage implements OnInit {
     this.controllaOspite();
     this.allVisible = true;
 
+   this.usernameUtente =  this.dataService.getUsername();
   }
 
 
@@ -175,19 +177,15 @@ export class VisualizzaDomandaPage implements OnInit {
             this.toast('Risposta eliminata con successo!', 'success');
             this.cancellaRisposta(codice_risposta);
             //Visualizza il frame di caricamento
-            const loading = document.createElement('ion-loading');
+           /*  const loading = document.createElement('ion-loading');
             loading.cssClass = 'loading';
             loading.spinner = 'crescent';
             loading.duration = 3500;
-            document.body.appendChild(loading);
-
+            document.body.appendChild(loading); */
+            this.dataService.loadingView(5000);
+            this.ngOnInit();
             //this.router.navigate(['home']);        
-            for (let j = 0; j < this.risposte.length; j++) {
-              if (this.risposte[j].codice_risposta == codice_risposta) {
-                this.risposte.splice(j, 1);
-
-              }
-            }
+            
           }
         },
         {
@@ -211,10 +209,15 @@ export class VisualizzaDomandaPage implements OnInit {
       (risposte) => {
         //Prendo le risposte dal db
         console.log(risposte)
+        this.risposte = [];
+        this.risposte2 = [];
         this.risposte = risposte['Risposte']['data'];
         this.risposte2 = risposte['Risposte']['data']
         let temp: Array<Number> = []
 
+        this.numLike2 = [];
+        this.numDislike2 = [];
+        this.votoType = [];
         for (let index = 0; index < this.risposte2.length; index++) {
           this.numLike2[this.risposte2[index].codice_risposta]=(this.risposte2[index].num_like)
           this.numDislike2[this.risposte2[index].codice_risposta]=(this.risposte2[index].num_dislike)
@@ -413,7 +416,7 @@ export class VisualizzaDomandaPage implements OnInit {
         this.apiService.inserisciRisposta(this.descrizione_risposta, this.currentMailUser, this.codice_domanda).then(
           (result) => {
 
-            this.apiService.inviaNotifica(this.domandaMailUser, this.currentMailUser, "Ha risposto alla tua domanda");
+            this.apiService.inviaNotifica(this.domandaMailUser, this.usernameUtente, "Ha risposto alla tua domanda");
 
 
           },
@@ -833,11 +836,11 @@ export class VisualizzaDomandaPage implements OnInit {
   }
 
 
-
   openMenu() {
     this.menuCtrl.open();
   }
   ionViewDidEnter() {
+    this.ngOnInit();
     clearInterval(this.interval);
     this.mappingIncrement(this.timerView2);
 
@@ -845,11 +848,15 @@ export class VisualizzaDomandaPage implements OnInit {
 
 
 
-
   goChat() {
-    this.dataService.loadingView(5000);//visualizza il frame di caricamento
-    this.dataService.setEmailOthers(this.domandaMailUser);
-    this.navCtrl.navigateForward(['/chat'])
+    if(this.ospite === true){
+      this.toast('Effettua il login per chattare con gli altri utenti!', 'danger');
+    }else{
+      this.dataService.loadingView(5000);//visualizza il frame di caricamento
+      this.dataService.setEmailOthers(this.domandaMailUser);
+      this.navCtrl.navigateForward(['/chat'])
+    }
+  
 
   }
 
