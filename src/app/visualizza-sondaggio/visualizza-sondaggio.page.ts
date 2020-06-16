@@ -97,8 +97,9 @@ export class VisualizzaSondaggioPage implements OnInit {
     else if (this.voti_totali > 0) {
       this.toast('Ci sono dei voti al tuo sondaggio, non è più possibile modificarlo!', 'danger');
     } else {
+      clearInterval(this.interval);
       this.dataService.loadingView(3000);
-      this.navCtrl.navigateForward(['/modifica-sondaggio']);
+      this.navCtrl.navigateRoot(['/modifica-sondaggio']);
     }
   }
 
@@ -248,7 +249,7 @@ export class VisualizzaSondaggioPage implements OnInit {
             text: 'Si',
             handler: () => {
               this.dataService.loadingView(5000);//visualizza il frame di caricamento
-              this.navCtrl.pop();
+              this.navCtrl.back();
             }
           }
         ]
@@ -450,7 +451,7 @@ export class VisualizzaSondaggioPage implements OnInit {
 
       /* document.getElementById("timeLeft").innerHTML = days + "d " + hours + "h "
        + minutes + "m " + seconds + "s ";  */
-      console.log("Timer view: ", this.timerView, distance);
+
       if (distance < 0) {
         clearInterval(this.interval);
         //document.getElementById("timeLeft").innerHTML = "Domanda scaduta.";

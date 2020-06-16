@@ -177,7 +177,7 @@ export class ModificaSondaggioPage implements OnInit {
           handler: (value: any) => {
             this.timerView = value['ValoreTimerSettato'].value;
             this.mappingTimerValueToPass(value['ValoreTimerSettato'].value);
-            console.log('timer to pass: ', this.timerToPass);
+         
           }
         }
       ],
@@ -206,7 +206,7 @@ export class ModificaSondaggioPage implements OnInit {
 
     var increment;
     this.timerSettings.forEach(x => {
-      console.log("x ", x);
+
       switch (x) {
         case (this.timerSettings['0']):
           increment = 5 * 60 * 1000;
@@ -320,7 +320,6 @@ export class ModificaSondaggioPage implements OnInit {
       //document.getElementById("timeMissing").innerHTML = days + "giorni " + hours + "ore "
         //+ minutes + "min " + seconds + "s ";
 
-  
       if (distance < 0) {
         clearInterval(this.interval);
         //document.getElementById("timeMissing").innerHTML = "Sondaggio scaduto.";
@@ -332,6 +331,7 @@ export class ModificaSondaggioPage implements OnInit {
     }, 1000);
 
   }
+
   ionViewDidLeave() {
     clearInterval(this.interval)
   }  
