@@ -643,12 +643,9 @@ export class VisualizzaDomandaPage implements OnInit {
       var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-      /* document.getElementById("timeLeft").innerHTML = days + "d " + hours + "h "
-       + minutes + "m " + seconds + "s ";  */
-      console.log("Timer view: ", this.timerView, distance);
+    
       if (distance < 0) {
         clearInterval(this.interval);
-        //document.getElementById("timeLeft").innerHTML = "Domanda scaduta.";
         this.timerView = "Domanda scaduta";
       
         
@@ -661,7 +658,7 @@ export class VisualizzaDomandaPage implements OnInit {
 
   }
   mappingIncrement(valueToMapp) {
-    console.log("TIMER MAP:  " , this.timerView2);
+
     switch (valueToMapp) {
       case ("00:05:00"):
         this.countDown(0, 0, 0, 0, 5);

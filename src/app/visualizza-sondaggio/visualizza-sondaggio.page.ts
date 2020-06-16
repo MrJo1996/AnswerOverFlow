@@ -313,9 +313,6 @@ export class VisualizzaSondaggioPage implements OnInit {
   async refreshDopoVoto(event) {
     clearInterval(this.interval);
     this.votato = true;
-    //this.visualizzaSondaggioSelezionato();
-
-    //this.ngOnInit();
     this.visualizzaScelte();
 
     this.giaVotato();
@@ -449,12 +446,8 @@ export class VisualizzaSondaggioPage implements OnInit {
       var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-      /* document.getElementById("timeLeft").innerHTML = days + "d " + hours + "h "
-       + minutes + "m " + seconds + "s ";  */
-
       if (distance < 0) {
         clearInterval(this.interval);
-        //document.getElementById("timeLeft").innerHTML = "Domanda scaduta.";
         this.timerView = "Sondaggio scaduto";
         
       } else {
