@@ -41,15 +41,13 @@ export class VisualizzaChatPage implements OnInit {
 
   //Quando si è cliccato sul pulsante delle chat
   ionViewWillEnter() {
-    this.storage.get("utente").then((data) => {
-      this.user = data.email;
-      this.caricaChat();
-    });
+    this.user = this.data.getEmail_Utente();
+    this.caricaChat();
   }
 
   //Quando è stata caricata la page, si possono usare le funzioni JQuery, perchè gli "#id" vengono trovati
   ionViewDidEnter() {
-    setTimeout(removeLoader, 2500); //wait for page load PLUS two seconds.
+    setTimeout(removeLoader, 3000); //wait for page load PLUS two seconds.
     function removeLoader() {
       $("#loader").fadeOut(500, function () {
         // fadeOut complete. Remove the loading div
@@ -77,7 +75,7 @@ export class VisualizzaChatPage implements OnInit {
     setTimeout(() => {
       $("#ionCard").css("display", "block");
       event.target.complete();
-    }, 2500);
+    }, 3000);
   }
 
   //--------------------Caricamento delle chat
@@ -88,7 +86,6 @@ export class VisualizzaChatPage implements OnInit {
 
     this.servicePost.postService(postData, this.urlCaricaChat).then(
       (data) => {
-        console.log(data.Chats.data);
         if (data.Chats !== undefined) {
           //Controllo se ci sono chat
           this.thereAreChats = true;
@@ -96,7 +93,16 @@ export class VisualizzaChatPage implements OnInit {
           //prendo per ogni chat l'ultimo MESSAGGIO e l'USERNAME
           for (let i = 0; i < this.chat.length; i++) {
             this.selectChatUsername(i);
+            this.selectChatMessage(i);
           }
+          setTimeout(() => {
+            console.log("Chat ordinate", this.chat);
+            this.chat.sort(
+              (a, b) =>
+                new Date(b.message.dataeora).getTime() -
+                new Date(a.message.dataeora).getTime()
+            );
+          }, 3000);
         }
       },
       (err) => {
@@ -125,11 +131,8 @@ export class VisualizzaChatPage implements OnInit {
         this.chat[i]["username"] = data.Profilo.data[0].username;
         this.chat[i]["bio"] = data.Profilo.data[0].bio;
         this.chat[i]["avatar"] = data.Profilo.data[0].avatar;
-        this.selectChatMessage(i);
       },
-      (err) => {
-        console.log(err.message);
-      }
+      (err) => {}
     );
   }
 
@@ -142,16 +145,6 @@ export class VisualizzaChatPage implements OnInit {
     this.servicePost.postService(postData, this.urlCaricaMessaggio).then(
       (data) => {
         this.chat[i]["message"] = data.data;
-        console.log(i, this.chat.length - 1);
-        if (i == this.chat.length - 1) {
-          //Quando il loop è arrivato all'ultimo giro ordino
-          this.chat.sort(function (a, b) {
-            var dateA: any = new Date(a.message.dataeora),
-              dateB: any = new Date(b.message.dataeora);
-            return dateB - dateA;
-          });
-          console.log("Chat ordinate", this.chat);
-        }
       },
       (err) => {
         console.log(err.message);
@@ -170,7 +163,7 @@ export class VisualizzaChatPage implements OnInit {
     // console.log(chatter)
     this.data.setCodice_chat(codiceChat);
     this.data.setEmailOthers(chatter);
-    this.data.loadingView(3000);//visualizza il frame di caricamento
+    this.data.loadingView(3000); //visualizza il frame di caricamento
     this.router.navigate(["chat"]);
   }
 
