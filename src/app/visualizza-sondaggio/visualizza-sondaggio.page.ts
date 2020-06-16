@@ -141,7 +141,7 @@ export class VisualizzaSondaggioPage implements OnInit {
         this.visualizzaCategoria();
       },
       (rej) => {
-        
+
       }
     );
 
@@ -202,7 +202,7 @@ export class VisualizzaSondaggioPage implements OnInit {
 
     this.apiService.controllaGiaVotato(this.currentUser, this.codice_sondaggio).then(
       (risultato) => {
-       
+
         if (risultato !== null) {
           this.votoUtente = risultato[0].cod_scelta;
           this.votato = true;
@@ -295,7 +295,7 @@ export class VisualizzaSondaggioPage implements OnInit {
             this.dataService.loadingView(5000);
             this.ngOnInit();
             this.sceltaFatta = false;
-         
+
           }
         },
         {
@@ -466,6 +466,13 @@ export class VisualizzaSondaggioPage implements OnInit {
 
     clearInterval(this.interval);
   }
+  
+  /* 
+    ionViewWillLeave() {
+      clearInterval(this.interval);
+  
+    } */
+
 
   ionViewDidEnter() {
     clearInterval(this.interval);
@@ -474,14 +481,14 @@ export class VisualizzaSondaggioPage implements OnInit {
   }
 
   goChat() {
-    if(this.ospite === true){
+    if (this.ospite === true) {
       this.toast('Effettua il login per chattare con gli altri utenti!', 'danger');
-    }else{
+    } else {
       this.dataService.loadingView(3000);//visualizza il frame di caricamento
       this.dataService.setEmailOthers(this.sondaggioUser);
       this.navCtrl.navigateForward(['/chat'])
     }
-   
+
 
   }
 

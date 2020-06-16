@@ -125,7 +125,7 @@ export class VisualizzaDomandaPage implements OnInit {
 
         this.getUserDomanda();
         this.visualizzaCategoria();
-
+        console.log("TIMER: " , this.timerView2);
         this.mappingIncrement(this.domanda['0'].timer);
 
       },
@@ -634,9 +634,7 @@ export class VisualizzaDomandaPage implements OnInit {
     auxData['4'] = this.domanda['0'].dataeora.substring(11, 18).split(":")[1];
     var countDownDate = new Date(parseInt(auxData['0'], 10) + incAnno, parseInt(auxData['1'], 10) - 1 + incMese, parseInt(auxData['2'], 10) + incGG, parseInt(auxData['3'], 10) + incHH, parseInt(auxData['4'], 10) + incMM).getTime();
 
-    this.interval = setInterval(function () {
-
-
+    this.interval = setInterval(() => {
       var now = new Date().getTime();
 
       var distance = countDownDate - now;
@@ -646,23 +644,24 @@ export class VisualizzaDomandaPage implements OnInit {
       var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-      document.getElementById("timeLeft").innerHTML = days + "d " + hours + "h "
-        + minutes + "m " + seconds + "s ";
-
-      this.timerView = days + "d " + hours + "h "
-        + minutes + "m " + seconds + "s ";
-
+      /* document.getElementById("timeLeft").innerHTML = days + "d " + hours + "h "
+       + minutes + "m " + seconds + "s ";  */
+      console.log("Timer view: ", this.timerView, distance);
       if (distance < 0) {
         clearInterval(this.interval);
-        document.getElementById("timeLeft").innerHTML = "Domanda scaduta.";
+        //document.getElementById("timeLeft").innerHTML = "Domanda scaduta.";
         this.timerView = "scaduto";
+        
+      } else {
+        this.timerView = days + "d " + hours + "h "
+          + minutes + "m " + seconds + "s ";
       }
-    }, 1000);
 
+    }, 1000);
 
   }
   mappingIncrement(valueToMapp) {
-
+    console.log("TIMER MAP:  " , this.timerView2);
     switch (valueToMapp) {
       case ("00:05:00"):
         this.countDown(0, 0, 0, 0, 5);
@@ -723,15 +722,20 @@ export class VisualizzaDomandaPage implements OnInit {
 
   }
 
+  ionViewWillLeave() {
+    clearInterval(this.interval);
 
+  }
+
+ 
   openMenu() {
     this.menuCtrl.open();
   }
+  
   ionViewDidEnter() {
-    clearInterval(this.interval);
     this.ngOnInit();
 
-  }
+  } 
 
 
   goChat() {
