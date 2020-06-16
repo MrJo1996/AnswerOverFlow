@@ -300,18 +300,6 @@ async popupInvalidTitle(){
     await alert.present();
   }
 
-
-  async popupConfermaEliminaDomanda() {
-    const alert = await this.alertController.create({
-      header: 'Elimina domanda',
-      message: 'Sicuro di voler eliminare questa domanda?',
-      buttons: ['Conferma']
-    });
-
-    await alert.present();
-  }
-
-
   async popupConfermaModificheDomanda() {
     const alert = await this.alertController.create({
       header: 'Conferma modifiche',
@@ -350,7 +338,7 @@ async popupInvalidTitle(){
           text: 'Ok',
           handler: (value: any) => {
             
-            this.timerView = value['ValoreTimerSettato'].value; 
+            this.timerView2 = value['ValoreTimerSettato'].value; 
             this.mappingTimerValueToPass(value['ValoreTimerSettato'].value);
           }
         }
@@ -492,12 +480,8 @@ async popupInvalidTitle(){
       var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-      /* document.getElementById("timeLeft").innerHTML = days + "d " + hours + "h "
-       + minutes + "m " + seconds + "s ";  */
-      console.log("Timer view: ", this.timerView, distance);
       if (distance < 0) {
-        clearInterval(this.interval);
-        //document.getElementById("timeLeft").innerHTML = "Domanda scaduta.";
+        clearInterval(this.interval);       
         this.timerView = "scaduto";
         
       } else {
@@ -578,7 +562,6 @@ async popupInvalidTitle(){
 
   goBack() {
     this.dataService.loadingView(3000);//visualizza il frame di caricamento
-    //this.navCtrl.back();
     this.navCtrl.back();
   }
 
