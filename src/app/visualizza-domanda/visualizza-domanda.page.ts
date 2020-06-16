@@ -17,8 +17,6 @@ import { element } from 'protractor';
 export class VisualizzaDomandaPage implements OnInit {
   numLike2: Array<number> = []
   numDislike2: Array<number> = []
-  votoAttuale
-  allVisible: boolean = false;
   cod_valutazione :Array<number>=[]
   codice_domanda;
 
@@ -39,13 +37,10 @@ export class VisualizzaDomandaPage implements OnInit {
   descrizioneRispostaToPass;
   risposta = {};
   rispostaCliccata;
-  indexMigliorRisposta: number;
   rispostaVisible = false;
   private buttonColor: string = "#2a2a2a";
   private buttonColorBest: string = "gold";
   descrizione_risposta = "";
-
-  coloriLikeDislike = new Array();
 
   categoria = {};
   codice_categoria: number;
@@ -90,7 +85,6 @@ export class VisualizzaDomandaPage implements OnInit {
     this.visualizzaDomanda();
     this.showRisposte();
     this.controllaOspite();
-    this.allVisible = true;
 
    this.usernameUtente =  this.dataService.getUsername();
   }
@@ -103,7 +97,7 @@ export class VisualizzaDomandaPage implements OnInit {
       this.toast('Non puoi più modificare la tua domanda, è scaduta!', 'danger');
     }
     else {
-      this.dataService.loadingView(3000);//visualizza il frame di caricamento
+      this.dataService.loadingView(3000);
       this.navCtrl.navigateForward(['modifica-domanda']);
       this.doRefresh(event);
     }
@@ -113,7 +107,6 @@ export class VisualizzaDomandaPage implements OnInit {
   async visualizzaDomanda() {
 
     this.codice_domanda = this.dataService.codice_domanda;
-    console.log(this.currentMailUser)
     this.apiService.getDomanda(this.codice_domanda).then(
       (domanda) => {
 
@@ -133,7 +126,7 @@ export class VisualizzaDomandaPage implements OnInit {
 
       },
       (rej) => {
-        console.log("C'è stato un errore durante la visualizzazione");
+
       }
     );
 
@@ -148,16 +141,16 @@ export class VisualizzaDomandaPage implements OnInit {
           handler: () => {
             this.toast('Domanda eliminata con successo!', 'success');
             this.cancellaDomanda();
-            this.dataService.loadingView(5000);//visualizza il frame di caricamento        
+            this.dataService.loadingView(5000);  
             this.navCtrl.navigateBack(['home']);
           }
         },
         {
           text: 'No',
           role: 'cancel',
-          //cssClass: 'secondary',
+ 
           handler: () => {
-            console.log('eliminazione annullata');
+
           }
         }
       ]
@@ -173,27 +166,19 @@ export class VisualizzaDomandaPage implements OnInit {
         {
           text: 'Si',
           handler: () => {
-            console.log('risposta eliminata');
             this.toast('Risposta eliminata con successo!', 'success');
             this.cancellaRisposta(codice_risposta);
-            //Visualizza il frame di caricamento
-           /*  const loading = document.createElement('ion-loading');
-            loading.cssClass = 'loading';
-            loading.spinner = 'crescent';
-            loading.duration = 3500;
-            document.body.appendChild(loading); */
             this.dataService.loadingView(5000);
             this.ngOnInit();
-            //this.router.navigate(['home']);        
-            
+                  
           }
         },
         {
           text: 'No',
           role: 'cancel',
-          //cssClass: 'secondary',
+    
           handler: () => {
-            console.log('eliminazione annullata');
+
           }
         }
       ]
@@ -207,8 +192,8 @@ export class VisualizzaDomandaPage implements OnInit {
     this.codice_domanda = this.dataService.codice_domanda;
     this.apiService.getRispostePerDomanda(this.codice_domanda).then(
       (risposte) => {
-        //Prendo le risposte dal db
-        console.log(risposte)
+
+
         this.risposte = [];
         this.risposte2 = [];
         this.risposte = risposte['Risposte']['data'];
@@ -227,17 +212,11 @@ export class VisualizzaDomandaPage implements OnInit {
             else
             this.votoType[data[0]['data'][0]['cod_risposta']]=(data[0]['data'][0].tipo_like)
           this.cod_valutazione[data[0]['data'][0]['cod_risposta']]=data[0]['data'][0]['codice_valutazione']
-          console.log(this.cod_valutazione)
-
-            console.log(this.votoType)
-            console.log(data[0]['data'][0])
-            console.log(data[0]['data'][0].tipo_like,this.risposte2[index].codice_risposta)
-
+        
           })
           
         }
      
-
         for (let i = 0; i < this.risposte.length; i++) {
 
           if (this.risposte[i].codice_risposta === this.cod_preferita) {
@@ -247,33 +226,26 @@ export class VisualizzaDomandaPage implements OnInit {
             this.risposte[i] = null;
             this.risposte[i] = aux;
 
-
-
             for (let j = 1; j < i; j++) {
               let aux = this.risposte[j];
               this.risposte[j] = this.risposte[i];
               this.risposte[i] = aux;
             }
           }
-
         }
 
         for (let i = 0; i < this.risposte.length; i++) {
-
           this.cercaValutazione(this.currentMailUser, this.risposte, i);
-
         }
-
 
         for (let i = 0; i < this.risposte.length; i++) {
           this.trovaProfiliUtentiRisposte(this.risposte[i].cod_utente, i);
 
         }
 
-
       },
       (rej) => {
-        //console.log("C'è stato un errore durante la visualizzazione");
+   
       }
     );
   }
@@ -281,19 +253,16 @@ export class VisualizzaDomandaPage implements OnInit {
   async trovaProfiliUtentiRisposte(mailUtenteRisposta, i) {
     this.apiService.getProfilo(mailUtenteRisposta).then(
       (profilo) => {
-        //this.profiliUtentiRisposte.push(profilo['data']['0']);
+ 
         this.risposte[i]['avatar'] = profilo['data']['0']['avatar'];
         this.risposte[i]['username'] = profilo['data']['0']['username'];
 
-
       },
       (rej) => {
-        console.log("C'è stato un errore durante la visualizzazione del profilo");
       }
     );
 
   }
-
 
 
   async visualizzaCategoria() {
@@ -303,7 +272,6 @@ export class VisualizzaDomandaPage implements OnInit {
         this.categoria = categoria['Categoria']['data']['0'].titolo;
       },
       (rej) => {
-        console.log("C'è stato un errore durante la visualizzazione");
       }
     );
   }
@@ -366,7 +334,6 @@ export class VisualizzaDomandaPage implements OnInit {
         (result) => {
         },
         (rej) => {
-          console.log('Modifica non effetutata');
         }
       );
 
@@ -376,14 +343,13 @@ export class VisualizzaDomandaPage implements OnInit {
 
   async scegliPreferita() {
     this.apiService.scegliRispostaPreferita(this.codice_domanda, this.cod_preferita).then(
-      (result) => { // nel caso in cui va a buon fine la chiamata
+      (result) => { 
       },
-      (rej) => {// nel caso non vada a buon fine la chiamata
-        console.log('Modifica non effetutata'); //anche se va nel rej va bene, modifiche effettive nel db
+      (rej) => {
+    
       }
     );
   }
-
 
   clickInviaRisposta() {
     if (this.deadlineCheck()) {
@@ -430,7 +396,6 @@ export class VisualizzaDomandaPage implements OnInit {
   }
 
 
-
   async popupModificaDescrizioneRisposta() {
 
     const alert = await this.alertController.create({
@@ -448,12 +413,10 @@ export class VisualizzaDomandaPage implements OnInit {
           role: 'cancel',
           cssClass: 'secondary',
           handler: () => {
-            console.log('Confirm cancel');
           }
         }, {
           text: 'Ok',
           handler: insertedData => {
-            console.log(JSON.stringify(insertedData));
             this.descrizioneRispostaView = insertedData.descrizionePopUp;
             this.descrizioneRispostaToPass = insertedData.descrizionePopUp;
 
@@ -471,8 +434,6 @@ export class VisualizzaDomandaPage implements OnInit {
     if (this.risposte[i]['cod_utente'] === this.currentMailUser) {
 
       this.dataService.codice_risposta = risposta.codice_risposta;
-
-
       this.rispostaCliccata = risposta;
 
     }
@@ -498,22 +459,15 @@ export class VisualizzaDomandaPage implements OnInit {
 
     let array = list.array
 
-    console.log(array);
-
     let stringArray = [];
     let stringPassed = string.split(' ');
     stringArray = stringArray.concat(stringPassed);
-
-    console.log(stringArray);
-
     var check;
 
     stringArray.forEach(element => {
       if (array.includes(element))
         check = true;
     });
-
-    console.log(check);
 
     return check;
 
@@ -552,13 +506,8 @@ export class VisualizzaDomandaPage implements OnInit {
     });
 
     {
-
       await loading.present();
-
-
     }
-
-
   }
 
 
@@ -577,10 +526,9 @@ export class VisualizzaDomandaPage implements OnInit {
   timeoutHandleLike
   votoType: Array<number> = []
   modificaLike(i, value,risposta) {
-    console.log('value' + value)
-
+  
     if (value == 1) {
-      if (this.votoType[i] == 2) {//tolgo dislike aggiungo like
+      if (this.votoType[i] == 2) {
         this.numDislike2[i] -= 1
         this.votoType[i] = 1
         this.apiService.togliDislike(this.risposte2[risposta].codice_risposta)
@@ -597,7 +545,7 @@ export class VisualizzaDomandaPage implements OnInit {
           this.apiService.inserisciValutazione(this.risposte2[risposta].codice_risposta, this.currentMailUser, this.votoType[i])
         }).catch((err) => { })
       }
-      //aggiungo dislike
+
     }
 
     if (value == -1) {this.votoType[i] = null
@@ -605,14 +553,12 @@ export class VisualizzaDomandaPage implements OnInit {
       this.apiService.togliLike(this.risposte[risposta].codice_risposta)
     })
     }
-    //levo il like
-    console.log(this.risposte2)
+
+
     this.numLike2[i] = this.numLike2[i] + value || 0
     clearTimeout(this.timeoutHandleLike);
-    console.log(this.numLike2)
-    console.log(this.numDislike2[i] + '       ', this.numLike2[i] + '' + this.votoType[i])
     this.timeoutHandleLike = setTimeout(function (vototype) {
-      console.log('sparoiserviziiiiiiiiiiiiiiiiiiiiiiiiii' + vototype)
+ 
     }
       , 700, this.votoType[i]);
 
@@ -621,7 +567,6 @@ export class VisualizzaDomandaPage implements OnInit {
   timeoutHandleDislike
   modificaDislike(i, value,risposta) {
     var temp = true
-    console.log('value' + value)
     if (value == 1) {
       if (this.votoType[i] == 1) {
         this.numLike2[i] -= 1
@@ -651,7 +596,7 @@ export class VisualizzaDomandaPage implements OnInit {
 
     clearTimeout(this.timeoutHandleDislike);
     this.timeoutHandleDislike = setTimeout(function (vototype) {
-      console.log('sparoiserviziiiiiiiiiiiiiiiiiiiiiiiiii' + vototype)
+  
     }
       , 700, this.votoType[i]);
 
@@ -681,53 +626,6 @@ export class VisualizzaDomandaPage implements OnInit {
     );
 
   }
-
-
-
-
-  /*  cancellaValutazione(codice_valutazione) {
-     this.apiService.rimuoviValutazione(codice_valutazione).then(
-       (risultato) => {
-         console.log('eliminata');
- 
-       },
-       (rej) => {
-         console.log("C'è stato un errore durante l'eliminazione", rej);
-       }
-     );
-   }
- 
- 
- 
-    togliLike(codice_risposta){
-     this.apiService.togliLike(codice_risposta).then(
-       (risultato) => {
-         console.log('eliminata');
- 
-       },
-       (rej) => {
-         console.log("C'è stato un errore durante l'eliminazione", rej);
-       }
-     );
-   }
- 
- 
- 
-    togliDislike(codice_risposta){
-     this.apiService.togliDislike(codice_risposta).then(
-       (risultato) => {
-         console.log('eliminata');
- 
-       },
-       (rej) => {
-         console.log("C'è stato un errore durante l'eliminazione", rej);
-       }
-     );
-   }
- 
- 
- */
-
 
   interval
   async countDown(incAnno, incMese, incGG, incHH, incMM) {
@@ -771,7 +669,6 @@ export class VisualizzaDomandaPage implements OnInit {
 
     switch (valueToMapp) {
       case ("00:05:00"):
-        console.log("Selezionata scelta 5 min");
         this.countDown(0, 0, 0, 0, 5);
 
         break;
@@ -819,17 +716,14 @@ export class VisualizzaDomandaPage implements OnInit {
   }
 
   clickProfilo(cod_utente) {
-    this.dataService.loadingView(5000);//visualizza il frame di caricamento
+    this.dataService.loadingView(5000);
     this.dataService.setEmailOthers(cod_utente);
-    console.log(this.dataService.setEmailOthers);
-    // this.router.navigate(['/visualizza-profilo']);
     this.navCtrl.navigateForward(['/visualizza-profilo']);
   }
 
 
   ionViewDidLeave() {
     clearInterval(this.interval);
-    //this.likes = new Array();
   }
 
 
@@ -839,9 +733,7 @@ export class VisualizzaDomandaPage implements OnInit {
   ionViewDidEnter() {
     clearInterval(this.interval);
     this.ngOnInit();
-   /* 
-    this.mappingIncrement(this.timerView2);
- */
+
   }
 
 
@@ -857,21 +749,13 @@ export class VisualizzaDomandaPage implements OnInit {
 
   deadlineCheck(): boolean {
     var date = new Date(this.dataeoraView.toLocaleString());
-    console.log(date.getTime());
     var timer = this.timerView2;
-    console.log(timer);
     var dateNow = new Date().getTime();
 
-
-    // Since the getTime function of the Date object gets the milliseconds since 1970/01/01, we can do this:
     var time2 = date.getTime();
     var seconds = new Date('1970-01-01T' + timer + 'Z').getTime();
 
     var diff = dateNow - time2;
-
-    console.log(seconds);
-    console.log(time2);
-    console.log(diff);
 
     return diff > seconds;
   }
@@ -897,7 +781,7 @@ export class VisualizzaDomandaPage implements OnInit {
           role: "cancel",
           cssClass: "secondary",
           handler: (blah) => {
-            console.log("Confirm Cancel");
+
           },
         },
         {
@@ -910,7 +794,7 @@ export class VisualizzaDomandaPage implements OnInit {
 
             setTimeout(() => {
               this.storage.get("session").then((data) => {
-                console.log("SESSION:" + data);
+    
               });
             }, 3000);
           },
