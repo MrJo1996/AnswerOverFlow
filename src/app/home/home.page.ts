@@ -24,6 +24,7 @@ export class HomePage implements OnInit {
   index1 = 1;
   index2 = 2;
   switch = true;
+  switchSearch = true;
   currentMailUser;
   keywordToSearch;
   timer;
@@ -54,6 +55,7 @@ export class HomePage implements OnInit {
     this.sondaggi_regolati = [];
     this.domande_regolate = [];
     this.currentMailUser = "";
+    this.switchSearch = true;
   }
 
   ngOnInit() {
@@ -74,6 +76,10 @@ export class HomePage implements OnInit {
       this.switch = this.switch;
     else
       this.switch = !(this.switch);
+  }
+//SWITCH VIEW SEARCH BAR
+  switchSearchBar(switchSearch){
+      this.switchSearch = !(this.switchSearch);
   }
 //POPOVER
   async presentPopover(ev, index, username, codice) {

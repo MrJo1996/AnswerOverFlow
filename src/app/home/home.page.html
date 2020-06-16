@@ -1,11 +1,15 @@
 <ion-header class="backgroundsSecondaryItem">
 
-  <ion-toolbar>
-    <ion-icon expand="block" fill="clear" class="alarm_style" color="grey" slot="end" [name]="isActive?'close':'search'"
-      item-right (click)="isActive=!isActive;" isActive=true></ion-icon>
-    <ion-searchbar *ngIf="isActive===true" placeholder="Ricerca..." [(ngModel)]="keywordToSearch"
+  <ion-toolbar *ngIf="switchSearch === true">
+    <ion-icon expand="block" fill="clear" class="alarm_style" color="grey" slot="end" name="search"
+      item-right (click)="switchSearchBar(switchSearch)"></ion-icon>
+    <ion-title class="textTitle">ANSWEROVERFLOW</ion-title>
+  </ion-toolbar>
+  <ion-toolbar *ngIf="switchSearch === false">
+    <ion-icon expand="block" fill="clear" class="alarm_style" color="grey" slot="end" name="close"
+      item-right (click)="switchSearchBar(switchSearch)"></ion-icon>
+    <ion-searchbar placeholder="Ricerca..." [(ngModel)]="keywordToSearch"
       (search)="ricerca($event)"></ion-searchbar>
-    <ion-title class="textTitle" *ngIf="isActive!==true">ANSWEROVERFLOW</ion-title>
   </ion-toolbar>
 
 </ion-header>
