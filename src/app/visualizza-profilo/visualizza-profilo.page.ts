@@ -67,9 +67,14 @@ export class VisualizzaProfiloPage implements OnInit {
   }
 
   goToChat() {
+    if(this.session === true){
     this.dataService.loadingView(3000);//visualizza il frame di caricamento
     this.dataService.emailOthers = this.profilo.email;
     this.router.navigateByUrl("/chat");
+  }else{
+    this.viewToast("Effettua il login", 'danger')
+  }
+
   }
 
   stats() {
@@ -113,9 +118,9 @@ export class VisualizzaProfiloPage implements OnInit {
 
     this.apiService.segnala_utente(this.segnalazione, this.profilo.username, this.profilo.email).then(
       (result) => {
-        this.toast("Segnalazione inviata.", "success");
+        this.viewToast("Segnalazione inviata.", "success");
       }, (rej) => {
-        this.toast("Segnalazione non riuscita, riprovare.", "danger");
+        this.viewToast("Segnalazione non riuscita, riprovare.", "danger");
 
       }
     );
@@ -159,14 +164,15 @@ export class VisualizzaProfiloPage implements OnInit {
           text: 'No',
           role: 'cancel',
           handler: () => {
-            console.log('Nega segnalazione: spam');
           }
         }, {
           text: 'Si',
           handler: () => {
-            console.log('Invia segnalazione: spam');
             this.segnalazione = " Spam"
+            if(this.session === true)
             this.segnalaUtente();
+            else
+            this.viewToast("Effettua il login", "danger")
           }
         }
       ]
