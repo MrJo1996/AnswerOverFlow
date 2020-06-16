@@ -103,7 +103,7 @@ export class VisualizzaDomandaPage implements OnInit {
       clearInterval(this.interval);
       this.dataService.loadingView(5000);
       this.navCtrl.navigateRoot(['/modifica-domanda']);
-  
+
     }
   }
 
@@ -171,8 +171,9 @@ export class VisualizzaDomandaPage implements OnInit {
           handler: () => {
             this.toast('Risposta eliminata con successo!', 'success');
             this.cancellaRisposta(codice_risposta);
-            this.dataService.loadingView(5000);
             this.ngOnInit();
+            this.dataService.loadingView(5000);
+            this.doRefresh(event);
 
           }
         },
@@ -199,13 +200,13 @@ export class VisualizzaDomandaPage implements OnInit {
 
         this.risposte = [];
         this.risposte2 = [];
-      
 
-     
+
+
         this.risposte = risposte['Risposte']['data'];
         this.risposte2 = risposte['Risposte']['data']
         let temp: Array<Number> = []
-        
+
         this.numLike2 = [];
         this.numDislike2 = [];
         this.votoType = [];
@@ -216,7 +217,7 @@ export class VisualizzaDomandaPage implements OnInit {
           this.apiService.controllaGiaValutatoRisposta(this.currentMailUser, this.risposte2[index].codice_risposta).then((data) => {
             if (data[0]['data'] == null) this.votoType.push(0)
             else {
-              this.votoType[data[0]['data'][0]['cod_risposta']] = (data[0]['data'][0].tipo_like) 
+              this.votoType[data[0]['data'][0]['cod_risposta']] = (data[0]['data'][0].tipo_like)
               this.cod_valutazione[data[0]['data'][0]['cod_risposta']] = data[0]['data'][0]['codice_valutazione']
             }
 
@@ -250,7 +251,7 @@ export class VisualizzaDomandaPage implements OnInit {
           this.trovaProfiliUtentiRisposte(this.risposte[i].cod_utente, i);
 
         }
-      
+
       },
       (rej) => {
 
@@ -389,7 +390,7 @@ export class VisualizzaDomandaPage implements OnInit {
         this.apiService.inserisciRisposta(this.descrizione_risposta, this.currentMailUser, this.codice_domanda).then(
           (result) => {
 
-            this.apiService.inviaNotifica(this.domandaMailUser, this.usernameUtente, "Ha risposto alla tua domanda", "answer","null");
+            this.apiService.inviaNotifica(this.domandaMailUser, this.usernameUtente, "Ha risposto alla tua domanda", "answer", "null");
           },
           (rej) => {
 
@@ -645,12 +646,12 @@ export class VisualizzaDomandaPage implements OnInit {
       var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-    
+
       if (distance < 0) {
         clearInterval(this.interval);
         this.timerView = "Domanda scaduta";
-      
-        
+
+
       } else {
         this.timerView = days + "d " + hours + "h "
           + minutes + "m " + seconds + "s ";
@@ -716,7 +717,7 @@ export class VisualizzaDomandaPage implements OnInit {
   }
 
 
-ionViewDidLeave() {
+  ionViewDidLeave() {
     clearInterval(this.interval);
 
   }
