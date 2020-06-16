@@ -204,7 +204,7 @@ export class VisualizzaSondaggioPage implements OnInit {
       (risultato) => {
        
         if (risultato !== null) {
-          this.votoUtente = risultato[0];
+          this.votoUtente = risultato[0].cod_scelta;
           this.votato = true;
 
         } else {
@@ -292,11 +292,10 @@ export class VisualizzaSondaggioPage implements OnInit {
         {
           text: 'Si',
           handler: () => {
-      
-            this.dataService.loadingView(2000).then(() => {
-              this.inviaVoto();
-              this.refreshDopoVoto(event);
-            });
+            this.dataService.loadingView(5000);
+            this.ngOnInit();
+            this.sceltaFatta = false;
+         
           }
         },
         {

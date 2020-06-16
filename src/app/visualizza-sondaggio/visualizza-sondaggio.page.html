@@ -3,8 +3,8 @@
     <ion-button slot="start" expand="block" fill="clear" (click)="goBack()" class="msg-btn">
       <ion-icon color="primary" slot="start" slot="icon-only" name="arrow-back-outline"></ion-icon>
     </ion-button>
-    <ion-title style="text-align: center;" class = "textTitle" *ngIf="currentUser===sondaggio.cod_utente">Dettagli del tuo sondaggio</ion-title>
-    <ion-title style="text-align: center;" class = "textTitle" *ngIf="currentUser!==sondaggio.cod_utente">Dettagli del sondaggio</ion-title>
+    <ion-title style="text-align: center; margin-right: 15%;" class = "textTitle" *ngIf="currentUser===sondaggio.cod_utente">Dettagli del tuo sondaggio</ion-title>
+    <ion-title style="text-align: center; margin-right: 15%;" class = "textTitle" *ngIf="currentUser!==sondaggio.cod_utente">Dettagli del sondaggio</ion-title>
     <ion-button *ngIf="sceltaFatta === true" slot="end" expand="block" fill="clear" (click)="confermaVoto()"
       class="msg-btn">
       <ion-icon color="success" slot="end" slot="icon-only" name="checkmark-sharp"></ion-icon>
@@ -77,8 +77,8 @@
             *ngIf="i===numeroScelta && sceltaFatta == true && currentUser!==sondaggio.cod_utente && votato === false"
             class="chosen" value="100">
           </ion-progress-bar>
-          <ion-text class="textSimple"  *ngIf="votato === false || (votato === true && scelta.codice_scelta !== votoUtente.cod_scelta)" slot="start">{{scelta.descrizione}}</ion-text>
-          <ion-text color = "primary" class="textSceltaFatta" *ngIf="votato === true && scelta.codice_scelta === votoUtente.cod_scelta" slot="start">{{scelta.descrizione}}</ion-text>
+          <ion-text class="textSimple"  *ngIf="votato === false || (votato === true && scelta.codice_scelta !== votoUtente)" slot="start">{{scelta.descrizione}}</ion-text>
+          <ion-text color = "primary" class="textSceltaFatta" *ngIf="votato === true && scelta.codice_scelta === votoUtente" slot="start">{{scelta.descrizione}}</ion-text>
           <ion-label class="num-voti-style"
             *ngIf="(currentUser===sondaggio.cod_utente  || votato === true) && scelta.num_favorevoli >1" slot="start">
             {{scelta.num_favorevoli}} voti</ion-label>
