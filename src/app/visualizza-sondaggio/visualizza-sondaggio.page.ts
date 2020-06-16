@@ -294,9 +294,10 @@ export class VisualizzaSondaggioPage implements OnInit {
           text: 'Si',
           handler: () => {
             this.dataService.loadingView(5000);
+  
+            this.inviaVoto();
             this.ngOnInit();
             this.sceltaFatta = false;
-
           }
         },
         {

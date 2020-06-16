@@ -199,10 +199,13 @@ export class VisualizzaDomandaPage implements OnInit {
 
         this.risposte = [];
         this.risposte2 = [];
+      
+
+     
         this.risposte = risposte['Risposte']['data'];
         this.risposte2 = risposte['Risposte']['data']
         let temp: Array<Number> = []
-
+        
         this.numLike2 = [];
         this.numDislike2 = [];
         this.votoType = [];
@@ -212,9 +215,11 @@ export class VisualizzaDomandaPage implements OnInit {
 
           this.apiService.controllaGiaValutatoRisposta(this.currentMailUser, this.risposte2[index].codice_risposta).then((data) => {
             if (data[0]['data'] == null) this.votoType.push(0)
-            else
-              this.votoType[data[0]['data'][0]['cod_risposta']] = (data[0]['data'][0].tipo_like)
-            this.cod_valutazione[data[0]['data'][0]['cod_risposta']] = data[0]['data'][0]['codice_valutazione']
+            else {
+              this.votoType[data[0]['data'][0]['cod_risposta']] = (data[0]['data'][0].tipo_like) 
+              this.cod_valutazione[data[0]['data'][0]['cod_risposta']] = data[0]['data'][0]['codice_valutazione']
+            }
+
 
           })
 
@@ -245,7 +250,7 @@ export class VisualizzaDomandaPage implements OnInit {
           this.trovaProfiliUtentiRisposte(this.risposte[i].cod_utente, i);
 
         }
-
+      
       },
       (rej) => {
 
