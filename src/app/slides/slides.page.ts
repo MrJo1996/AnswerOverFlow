@@ -1,38 +1,14 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from "@angular/router";
+import { Storage } from "@ionic/storage";
 
 @Component({
   selector: 'app-slides',
-  template: `
-
-    <ion-content padding fixed class="bg-class" id="fixed">
-    <div fixed id='stars'></div>
-    <div fixed id='stars2'></div>
-    <div fixed id='stars3'></div>
-
-      <ion-slides fixed pager="true" [options]="slideOpts">
-        <ion-slide>
-          <h1>Slide 1</h1>
-        </ion-slide>
-        <ion-slide>
-          <h1>Slide 2</h1>
-        </ion-slide>
-        <ion-slide>
-          <h1>Slide 3</h1>
-        </ion-slide>
-      </ion-slides>
-    </ion-content>
-    
-  `,
+  templateUrl: "./slides.page.html",
   styleUrls: ['./slides.page.scss'],
-
 })
 
-
-
 export class SlidesPage implements OnInit {
-  // Optional parameters to pass to the swiper instance.
-  // See http://idangero.us/swiper/api/ for valid options.
-
   slideOpts = {
     grabCursor: true,
     cubeEffect: {
@@ -189,12 +165,12 @@ export class SlidesPage implements OnInit {
     }
   }
 
+  constructor(private storage: Storage, private router: Router) { }
 
+  welcomeBtn = false;
 
-  constructor() { }
   ngOnInit(): void {
     var fixed = document.getElementById("fixed");
-
     fixed.addEventListener(
       "touchmove",
       function (e) {
@@ -203,4 +179,12 @@ export class SlidesPage implements OnInit {
       false
     );
   }
+
+  async finish() {
+    await this.storage.set('tutorialComplete', true);
+    console.log("TUTORIALLLLLLLLLLLLLLLLLLLL",this.storage.get("tutorialComplete"));
+
+    this.router.navigate(["login"]);
+  }
+
 }

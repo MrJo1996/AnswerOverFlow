@@ -45,12 +45,11 @@ export class LoginPage implements OnInit {
     private menuCtrl: MenuController,
     private menuSet: AppComponent,
     private oneSignal: OneSignal
-  ) {}
+  ) { }
 
   ngOnInit() {
-    //disable scroll (anche su ios)
+    //disable scroll
     var fixed = document.getElementById("fixed");
-
     fixed.addEventListener(
       "touchmove",
       function (e) {
@@ -90,7 +89,7 @@ export class LoginPage implements OnInit {
       document.body.appendChild(toast);
       return toast.present();
     } else {
-      
+
       let postData = {
         username: this.username,
         password: this.password,
@@ -143,7 +142,6 @@ export class LoginPage implements OnInit {
       this.dataService.setNome(data.data[0]["nome"]);
       this.dataService.setCognome(data.data[0]["cognome"]);
       this.dataService.setAvatarUtente(data.data[0]["avatar"]);
-      console.log(this.dataService.getAvatar());
 
       this.storage.set("utente", data.data[0]);
       this.storage.set("session", true);
@@ -152,29 +150,19 @@ export class LoginPage implements OnInit {
       this.storage.set("session", true);
 
       setTimeout(() => {
-        this.storage.get("session").then((data) => {
-          console.log("SESSION:" + data);
-        });
+        this.storage.get("session").then((data) => {});
 
         this.storage.get("utente").then((data) => {
           this.dataService.emailUtente = data.email;
           this.setupPush(data.email);
 
         });
+        
       }, 1000);
 
-      // this.storage.get('session').then(data => {
-      //   this.storage.set('session', true);
-      //   console.log('SESSION:' + data)
-      // });
       this.dataService.loadingView(5000);//Visualizza il frame di caricamento
       this.router.navigate(["home"]);
     } else {
-      console.log("error");
-
-      /* this.dataService.setUtente(this.email, this.username, this.password, this.nome, this.cognome,this.bio);
-       this.router.navigate(['home']);
-       console.log(this.dataService.utente);*/
     }
   }
 
@@ -193,16 +181,16 @@ export class LoginPage implements OnInit {
 
 
 
-  setupPush(idUtente:string) {
+  setupPush(idUtente: string) {
 
     console.log(idUtente)
 
     this.oneSignal.startInit('8efdc866-9bea-4b12-a371-aa01f421c4f7', '424760060101');
     this.oneSignal.sendTag('email', idUtente);
-    this.oneSignal.sendTag('logState','logged');
+    this.oneSignal.sendTag('logState', 'logged');
     this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.None);
 
-    this.oneSignal.handleNotificationReceived().subscribe(data => {       
+    this.oneSignal.handleNotificationReceived().subscribe(data => {
       this.dataService.setNotificationsState(true);
     });
 
@@ -211,6 +199,6 @@ export class LoginPage implements OnInit {
 
     });
     this.oneSignal.endInit();
-    
+
   }
 }

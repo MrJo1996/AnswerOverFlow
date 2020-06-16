@@ -122,8 +122,6 @@ export class AppComponent implements OnInit {
     });
   }
 
-  ionViewWillEnter() { }
-
   //ALERT E ROUTING LOGOUT---------------------------------------
 
   async alert() {
@@ -306,27 +304,32 @@ export class AppComponent implements OnInit {
 
   initializeApp() {
     this.platform.ready().then(() => {
+
       this.statusBar.overlaysWebView(false);
       this.statusBar.backgroundColorByHexString('#2a2a2a');
       this.splashScreen.hide();
-
       timer(2000).subscribe(() => (this.showSplash = false)); //durata animazione definita in app.component.html -> 2s 
+
       if (this.platform.is('cordova')) {
         this.setupPush();
       }
-      this.storage.get("utente").then((utente) => {
-        //Check utente logged
-        if (utente.username === null || utente.username == undefined) { // LOGIN
-          this.router.navigate(['login']);
-        } else { //  HOME
-          //SET VAR AL SERVICE 
-          this.dataService.setEmail_Utente(utente.email);
-          
-          this.dataService.loadingView(5000);//visualizza il frame di caricamento
-          this.router.navigate(['home']);
-          this.toast("Bentornato " + utente.username + "!", "success");
+
+      this.storage.get("tutorialComplete").then((isComplete) => {
+        if (isComplete) { //Tutorial completato
+          this.storage.get("utente").then((utente) => { //Check utente logged
+            if (utente.username === null || utente.username == undefined) { //nav to LOGIN
+              this.router.navigate(['login']);
+            } else { //nav to HOME
+              //Set Service vars
+              this.dataService.setEmail_Utente(utente.email);
+              this.dataService.loadingView(5000);//visualizza il frame di caricamento
+              this.router.navigate(['home']);
+              this.toast("Bentornato " + utente.username + "!", "success");
+            }
+          });
+        } else {
+          this.router.navigate(['slides']);
         }
-      
       });
     });
 

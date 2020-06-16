@@ -1,9 +1,61 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>slides</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content id="fixed" class="bg-class" id="fixed">
+  <div id='stars'></div>
+  <div id='stars2'></div>
+  <div id='stars3'></div>
 
-<ion-content>
+  <ion-slides pager="true" [options]="slideOpts">
+
+    <ion-slide>
+      <h1>
+        <div class="logo"></div>
+        <h4>Benvenuto in</h4>
+        <strong class="titolo">AnswerOverFlow</strong>
+        <br>
+        <h5>La risposta ad ogni dubbio!</h5>
+      </h1>
+    </ion-slide>
+
+    <ion-slide>
+      <h1>
+        <div class="slide2"></div>
+        <strong class="titolo">Sondaggi</strong>
+        <h5>Crea un sondaggio</h5>
+        <h5>o rispondi ai sondaggi degli altri utenti!</h5>
+      </h1>
+    </ion-slide>
+
+    <ion-slide>
+      <h1>
+        <div class="slide3"></div>
+        <strong class="titolo">Domande</strong>
+        <h5>In cerca di una risposta?</h5>
+        <h5>Aiuta gli altri utenti a trovarne una!</h5>
+      </h1>
+    </ion-slide>
+
+    <ion-slide>
+      <h1>
+        <div class="slide4"></div>
+        <br>
+        <strong class="titolo">Trova la soluzione adatta a te</strong>
+        <h5>Ricerca per filtri o keyword</h5>
+        <h5>Trova risposte in totale semplicità!</h5>
+      </h1>
+    </ion-slide>
+
+    <ion-slide>
+      <h1>
+        <div class="slide5"></div>
+        <br>
+        <strong class="titolo">Comunica con gli altri utenti</strong>
+        <h5>Approfondisci eventuali questioni</h5>
+        <h5>o chiarischi ogni tuo dubbio! </h5>
+        <br>
+        <ion-button color="primary" (click)="finish()">Avanti</ion-button>
+      </h1>
+    </ion-slide>
+
+  </ion-slides>
+
 
 </ion-content>
