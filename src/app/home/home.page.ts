@@ -51,8 +51,9 @@ export class HomePage implements OnInit {
     clearInterval(this.timer)
     this.indice_regola_sondaggi = 0;;
     this.indice_regola_domande = 0;
-    this.sondaggi_regolati = []
+    this.sondaggi_regolati = [];
     this.domande_regolate = [];
+    this.currentMailUser = "";
   }
 
   ngOnInit() {
