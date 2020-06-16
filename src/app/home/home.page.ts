@@ -54,7 +54,7 @@ export class HomePage implements OnInit {
     this.indice_regola_domande = 0;
     this.sondaggi_regolati = [];
     this.domande_regolate = [];
-    this.currentMailUser = "";
+    //this.currentMailUser = "";
     this.switchSearch = true;
   }
 

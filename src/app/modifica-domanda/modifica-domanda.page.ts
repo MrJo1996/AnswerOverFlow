@@ -24,7 +24,7 @@ export class ModificaDomandaPage implements OnInit {
   cod_categoria: number;
 
   dataeoraToPass: string;
-  timerToPass: string;
+  timerToPass: string = null;
   titoloToPass: string;
   descrizioneToPass: string;
   categoriaToPass;
@@ -82,7 +82,7 @@ export class ModificaDomandaPage implements OnInit {
     }
     
     if (this.timerToPass == null) {
-      this.timerToPass = this.timerView;
+      this.timerToPass = this.timerView2;
     }
 
     if (this.stringDescriptionChecker()) {
@@ -96,7 +96,7 @@ export class ModificaDomandaPage implements OnInit {
       this.toastParolaScoretta();
     }
     else {
-    this.apiService.modificaDomanda(this.codice_domanda, this.dataeoraToPass, this.timerToPass, this.titoloToPass, this.descrizioneToPass, this.categoriaToPass||this.categoriaView, this.cod_preferita);
+    this.apiService.modificaDomanda(this.codice_domanda, this.dataeoraToPass, this.timerToPass, this.titoloToPass, this.descrizioneToPass, this.categoriaToPass, this.cod_preferita);   
     this.toastSuccess();
     }
   }
@@ -115,7 +115,7 @@ export class ModificaDomandaPage implements OnInit {
         this.descrizioneView = this.domanda['0'].descrizione;
         this.cod_preferita = this.domanda['0'].cod_preferita;
         this.cod_categoriaView = this.domanda['0'].cod_categoria;
-
+        this.categoriaToPass = this.domanda['0'].cod_categoria;
         this.getCategoriaView();
       
         this.mappingIncrement(this.domanda['0'].timer);
