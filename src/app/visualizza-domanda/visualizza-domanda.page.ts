@@ -407,7 +407,7 @@ export class VisualizzaDomandaPage implements OnInit {
       inputs: [
         {
           name: 'descrizionePopUp',
-          type: 'text',
+          type: 'textarea',
           placeholder: this.rispostaCliccata.descrizione
         }
       ],
