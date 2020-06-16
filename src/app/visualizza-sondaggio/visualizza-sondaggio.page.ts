@@ -34,7 +34,7 @@ export class VisualizzaSondaggioPage implements OnInit {
   indexSceltaSelezionata: number;
   codiceSceltaSelezionata;
   percentualiScelte = new Array();
-
+  timerView;
   profiloUserSondaggio = {};
   distanceTimer;
 
@@ -438,22 +438,29 @@ export class VisualizzaSondaggioPage implements OnInit {
     auxData['4'] = this.sondaggio['dataeora'].substring(11, 18).split(":")[1];
     var countDownDate = new Date(parseInt(auxData['0'], 10) + incAnno, parseInt(auxData['1'], 10) - 1 + incMese, parseInt(auxData['2'], 10) + incGG, parseInt(auxData['3'], 10) + incHH, parseInt(auxData['4'], 10) + incMM).getTime();
 
-    this.interval = setInterval(function () {
+    this.interval = setInterval(() => {
       var now = new Date().getTime();
-      this.distanceTimer = countDownDate - now;
-      var days = Math.floor(this.distanceTimer / (1000 * 60 * 60 * 24));
-      var hours = Math.floor((this.distanceTimer % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      var minutes = Math.floor((this.distanceTimer % (1000 * 60 * 60)) / (1000 * 60));
-      var seconds = Math.floor((this.distanceTimer % (1000 * 60)) / 1000);
-      document.getElementById("timeLeft").innerHTML = days + "giorni " + hours + "ore "
-        + minutes + "min " + seconds + "s ";
 
-      if (this.distanceTimer < 0) {
+      var distance = countDownDate - now;
+
+      var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      /* document.getElementById("timeLeft").innerHTML = days + "d " + hours + "h "
+       + minutes + "m " + seconds + "s ";  */
+      console.log("Timer view: ", this.timerView, distance);
+      if (distance < 0) {
         clearInterval(this.interval);
-        this.isSondaggioActive = false;
-        document.getElementById("timeLeft").innerHTML = "Sondaggio scaduto.";
-
+        //document.getElementById("timeLeft").innerHTML = "Domanda scaduta.";
+        this.timerView = "Domanda scaduta";
+        
+      } else {
+        this.timerView = days + "d " + hours + "h "
+          + minutes + "m " + seconds + "s ";
       }
+
     }, 1000);
 
   }
@@ -466,7 +473,12 @@ export class VisualizzaSondaggioPage implements OnInit {
 
     clearInterval(this.interval);
   }
-  
+
+  ionViewWillLeave() {
+    clearInterval(this.interval);
+
+  }
+
   /* 
     ionViewWillLeave() {
       clearInterval(this.interval);
@@ -474,11 +486,10 @@ export class VisualizzaSondaggioPage implements OnInit {
     } */
 
 
-  ionViewDidEnter() {
-    clearInterval(this.interval);
+ ionViewDidEnter() {
     this.ngOnInit();
 
-  }
+  } 
 
   goChat() {
     if (this.ospite === true) {

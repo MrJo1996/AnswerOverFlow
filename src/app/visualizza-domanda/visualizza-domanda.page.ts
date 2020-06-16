@@ -650,7 +650,7 @@ export class VisualizzaDomandaPage implements OnInit {
       if (distance < 0) {
         clearInterval(this.interval);
         //document.getElementById("timeLeft").innerHTML = "Domanda scaduta.";
-        this.timerView = "scaduto";
+        this.timerView = "Domanda scaduta";
         
       } else {
         this.timerView = days + "d " + hours + "h "
@@ -731,7 +731,7 @@ export class VisualizzaDomandaPage implements OnInit {
   openMenu() {
     this.menuCtrl.open();
   }
-  
+
   ionViewDidEnter() {
     this.ngOnInit();
 
