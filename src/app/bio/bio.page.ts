@@ -164,11 +164,14 @@ export class BioPage implements OnInit {
 
     this.oneSignal.startInit('8efdc866-9bea-4b12-a371-aa01f421c4f7', '424760060101');
     this.oneSignal.sendTag('email', idUtente)
-    this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.None);
+    this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.Notification);
 
 
     this.oneSignal.handleNotificationReceived().subscribe(data => {     
-      this.dataService.setNotificationsState(true);
+      let additionalData = data.payload.additionalData;
+      if(additionalData.messageType === "message"){
+        this.dataService.setNotificationsState(true);
+      }
     });
 
     this.oneSignal.handleNotificationOpened().subscribe(data => {     

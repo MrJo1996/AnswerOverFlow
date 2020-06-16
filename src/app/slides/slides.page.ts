@@ -182,8 +182,6 @@ export class SlidesPage implements OnInit {
 
   async finish() {
     await this.storage.set('tutorialComplete', true);
-    console.log("TUTORIALLLLLLLLLLLLLLLLLLLL",this.storage.get("tutorialComplete"));
-
     this.router.navigate(["login"]);
   }
 

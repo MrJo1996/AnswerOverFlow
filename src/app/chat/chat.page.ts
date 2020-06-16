@@ -227,7 +227,7 @@ export class ChatPage implements OnInit {
 
             this.showMessages();
             this.scrollToBottoms(300);
-            this.apiservice.inviaNotifica(this.chatFriend_id,this.dataService.getUsername(),"Ti ha inviato un messaggio")
+            this.apiservice.inviaNotifica(this.chatFriend_id,this.dataService.getUsername(),"Ti ha inviato un messaggio","message")
           },
           (err) => {
             console.log(err.message);

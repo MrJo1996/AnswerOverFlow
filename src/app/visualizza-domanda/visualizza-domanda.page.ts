@@ -416,7 +416,7 @@ export class VisualizzaDomandaPage implements OnInit {
         this.apiService.inserisciRisposta(this.descrizione_risposta, this.currentMailUser, this.codice_domanda).then(
           (result) => {
 
-            this.apiService.inviaNotifica(this.domandaMailUser, this.usernameUtente, "Ha risposto alla tua domanda");
+            this.apiService.inviaNotifica(this.domandaMailUser, this.usernameUtente, "Ha risposto alla tua domanda", "answer");
 
 
           },

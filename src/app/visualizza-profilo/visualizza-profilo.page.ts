@@ -19,6 +19,8 @@ export class VisualizzaProfiloPage implements OnInit {
 
   ngOnInit() { }
   ionViewWillEnter() {
+
+    this.session = this.dataService.getSession()
     this.dataService.loadingView(5000);//visualizza il frame di caricamento
     this.userProfileId = this.dataService.getEmailOthers();
     this.userId = this.dataService.getEmail_Utente();
@@ -84,6 +86,7 @@ export class VisualizzaProfiloPage implements OnInit {
   selectedProfile: string;
   selectId
   pagePath
+  session
 
 
   async selectProfile(id) {
@@ -194,8 +197,15 @@ export class VisualizzaProfiloPage implements OnInit {
           text: 'Conferma',
           handler: (res) => {
             this.segnalazione = res.Segnala;
-            this.segnalaUtente();
-            console.log('Invia segnalazione: altro:', res.Segnala);
+            if(this.session === true){ 
+              if ((this.segnalazione.length > 100) || !(this.segnalazione.match(/[a-zA-Z0-9_]+/))){
+                this.viewToast('campo vuoto','danger')                          
+              }else{
+                this.segnalaUtente();
+              } 
+            }else{
+              this.viewToast('Effettua il login','danger')                          
+            }
           }
         }
       ]
@@ -221,7 +231,7 @@ export class VisualizzaProfiloPage implements OnInit {
   }
 
 
-  toast(txt: string, color: string) {
+  viewToast(txt: string, color: string) {
     const toast = document.createElement("ion-toast");
     toast.message = txt;
     toast.duration = 2000;
@@ -230,5 +240,10 @@ export class VisualizzaProfiloPage implements OnInit {
     document.body.appendChild(toast);
     return toast.present();
   }
+
+
+
+
+  
 
 }

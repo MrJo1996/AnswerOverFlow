@@ -1,5 +1,4 @@
 import { Component, OnInit } from "@angular/core";
-
 import { Platform, MenuController, NavController } from "@ionic/angular";
 import { SplashScreen } from "@ionic-native/splash-screen/ngx";
 import { StatusBar } from "@ionic-native/status-bar/ngx";
@@ -116,7 +115,7 @@ export class AppComponent implements OnInit {
 
     this.initializeApp();
 
-    //Check connessione (provider in app.module)
+    //Check connection (provider in app.module)
     this.network.onDisconnect().subscribe(() => {
       this.toast("Nessuna connessione ad Internet.", "danger");
     });
@@ -132,9 +131,7 @@ export class AppComponent implements OnInit {
           text: "No",
           role: "cancel",
           cssClass: "secondary",
-          handler: (blah) => {
-            console.log("Confirm Cancel");
-          },
+          handler: (blah) => {},
         },
         {
           text: "Si",
@@ -143,16 +140,15 @@ export class AppComponent implements OnInit {
             this.storage.set("utente", null);
 
             //WARNING: HOT!!!
-            this.storage.clear(); //pulisce tutto storage
+            this.storage.remove("utente"); //pulisce tutto sotto key "utente"
+            this.storage.remove("session"); //pulisce tutto sotto key "session"
 
             this.dataService.setSession(false);
             this.router.navigate(["login"]);
-            this.setupPush()
+            this.setupPush();
 
             setTimeout(() => {
-              this.storage.get("session").then((data) => {
-                console.log("SESSION:" + data);
-              });
+              this.storage.get("session").then((data) => {});
             }, 3000);
           },
         },
@@ -171,9 +167,7 @@ export class AppComponent implements OnInit {
           text: "No",
           role: "cancel",
           cssClass: "secondary",
-          handler: (blah) => {
-            console.log("Confirm Cancel");
-          },
+          handler: (blah) => {},
         },
         {
           text: "Si",
@@ -184,9 +178,7 @@ export class AppComponent implements OnInit {
             this.router.navigate(["login"]);
 
             setTimeout(() => {
-              this.storage.get("session").then((data) => {
-                console.log("SESSION:" + data);
-              });
+              this.storage.get("session").then((data) => {});
             }, 3000);
           },
         },
@@ -195,7 +187,6 @@ export class AppComponent implements OnInit {
     await alert.present();
   }
 
-  //-----------------------------------
   checkUserLogged() {
     this.storage.get("session").then((data) => {
       if (!data) {
@@ -241,7 +232,6 @@ export class AppComponent implements OnInit {
     this.avatar = this.dataService.getAvatar()
   }
 
-
   switch(index, page) {
     if (this.utenteLogged) {
       switch (page) {
@@ -258,17 +248,13 @@ export class AppComponent implements OnInit {
           if (this.accountPages[index].title === "Logout") {
             this.alert();
           } else if (this.accountPages[index].title === "Profilo") {
-            // console.log(window.location.pathname)
-            //this.dataService.emailOthers = "undefined";
             this.router.navigateByUrl("/visualizza-profiloutente");
-
-            //this.router.navigateByUrl(this.accountPages[index].url);
           } else {
             this.router.navigateByUrl(this.accountPages[index].url);
           }
           this.selectedIndex = -1;
-
           break;
+
         default:
           break;
       }
@@ -294,8 +280,8 @@ export class AppComponent implements OnInit {
             this.alertOspite();
           }
           this.selectedIndex = -1;
-
           break;
+
         default:
           break;
       }
@@ -338,12 +324,6 @@ export class AppComponent implements OnInit {
     });
   }
 
-
-
-
-
-
-
   ngOnInit() {
     const path = window.location.pathname.split("folder/")[1];
     if (path !== undefined) {
@@ -372,17 +352,16 @@ export class AppComponent implements OnInit {
   }
 
   setupPush() {
-
-    //console.log(idUtente)
-
     this.oneSignal.startInit('8efdc866-9bea-4b12-a371-aa01f421c4f7', '424760060101');
     this.oneSignal.sendTag('logState', 'unlogged');
 
-    this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.None);
-
+    this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.Notification);
 
     this.oneSignal.handleNotificationReceived().subscribe(data => {
-      this.dataService.setNotificationsState(true);
+      let additionalData = data.payload.additionalData;
+      if(additionalData.messageType === "message"){
+        this.dataService.setNotificationsState(true);
+      }
     });
 
     this.oneSignal.handleNotificationOpened().subscribe(data => {
