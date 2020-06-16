@@ -141,7 +141,7 @@ export class VisualizzaSondaggioPage implements OnInit {
         this.visualizzaCategoria();
       },
       (rej) => {
-        console.log("C'è stato un errore durante la visualizzazione");
+        
       }
     );
 
@@ -207,7 +207,6 @@ export class VisualizzaSondaggioPage implements OnInit {
           this.votoUtente = risultato[0];
           this.votato = true;
 
-          console.log("votato: ", this.votoUtente, this);
         } else {
           this.votato = false;
           this.votoUtente = null;
@@ -222,8 +221,6 @@ export class VisualizzaSondaggioPage implements OnInit {
 
   async inviaVoto() {
     this.codiceSceltaSelezionata = this.scelte[this.indexSceltaSelezionata]['codice_scelta'];
-    console.log('codice scelta ->', this.codiceSceltaSelezionata);
-    console.log('codice sondaggio ->', this.codice_sondaggio);
     this.apiService.votaSondaggio(this.codiceSceltaSelezionata, this.codice_sondaggio).then(
       (scelte) => { },
       (rej) => { }
@@ -283,7 +280,7 @@ export class VisualizzaSondaggioPage implements OnInit {
         }
         this.sceltaSelezionata = scelta;
         this.indexSceltaSelezionata = i;
-        console.log();
+
       }
     } if (this.ospite === true) this.alertOspite();
   }
@@ -295,7 +292,7 @@ export class VisualizzaSondaggioPage implements OnInit {
         {
           text: 'Si',
           handler: () => {
-            console.log('scelta confermata');
+      
             this.dataService.loadingView(2000).then(() => {
               this.inviaVoto();
               this.refreshDopoVoto(event);
@@ -306,7 +303,6 @@ export class VisualizzaSondaggioPage implements OnInit {
           text: 'No',
           role: 'cancel',
           handler: () => {
-            console.log('eliminazione annullata');
           }
         }
       ]
@@ -589,7 +585,7 @@ export class VisualizzaSondaggioPage implements OnInit {
           role: "cancel",
           cssClass: "secondary",
           handler: (blah) => {
-            console.log("Confirm Cancel");
+
           },
         },
         {
@@ -602,7 +598,7 @@ export class VisualizzaSondaggioPage implements OnInit {
 
             setTimeout(() => {
               this.storage.get("session").then((data) => {
-                console.log("SESSION:" + data);
+
               });
             }, 3000);
           },
