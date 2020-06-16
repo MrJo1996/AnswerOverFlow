@@ -378,8 +378,6 @@ export class InserimentoSondaggioPage implements OnInit {
 
     let array = list.array;
 
-    console.log(array);
-
     let stringArray = [];
     let stringPassed = string.split(" ");
     stringArray = stringArray.concat(stringPassed);

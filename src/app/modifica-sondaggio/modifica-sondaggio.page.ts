@@ -317,7 +317,6 @@ export class ModificaSondaggioPage implements OnInit {
 
       document.getElementById("timeMissing").innerHTML = days + "giorni " + hours + "ore "
         + minutes + "min " + seconds + "s ";
-      console.log(distance);
 
   
       if (distance < 0) {
@@ -442,9 +441,7 @@ export class ModificaSondaggioPage implements OnInit {
 
     deadlineCheck(): boolean {
       var date = new Date(this.sondaggio['0'].dataeora.toLocaleString());
-      console.log(date.getTime());
       var timer = this.sondaggio['0'].timer;
-      console.log(timer);
       var dateNow = new Date().getTime();
   
 

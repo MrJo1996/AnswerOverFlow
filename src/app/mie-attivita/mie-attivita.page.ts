@@ -110,6 +110,7 @@ export class MieAttivitaPage implements OnInit {
     this.domande1m = [];
 
     if (this.domande===undefined) {
+      console.log('Non ci sono Domande per questo utente');
     } else {
 
     for (var i = 0; i < this.domande.length; i++) {
