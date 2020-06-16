@@ -18,7 +18,6 @@ export class PopoverComponent implements OnInit {
   }
 
   onClick(valor: number){
-    console.log('item',valor);
     this.popoverCtrl.dismiss(
       {
         item: valor
