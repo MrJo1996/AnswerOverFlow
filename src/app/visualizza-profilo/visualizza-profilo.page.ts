@@ -24,7 +24,7 @@ export class VisualizzaProfiloPage implements OnInit {
       this.session = data;
     });
 
-    this.dataService.loadingView(5000);//visualizza il frame di caricamento
+    this.dataService.loadingView(1000);//visualizza il frame di caricamento
     this.userProfileId = this.dataService.getEmailOthers();
     this.userId = this.dataService.getEmail_Utente();
    
@@ -65,13 +65,13 @@ export class VisualizzaProfiloPage implements OnInit {
 
 
   goBack() {
-    this.dataService.loadingView(5000);//visualizza il frame di caricamento
+    this.dataService.loadingView(2000);//visualizza il frame di caricamento
     this.navCtrl.back();
   }
 
   goToChat() {
     if(this.session === true){
-    this.dataService.loadingView(3000);//visualizza il frame di caricamento
+    this.dataService.loadingView(2000);//visualizza il frame di caricamento
     this.dataService.emailOthers = this.profilo.email;
     this.router.navigateByUrl("/chat");
   }else{
@@ -81,7 +81,7 @@ export class VisualizzaProfiloPage implements OnInit {
   }
 
   stats() {
-    this.dataService.loadingView(3000);//visualizza il frame di caricamento
+    this.dataService.loadingView(2000);//visualizza il frame di caricamento
     this.dataService.emailOthers = this.profilo.email;
     this.router.navigate(['visualizza-statistiche']);
   }
@@ -223,7 +223,7 @@ export class VisualizzaProfiloPage implements OnInit {
 
 
   goToSettingProfile() {
-    this.dataService.loadingView(3000);//visualizza il frame di caricamento
+    this.dataService.loadingView(700);//visualizza il frame di caricamento
     this.router.navigate(['/modifica-profilo'])
   }
 

@@ -48,12 +48,7 @@ export class AdvancedSearchPage implements OnInit {
 
   ionViewWillEnter() {
     //visualizza frame caricamento
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 1500;
-    document.body.appendChild(loading);
-    loading.present();
+  this.dataService.loadingView(500);
 
     this.initFilters();
     this.apiService.prendiCategorie("http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaCategorie").then(
@@ -161,12 +156,7 @@ export class AdvancedSearchPage implements OnInit {
         this.dataService.setKeywordToSearch(this.keywordToSearch);
       }
 
-      const loading = document.createElement('ion-loading');
-      loading.cssClass = 'loading';
-      loading.spinner = 'crescent';
-      loading.duration = 3500;
-      document.body.appendChild(loading);
-      loading.present();
+     this.dataService.loadingView(1500);
 
       this.router.navigate(['/search-results']);
     } else if (this.tipoFilter == "utente" && this.keywordToSearch==null) {

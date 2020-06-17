@@ -101,7 +101,7 @@ export class VisualizzaDomandaPage implements OnInit {
     }
     else {
       clearInterval(this.interval);
-      this.dataService.loadingView(5000);
+      this.dataService.loadingView(1000);
       this.navCtrl.navigateRoot(['/modifica-domanda']);
 
     }
@@ -144,7 +144,7 @@ export class VisualizzaDomandaPage implements OnInit {
           handler: () => {
             this.toast('Domanda eliminata con successo!', 'success');
             this.cancellaDomanda();
-            this.dataService.loadingView(5000);
+            this.dataService.loadingView(3000);
             this.navCtrl.navigateBack(['home']);
           }
         },
@@ -172,7 +172,7 @@ export class VisualizzaDomandaPage implements OnInit {
             this.toast('Risposta eliminata con successo!', 'success');
             this.cancellaRisposta(codice_risposta);
             this.ngOnInit();
-            this.dataService.loadingView(5000);
+            this.dataService.loadingView(2000);
             this.doRefresh(event);
 
           }
@@ -711,13 +711,13 @@ export class VisualizzaDomandaPage implements OnInit {
   }
 
   clickProfilo(cod_utente) {
-    this.dataService.loadingView(5000);
+    this.dataService.loadingView(1500);
     this.dataService.setEmailOthers(cod_utente);
     this.navCtrl.navigateForward(['/visualizza-profilo']);
   }
 
   clickProprioProfilo(cod_utente) {
-    this.dataService.loadingView(5000);
+    this.dataService.loadingView(1500);
     this.dataService.setEmailOthers(cod_utente);
     this.navCtrl.navigateForward(['/visualizza-profiloutente']);
   }
@@ -738,7 +738,7 @@ export class VisualizzaDomandaPage implements OnInit {
     if (this.ospite === true) {
       this.toast('Effettua il login per chattare con gli altri utenti!', 'danger');
     } else {
-      this.dataService.loadingView(5000);//visualizza il frame di caricamento
+      this.dataService.loadingView(2000);//visualizza il frame di caricamento
       this.dataService.setEmailOthers(this.domandaMailUser);
       this.navCtrl.navigateForward(['/chat'])
     }

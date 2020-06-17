@@ -164,13 +164,13 @@ export class VisualizzaChatPage implements OnInit {
     this.data.setNotificationChatId("");
     this.data.setCodice_chat(codiceChat);
     this.data.setEmailOthers(chatter);
-    this.data.loadingView(3000); //visualizza il frame di caricamento
+    this.data.loadingView(2000); //visualizza il frame di caricamento
     this.router.navigate(["chat"]);
   }
 
   //-----------------------Torna indietro
   goBack() {
-    this.data.loadingView(5000);
+    this.data.loadingView(2000);
     this.navCtrl.back();
   }
 

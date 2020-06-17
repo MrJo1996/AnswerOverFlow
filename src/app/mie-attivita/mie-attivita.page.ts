@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController, MenuController } from '@ionic/angular';
 import { ApiService } from '../providers/api.service';
-import { AlertController} from '@ionic/angular';
+import { AlertController } from '@ionic/angular';
 import { DataService } from "../services/data.service";
-import {Router} from '@angular/router';
+import { Router } from '@angular/router';
 import { Storage } from "@ionic/storage";
 
 @Component({
@@ -34,30 +34,29 @@ export class MieAttivitaPage implements OnInit {
   constructor(private navCtrl: NavController, private menuCtrl: MenuController, private apiService: ApiService, private alertController: AlertController, private dataService: DataService, private router: Router, private storage: Storage) { }
 
   ngOnInit() {
-    this.dataService.loadingView(3000);
-    this.storage.get('utente').then( 
-      data => { 
+    this.storage.get('utente').then(
+      data => {
         this.currentUser = data.email
-       }).then(() => {
+      }).then(() => {
         this.visualizzaMieDomande();
         this.visualizzaMieiSondaggi();
-       }).then(() => {
+      }).then(() => {
         this.check1 = false;
-      this.check2 = true;
-       })
+        this.check2 = true;
+      })
   }
 
   ionViewDidEnter() {
-  this.storage.get('utente').then( 
-    data => { 
-      this.currentUser = data.email
-     }).then(() => {
-      this.visualizzaMieDomande();
-      this.visualizzaMieiSondaggi();
-     }).then(() => {
-      this.check1 = false;
-    this.check2 = true;
-     })
+    this.storage.get('utente').then(
+      data => {
+        this.currentUser = data.email
+      }).then(() => {
+        this.visualizzaMieDomande();
+        this.visualizzaMieiSondaggi();
+      }).then(() => {
+        this.check1 = false;
+        this.check2 = true;
+      })
   }
 
   ionViewDidLeave() {
@@ -67,8 +66,8 @@ export class MieAttivitaPage implements OnInit {
     console.log('Distrutto');
   }
 
-  goBack(){
-    this.dataService.loadingView(5000);
+  goBack() {
+    this.dataService.loadingView(3000);
     this.navCtrl.pop();
   }
 
@@ -79,12 +78,12 @@ export class MieAttivitaPage implements OnInit {
         this.domande = domanda['Domande']['data'];
 
         this.inizializeArrayDomande1g();
-      
+
       },
       (rej) => {
       }
     );
-  
+
   }
 
   async visualizzaMieiSondaggi() {
@@ -94,12 +93,12 @@ export class MieAttivitaPage implements OnInit {
         this.sondaggi = sondaggio;
 
         this.inizializeArraySondaggi1g();
-      
+
       },
       (rej) => {
       }
     );
-  
+
   }
 
   checkDataeoraDomande() {
@@ -109,36 +108,36 @@ export class MieAttivitaPage implements OnInit {
     this.domande3s = [];
     this.domande1m = [];
 
-    if (this.domande===undefined) {
+    if (this.domande === undefined) {
       console.log('Non ci sono Domande per questo utente');
     } else {
 
-    for (var i = 0; i < this.domande.length; i++) {
-      var data = new Date(this.domande[i].dataeora.toLocaleString());
-      var data2 = new Date();
-      var diff = (data2.getTime() - data.getTime()) /1000;
-      if (diff <= 86400) {
-        this.domande1g.push(this.domande[i]);
+      for (var i = 0; i < this.domande.length; i++) {
+        var data = new Date(this.domande[i].dataeora.toLocaleString());
+        var data2 = new Date();
+        var diff = (data2.getTime() - data.getTime()) / 1000;
+        if (diff <= 86400) {
+          this.domande1g.push(this.domande[i]);
+        }
+
+        if (diff <= 604800) {
+          this.domande1s.push(this.domande[i]);
+        }
+
+        if (diff <= 1209600) {
+          this.domande2s.push(this.domande[i]);
+        }
+
+        if (diff <= 1814400) {
+          this.domande3s.push(this.domande[i]);
+        }
+
+        if (diff <= 2419200) {
+          this.domande1m.push(this.domande[i]);
+        }
       }
 
-      if (diff <= 604800) {
-        this.domande1s.push(this.domande[i]);
-      }
-
-      if (diff <= 1209600) {
-        this.domande2s.push(this.domande[i]);
-      }
-
-      if (diff <= 1814400) {
-        this.domande3s.push(this.domande[i]);
-      }
-
-      if (diff <= 2419200) {
-        this.domande1m.push(this.domande[i]);
-      }
     }
-
-  }
 
   }
 
@@ -147,8 +146,8 @@ export class MieAttivitaPage implements OnInit {
     for (var i = 0; i < this.domande.length; i++) {
       var data = new Date(this.domande[i].dataeora.toLocaleString());
       var data2 = new Date();
-      var diff = (data2.getTime() - data.getTime()) /1000;
-        if (diff <= 86400) {
+      var diff = (data2.getTime() - data.getTime()) / 1000;
+      if (diff <= 86400) {
         this.domande1g.push(this.domande[i]);
       }
     }
@@ -159,8 +158,8 @@ export class MieAttivitaPage implements OnInit {
     for (var i = 0; i < this.sondaggi.length; i++) {
       var data = new Date(this.sondaggi[i].dataeora.toLocaleString());
       var data2 = new Date();
-      var diff = (data2.getTime() - data.getTime()) /1000;
-        if (diff <= 86400) {
+      var diff = (data2.getTime() - data.getTime()) / 1000;
+      if (diff <= 86400) {
         this.sondaggi1g.push(this.sondaggi[i]);
       }
     }
@@ -173,54 +172,54 @@ export class MieAttivitaPage implements OnInit {
     this.sondaggi3s = [];
     this.sondaggi1m = [];
 
-    if (this.sondaggi===undefined) {
+    if (this.sondaggi === undefined) {
       console.log('Non ci sono sondaggi per questo utente');
     } else {
 
-    for (var i = 0; i < this.sondaggi.length; i++) {
-      var data = new Date(this.sondaggi[i].dataeora.toLocaleString());
-      var data2 = new Date();
-      var diff = (data2.getTime() - data.getTime()) /1000;
-      if (diff <= 86400) {
-        this.sondaggi1g.push(this.sondaggi[i]);
+      for (var i = 0; i < this.sondaggi.length; i++) {
+        var data = new Date(this.sondaggi[i].dataeora.toLocaleString());
+        var data2 = new Date();
+        var diff = (data2.getTime() - data.getTime()) / 1000;
+        if (diff <= 86400) {
+          this.sondaggi1g.push(this.sondaggi[i]);
+        }
+
+        if (diff <= 604800) {
+          this.sondaggi1s.push(this.sondaggi[i]);
+        }
+
+        if (diff <= 1209600) {
+          this.sondaggi2s.push(this.sondaggi[i]);
+        }
+
+        if (diff <= 1814400) {
+          this.sondaggi3s.push(this.sondaggi[i]);
+        }
+
+        if (diff <= 2419200) {
+          this.sondaggi1m.push(this.sondaggi[i]);
+        }
       }
 
-      if (diff <= 604800) {
-        this.sondaggi1s.push(this.sondaggi[i]);
-      }
-
-      if (diff <= 1209600) {
-        this.sondaggi2s.push(this.sondaggi[i]);
-      }
-
-      if (diff <= 1814400) {
-        this.sondaggi3s.push(this.sondaggi[i]);
-      }
-
-      if (diff <= 2419200) {
-        this.sondaggi1m.push(this.sondaggi[i]);
-      }
     }
 
   }
 
-  }
-
-  clickDomanda(codice_domanda){
-    this.dataService.loadingView(5000);
+  clickDomanda(codice_domanda) {
+    this.dataService.loadingView(1500);
     this.dataService.codice_domanda = codice_domanda;
     this.router.navigate(['/visualizza-domanda']);
   }
 
-  clickSondaggio(codice_sondaggio){
-    this.dataService.loadingView(5000);
+  clickSondaggio(codice_sondaggio) {
+    this.dataService.loadingView(1500);
     this.dataService.codice_sondaggio = codice_sondaggio;
     this.router.navigate(['/visualizza-sondaggio']);
   }
 
   segmentChanged(ev: any) {
     console.log('Segment changed', ev);
-    console.log('Sezione: ',this.sezione, 'Check1: ', this.check1, 'Check2: ', this.check2);
+    console.log('Sezione: ', this.sezione, 'Check1: ', this.check1, 'Check2: ', this.check2);
   }
 
   caricaDomande() {
@@ -235,7 +234,7 @@ export class MieAttivitaPage implements OnInit {
     this.check1 = true;
   }
 
-  openMenu(){
+  openMenu() {
     this.menuCtrl.open();
   }
 }

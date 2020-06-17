@@ -95,10 +95,12 @@ export class InserimentoSondaggioPage implements OnInit {
   switchCategoria() {
     this.router.navigate(["proponi-categoria"]);
   }
+  
   goHome() {
     this.dataService.loadingView(5000);//visualizza il frame di caricamento
     this.router.navigate(["home"]);
   }
+
   backButton() {
     this.dataService.loadingView(5000);//visualizza il frame di caricamento
     this.navCtrl.back();

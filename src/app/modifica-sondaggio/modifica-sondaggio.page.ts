@@ -69,7 +69,7 @@ export class ModificaSondaggioPage implements OnInit {
   
         }
       );
-      this.dataService.loadingView(3000);
+      this.dataService.loadingView(1500);
       this.toastModificheEffettuate();
       this.navCtrl.back();
     }
@@ -429,7 +429,7 @@ export class ModificaSondaggioPage implements OnInit {
 
 
     goBack(){
-      this.dataService.loadingView(3000);
+      this.dataService.loadingView(1500);
       this.navCtrl.back();
     }
 

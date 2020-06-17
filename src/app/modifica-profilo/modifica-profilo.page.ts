@@ -121,7 +121,7 @@ export class ModificaProfiloPage implements OnInit {
   }
 
   selectAvatar() {
-    this.dataService.loadingView(5000);//visualizza il frame di caricamento
+    this.dataService.loadingView(2000);//visualizza il frame di caricamento
     this.dataService.settaTemporaryAvatar("clicked");
     this.router.navigate(["/modifica-avatar"]);
   }

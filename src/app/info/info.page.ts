@@ -15,7 +15,7 @@ export class InfoPage implements OnInit {
   ngOnInit() { }
 
   goback(){
-    this.dataService.loadingView(5000);
+    this.dataService.loadingView(700);
     this.router.navigate(['home']);
   }
 

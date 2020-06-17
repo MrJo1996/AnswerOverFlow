@@ -204,31 +204,25 @@ export class HomePage implements OnInit {
   }
 //LINK
   clickDomanda(domanda_codice) {
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 3500;
-    document.body.appendChild(loading);
-    loading.present();
-    this.dataService.loadingView(5000);
+    this.dataService.loadingView(1500);
     this.dataService.setCod_domanda(domanda_codice);
     this.router.navigate(['/visualizza-domanda']);
   }
 
   clickSondaggio(codice_sondaggio) {
-    this.dataService.loadingView(5000);
+    this.dataService.loadingView(1500);
     this.dataService.codice_sondaggio = codice_sondaggio;
     this.router.navigate(['/visualizza-sondaggio']);
   }
 
   clickProfilo(cod_utente) {
-    this.dataService.loadingView(5000);
+    this.dataService.loadingView(1000);
     this.dataService.setEmailOthers(cod_utente);
     this.router.navigate(['/visualizza-profilo']);
   }
 
   clickProfiloUtente() {
-    this.dataService.loadingView(5000);
+    this.dataService.loadingView(1000);
     this.router.navigate(['/visualizza-profiloutente']);
   }
 
