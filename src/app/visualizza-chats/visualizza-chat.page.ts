@@ -21,11 +21,11 @@ export class VisualizzaChatPage implements OnInit {
   user;
 
   urlCaricaChat =
-    "http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaChats";
+    "https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaChats";
   urlCaricaMessaggio =
-    "http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaUltimoMessaggio";
+    "https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaUltimoMessaggio";
   viewUserUrl =
-    "http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaProfilo";
+    "https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaProfilo";
 
   constructor(
     private navCtrl: NavController,

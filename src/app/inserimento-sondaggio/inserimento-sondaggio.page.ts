@@ -15,11 +15,11 @@ import { Storage } from "@ionic/storage";
 })
 export class InserimentoSondaggioPage implements OnInit {
   url =
-    "http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/inseriscisondaggio";
+    "https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/inseriscisondaggio";
   urlCategorie =
-    "http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaCategorie";
+    "https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaCategorie";
   urlScelta =
-    "http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/inserisciScelteSondaggio";
+    "https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/inserisciScelteSondaggio";
 
   emailUtente = "";
 

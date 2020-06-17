@@ -21,15 +21,15 @@ export class ChatPage implements OnInit {
   myContent: IonContent;
 
   showMessagesUrl =
-    "http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaMessaggi";
+    "https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaMessaggi";
   sendMessageUrl =
-    "http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/inseriscimessaggio";
+    "https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/inseriscimessaggio";
   createChatUrl =
-    "http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/creachat";
+    "https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/creachat";
   findChatUrl =
-    "http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/trovachat";
+    "https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/trovachat";
   viewUserUrl =
-    "http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaProfilo";
+    "https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaProfilo";
 
 
   constructor(

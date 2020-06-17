@@ -41,7 +41,7 @@ export class ModificaProfiloPage implements OnInit {
   profilo = {};
   usernameAvailable: boolean;
   urlControlloUsername =
-    "http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaprofiloperusername";
+    "https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaprofiloperusername";
 
   constructor(
     private router: Router,

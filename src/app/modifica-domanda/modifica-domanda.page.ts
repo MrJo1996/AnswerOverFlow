@@ -16,7 +16,7 @@ import { __await } from 'tslib';
   styleUrls: ['./modifica-domanda.page.scss'],
 })
 export class ModificaDomandaPage implements OnInit {
-  urlCategorie = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaCategorie'
+  urlCategorie = 'https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaCategorie'
 
 
   codice_domanda: number;

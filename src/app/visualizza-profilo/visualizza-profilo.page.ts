@@ -44,7 +44,7 @@ export class VisualizzaProfiloPage implements OnInit {
 
   request: Promise<any>;
   result: Promise<any>;
-  url = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaProfilo'
+  url = 'https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaProfilo'
 
   constructor(
     private router: Router,

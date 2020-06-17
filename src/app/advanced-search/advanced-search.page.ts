@@ -51,7 +51,7 @@ export class AdvancedSearchPage implements OnInit {
   this.dataService.loadingView(500);
 
     this.initFilters();
-    this.apiService.prendiCategorie("http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaCategorie").then(
+    this.apiService.prendiCategorie("https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaCategorie").then(
       (categories) => {
         this.categoriaSettings = categories;
       },

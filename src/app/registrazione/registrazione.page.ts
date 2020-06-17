@@ -25,11 +25,11 @@ export class RegistrazionePage implements OnInit {
   id;
   utente = {};
   url =
-    "http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/registrazione";
+    "https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/registrazione";
   urlControlloEmail =
-    "http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/controlloEmail";
+    "https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/controlloEmail";
   urlControlloUsername =
-    "http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaprofiloperusername";
+    "https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaprofiloperusername";
 
   emailAvailable: boolean;
   usernameAvailable: boolean;
