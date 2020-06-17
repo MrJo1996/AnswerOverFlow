@@ -85,6 +85,8 @@ export class VisualizzaDomandaPage implements OnInit {
       this.currentMailUser = null;
 
     this.visualizzaDomanda();
+    console.log(this.visualizzaDomanda()
+    )
     this.showRisposte();
     this.controllaOspite();
 
@@ -196,62 +198,62 @@ export class VisualizzaDomandaPage implements OnInit {
     this.codice_domanda = this.dataService.codice_domanda;
     this.apiService.getRispostePerDomanda(this.codice_domanda).then(
       (risposte) => {
+        if (!risposte['error']) {
+          this.risposte = [];
+          this.risposte2 = [];
+
+          if (risposte['Risposte']['data'] != undefined) {
+            this.risposte = risposte['Risposte']['data'];
+            this.risposte2 = risposte['Risposte']['data']
+          }
+
+          let temp: Array<Number> = []
+          this.numLike2 = [];
+          this.numDislike2 = [];
+          this.votoType = [];
+          for (let index = 0; index < this.risposte2.length; index++) {
+            this.numLike2[this.risposte2[index].codice_risposta] = (this.risposte2[index].num_like)
+            this.numDislike2[this.risposte2[index].codice_risposta] = (this.risposte2[index].num_dislike)
+
+            this.apiService.controllaGiaValutatoRisposta(this.currentMailUser, this.risposte2[index].codice_risposta).then((data) => {
+              if (data[0]['data'] == null) this.votoType.push(0)
+              else {
+                this.votoType[data[0]['data'][0]['cod_risposta']] = (data[0]['data'][0].tipo_like)
+                this.cod_valutazione[data[0]['data'][0]['cod_risposta']] = data[0]['data'][0]['codice_valutazione']
+              }
 
 
-        this.risposte = [];
-        this.risposte2 = [];
+            })
 
+          }
 
+          for (let i = 0; i < this.risposte.length; i++) {
 
-        this.risposte = risposte['Risposte']['data'];
-        this.risposte2 = risposte['Risposte']['data']
-        let temp: Array<Number> = []
-
-        this.numLike2 = [];
-        this.numDislike2 = [];
-        this.votoType = [];
-        for (let index = 0; index < this.risposte2.length; index++) {
-          this.numLike2[this.risposte2[index].codice_risposta] = (this.risposte2[index].num_like)
-          this.numDislike2[this.risposte2[index].codice_risposta] = (this.risposte2[index].num_dislike)
-
-          this.apiService.controllaGiaValutatoRisposta(this.currentMailUser, this.risposte2[index].codice_risposta).then((data) => {
-            if (data[0]['data'] == null) this.votoType.push(0)
-            else {
-              this.votoType[data[0]['data'][0]['cod_risposta']] = (data[0]['data'][0].tipo_like)
-              this.cod_valutazione[data[0]['data'][0]['cod_risposta']] = data[0]['data'][0]['codice_valutazione']
-            }
-
-
-          })
-
-        }
-
-        for (let i = 0; i < this.risposte.length; i++) {
-
-          if (this.risposte[i].codice_risposta === this.cod_preferita) {
-            let aux = this.risposte[0];
-            this.risposte[0] = null;
-            this.risposte[0] = this.risposte[i];
-            this.risposte[i] = null;
-            this.risposte[i] = aux;
-
-            for (let j = 1; j < i; j++) {
-              let aux = this.risposte[j];
-              this.risposte[j] = this.risposte[i];
+            if (this.risposte[i].codice_risposta === this.cod_preferita) {
+              let aux = this.risposte[0];
+              this.risposte[0] = null;
+              this.risposte[0] = this.risposte[i];
+              this.risposte[i] = null;
               this.risposte[i] = aux;
+
+              for (let j = 1; j < i; j++) {
+                let aux = this.risposte[j];
+                this.risposte[j] = this.risposte[i];
+                this.risposte[i] = aux;
+              }
             }
           }
+
+          for (let i = 0; i < this.risposte.length; i++) {
+            this.cercaValutazione(this.currentMailUser, this.risposte, i);
+          }
+
+          for (let i = 0; i < this.risposte.length; i++) {
+            this.trovaProfiliUtentiRisposte(this.risposte[i].cod_utente, i);
+
+          }
+
         }
-
-        for (let i = 0; i < this.risposte.length; i++) {
-          this.cercaValutazione(this.currentMailUser, this.risposte, i);
-        }
-
-        for (let i = 0; i < this.risposte.length; i++) {
-          this.trovaProfiliUtentiRisposte(this.risposte[i].cod_utente, i);
-
-        }
-
       },
       (rej) => {
 
@@ -426,7 +428,7 @@ export class VisualizzaDomandaPage implements OnInit {
             this.descrizioneRispostaView = insertedData.descrizionePopUp;
             this.descrizioneRispostaToPass = insertedData.descrizionePopUp;
 
-            this.modify().then(()=>{this.doRefresh(event)});
+            this.modify().then(() => { this.doRefresh(event) });
           }
         }
       ]
@@ -500,7 +502,8 @@ export class VisualizzaDomandaPage implements OnInit {
 
     setTimeout(() => {
 
-      event.target.complete();
+      this.showRisposte();
+      //event.target.complete();
     }, 2000);
   }
 

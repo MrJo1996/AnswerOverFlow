@@ -298,10 +298,6 @@ export class AppComponent implements OnInit {
       this.splashScreen.hide();
       timer(2000).subscribe(() => (this.showSplash = false)); //durata animazione definita in app.component.html -> 2s 
 
-
-
-
-
       this.storage.get("tutorialComplete").then((isComplete) => {
         if (isComplete) { //Tutorial completato
           this.storage.get("utente").then((utente) => { //Check utente logged

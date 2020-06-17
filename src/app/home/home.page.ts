@@ -39,7 +39,7 @@ export class HomePage implements OnInit {
     private router: Router,
     private update: ChangeDetectorRef) { }
 
-//IONVIEW
+  //IONVIEW
   ionViewWillEnter() {
     this.dataService.loadingView(5000);
     this.menuCtrl.enable(true);
@@ -54,7 +54,6 @@ export class HomePage implements OnInit {
     this.indice_regola_domande = 0;
     this.sondaggi_regolati = [];
     this.domande_regolate = [];
-    //this.currentMailUser = "";
     this.switchSearch = true;
   }
 
@@ -64,7 +63,8 @@ export class HomePage implements OnInit {
     }, 500)
     this.storage.get('utente').then(data => { this.currentMailUser = data.email });
   }
-//SWITCH VIEW DOMANDE/SONDAGGI
+  
+  //SWITCH VIEW DOMANDE/SONDAGGI
   switchDomSon(switchDomSon) {
     if (switchDomSon == true)
       this.switch = this.switch;
@@ -77,13 +77,13 @@ export class HomePage implements OnInit {
     else
       this.switch = !(this.switch);
   }
-//SWITCH VIEW SEARCH BAR
-  switchSearchBar(switchSearch){
-      this.switchSearch = !(this.switchSearch);
+  //SWITCH VIEW SEARCH BAR
+  switchSearchBar(switchSearch) {
+    this.switchSearch = !(this.switchSearch);
   }
-//POPOVER
+  //POPOVER
   async presentPopover(ev, index, username, codice) {
-    this.tuaDomandaSondaggio(index,username);
+    this.tuaDomandaSondaggio(index, username);
     const popover = await this.popoverController.create({
       component: PopoverComponent,
       event: ev,
@@ -99,7 +99,7 @@ export class HomePage implements OnInit {
     }
   }
 
-  tuaDomandaSondaggio(indice,username) {
+  tuaDomandaSondaggio(indice, username) {
     if (username == this.currentMailUser) {
       this.dataService.setPopoverModifica(true, indice);
     }
@@ -116,7 +116,7 @@ export class HomePage implements OnInit {
         this.clickDomanda(codice);
       }
   }
-//CARICAMENTO DOMANDE
+  //CARICAMENTO DOMANDE
   async visualizzaDomandaHome() {
     this.apiService.getDomandaHome().then(
       (domande) => {
@@ -147,7 +147,7 @@ export class HomePage implements OnInit {
         (rej) => {
         }
       );
-    
+
     }
   }
 
@@ -160,7 +160,7 @@ export class HomePage implements OnInit {
       }
     }
   }
-//CARICAMENTO SONDAGGI
+  //CARICAMENTO SONDAGGI
   async visualizzaSondaggiHome() {
     this.apiService.getSondaggioHome().then(
       (sondaggi) => {
@@ -202,7 +202,7 @@ export class HomePage implements OnInit {
       }
     }
   }
-//LINK
+  //LINK
   clickDomanda(domanda_codice) {
     this.dataService.loadingView(1500);
     this.dataService.setCod_domanda(domanda_codice);

@@ -2,10 +2,10 @@ import { Component, OnInit, ViewChild } from "@angular/core";
 import { IonContent, NavController } from "@ionic/angular";
 import { Promise } from "q";
 import { PostServiceService } from "../services/post-service.service";
-import { ApiService } from 'src/app/providers/api.service'; 
+import { ApiService } from 'src/app/providers/api.service';
 import { DataService } from "../services/data.service";
 import { Router } from "@angular/router";
-import {Storage} from '@ionic/storage';
+import { Storage } from '@ionic/storage';
 
 
 @Component({
@@ -40,64 +40,63 @@ export class ChatPage implements OnInit {
     public storage: Storage,
     private apiservice: ApiService
   ) {
-      this.storage.get('utente').then(data => {
-        this.msg_utente_id = data.email;
-      })
+    this.storage.get('utente').then(data => {
+      this.msg_utente_id = data.email;
+    })
 
-      this.chatFriend_id = this.dataService.getEmailOthers();     
-      this.cod_chat = this.dataService.getCodice_chat();
+    this.chatFriend_id = this.dataService.getEmailOthers();
+    this.cod_chat = this.dataService.getCodice_chat();
 
   }
-  
+
 
   avatarFriend: any;
   chatFriend: string;
-  chatFriend_id: string; 
-  msg_utente_id: string; 
+  chatFriend_id: string;
+  msg_utente_id: string;
   cod_chat = null;
   textMessage;
   testo: string = "";
   messages = new Array();
-  oggi:any;
-  ieri:any;
+  oggi: any;
+  ieri: any;
   flag: boolean = true;
-  
+
 
   ngOnInit() {
+    this.dataService.loadingView(2000); //visualizza il frame di caricamento
 
     this.oggi = this.setDate(this.getToday());
     this.ieri = this.setDate(this.getYesterday());
- 
-      this.showMessages();
-     
-      setTimeout(() => {
-         this.scrollToBottoms(0);
-      }, 1200);
-      this.refreshMessages(); 
+
+    this.showMessages();
+
+    setTimeout(() => {
+      this.scrollToBottoms(0);
+    }, 1200);
+    this.refreshMessages();
   }
 
 
 
-  ionViewWillEnter(){
+  ionViewWillEnter() {
     this.messages = [];
     this.msg_utente_id = this.dataService.getEmail_Utente()
-    this.chatFriend_id = this.dataService.getEmailOthers();     
+    this.chatFriend_id = this.dataService.getEmailOthers();
     this.cod_chat = this.dataService.getCodice_chat();
 
     this.flag = true;
-    
+
     this.selectChatFriend();
-    
-    this.findChat(); 
-    this.refreshMessages(); 
+
+    this.findChat();
+    this.refreshMessages();
   }
 
-  ionViewWillLeave(){
+  ionViewWillLeave() {
     this.flag = false;
   }
 
-
-  /////////////////////////////////////////
 
   selectChatFriend() {
     let postData = {
@@ -116,8 +115,6 @@ export class ChatPage implements OnInit {
   }
 
 
-
-  /////////////////////////////////////
   showMessages() {
     let postData = {
       cod_chat: this.cod_chat
@@ -132,14 +129,14 @@ export class ChatPage implements OnInit {
           let dataMessaggio = data.substring(0, 10);
           dataMessaggio = this.setDate(dataMessaggio);
           this.messages[i]["data"] = dataMessaggio;
-         
+
         }
       },
       (err) => {
       }
     );
   }
-  ////////////////////////////////////
+
   createChat() {
     let postData = {
       cod_utente0: this.msg_utente_id,
@@ -157,7 +154,6 @@ export class ChatPage implements OnInit {
     );
   }
 
-  /////////////////////////////////////////////
   findChat() {
     let postData = {
       cod_utente0: this.msg_utente_id,
@@ -177,9 +173,7 @@ export class ChatPage implements OnInit {
     );
   }
 
-  //////////////////////////////////////
 
-  /////////////////////////////////////////
   sendMessage() {
 
     if (this.cod_chat === null) {
@@ -205,10 +199,10 @@ export class ChatPage implements OnInit {
         .then(
           (data) => {
             this.request = data;
-           
+
             this.showMessages();
             this.scrollToBottoms(300);
-            this.apiservice.inviaNotifica(this.chatFriend_id,this.dataService.getUsername(),"Ti ha inviato un messaggio","message",this.cod_chat)
+            this.apiservice.inviaNotifica(this.chatFriend_id, this.dataService.getUsername(), "Ti ha inviato un messaggio", "message", this.cod_chat)
           },
           (err) => {
           }
@@ -218,27 +212,23 @@ export class ChatPage implements OnInit {
     }
   }
 
-  ///////////////////////////////////////////
 
   clicca() {
     this.textMessage = this.testo;
     this.sendMessage();
     this.testo = "";
   }
-  ////////////////////////////////////////////
 
   goToProfile() {
     this.dataService.emailOthers = this.chatFriend_id;
     this.router.navigate(['visualizza-profilo']);
-   
+
   }
 
-  
-  goBack() {    
+
+  goBack() {
     this.navCtrl.back();
   }
-
-  ///////////////////////////////////////////
 
   scrollToBottoms(anim) {
     setTimeout(() => {
@@ -247,15 +237,14 @@ export class ChatPage implements OnInit {
   }
 
   refreshMessages() {
-    
-    if(this.flag)
-    { 
+
+    if (this.flag) {
       setTimeout(() => {
-       this.showMessages();
-       this.refreshMessages();
-     }, 6000);
-   }
-    
+        this.showMessages();
+        this.refreshMessages();
+      }, 6000);
+    }
+
   }
 
   getToday() {
@@ -284,7 +273,7 @@ export class ChatPage implements OnInit {
       "Giovedì",
       "Venerdì",
       "Sabato"
-      
+
     ];
 
     const dateTimeFormat = new Intl.DateTimeFormat("it", {
@@ -299,11 +288,8 @@ export class ChatPage implements OnInit {
       ,
       { value: year },
     ] = dateTimeFormat.formatToParts(gg);
-    return  weekday[gg.getDay()] + ", " + day + " " + month + " " + year;
+    return weekday[gg.getDay()] + ", " + day + " " + month + " " + year;
   }
-
-
-
 
 }
 

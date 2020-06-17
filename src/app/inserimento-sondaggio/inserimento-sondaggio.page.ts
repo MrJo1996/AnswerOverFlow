@@ -206,13 +206,11 @@ export class InserimentoSondaggioPage implements OnInit {
             role: "cancel",
             cssClass: "secondary",
             handler: (blah) => {
-              console.log("Confirm Cancel");
             },
           },
           {
             text: "Si",
             handler: () => {
-              console.log("Confirm Okay");
               this.postInvio();
               this.goHome();
               this.toast("Sondaggio pubblicato!", "success");
