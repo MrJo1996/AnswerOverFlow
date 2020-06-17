@@ -32,7 +32,6 @@ export class AdvancedSearchPage implements OnInit {
   isFiltered: boolean = false;
   status;
   radioGroup: FormGroup;
-  formCategorie : FormGroup;
   formStato : FormGroup;
   formControl;
 
@@ -46,8 +45,7 @@ export class AdvancedSearchPage implements OnInit {
     private menuCtrl: MenuController
   ) {
     this.radioGroup = new FormGroup ({'group' : new FormControl()});
-    this.formCategorie = new FormGroup ({'group' : new FormControl()});
-    this.formStato = new FormGroup ({'group' : new FormControl()});
+    this.formStato = new FormGroup ({'closed' : new FormControl(), 'open' : new FormControl()});
     
   }
 
@@ -67,8 +65,8 @@ export class AdvancedSearchPage implements OnInit {
     );
 
     this.radioGroup.reset();
-    this.formCategorie.reset();
     this.formStato.reset();
+this.categoriaView = "";
   }
   //CATEGORIA PICKER
   async showCategoriaPicker() {

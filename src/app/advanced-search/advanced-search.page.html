@@ -60,9 +60,9 @@
       <!-- CATEGORIA -->
       <ion-card class="backgrounds">
         <ion-list>
-          <form [formGroup] = "formCategorie">
-          <ion-list-header>
-            <ion-label><u><strong>Categoria</strong></u></ion-label>
+          <form>
+          <ion-list-header >
+            <ion-label ><u><strong>Categoria</strong></u></ion-label>
           </ion-list-header>
           <ion-item lines="none" (click)="showCategoriaPicker()" class="itemClass">
             <ion-label>
@@ -85,12 +85,12 @@
           </ion-list-header>
           <ion-item>
             <ion-label>Chiuso</ion-label>
-            <ion-checkbox (click)="toggleClose($event)" slot="end"></ion-checkbox>
+            <ion-checkbox formControlName = "closed" (click)="toggleClose($event)" slot="end"></ion-checkbox>
           </ion-item>
 
           <ion-item>
             <ion-label>Aperto</ion-label>
-            <ion-checkbox (click)="toggleOpen($event)" slot="end"></ion-checkbox>
+            <ion-checkbox formControlName = "open"(click)="toggleOpen($event)" slot="end"></ion-checkbox>
           </ion-item>
         </form>
         </ion-list>
