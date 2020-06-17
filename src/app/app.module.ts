@@ -12,6 +12,7 @@ import { IonicStorageModule } from '@ionic/storage';
 import { PopoverComponent } from "./popover/popover.component"
 import { OneSignal } from '@ionic-native/onesignal/ngx';
 import { Network } from '@ionic-native/network/ngx';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [AppComponent, PopoverComponent],
@@ -22,6 +23,8 @@ import { Network } from '@ionic-native/network/ngx';
     AppRoutingModule,
     HttpClientModule,
     PipesModule,
+    FormsModule,
+    ReactiveFormsModule,
     IonicStorageModule.forRoot()
   ],
   providers: [

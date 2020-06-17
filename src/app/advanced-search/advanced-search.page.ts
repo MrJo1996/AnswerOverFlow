@@ -31,6 +31,10 @@ export class AdvancedSearchPage implements OnInit {
   statusClosed: boolean = false;
   isFiltered: boolean = false;
   status;
+  radioGroup: FormGroup;
+  formCategorie : FormGroup;
+  formStato : FormGroup;
+  formControl;
 
 
 
@@ -41,7 +45,10 @@ export class AdvancedSearchPage implements OnInit {
     public apiService: ApiService,
     private menuCtrl: MenuController
   ) {
-
+    this.radioGroup = new FormGroup ({'group' : new FormControl()});
+    this.formCategorie = new FormGroup ({'group' : new FormControl()});
+    this.formStato = new FormGroup ({'group' : new FormControl()});
+    
   }
 
   ngOnInit() { this.initFilters(); }
@@ -63,6 +70,10 @@ export class AdvancedSearchPage implements OnInit {
       (rej) => {
       }
     );
+
+    this.radioGroup.reset();
+    this.formCategorie.reset();
+    this.formStato.reset();
   }
   //CATEGORIA PICKER
   async showCategoriaPicker() {
@@ -230,6 +241,9 @@ export class AdvancedSearchPage implements OnInit {
     this.globalSearch = false;
     this.keywordSearch = true;
   }
+
+
+
 }
 
 

@@ -8,10 +8,13 @@ import { AdvancedSearchPageRoutingModule } from './advanced-search-routing.modul
 
 import { AdvancedSearchPage } from './advanced-search.page';
 
+import { ReactiveFormsModule } from '@angular/forms';
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     IonicModule,
     AdvancedSearchPageRoutingModule
   ],

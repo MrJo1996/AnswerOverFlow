@@ -28,28 +28,30 @@
     <!-- TIPO -->
     <ion-card class="backgrounds">
       <ion-list>
-        <ion-radio-group>
+        <form [formGroup] = "radioGroup">
+        <ion-radio-group formControlName = "group" > 
           <ion-list-header>
             <ion-label><u><strong>Tipo</strong></u></ion-label>
           </ion-list-header>
           <ion-item>
             <ion-label>Domande</ion-label>
-            <ion-radio slot="start" (click)="clickDomanda()" ></ion-radio>
+            <ion-radio checked = "false" slot="start" (click)="clickDomanda()" ></ion-radio>
           </ion-item>
 
           <ion-item>
             <ion-label>Sondaggi</ion-label>
-            <ion-radio slot="start" (click)="clickSondaggio()" ></ion-radio>
+            <ion-radio checked = "false" slot="start" (click)="clickSondaggio()" ></ion-radio>
           </ion-item>
 
           <div *ngIf="globalSearch == false">
 
             <ion-item>
               <ion-label>Utenti</ion-label>
-              <ion-radio slot="start" (click)="clickUtente()" ></ion-radio>
+              <ion-radio checked = "false" slot="start" (click)="clickUtente()" ></ion-radio>
             </ion-item>
           </div>
         </ion-radio-group>
+      </form>
       </ion-list>
     </ion-card>
 
@@ -58,6 +60,7 @@
       <!-- CATEGORIA -->
       <ion-card class="backgrounds">
         <ion-list>
+          <form [formGroup] = "formCategorie">
           <ion-list-header>
             <ion-label><u><strong>Categoria</strong></u></ion-label>
           </ion-list-header>
@@ -69,12 +72,14 @@
             <ion-text *ngIf="[categoriaView]!=''" class="text">{{categoriaView}}</ion-text>
             <ion-icon class="inner" name="chevron-down-outline"></ion-icon>
           </ion-item>
+        </form>
         </ion-list>
       </ion-card>
 
       <!-- STATO -->
       <ion-card class="backgrounds">
         <ion-list>
+          <form [formGroup] = "formStato">
           <ion-list-header>
             <ion-label><u><strong>Stato</strong></u></ion-label>
           </ion-list-header>
@@ -87,6 +92,7 @@
             <ion-label>Aperto</ion-label>
             <ion-checkbox (click)="toggleOpen($event)" slot="end"></ion-checkbox>
           </ion-item>
+        </form>
         </ion-list>
       </ion-card>
 
