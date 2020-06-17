@@ -39,16 +39,8 @@ export class SearchResultsPage implements OnInit {
   constructor(private dataService: DataService, private menuCtrl: MenuController, private router: Router, private apiService: ApiService, private storage: Storage) { }
 
   ngOnInit() {
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 3500;
-    document.body.appendChild(loading);
-    loading.present();
-
     this.storage.get('utente').then(data => { this.currentMailUser = data.email });
   }
-
 
   ionViewWillEnter() {
 
@@ -342,12 +334,7 @@ export class SearchResultsPage implements OnInit {
 
   ricerca() {
 
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 3000;
-    document.body.appendChild(loading);
-    loading.present();
+    this.dataService.loadingView(2500);
 
     this.dataService.setKeywordToSearch(this.keywordToSearch);
     this.isFiltered = false;
@@ -368,48 +355,29 @@ export class SearchResultsPage implements OnInit {
   }
 
   clickFilter() {
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 2000;
-    document.body.appendChild(loading);
-    loading.present();
-    this.resetVars();
+    this.dataService.loadingView(1000);
 
+    this.resetVars();
     this.router.navigateByUrl("/advanced-search");
   }
 
   clickUtente(cod_utente) {
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 3500;
-    document.body.appendChild(loading);
-    loading.present();
+   this.dataService.loadingView(1500);
 
     this.dataService.setEmailOthers(cod_utente);
     this.router.navigate(['/visualizza-profilo']);
   }
 
   clickDomanda(domanda_codice) {
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 3500;
-    document.body.appendChild(loading);
-    loading.present();
+    this.dataService.loadingView(1500);
 
     this.dataService.setCod_domanda(domanda_codice);
     this.router.navigate(['/visualizza-domanda']);
   }
 
   clickSondaggio(codice_sondaggio) {
-    const loading = document.createElement('ion-loading');
-    loading.cssClass = 'loading';
-    loading.spinner = 'crescent';
-    loading.duration = 3500;
-    document.body.appendChild(loading);
-    loading.present();
+    this.dataService.loadingView(1500);
+
 
     this.dataService.codice_sondaggio = codice_sondaggio;
     this.router.navigate(['/visualizza-sondaggio']);

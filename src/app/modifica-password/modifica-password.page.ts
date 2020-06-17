@@ -112,7 +112,7 @@ async salvaPassword() {
       {
         text: 'Ok',
         handler: () => {
-          this.dataService.loadingView(5000);
+          this.dataService.loadingView(1000);
         this.navCtrl.back();
         }
       }

@@ -18,8 +18,8 @@ import { PostServiceService } from "../services/post-service.service";
 
 export class InserisciDomandaPage implements OnInit {
 
-  url = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/inserisciDomanda'
-  urlCategorie = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaCategorie'
+  url = 'https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/inserisciDomanda'
+  urlCategorie = 'https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaCategorie'
 
   titolo = '';
   categorie: any;

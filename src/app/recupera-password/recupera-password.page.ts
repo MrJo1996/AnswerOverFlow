@@ -15,7 +15,7 @@ export class RecuperaPasswordPage implements OnInit{
   email = '';
   request: Promise<any>;
   result: Promise<any>;
-  url = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/recupero'
+  url = 'https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/recupero'
 
   constructor(private service: PostServiceService, private router: Router, private menuCtrl: MenuController){}
 

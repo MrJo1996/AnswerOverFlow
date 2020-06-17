@@ -15,11 +15,11 @@ import { Storage } from "@ionic/storage";
 })
 export class InserimentoSondaggioPage implements OnInit {
   url =
-    "http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/inseriscisondaggio";
+    "https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/inseriscisondaggio";
   urlCategorie =
-    "http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaCategorie";
+    "https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaCategorie";
   urlScelta =
-    "http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/inserisciScelteSondaggio";
+    "https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/inserisciScelteSondaggio";
 
   emailUtente = "";
 
@@ -95,10 +95,12 @@ export class InserimentoSondaggioPage implements OnInit {
   switchCategoria() {
     this.router.navigate(["proponi-categoria"]);
   }
+  
   goHome() {
     this.dataService.loadingView(5000);//visualizza il frame di caricamento
     this.router.navigate(["home"]);
   }
+
   backButton() {
     this.dataService.loadingView(5000);//visualizza il frame di caricamento
     this.navCtrl.back();
@@ -204,13 +206,11 @@ export class InserimentoSondaggioPage implements OnInit {
             role: "cancel",
             cssClass: "secondary",
             handler: (blah) => {
-              console.log("Confirm Cancel");
             },
           },
           {
             text: "Si",
             handler: () => {
-              console.log("Confirm Okay");
               this.postInvio();
               this.goHome();
               this.toast("Sondaggio pubblicato!", "success");

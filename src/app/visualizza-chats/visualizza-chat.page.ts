@@ -21,11 +21,11 @@ export class VisualizzaChatPage implements OnInit {
   user;
 
   urlCaricaChat =
-    "http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaChats";
+    "https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaChats";
   urlCaricaMessaggio =
-    "http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaUltimoMessaggio";
+    "https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaUltimoMessaggio";
   viewUserUrl =
-    "http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaProfilo";
+    "https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaProfilo";
 
   constructor(
     private navCtrl: NavController,
@@ -164,13 +164,13 @@ export class VisualizzaChatPage implements OnInit {
     this.data.setNotificationChatId("");
     this.data.setCodice_chat(codiceChat);
     this.data.setEmailOthers(chatter);
-    this.data.loadingView(3000); //visualizza il frame di caricamento
+    this.data.loadingView(500); //visualizza il frame di caricamento
     this.router.navigate(["chat"]);
   }
 
   //-----------------------Torna indietro
   goBack() {
-    this.data.loadingView(5000);
+    this.data.loadingView(2000);
     this.navCtrl.back();
   }
 

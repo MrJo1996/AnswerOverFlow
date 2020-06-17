@@ -32,7 +32,7 @@ export class LoginPage implements OnInit {
   request: Promise<any>;
   result: Promise<any>;
   url =
-    "http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/login";
+    "https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/login";
 
   constructor(
     public apiService: ApiService,

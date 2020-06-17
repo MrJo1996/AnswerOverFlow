@@ -49,7 +49,7 @@ export class ApiService {
   };
 
   return new Promise((resolve, reject) => {
-    this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzadomandehome', body).subscribe(
+    this.http.post('https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzadomandehome', body).subscribe(
       data => {
         let domande = data['Domande'];
         resolve(domande);
@@ -66,7 +66,7 @@ getSondaggioRicerca() {
   const body = {
   };
   return new Promise((resolve, reject) => {
-    this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzasondaggihome', body).subscribe(
+    this.http.post('https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzasondaggihome', body).subscribe(
       data => {
         let sondaggi = data['Sondaggi'];
         resolve(sondaggi);
@@ -80,17 +80,13 @@ getSondaggioRicerca() {
 
 
 
-
-
-
-
   getDomanda(codice_domanda: number) {
     const body = {
       codice_domanda: codice_domanda
     };
 
     return new Promise((resolve, reject) => {
-      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzadomanda', body).subscribe(
+      this.http.post('https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzadomanda', body).subscribe(
         data => {
 
           let domanda = data['Domande'];
@@ -104,12 +100,13 @@ getSondaggioRicerca() {
       );
     });
   }
+
   getDomandaHome() {
     const body = {
     };
 
     return new Promise((resolve, reject) => {
-      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzadomandehome', body).subscribe(
+      this.http.post('https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzadomandehome', body).subscribe(
         data => {
 
           let domande = data['Domande']['data'];
@@ -122,12 +119,13 @@ getSondaggioRicerca() {
       );
     });
   }
+
   getSondaggioHome() {
     const body = {
     };
 
     return new Promise((resolve, reject) => {
-      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzasondaggihome', body).subscribe(
+      this.http.post('https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzasondaggihome', body).subscribe(
         data => {
 
           let sondaggi = data['Sondaggi']['data'];
@@ -152,7 +150,7 @@ getSondaggioRicerca() {
       cod_preferita
     };
     return new Promise((resolve, reject) => {
-      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/modificaDomanda', body).subscribe(
+      this.http.post('https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/modificaDomanda', body).subscribe(
         data => {
           let esito = data['message'];
           resolve(esito);
@@ -175,7 +173,7 @@ getSondaggioRicerca() {
       avatar
     };
     return new Promise((resolve, reject) => {
-      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/modificaProfilo', body).subscribe(
+      this.http.post('https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/modificaProfilo', body).subscribe(
         data => {
           let esito = data['message'];
           resolve(esito);
@@ -197,7 +195,7 @@ getSondaggioRicerca() {
       avatar
     };
     return new Promise((resolve, reject) => {
-      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/modificaProfilo', body).subscribe(
+      this.http.post('https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/modificaProfilo', body).subscribe(
         data => {
           let esito = data['message'];
           //console.log('esito: ', esito);
@@ -217,7 +215,7 @@ getSondaggioRicerca() {
     };
 
     return new Promise((resolve, reject) => {
-      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaProfilo', body).subscribe(
+      this.http.post('https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaProfilo', body).subscribe(
         data => {
           let profilo = data['Profilo'];
           resolve(profilo); //restituirò al ts un oggetto di nome "profilo" con accesso già alla posizione "Profilo" avendo visto il json di data
@@ -236,7 +234,7 @@ getSondaggioRicerca() {
       codice_sondaggio
     };
     return new Promise((resolve, reject) => {
-      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/modificaSondaggio', body).subscribe(
+      this.http.post('https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/modificaSondaggio', body).subscribe(
         data => {
           let esito = data['message'];
           resolve(esito);
@@ -255,7 +253,7 @@ getSondaggioRicerca() {
     };
 
     return new Promise((resolve, reject) => {
-      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaSondaggio', body).subscribe(
+      this.http.post('https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaSondaggio', body).subscribe(
         data => {
           let sondaggio = data['Sondaggio'];
           resolve(sondaggio); 
@@ -275,7 +273,7 @@ getSondaggioRicerca() {
     };
 
     return new Promise((resolve, reject) => {
-      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaScelteSondaggio', body).subscribe(
+      this.http.post('https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaScelteSondaggio', body).subscribe(
         data => {
           let scelte = data;
           resolve(scelte); 
@@ -297,7 +295,7 @@ getSondaggioRicerca() {
     };
 
     return new Promise((resolve, reject) => {
-      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzarisposta', body).subscribe(
+      this.http.post('https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzarisposta', body).subscribe(
         data => {
           let risposta = data['Risposte'];
           resolve(risposta);
@@ -318,7 +316,7 @@ getSondaggioRicerca() {
     };
 
     return new Promise((resolve, reject) => {
-      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzacategoria', body).subscribe(
+      this.http.post('https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzacategoria', body).subscribe(
         data => {
           let categoria = data;
           resolve(categoria);
@@ -337,7 +335,7 @@ getSondaggioRicerca() {
     };
 
     return new Promise((resolve, reject) => {
-      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/risposteperdomanda', body).subscribe(
+      this.http.post('https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/risposteperdomanda', body).subscribe(
         data => {
           let risposte = data;
           resolve(risposte);
@@ -352,7 +350,7 @@ getSondaggioRicerca() {
 
   rimuoviSondaggio(codice_sondaggio: Number) {
     return new Promise((resolve, reject) => {
-      var url = "http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/cancellaSondaggio/";
+      var url = "https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/cancellaSondaggio/";
       var urlAndCode = url.concat(codice_sondaggio.toString());
       this.http.delete(urlAndCode).subscribe(
         data => {
@@ -369,7 +367,7 @@ getSondaggioRicerca() {
   rimuoviDomanda(cod_domanda: number) {
 
     return new Promise((resolve, reject) => {
-      var url = "http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/cancellaDomanda/";
+      var url = "https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/cancellaDomanda/";
       var urlAndCode = url.concat(cod_domanda.toString());
       this.http.delete(urlAndCode).subscribe(
         data => {
@@ -389,7 +387,7 @@ getSondaggioRicerca() {
   rimuoviRisposta(cod_risposta: number) {
 
     return new Promise((resolve, reject) => {
-      var url = "http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/rimuoviRisposta/";
+      var url = "https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/rimuoviRisposta/";
       var urlAndCode = url.concat(cod_risposta.toString());
       this.http.delete(urlAndCode).subscribe(
         data => {
@@ -411,7 +409,7 @@ getSondaggioRicerca() {
       codice_risposta
     };
     return new Promise((resolve, reject) => {
-      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/modificaRisposta', body).subscribe(
+      this.http.post('https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/modificaRisposta', body).subscribe(
         data => {
           let esito = data['message'];
           resolve(esito);
@@ -430,7 +428,7 @@ getSondaggioRicerca() {
       cod_domanda
     };
     return new Promise((resolve, reject) => {
-      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/inserisci_risposta', body).subscribe(
+      this.http.post('https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/inserisci_risposta', body).subscribe(
         data => {
           let esito = data['message'];
           resolve(esito);
@@ -547,7 +545,7 @@ getSondaggioRicerca() {
       cod_categoria
     };
     return new Promise((resolve, reject) => {
-      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/inserisciDomanda', body).subscribe(
+      this.http.post('https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/inserisciDomanda', body).subscribe(
         data => {
           let esito = data['message'];
           resolve(esito);
@@ -567,7 +565,7 @@ getSondaggioRicerca() {
       email
     };
     return new Promise((resolve, reject) => {
-      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/modificaPassword', body).subscribe(
+      this.http.post('https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/modificaPassword', body).subscribe(
         data => {
           let esito = data['message'];
           resolve(esito);
@@ -593,7 +591,7 @@ getSondaggioRicerca() {
       avatar
     };
     return new Promise((resolve, reject) => {
-      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/registrazione', body).subscribe(
+      this.http.post('https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/registrazione', body).subscribe(
         data => {
           let esito = data['message'];
           resolve(esito);
@@ -610,7 +608,7 @@ getSondaggioRicerca() {
       proposta
     };
     return new Promise((resolve, reject) => {
-      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/proponi_categoria', body).subscribe(
+      this.http.post('https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/proponi_categoria', body).subscribe(
         data => {
           let esito = data['message'];
           resolve(esito);
@@ -628,7 +626,7 @@ getSondaggioRicerca() {
       email_utente_segnalato
     };
     return new Promise((resolve, reject) => {
-      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/segnala_utente', body).subscribe(
+      this.http.post('https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/segnala_utente', body).subscribe(
         data => {
           let esito = data['message'];
           resolve(esito);
@@ -687,7 +685,7 @@ getSondaggioRicerca() {
     };
 
     return new Promise((resolve, reject) => {
-      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzastatistichedomanda', body).subscribe(
+      this.http.post('https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzastatistichedomanda', body).subscribe(
         data => {
           let domande = data;
           resolve(domande);
@@ -709,7 +707,7 @@ getSondaggioRicerca() {
     };
 
     return new Promise((resolve, reject) => {
-      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaTOTStatisticheDomanda', body).subscribe(
+      this.http.post('https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaTOTStatisticheDomanda', body).subscribe(
         data => {
           let domandeT = data;
           resolve(domandeT);
@@ -730,7 +728,7 @@ getSondaggioRicerca() {
     };
 
     return new Promise((resolve, reject) => {
-      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaStatisticherisposta', body).subscribe(
+      this.http.post('https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaStatisticherisposta', body).subscribe(
         data => {
           let risposte = data;
           resolve(risposte);
@@ -750,7 +748,7 @@ getSondaggioRicerca() {
     };
 
     return new Promise((resolve, reject) => {
-      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaStatisticheTOTrisposta', body).subscribe(
+      this.http.post('https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaStatisticheTOTrisposta', body).subscribe(
         data => {
           let risposte = data;
           resolve(risposte);
@@ -769,7 +767,7 @@ getSondaggioRicerca() {
       cod_preferita
     };
     return new Promise((resolve, reject) => {
-      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/sceglirispostapreferita', body).subscribe(
+      this.http.post('https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/sceglirispostapreferita', body).subscribe(
         data => {
           let esito = data['message'];
           resolve(esito);
@@ -787,7 +785,7 @@ getSondaggioRicerca() {
     };
 
     return new Promise((resolve, reject) => {
-      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaDomandeMie', body).subscribe(
+      this.http.post('https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaDomandeMie', body).subscribe(
         data => {
          
           let domande = data;['Domande']['data'];
@@ -806,7 +804,7 @@ getSondaggioRicerca() {
     };
 
     return new Promise((resolve, reject) => {
-      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaSondaggiMiei', body).subscribe(
+      this.http.post('https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/visualizzaSondaggiMiei', body).subscribe(
         data => {
          
           let sondaggi = data['Sondaggi']['data'];
@@ -828,7 +826,7 @@ getSondaggioRicerca() {
       };
       return new Promise((resolve, reject) => {
         
-        this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaDomandaKeyword', body).subscribe(
+        this.http.post('https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaDomandaKeyword', body).subscribe(
           (data) => {
   
             let esito = data['Domanda'];
@@ -848,7 +846,7 @@ getSondaggioRicerca() {
       };
       return new Promise((resolve, reject) => {
         
-        this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaSondaggioKeyword', body).subscribe(
+        this.http.post('https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaSondaggioKeyword', body).subscribe(
           (data) => {
             let esito = data['Sondaggio'];
             resolve(esito);
@@ -868,7 +866,7 @@ getSondaggioRicerca() {
       };
       return new Promise((resolve, reject) => {
         
-        this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaUserKeyword', body).subscribe(
+        this.http.post('https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaUserKeyword', body).subscribe(
           (data) => {
             let esito = data['utente'];
             
@@ -889,7 +887,7 @@ getSondaggioRicerca() {
     };
 
     return new Promise((resolve, reject) => {
-      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/controllogiavotato', body).subscribe(
+      this.http.post('https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/controllogiavotato', body).subscribe(
         (data) => {
           let risultato = data["0"]["data"]; 
           resolve(risultato); 
@@ -909,7 +907,7 @@ getSondaggioRicerca() {
       tipo_like
     };
     return new Promise((resolve, reject) => {
-      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/inserisci_valutazione', body).subscribe(
+      this.http.post('https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/inserisci_valutazione', body).subscribe(
         data => {
           let esito = data['message'];
           resolve(esito);
@@ -928,7 +926,7 @@ getSondaggioRicerca() {
       codice_risposta
     };
     return new Promise((resolve, reject) => {
-      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/modifica_num_like', body).subscribe(
+      this.http.post('https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/modifica_num_like', body).subscribe(
         data => {
           let esito = data;
           resolve(esito);
@@ -945,7 +943,7 @@ getSondaggioRicerca() {
       codice_risposta
     };
     return new Promise((resolve, reject) => {
-      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/togli_like', body).subscribe(
+      this.http.post('https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/togli_like', body).subscribe(
         data => {
           let esito = data;
           resolve(esito);
@@ -962,7 +960,7 @@ getSondaggioRicerca() {
       codice_risposta
     };
     return new Promise((resolve, reject) => {
-      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/modifica_num_dislike', body).subscribe(
+      this.http.post('https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/modifica_num_dislike', body).subscribe(
         data => {
           let esito = data;
           resolve(esito);
@@ -979,7 +977,7 @@ getSondaggioRicerca() {
       codice_risposta
     };
     return new Promise((resolve, reject) => {
-      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/togli_dislike', body).subscribe(
+      this.http.post('https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/togli_dislike', body).subscribe(
         data => {
           let esito = data;
           resolve(esito);
@@ -999,7 +997,7 @@ getSondaggioRicerca() {
     };
 
     return new Promise((resolve, reject) => {
-      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/controllogiavalutatorisposta', body).subscribe(
+      this.http.post('https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/controllogiavalutatorisposta', body).subscribe(
         (data) => {
           let risultato = data;
           
@@ -1020,7 +1018,7 @@ rimuoviValutazione(cod_risposta: Number,cod_utente:String) {
       cod_risposta: cod_risposta
     };
     return new Promise((resolve, reject) => {
-      var url = "http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/cancellaVal";
+      var url = "https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/cancellaVal";
     
       this.http.post(url,body).subscribe(
         data => {
@@ -1034,27 +1032,6 @@ rimuoviValutazione(cod_risposta: Number,cod_utente:String) {
     });
   }
 
-/*
-  rimuoviValutazione(cod_risposta: Number, cod_utente: string) {
-    return new Promise((resolve, reject) => {
-      var url = "http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/eliminaVal/";
-      var urlAndCode = url.concat(cod_risposta.toString());
-      var urlAlmostComplete = urlAndCode.concat(",");
-      var urlComplete = urlAlmostComplete.concat(cod_utente.toString());
-      this.http.delete(urlComplete).subscribe(
-        data => {
-          let esito = data['message'];
-          resolve(esito);
-        },
-        (err) => {
-          reject();
-        }
-      );
-    });
-  }*/
-
-  
-
   ContaValutazioni(email: string, codice_categoria: number) {
     const body = {
       email, 
@@ -1063,11 +1040,10 @@ rimuoviValutazione(cod_risposta: Number,cod_utente:String) {
     };
   
     return new Promise((resolve, reject) => {
-      this.http.post('http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/contaValutazioni', body).subscribe(
+      this.http.post('https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/contaValutazioni', body).subscribe(
         data => {
           let valutazioni = (data);
           resolve(valutazioni)
-  
   
         },
         (err) => {

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController, ToastController, MenuController} from '@ionic/angular';
+import { AlertController, ToastController, MenuController } from '@ionic/angular';
 import { ApiService } from 'src/app/providers/api.service';
 import { DataService } from "../services/data.service";
 
@@ -16,7 +16,7 @@ import { __await } from 'tslib';
   styleUrls: ['./modifica-domanda.page.scss'],
 })
 export class ModificaDomandaPage implements OnInit {
-  urlCategorie = 'http://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaCategorie'
+  urlCategorie = 'https://answeroverflow.altervista.org/AnswerOverFlow-BackEnd/public/index.php/ricercaCategorie'
 
 
   codice_domanda: number;
@@ -28,12 +28,12 @@ export class ModificaDomandaPage implements OnInit {
   titoloToPass: string;
   descrizioneToPass: string;
   categoriaToPass;
-  
+
   categoriaScelta;
   categoriaSettings: any = [];
   codCategoriaScelta;
   codice_categoria;
-  
+
   cod_categoriaView;
   categoriaView;
   dataeoraView;
@@ -48,9 +48,9 @@ export class ModificaDomandaPage implements OnInit {
   timerSettings: string[] = ["5 min", "15 min", "30 min", "1 ora", "3 ore", "6 ore", "12 ore", "1 giorno", "3 giorni"]; //scelte nel picker
 
 
-  
-  constructor( private dataService: DataService, 
-    public alertController: AlertController, 
+
+  constructor(private dataService: DataService,
+    public alertController: AlertController,
     public apiService: ApiService,
     private pickerController: PickerController,
     private menuCtrl: MenuController,
@@ -58,7 +58,7 @@ export class ModificaDomandaPage implements OnInit {
     public navCtrl: NavController) { }
 
   ngOnInit() {
-    
+
     this.apiService.prendiCategorie(this.urlCategorie).then(
       (categories) => {
         this.categoriaSettings = categories;
@@ -70,7 +70,7 @@ export class ModificaDomandaPage implements OnInit {
 
   async modify() {
 
-    if( this.titoloToPass == null) {
+    if (this.titoloToPass == null) {
       this.titoloToPass = this.titoloView;
     }
     if (this.descrizioneToPass == null) {
@@ -80,7 +80,7 @@ export class ModificaDomandaPage implements OnInit {
     if (this.dataeoraToPass == null) {
       this.dataeoraToPass = this.dataeoraView;
     }
-    
+
     if (this.timerToPass == null) {
       this.timerToPass = this.timerView2;
     }
@@ -90,14 +90,14 @@ export class ModificaDomandaPage implements OnInit {
     } else if (this.stringTitleLengthChecker()) {
       this.popupInvalidTitle();
     } else if (this.checkIfThereAreEnglishBadWords(this.descrizioneToPass)
-    || this.checkIfThereAreItalianBadWords(this.descrizioneToPass)
-    || this.checkIfThereAreEnglishBadWords(this.titoloToPass)
-    || this.checkIfThereAreItalianBadWords(this.titoloToPass)) {
+      || this.checkIfThereAreItalianBadWords(this.descrizioneToPass)
+      || this.checkIfThereAreEnglishBadWords(this.titoloToPass)
+      || this.checkIfThereAreItalianBadWords(this.titoloToPass)) {
       this.toastParolaScoretta();
     }
     else {
-    this.apiService.modificaDomanda(this.codice_domanda, this.dataeoraToPass, this.timerToPass, this.titoloToPass, this.descrizioneToPass, this.categoriaToPass, this.cod_preferita);   
-    this.toastSuccess();
+      this.apiService.modificaDomanda(this.codice_domanda, this.dataeoraToPass, this.timerToPass, this.titoloToPass, this.descrizioneToPass, this.categoriaToPass, this.cod_preferita);
+      this.toastSuccess();
     }
   }
 
@@ -106,9 +106,9 @@ export class ModificaDomandaPage implements OnInit {
 
     this.apiService.getDomanda(this.codice_domanda).then(
       (domanda) => {
-        
+
         this.domanda = domanda['data'];
-        
+
         this.dataeoraView = this.domanda['0'].dataeora;
         this.timerView2 = this.domanda['0'].timer;
         this.titoloView = this.domanda['0'].titolo;
@@ -117,7 +117,7 @@ export class ModificaDomandaPage implements OnInit {
         this.cod_categoriaView = this.domanda['0'].cod_categoria;
         this.categoriaToPass = this.domanda['0'].cod_categoria;
         this.getCategoriaView();
-      
+
         this.mappingIncrement(this.domanda['0'].timer);
 
         var auxData = [];
@@ -126,14 +126,14 @@ export class ModificaDomandaPage implements OnInit {
         auxData['2'] = this.domanda['0'].dataeora.substring(0, 10).split("-")[2];
         auxData['3'] = this.domanda['0'].dataeora.substring(11, 18).split(":")[0];
         auxData['4'] = this.domanda['0'].dataeora.substring(11, 18).split(":")[1];
-        
+
         var dataCreazioneToView = new Date(auxData['0'], parseInt(auxData['1'], 10) - 1, auxData['2'], auxData['3'], auxData['4']);
-       
+
         document.getElementById("dataOraCreazione").innerHTML = dataCreazioneToView.toLocaleString();
-      
+
       },
       (rej) => {
-        
+
       }
     );
 
@@ -164,7 +164,7 @@ export class ModificaDomandaPage implements OnInit {
             this.categoriaToPass = this.categoriaView;
             this.cod_categoria = value['ValoreCategoriaSettata'].value;
             this.codCategoriaScelta = this.cod_categoria;
-            this.categoriaToPass=this.codCategoriaScelta
+            this.categoriaToPass = this.codCategoriaScelta
 
           }
         }
@@ -188,33 +188,33 @@ export class ModificaDomandaPage implements OnInit {
     return options;
   }
 
-  stringDescriptionChecker():boolean {
+  stringDescriptionChecker(): boolean {
     if (this.descrizioneToPass.length > 200) {
       return true;
     } else {
       return false;
     }
   }
-  stringTitleLengthChecker():boolean {
+  stringTitleLengthChecker(): boolean {
 
     if ((this.titoloToPass.length > 200) || !(this.titoloToPass.match(/[a-zA-Z0-9_]+/))) {
-    return true;
-  } else {
-    return false;
+      return true;
+    } else {
+      return false;
+    }
   }
-}
-async popupInvalidDescription(){
-  const toast = document.createElement('ion-toast');
-  toast.message = 'ERRORE! Hai superato la lunghezza massima!';
-  toast.duration = 2000;
-  toast.position = "top";
-  toast.style.fontSize = '20px';
-  toast.color = 'danger';
-  toast.style.textAlign = 'center';
-  document.body.appendChild(toast);
-  return toast.present();
-}
-async popupInvalidTitle(){
+  async popupInvalidDescription() {
+    const toast = document.createElement('ion-toast');
+    toast.message = 'ERRORE! Hai superato la lunghezza massima!';
+    toast.duration = 2000;
+    toast.position = "top";
+    toast.style.fontSize = '20px';
+    toast.color = 'danger';
+    toast.style.textAlign = 'center';
+    document.body.appendChild(toast);
+    return toast.present();
+  }
+  async popupInvalidTitle() {
     const toast = document.createElement('ion-toast');
     toast.message = 'ERRORE! Hai lasciato il titolo vuoto o hai superato la lunghezza massima!';
     toast.duration = 2000;
@@ -233,7 +233,7 @@ async popupInvalidTitle(){
         {
           name: 'titoloPopUp',
           type: 'text',
-          placeholder: this.titoloView 
+          placeholder: this.titoloView
         }
       ],
       buttons: [
@@ -242,17 +242,17 @@ async popupInvalidTitle(){
           role: 'cancel',
           cssClass: 'secondary',
           handler: () => {
-            this.titoloView = this.domanda['0'].titolo; 
+            this.titoloView = this.domanda['0'].titolo;
           }
         }, {
           text: 'Ok',
 
-            handler: insertedData => {
-           
-            this.titoloView = insertedData.titoloPopUp; 
+          handler: insertedData => {
+
+            this.titoloView = insertedData.titoloPopUp;
             this.titoloToPass = insertedData.titoloPopUp;
 
-            if (insertedData.titoloPopUp == "") { 
+            if (insertedData.titoloPopUp == "") {
               this.titoloView = this.domanda['0'].titolo;
               this.titoloToPass = this.domanda['0'].titolo;
             }
@@ -263,7 +263,7 @@ async popupInvalidTitle(){
 
     await alert.present();
   }
-  
+
   async popupModificaDescrizione() {
     const alert = await this.alertController.create({
       header: 'Modifica descrizione',
@@ -271,7 +271,7 @@ async popupInvalidTitle(){
         {
           name: 'descrizionePopUp',
           type: 'text',
-          placeholder: this.descrizioneView 
+          placeholder: this.descrizioneView
         }
       ],
       buttons: [
@@ -280,15 +280,15 @@ async popupInvalidTitle(){
           role: 'cancel',
           cssClass: 'secondary',
           handler: () => {
-            this.descrizioneView = this.domanda['0'].descrizione; 
+            this.descrizioneView = this.domanda['0'].descrizione;
           }
         }, {
           text: 'Ok',
           handler: insertedData => {
             this.descrizioneView = insertedData.descrizionePopUp;
-            this.descrizioneToPass = insertedData.descrizionePopUp; 
+            this.descrizioneToPass = insertedData.descrizionePopUp;
 
-            if (insertedData.descrizionePopUp == "") { 
+            if (insertedData.descrizionePopUp == "") {
               this.descrizioneView = this.domanda['0'].descrizione;
               this.descrizioneToPass = this.domanda['0'].descrizione;
             }
@@ -312,18 +312,14 @@ async popupInvalidTitle(){
         {
           text: 'Conferma',
           handler: (value: any) => {
-
-            
             this.modify();
-
-            this.dataService.loadingView(3000);//visualizza il frame di caricamento
+            this.dataService.loadingView(1500);//visualizza il frame di caricamento
             this.navCtrl.back();
-
           }
         }
       ],
     });
-   
+
     await alert.present();
   }
 
@@ -337,14 +333,14 @@ async popupInvalidTitle(){
         {
           text: 'Ok',
           handler: (value: any) => {
-            
-            this.timerView2 = value['ValoreTimerSettato'].value; 
+
+            this.timerView2 = value['ValoreTimerSettato'].value;
             this.mappingTimerValueToPass(value['ValoreTimerSettato'].value);
           }
         }
       ],
       columns: [{
-        name: 'ValoreTimerSettato', 
+        name: 'ValoreTimerSettato',
         options: this.getColumnOptions()
       }]
     };
@@ -356,18 +352,18 @@ async popupInvalidTitle(){
   getColumnOptions() {
     let options = [];
 
-    
-    var auxDataPicker = []; 
-    auxDataPicker['0'] = (this.domanda['0'].dataeora.substring(0, 10).split("-")[0]); 
-    auxDataPicker['1'] = this.domanda['0'].dataeora.substring(0, 10).split("-")[1]; 
+
+    var auxDataPicker = [];
+    auxDataPicker['0'] = (this.domanda['0'].dataeora.substring(0, 10).split("-")[0]);
+    auxDataPicker['1'] = this.domanda['0'].dataeora.substring(0, 10).split("-")[1];
     auxDataPicker['2'] = this.domanda['0'].dataeora.substring(0, 10).split("-")[2]; //gg
     auxDataPicker['3'] = this.domanda['0'].dataeora.substring(11, 18).split(":")[0]; //hh
     auxDataPicker['4'] = this.domanda['0'].dataeora.substring(11, 18).split(":")[1]; //mm
     var dataPicker = new Date(parseInt(auxDataPicker['0'], 10), parseInt(auxDataPicker['1'], 10) - 1, parseInt(auxDataPicker['2'], 10), parseInt(auxDataPicker['3'], 10), parseInt(auxDataPicker['4'], 10));
 
-    var nowPicker = new Date(); 
+    var nowPicker = new Date();
 
-    var increment; 
+    var increment;
     this.timerSettings.forEach(x => {
       switch (x) {
         case (this.timerSettings['0']):
@@ -408,7 +404,7 @@ async popupInvalidTitle(){
 
       }
 
-       if ((dataPicker.getTime() + increment) > (nowPicker.getTime())) {
+      if ((dataPicker.getTime() + increment) > (nowPicker.getTime())) {
         options.push({ text: x, value: x });
       }
 
@@ -481,9 +477,9 @@ async popupInvalidTitle(){
       var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
       if (distance < 0) {
-        clearInterval(this.interval);       
+        clearInterval(this.interval);
         this.timerView = "scaduto";
-        
+
       } else {
         this.timerView = days + "d " + hours + "h "
           + minutes + "m " + seconds + "s ";
@@ -496,7 +492,7 @@ async popupInvalidTitle(){
   ionViewDidLeave() {
     clearInterval(this.interval)
   }
-  
+
   mappingIncrement(valueToMapp) {
 
     switch (valueToMapp) {
@@ -561,22 +557,22 @@ async popupInvalidTitle(){
 
 
   goBack() {
-    this.dataService.loadingView(3000);//visualizza il frame di caricamento
+    this.dataService.loadingView(1500);//visualizza il frame di caricamento
     this.navCtrl.back();
   }
 
-  openMenu(){
+  openMenu() {
     this.menuCtrl.open();
   }
 
   checkIfThereAreEnglishBadWords(string: string): boolean {
 
     var Filter = require('bad-words'),
-    filter = new Filter();
+      filter = new Filter();
 
     return filter.isProfane(string)
-  
-    }
+
+  }
 
   checkIfThereAreItalianBadWords(string: string): boolean {
 
@@ -590,22 +586,22 @@ async popupInvalidTitle(){
 
     var check;
 
-    stringArray.forEach( element => {
+    stringArray.forEach(element => {
       if (array.includes(element))
-      check = true; 
+        check = true;
     });
     return check;
 
   }
-      toastParolaScoretta() {
-      const toast = document.createElement("ion-toast");
-      toast.message = 'Hai inserito una parola scorretta!',
+  toastParolaScoretta() {
+    const toast = document.createElement("ion-toast");
+    toast.message = 'Hai inserito una parola scorretta!',
       toast.duration = 2000;
-      toast.color = 'danger';
-      toast.position = "top";
-      toast.style.fontSize = '20px';
-      toast.style.textAlign = 'center';
-      document.body.appendChild(toast);
+    toast.color = 'danger';
+    toast.position = "top";
+    toast.style.fontSize = '20px';
+    toast.style.textAlign = 'center';
+    document.body.appendChild(toast);
     return toast.present();
-    }
+  }
 }

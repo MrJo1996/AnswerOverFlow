@@ -130,7 +130,7 @@ export class AppComponent implements OnInit {
           text: "No",
           role: "cancel",
           cssClass: "secondary",
-          handler: (blah) => {},
+          handler: (blah) => { },
         },
         {
           text: "Si",
@@ -147,7 +147,7 @@ export class AppComponent implements OnInit {
             this.setupPushNotification();
 
             setTimeout(() => {
-              this.storage.get("session").then((data) => {});
+              this.storage.get("session").then((data) => { });
             }, 3000);
           },
         },
@@ -166,7 +166,7 @@ export class AppComponent implements OnInit {
           text: "No",
           role: "cancel",
           cssClass: "secondary",
-          handler: (blah) => {},
+          handler: (blah) => { },
         },
         {
           text: "Si",
@@ -177,7 +177,7 @@ export class AppComponent implements OnInit {
             this.router.navigate(["login"]);
 
             setTimeout(() => {
-              this.storage.get("session").then((data) => {});
+              this.storage.get("session").then((data) => { });
             }, 3000);
           },
         },
@@ -248,7 +248,7 @@ export class AppComponent implements OnInit {
             this.alert();
           } else if (this.accountPages[index].title === "Profilo") {
             this.router.navigateByUrl("/visualizza-profiloutente");
-          } else if(this.accountPages[index].title  === "Le mie attività") {
+          } else if (this.accountPages[index].title === "Le mie attività") {
             this.dataService.setAnswerNotificationState(false);
             this.router.navigateByUrl(this.accountPages[index].url);
           } else {
@@ -298,10 +298,6 @@ export class AppComponent implements OnInit {
       this.splashScreen.hide();
       timer(2000).subscribe(() => (this.showSplash = false)); //durata animazione definita in app.component.html -> 2s 
 
-      
-      
-      
-
       this.storage.get("tutorialComplete").then((isComplete) => {
         if (isComplete) { //Tutorial completato
           this.storage.get("utente").then((utente) => { //Check utente logged
@@ -326,7 +322,7 @@ export class AppComponent implements OnInit {
       this.session = data;
 
       this.setupPushNotification();
-      
+
     });
   }
 
@@ -361,9 +357,9 @@ export class AppComponent implements OnInit {
     this.oneSignal.startInit('8efdc866-9bea-4b12-a371-aa01f421c4f7', '424760060101');
     this.oneSignal.clearOneSignalNotifications()
 
-    if(this.session === true){
+    if (this.session === true) {
       this.oneSignal.sendTag('logState', 'logged');
-    } else{
+    } else {
       this.oneSignal.sendTag('logState', 'unlogged');
     }
 
@@ -371,25 +367,25 @@ export class AppComponent implements OnInit {
 
     this.oneSignal.handleNotificationReceived().subscribe(data => {
 
-      
+
       let additionalData = data.payload.additionalData;
-     
-      if(additionalData.messageType === "message"){       
-        if(window.location.pathname != "/chat"){
-          
+
+      if (additionalData.messageType === "message") {
+        if (window.location.pathname != "/chat") {
+
           this.dataService.setNotificationsState(true);
           this.dataService.setNotificationChatId(additionalData.chatId)
-          this.toast("Hai ricetuto un messaggio","primary");
+          this.toast("Hai ricetuto un messaggio", "primary");
         }
-      }else{ 
-        if(window.location.pathname != "/mie-attivita"){
+      } else {
+        if (window.location.pathname != "/mie-attivita") {
           this.dataService.setAnswerNotificationState(true)
-          this.toast("Hanno risposto alla tua domanda","primary");
+          this.toast("Hanno risposto alla tua domanda", "primary");
         }
-      } 
+      }
     });
 
-    this.oneSignal.handleNotificationOpened().subscribe(data => {  
+    this.oneSignal.handleNotificationOpened().subscribe(data => {
     });
 
     this.oneSignal.endInit();

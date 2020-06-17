@@ -92,7 +92,7 @@ export class ModificaAvatarPage implements OnInit {
     }
   
     annulla() {
-      this.dataService.loadingView(3000);//visualizza il frame di caricamento
+      this.dataService.loadingView(1500);//visualizza il frame di caricamento
       this.toastUnsuccess("Avatar non scelto");
       this.navCtrl.back();
     }
@@ -101,7 +101,7 @@ export class ModificaAvatarPage implements OnInit {
       if (this.avatar === "" || this.avatar === undefined) {
         this.toastUnsuccess("Non hai selezionato alcun avatar!");
       } else {
-        this.dataService.loadingView(3000);//visualizza il frame di caricamento
+        this.dataService.loadingView(1000);//visualizza il frame di caricamento
         this.dataService.settaTemporaryAvatar(this.avatar);
         this.navCtrl.back();
         this.toastSuccess();

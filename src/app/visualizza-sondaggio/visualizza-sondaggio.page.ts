@@ -98,7 +98,7 @@ export class VisualizzaSondaggioPage implements OnInit {
       this.toast('Ci sono dei voti al tuo sondaggio, non è più possibile modificarlo!', 'danger');
     } else {
       clearInterval(this.interval);
-      this.dataService.loadingView(3000);
+      this.dataService.loadingView(1500);
       this.navCtrl.navigateRoot(['/modifica-sondaggio']);
     }
   }
@@ -293,7 +293,7 @@ export class VisualizzaSondaggioPage implements OnInit {
         {
           text: 'Si',
           handler: () => {
-            this.dataService.loadingView(5000);
+            this.dataService.loadingView(2500);
   
             this.inviaVoto();
             this.ngOnInit();
@@ -474,7 +474,7 @@ export class VisualizzaSondaggioPage implements OnInit {
     if (this.ospite === true) {
       this.toast('Effettua il login per chattare con gli altri utenti!', 'danger');
     } else {
-      this.dataService.loadingView(3000);//visualizza il frame di caricamento
+      this.dataService.loadingView(2000);//visualizza il frame di caricamento
       this.dataService.setEmailOthers(this.sondaggioUser);
       this.navCtrl.navigateForward(['/chat'])
     }
@@ -483,7 +483,7 @@ export class VisualizzaSondaggioPage implements OnInit {
   }
 
   clickProfilo(cod_utente) {
-    this.dataService.loadingView(5000);//visualizza il frame di caricamento
+    this.dataService.loadingView(2000);//visualizza il frame di caricamento
     this.dataService.setEmailOthers(cod_utente);
     this.navCtrl.navigateForward(['/visualizza-profilo']);
   }

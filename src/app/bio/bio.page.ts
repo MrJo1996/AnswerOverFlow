@@ -51,12 +51,10 @@ export class BioPage implements OnInit {
           role: 'cancel',
           cssClass: 'secondary',
           handler: (blah) => {
-            console.log('Confirm Cancel: blah');
           }
         }, {
           text: 'Si',
           handler: () => {
-            console.log('Confirm Okay');
             this.clickRegistrazione();
           }
         }
@@ -73,12 +71,10 @@ export class BioPage implements OnInit {
           role: 'cancel',
           cssClass: 'secondary',
           handler: (blah) => {
-            console.log('Confirm Cancel: blah');
           }
         }, {
           text: 'Si',
           handler: () => {
-            console.log('Confirm Okay');
             this.postRegistrazione();
           }
         }

@@ -149,7 +149,7 @@
     //_____________________________________________________________________Carica al click del segmentB
     
       goBack() {
-        this.dataService.loadingView(3000);//visualizza il frame di caricamento
+        this.dataService.loadingView(2000);//visualizza il frame di caricamento
         this.navCtrl.back();
       }
 
