@@ -3,8 +3,10 @@
     <ion-button slot="start" expand="block" fill="clear" (click)="goBack()" class="msg-btn">
       <ion-icon color="primary" slot="start" slot="icon-only" name="arrow-back-outline"></ion-icon>
     </ion-button>
-    <ion-title style="text-align: center; margin-right: 15%;" class = "textTitle" *ngIf="currentUser===sondaggio.cod_utente">Dettagli del tuo sondaggio</ion-title>
-    <ion-title style="text-align: center; margin-right: 15%;" class = "textTitle" *ngIf="currentUser!==sondaggio.cod_utente">Dettagli del sondaggio</ion-title>
+    <ion-title style="text-align: center; margin-right: 15%;" class="textTitle"
+      *ngIf="currentUser===sondaggio.cod_utente">Dettagli del tuo sondaggio</ion-title>
+    <ion-title style="text-align: center; margin-right: 15%;" class="textTitle"
+      *ngIf="currentUser!==sondaggio.cod_utente">Dettagli del sondaggio</ion-title>
     <ion-button *ngIf="sceltaFatta === true" slot="end" expand="block" fill="clear" (click)="confermaVoto()"
       class="msg-btn">
       <ion-icon color="success" slot="end" slot="icon-only" name="checkmark-sharp"></ion-icon>
@@ -69,31 +71,39 @@
       <div color="blue" style="--background: none; padding: 0.5rem;" *ngFor="let scelta of scelte, let i = index">
         <div style="margin-bottom: 1rem">
           <ion-progress-bar (click)="getScelta(scelta.descrizione, i)"
-            *ngIf="i!==numeroScelta && currentUser!==sondaggio.cod_utente && votato === false" class="not-chosen"
-            value="100">
+            *ngIf="i!==numeroScelta && currentUser!==sondaggio.cod_utente && (votato === false ||sondaggioAperto ===false)"
+            class="not-chosen" value="100">
           </ion-progress-bar>
 
           <ion-progress-bar (click)="getScelta(scelta.descrizione, i)"
             *ngIf="i===numeroScelta && sceltaFatta == true && currentUser!==sondaggio.cod_utente && votato === false"
             class="chosen" value="100">
           </ion-progress-bar>
-          <ion-text class="textSimple"  *ngIf="votato === false || (votato === true && scelta.codice_scelta !== votoUtente)" slot="start">{{scelta.descrizione}}</ion-text>
-          <ion-text color = "primary" class="textSceltaFatta" *ngIf="votato === true && scelta.codice_scelta === votoUtente" slot="start">{{scelta.descrizione}}</ion-text>
+          <ion-text class="textSimple"
+            *ngIf="votato === false || (votato === true && scelta.codice_scelta !== votoUtente)" slot="start">
+            {{scelta.descrizione}}</ion-text>
+          <ion-text color="primary" class="textSceltaFatta"
+            *ngIf="votato === true && scelta.codice_scelta === votoUtente" slot="start">{{scelta.descrizione}}
+          </ion-text>
           <ion-label class="num-voti-style"
-            *ngIf="(currentUser===sondaggio.cod_utente  || votato === true) && scelta.num_favorevoli >1" slot="start">
+            *ngIf="(currentUser===sondaggio.cod_utente  || votato === true ||sondaggioAperto ===false)  && scelta.num_favorevoli >1"
+            slot="start">
             {{scelta.num_favorevoli}} voti</ion-label>
           <ion-label class="num-voti-style"
-            *ngIf="(currentUser===sondaggio.cod_utente  || votato === true) && scelta.num_favorevoli ===1" slot="start">
+            *ngIf="(currentUser===sondaggio.cod_utente  || votato === true ||sondaggioAperto ===false )  && scelta.num_favorevoli ===1"
+            slot="start">
             {{scelta.num_favorevoli}} voto</ion-label>
           <ion-label class="num-voti-style"
-            *ngIf="(currentUser===sondaggio.cod_utente  || votato === true) && scelta.num_favorevoli ===0" slot="start">
+            *ngIf="(currentUser===sondaggio.cod_utente  || votato === true ||sondaggioAperto ===false ) && scelta.num_favorevoli ===0"
+            slot="start">
             Nessun voto</ion-label>
         </div>
 
         <!--Divisore per la visualizzazione delle percentuali dei voti-->
         <div
           *ngIf="(currentUser===sondaggio.cod_utente && voti_totali !=0) || votato === true || sondaggioAperto  === false">
-          <ion-progress-bar color="primary" class="progress-bar-style" *ngIf="percentualiScelte[i]!==0" [value]="percentualiScelte[i]">
+          <ion-progress-bar color="primary" class="progress-bar-style" *ngIf="percentualiScelte[i]!==0"
+            [value]="percentualiScelte[i]">
           </ion-progress-bar>
         </div>
       </div>
@@ -102,7 +112,7 @@
 
         <!--Data di inserimento del sondaggio e categoria-->
         <div>
-          <ion-chip disabled = "true" color="secondary">
+          <ion-chip disabled="true" color="secondary">
             <ion-icon name="calendar-outline"></ion-icon>
             <ion-label class="description_text">{{sondaggio.dataeora | date: formatsDate}}</ion-label>
           </ion-chip>

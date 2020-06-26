@@ -502,8 +502,7 @@ export class VisualizzaDomandaPage implements OnInit {
 
     setTimeout(() => {
 
-      this.showRisposte();
-      //event.target.complete();
+      event.target.complete();
     }, 2000);
   }
 

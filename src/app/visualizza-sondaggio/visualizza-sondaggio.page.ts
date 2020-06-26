@@ -79,11 +79,9 @@ export class VisualizzaSondaggioPage implements OnInit {
     this.giaVotato();
 
 
-    if (this.distanceTimer < 0)
-      this.sondaggioAperto = false;
 
-    else
-      this.sondaggioAperto = true;
+
+    console.log("Stato sondaggio: ", this.sondaggioAperto)
 
   }
 
@@ -140,6 +138,15 @@ export class VisualizzaSondaggioPage implements OnInit {
 
         this.getUserSondaggio();
         this.visualizzaCategoria();
+
+        if (this.deadlineCheck()) {
+          this.sondaggioAperto = false;
+        }
+        else
+
+          this.sondaggioAperto = true;
+
+
       },
       (rej) => {
 
@@ -294,7 +301,7 @@ export class VisualizzaSondaggioPage implements OnInit {
           text: 'Si',
           handler: () => {
             this.dataService.loadingView(2500);
-  
+
             this.inviaVoto();
             this.ngOnInit();
             this.sceltaFatta = false;
@@ -450,7 +457,7 @@ export class VisualizzaSondaggioPage implements OnInit {
       if (distance < 0) {
         clearInterval(this.interval);
         this.timerView = "Sondaggio scaduto";
-        
+
       } else {
         this.timerView = days + "d " + hours + "h "
           + minutes + "m " + seconds + "s ";
